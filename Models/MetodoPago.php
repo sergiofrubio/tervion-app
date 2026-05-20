@@ -7,9 +7,9 @@ class MetodoPago
 {
     private $db;
 
-    public function __construct()
+    public function __construct($db = null)
     {
-        $this->db = (new DataBase())->connect();
+        $this->db = $db ?: (new DataBase())->connect();
     }
 
     public function getByUsuario($usuario_id)

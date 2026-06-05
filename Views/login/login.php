@@ -120,8 +120,15 @@
                 </div>
                 
                 <div class="pt-2">
-                    <button type="submit" class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors">
-                        Iniciar Sesión
+                    <button type="submit" id="loginButton" class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors">
+                        <!-- Spinner (hidden by default) -->
+                        <span id="loginSpinner" class="hidden mr-3 inline-flex items-center">
+                            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                            </svg>
+                        </span>
+                        <span id="loginButtonText">Iniciar Sesión</span>
                         <i class="bi bi-arrow-right ml-2"></i>
                     </button>
                 </div>
@@ -190,3 +197,23 @@
     </div>
 </body>
 </html>
+
+<script>
+    (function(){
+        var form = document.querySelector('form[action="<?= PROJECT_ROOT . '\/login' ?>"]');
+        if (!form) form = document.querySelector('form');
+        var btn = document.getElementById('loginButton');
+        var spinner = document.getElementById('loginSpinner');
+        var btnText = document.getElementById('loginButtonText');
+
+        if (form && btn && spinner) {
+            form.addEventListener('submit', function(e){
+                // Mostrar spinner, deshabilitar botón y conservar envío
+                spinner.classList.remove('hidden');
+                btn.classList.add('opacity-80');
+                btn.disabled = true;
+                if (btnText) btnText.textContent = 'Iniciando...';
+            });
+        }
+    })();
+</script>

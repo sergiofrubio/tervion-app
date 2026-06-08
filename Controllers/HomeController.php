@@ -2,11 +2,11 @@
 namespace App\Controllers;
 use App\Core\Controller;
 
-class InicioController extends Controller {
+class HomeController extends Controller {
     public function index() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        // if (session_status() === PHP_SESSION_NONE) {
+        //     session_start();
+        // }
         
         if (!isset($_SESSION['email'])) {
             header('Location: ' . PROJECT_ROOT . '/login');

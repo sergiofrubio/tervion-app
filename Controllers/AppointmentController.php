@@ -7,7 +7,6 @@ class AppointmentController extends Controller
 
     public function list()
     {
-        $this->checkAuth();
         $appointment = $this->model('Appointment');
         
         if ($_SESSION['rol'] === 'Paciente') {
@@ -21,7 +20,6 @@ class AppointmentController extends Controller
 
     public function create()
     {
-        $this->checkAuth();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $appointment = $this->model('Appointment');
 
@@ -54,7 +52,6 @@ class AppointmentController extends Controller
 
     public function delete()
     {
-        $this->checkAuth();
         $appointment = $this->model('Appointment');
         $id = $_POST['id'];
 
@@ -78,7 +75,6 @@ class AppointmentController extends Controller
 
     public function edit()
     {
-        $this->checkAuth();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $appointment = $this->model('Appointment');
             $id = $_POST['cita_id'];
@@ -130,7 +126,6 @@ class AppointmentController extends Controller
     }
     public function getSlots()
     {
-        $this->checkAuth();
         $fisio_id = $_GET['fisio_id'] ?? '';
         $fecha = $_GET['fecha'] ?? '';
         $servicio_id = $_GET['servicio_id'] ?? '';

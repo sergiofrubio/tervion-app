@@ -119,11 +119,6 @@ class UserController extends Controller
             exit();
         }
 
-        // Initialize session if not already started to access $_SESSION variables
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
         $historyModel = $this->model('MedicalHistory');
         $appointmentModel = $this->model('Appointment');
 
@@ -134,7 +129,7 @@ class UserController extends Controller
             'citas' => $appointmentModel->getByPatient($id)
         ];
 
-        $this->view('usuarios/userdetail', $data);
+        $this->view('usuarios/detail', $data);
     }
 
     public function createPDF()

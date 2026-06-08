@@ -72,7 +72,7 @@ $usuariosPaginados = array_slice($usuarios_filtrados, $iniciar, $articulos_x_pag
 
     <!-- Filter -->
     <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-gray-100">
-        <form method="post" action="<?= PROJECT_ROOT ?>/users" class="flex flex-col sm:flex-row gap-4 items-end">
+        <form method="post" action="<?= PROJECT_ROOT ?>/usuarios/search" class="flex flex-col sm:flex-row gap-4 items-end">
             <div class="w-full sm:w-auto flex-1 max-w-sm">
                 <label for="usuario_id" class="block text-sm font-medium text-gray-700 mb-1.5">Buscar por ID</label>
                 <div class="relative rounded-xl shadow-sm">

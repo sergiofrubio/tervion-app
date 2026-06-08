@@ -36,7 +36,7 @@ function calcularEdad($fechaNacimiento) {
                     </p>
                 </div>
                 <div class="mt-6 sm:mt-0">
-                    <a href="<?= PROJECT_ROOT ?>/users" class="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all">
+                    <a href="<?= PROJECT_ROOT ?>/usuarios" class="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all">
                         <i class="bi bi-arrow-left"></i>
                         Volver
                     </a>

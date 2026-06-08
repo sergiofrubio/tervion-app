@@ -5,19 +5,20 @@ $router = new Router();
 
 // Rutas Públicas (Sin autenticación)
 $router->add('GET', '/landing', 'LandingController@index', false);
-$router->add('GET', '/', 'LoginController@cargarVista', false);
-$router->add('GET', '/login', 'LoginController@cargarVista', false);
+$router->add('GET', '/', 'LoginController@index', false);
+$router->add('GET', '/login', 'LoginController@index', false);
 $router->add('POST', '/login', 'LoginController@iniciarSesion', false);
 $router->add('POST', '/login/reset-password', 'LoginController@generatePasswordResetToken', false);
 $router->add('GET', '/logout', 'LoginController@finishSesion', false);
 
 // Rutas Generales (Requieren autenticación, accesibles por todos los roles)
-$router->add('GET', '/inicio', 'InicioController@index', true, ['Administrador', 'Fisioterapeuta', 'Paciente']);
+$router->add('GET', '/inicio', 'HomeController@index', true, ['Administrador', 'Fisioterapeuta', 'Paciente']);
 
 // Rutas para Administradores y Fisioterapeutas
 $staffRoles = ['Administrador', 'Fisioterapeuta'];
 
 $router->add('GET', '/usuarios', 'UserController@list', true, $staffRoles);
+$router->add('POST', '/usuarios/search', 'UserController@search', true, $staffRoles);
 $router->add('GET', '/usuarios/create', 'UserController@create', true, ['Administrador']); // Solo admin crea usuarios
 $router->add('POST', '/usuarios/create', 'UserController@create', true, ['Administrador']);
 $router->add('POST', '/usuarios/delete', 'UserController@delete', true, ['Administrador']);
@@ -26,8 +27,7 @@ $router->add('POST', '/usuarios/edit', 'UserController@edit', true, ['Administra
 $router->add('GET', '/usuarios/detail', 'UserController@detail', true, $staffRoles);
 $router->add('GET', '/usuarios/pdf', 'UserController@createPDF', true, $staffRoles);
 $router->add('POST', '/usuarios/pdf', 'UserController@createPDF', true, $staffRoles);
-$router->add('POST', '/usuarios/filter', 'UserController@FindById', true, $staffRoles);
-$router->add('GET', '/usuarios/search', 'UserController@search', true, $staffRoles, true);
+
 
 $router->add('GET', '/citas', 'AppointmentController@list', true, $staffRoles);
 $router->add('GET', '/citas/create', 'AppointmentController@create', true, $staffRoles);
@@ -65,13 +65,13 @@ $router->add('POST', '/historial/create', 'MedicalHistoryController@create', tru
 $router->add('GET', '/historial/detail', 'MedicalHistoryController@detail', true, $staffRoles);
 $router->add('GET', '/historial/pdf', 'MedicalHistoryController@pdf', true, $staffRoles);
 
-$router->add('GET', '/facturas', 'FacturaController@list', true, $staffRoles);
-$router->add('GET', '/facturas/create', 'FacturaController@create', true, $staffRoles);
-$router->add('POST', '/facturas/create', 'FacturaController@create', true, $staffRoles);
-$router->add('GET', '/facturas/edit', 'FacturaController@edit', true, $staffRoles);
-$router->add('POST', '/facturas/edit', 'FacturaController@edit', true, $staffRoles);
-$router->add('POST', '/facturas/delete', 'FacturaController@delete', true, $staffRoles);
-$router->add('GET', '/facturas/pdf', 'FacturaController@pdf', true, $staffRoles);
+$router->add('GET', '/facturas', 'InvoiceController@list', true, $staffRoles);
+$router->add('GET', '/facturas/create', 'InvoiceController@create', true, $staffRoles);
+$router->add('POST', '/facturas/create', 'InvoiceController@create', true, $staffRoles);
+$router->add('GET', '/facturas/edit', 'InvoiceController@edit', true, $staffRoles);
+$router->add('POST', '/facturas/edit', 'InvoiceController@edit', true, $staffRoles);
+$router->add('POST', '/facturas/delete', 'InvoiceController@delete', true, $staffRoles);
+$router->add('GET', '/facturas/pdf', 'InvoiceController@pdf', true, $staffRoles);
 
 $router->add('GET', '/nominas', 'PayrollController@list', true, ['Administrador']);
 $router->add('GET', '/nominas/contratos', 'PayrollController@listContracts', true, ['Administrador']);
@@ -99,10 +99,10 @@ $router->add('POST', '/vista-pacientes/perfil/add-payment-method', 'ProfileContr
 $router->add('GET', '/vista-pacientes/perfil/delete-payment-method', 'ProfileController@deletePaymentMethod', true, ['Paciente']);
 $router->add('GET', '/vista-pacientes/perfil/set-primary-payment', 'ProfileController@setPrimaryPaymentMethod', true, ['Paciente']);
 
-$router->add('GET', '/vista-pacientes/tienda', 'TiendaController@list', true, ['Paciente']);
-$router->add('GET', '/vista-pacientes/tienda/pago', 'TiendaController@pago', true, ['Paciente']);
-$router->add('POST', '/vista-pacientes/tienda/procesar-pago', 'TiendaController@procesarPago', true, ['Paciente']);
+$router->add('GET', '/vista-pacientes/tienda', 'ShopController@list', true, ['Paciente']);
+$router->add('GET', '/vista-pacientes/tienda/pago', 'ShopController@pago', true, ['Paciente']);
+$router->add('POST', '/vista-pacientes/tienda/procesar-pago', 'ShopController@procesarPago', true, ['Paciente']);
 
-$router->add('GET', '/vista-pacientes/facturas', 'FacturaController@list', true, ['Paciente']);
+$router->add('GET', '/vista-pacientes/facturas', 'InvoiceController@list', true, ['Paciente']);
 
 $router->handleRequest();

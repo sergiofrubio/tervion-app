@@ -17,9 +17,6 @@ class Controller
 
     public function checkAuth()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
         if (!isset($_SESSION['usuario_id'])) {
             header('Location: ' . PROJECT_ROOT . '/login');
             exit();

@@ -10,11 +10,7 @@ class HomeController extends Controller {
      *
      * @return void
      */
-    public function index() {
-        // if (session_status() === PHP_SESSION_NONE) {
-        //     session_start();
-        // }
-        
+    public function index() {       
         if (!isset($_SESSION['email'])) {
             header('Location: ' . PROJECT_ROOT . '/login');
             exit();

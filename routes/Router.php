@@ -36,9 +36,6 @@ class Router
             $controller = new $controllerName();
 
             if ($route['auth']) {
-                if (session_status() === PHP_SESSION_NONE) {
-                    session_start();
-                }
                 if (!isset($_SESSION['usuario_id'])) {
                     require_once __DIR__ . '/../Views/404.php';
                     exit();
@@ -47,9 +44,6 @@ class Router
                 
             // Role check
             if (!empty($route['roles'])) {
-                if (session_status() === PHP_SESSION_NONE) {
-                    session_start();
-                }
                 $userRole = $_SESSION['rol'] ?? '';
                 if (!in_array($userRole, $route['roles'])) {
                     require_once __DIR__ . '/../Views/404.php';

@@ -25,11 +25,6 @@ class LoginController extends Controller {
      * @return void
      */
     public function index(){
-        //Si borras este if, cuando haces localhost/login después de haberse loggeado te redirige a la vista
-        // de login, en lugar de a inicio.
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
         if (isset($_SESSION['email'])) {
             header('Location: ' . PROJECT_ROOT . '/inicio');
             exit();
@@ -73,9 +68,6 @@ class LoginController extends Controller {
      * @return void
      */
     private function startSession($usuario) {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
         $_SESSION = array_merge($_SESSION, $usuario);
         
         header('Location: ' . PROJECT_ROOT . '/inicio');
@@ -89,9 +81,6 @@ class LoginController extends Controller {
      */
     public function finishSesion()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
         if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
             setcookie(

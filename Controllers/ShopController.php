@@ -2,7 +2,6 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Models\PaymentMethod;
 
 class ShopController extends Controller
 {
@@ -40,7 +39,7 @@ class ShopController extends Controller
     public function pago()
     {       
         $idBono = $_GET['id'] ?? 0;
-        $metodoPagoModel = new PaymentMethod();
+        $metodoPagoModel = $this->model('PaymentMethod');
         $configModel = $this->model('Setting');
         
         $metodosPago = $metodoPagoModel->getByUsuario($_SESSION['usuario_id']);
@@ -71,7 +70,7 @@ class ShopController extends Controller
     public function procesarPago()
     {       
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $metodoPagoModel = new PaymentMethod();
+            $metodoPagoModel = $this->model('PaymentMethod');
             $usuario_id = $_SESSION['usuario_id'];
             
             // Si el usuario marcó "Guardar tarjeta" y no está usando una guardada

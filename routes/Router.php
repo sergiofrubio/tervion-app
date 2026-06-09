@@ -36,36 +36,31 @@ class Router
             $controller = new $controllerName();
 
             if ($route['auth']) {
-                // if ($route['isApi']) {
-                //     $controller->checkAuthApi();
-                // } else {
-                    $controller->checkAuth();
+                if (session_status() === PHP_SESSION_NONE) {
+                    session_start();
                 }
+                if (!isset($_SESSION['usuario_id'])) {
+                    require_once __DIR__ . '/../Views/404.php';
+                    exit();
+                }
+            }
                 
-                // Role check
-                if (!empty($route['roles'])) {
-                    // if (session_status() === PHP_SESSION_NONE) {
-                    //     session_start();
-                    // }
-                    $userRole = $_SESSION['rol'] ?? '';
-                    if (!in_array($userRole, $route['roles'])) {
-                        // if ($route['isApi']) {
-                        //     header('Content-Type: application/json');
-                        //     http_response_code(403);
-                        //     echo json_encode(['error' => 'No tienes permisos para acceder a este recurso.']);
-                        //     exit();
-                        // } else {
-                            // Redirect to home or error page
-                            header('Location: ' . PROJECT_ROOT . '/inicio?error=unauthorized');
-                            exit();
-                        // }
-                    // }
+            // Role check
+            if (!empty($route['roles'])) {
+                if (session_status() === PHP_SESSION_NONE) {
+                    session_start();
+                }
+                $userRole = $_SESSION['rol'] ?? '';
+                if (!in_array($userRole, $route['roles'])) {
+                    require_once __DIR__ . '/../Views/404.php';
+                    exit();
                 }
             }
 
             return $controller->$methodName();
         }
 
-        echo "Page not found.";
+        require_once __DIR__ . '/../Views/404.php';
+        exit();
     }
 }

@@ -1,7 +1,6 @@
 <?php
 namespace App\Controllers;
 use App\Core\Controller;
-use App\Models\PaymentMethod;
 
 class ProfileController extends Controller
 {
@@ -13,7 +12,7 @@ class ProfileController extends Controller
     public function index()
     {
         $userModel = $this->model('User');
-        $metodoPagoModel = new PaymentMethod();
+        $metodoPagoModel = $this->model('PaymentMethod');
         
         $usuario = $userModel->getByusuario_id($_SESSION['usuario_id']);
         
@@ -73,7 +72,7 @@ class ProfileController extends Controller
             } else {
                 $data['error'] = "Error al actualizar el perfil.";
                 $data['usuario'] = $userModel->getByusuario_id($usuario_id);
-                $metodoPagoModel = new PaymentMethod();
+                $metodoPagoModel = $this->model('PaymentMethod');
                 $data['metodosPago'] = $metodoPagoModel->getByUsuario($usuario_id);
                 $this->view('patient-view/profile/index', $data);
             }
@@ -90,7 +89,7 @@ class ProfileController extends Controller
     public function addPaymentMethod()
     {       
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $metodoPagoModel = new PaymentMethod();
+            $metodoPagoModel = $this->model('PaymentMethod');
             
             $numeroTarjeta = $_POST['card_number'] ?? '';
             $last4 = substr($numeroTarjeta, -4);
@@ -126,7 +125,7 @@ class ProfileController extends Controller
     {
         $metodo_id = $_GET['id'] ?? 0;
         
-        $metodoPagoModel = new PaymentMethod();
+        $metodoPagoModel = $this->model('PaymentMethod');
         if ($metodoPagoModel->delete($metodo_id, $_SESSION['usuario_id'])) {
             header('Location: ' . PROJECT_ROOT . '/vista-pacientes/perfil?success=pm_deleted');
         } else {
@@ -144,7 +143,7 @@ class ProfileController extends Controller
     {
         $metodo_id = $_GET['id'] ?? 0;
         
-        $metodoPagoModel = new PaymentMethod();
+        $metodoPagoModel = $this->model('PaymentMethod');
         if ($metodoPagoModel->setPredeterminado($metodo_id, $_SESSION['usuario_id'])) {
             header('Location: ' . PROJECT_ROOT . '/vista-pacientes/perfil?success=pm_primary');
         } else {

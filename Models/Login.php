@@ -39,4 +39,37 @@ class Login
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function saveResetToken($email, $token)
+    {
+        // Primero eliminamos tokens antiguos para este correo
+        $queryDelete = "DELETE FROM password_resets WHERE email = :email";
+        $stmtDelete = $this->db->prepare($queryDelete);
+        $stmtDelete->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmtDelete->execute();
+
+        // Insertamos el nuevo token
+        $queryInsert = "INSERT INTO password_resets (email, token, created_at) VALUES (:email, :token, NOW())";
+        $stmtInsert = $this->db->prepare($queryInsert);
+        $stmtInsert->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmtInsert->bindParam(':token', $token, PDO::PARAM_STR);
+        return $stmtInsert->execute();
+    }
+
+    public function deleteResetToken($token)
+    {
+        $query = "DELETE FROM password_resets WHERE token = :token";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+        return $stmt->execute();
+    }
+
+    public function updateUserPassword($email, $hashedPassword)
+    {
+        $query = "UPDATE usuarios SET pass = :pass WHERE email = :email";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':pass', $hashedPassword, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        return $stmt->execute();
+    }
 }

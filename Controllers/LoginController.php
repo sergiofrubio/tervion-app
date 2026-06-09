@@ -118,9 +118,107 @@ class LoginController extends Controller {
      * @return void
      */
     private function redirectWithMessage($message, $alertType) {
-        header("Location: " . PROJECT_ROOT . "/login?alert=$alertType&message=$message");
+        header("Location: " . PROJECT_ROOT . "/login?alert=$alertType&message=" . urlencode($message));
         exit();
     }
-}
 
+    /**
+     * Genera un token para restablecer la contraseña y envía el correo con el enlace.
+     *
+     * @return void
+     */
+    public function generatePasswordResetToken() {
+        $email = $_POST['resetEmail'] ?? null;
+
+        if ($email) {
+            $usuario = $this->loginModel->getByEmail($email);
+
+            if ($usuario) {
+                $token = bin2hex(random_bytes(32));
+                if ($this->loginModel->saveResetToken($email, $token)) {
+                    $emailController = new EmailController();
+                    
+                    $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+                    $host = $_SERVER['HTTP_HOST'];
+                    $resetLink = $scheme . '://' . $host . PROJECT_ROOT . '/login/reset-password?token=' . $token;
+
+                    $subject = 'Restablecer Contraseña - Velion';
+                    $body = "
+                        <h2>Hola, {$usuario['nombre']}</h2>
+                        <p>Has solicitado restablecer tu contraseña para tu cuenta en Velion.</p>
+                        <p>Haz clic en el siguiente enlace para establecer una nueva contraseña (este enlace expira en 1 hora):</p>
+                        <p><a href='{$resetLink}' style='background-color:#0f172a; color:#ffffff; padding:10px 20px; text-decoration:none; border-radius:8px; display:inline-block;'>Restablecer Contraseña</a></p>
+                        <p>Si no solicitaste este cambio, puedes ignorar este correo.</p>
+                    ";
+
+                    $emailController->sendEmail($email, $subject, $body);
+                }
+            }
+            // Por seguridad, mostramos el mismo mensaje siempre
+            $this->redirectWithMessage("Si el correo electrónico está registrado, recibirás un enlace para restablecer tu contraseña.", 'success');
+        } else {
+            $this->redirectWithMessage("Correo electrónico no válido.", 'warning');
+        }
+    }
+
+    /**
+     * Muestra el formulario para restablecer la contraseña si el token es válido.
+     *
+     * @return void
+     */
+    public function showResetForm() {
+        $token = $_GET['token'] ?? null;
+
+        if ($token) {
+            $resetRequest = $this->loginModel->getByToken($token);
+
+            if ($resetRequest) {
+                $this->view('login/resetPassword', ['token' => $token]);
+                return;
+            }
+        }
+
+        $this->redirectWithMessage("El enlace de restablecimiento de contraseña no es válido o ha expirado.", 'danger');
+    }
+
+    /**
+     * Procesa el cambio de contraseña.
+     *
+     * @return void
+     */
+    public function updatePassword() {
+        $token = $_POST['token'] ?? null;
+        $pass = $_POST['pass'] ?? null;
+        $confirmPassword = $_POST['confirmPassword'] ?? null;
+
+        if (!$token || !$pass || !$confirmPassword) {
+            $this->redirectWithMessage("Datos incompletos.", 'warning');
+        }
+
+        if ($pass !== $confirmPassword) {
+            header("Location: " . PROJECT_ROOT . "/login/reset-password?token=" . $token . "&alert=danger&message=" . urlencode("Las contraseñas no coinciden."));
+            exit();
+        }
+
+        if (strlen($pass) < 8) {
+            header("Location: " . PROJECT_ROOT . "/login/reset-password?token=" . $token . "&alert=danger&message=" . urlencode("La contraseña debe tener al menos 8 caracteres."));
+            exit();
+        }
+
+        $resetRequest = $this->loginModel->getByToken($token);
+
+        if ($resetRequest) {
+            $hashedPassword = password_hash($pass, PASSWORD_DEFAULT);
+            if ($this->loginModel->updateUserPassword($resetRequest['email'], $hashedPassword)) {
+                $this->loginModel->deleteResetToken($token);
+                $this->redirectWithMessage("Contraseña restablecida correctamente. Ya puedes iniciar sesión.", 'success');
+            } else {
+                header("Location: " . PROJECT_ROOT . "/login/reset-password?token=" . $token . "&alert=danger&message=" . urlencode("Error al actualizar la contraseña."));
+                exit();
+            }
+        } else {
+            $this->redirectWithMessage("El token no es válido o ha expirado.", 'danger');
+        }
+    }
+}
 ?>

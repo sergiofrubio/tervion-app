@@ -9,6 +9,9 @@ $router->add('GET', '/', 'LoginController@index', false);
 $router->add('GET', '/login', 'LoginController@index', false);
 $router->add('POST', '/login', 'LoginController@iniciarSesion', false);
 $router->add('POST', '/login/reset-password', 'LoginController@generatePasswordResetToken', false);
+$router->add('GET', '/login/reset-password', 'LoginController@showResetForm', false);
+$router->add('POST', '/login/update-password', 'LoginController@updatePassword', false);
+$router->add('GET', '/test-email', 'EmailController@testEmail', false);
 $router->add('GET', '/logout', 'LoginController@finishSesion', false);
 
 // Rutas Generales (Requieren autenticación, accesibles por todos los roles)

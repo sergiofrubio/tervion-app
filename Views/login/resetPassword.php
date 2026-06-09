@@ -1,78 +1,126 @@
-<!DOCTYPE html>
-<html lang="es" data-bs-theme="auto">
+<!doctype html>
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Reinicio de Contraseña</title>
-    <link href="../assets/bootstrap-5.3/css/bootstrap.min.css" rel="stylesheet">
-    <script src="../assets/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
+    <title>Establecer Nueva Contraseña - Velion</title>
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/VELION Logo Rounded.png" type="image/png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
-        body {
-            background-image: url("../assets/custom/img/fondo.jpg"); /* Replace with your background image URL */
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .reset-container {
-            background: rgba(255, 255, 255, 0.8); /* White background with transparency */
-            padding: 30px;
-            border-radius: 8px; /* Rounded corners */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow */
-            max-width: 400px; /* Limit form width */
-            width: 100%; /* Ensure responsiveness */
-        }
-
-        .reset-container h2 {
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        .form-control:focus {
-            box-shadow: none;
-            border-color: #495057; /* Adjust focus border color */
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-        .btn-link {
-            color: #007bff;
-            text-decoration: none; /* Remove link underline */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
     </style>
 </head>
 
-<body>
+<body class="bg-gray-100 font-sans antialiased min-h-screen flex items-center justify-center relative">
 
-    <div class="reset-container">
-        <h2 class="text-center">Reinicio de Contraseña</h2>
-
-        <form action="../scripts/login_manager.php" method="post">
-            <input type="hidden" name="action" value="resetear_contraseña">
-            <input type="hidden" name="token" value="<?php echo $_GET['token']; ?>">
-
-            <div class="mb-3">
-                <label for="password" class="form-label">Nueva Contraseña</label>
-                <input type="password" class="form-control" id="pass" name="pass" minlength="8" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
-                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" minlength="8" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100">Reiniciar Contraseña</button>
-        </form>
+    <!-- Background Image with Overlay -->
+    <div class="absolute inset-0 z-0">
+        <img src="<?= PROJECT_ROOT ?>/public/custom/img/fondo.jpg" alt="Background"
+            class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gray-900/40 mix-blend-multiply"></div>
     </div>
 
+    <!-- Container -->
+    <div class="relative z-10 w-full max-w-md px-6">
+        <div
+            class="glass-panel rounded-3xl shadow-2xl overflow-hidden border border-white/20 p-8 sm:p-10 transition-all">
+
+            <div class="text-center mb-8">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/VELION Logo Rounded.png" alt="Velion Logo"
+                    class="w-16 h-16 mx-auto rounded-2xl shadow-sm mb-4">
+                <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Nueva Contraseña</h2>
+                <p class="text-sm text-gray-500 mt-1">Establece tu nueva contraseña de acceso</p>
+            </div>
+
+            <?php
+            // Verificar si hay una alerta de usuario
+            if (isset($_GET['alert']) && isset($_GET['message'])) {
+                $alert_type = $_GET['alert'] === 'danger' ? 'bg-red-50 text-red-800 border-red-200' : ($_GET['alert'] === 'success' ? 'bg-green-50 text-green-800 border-green-200' :
+                    'bg-blue-50 text-blue-800 border-blue-200');
+
+                echo '<div class="rounded-xl border p-4 mb-6 ' . $alert_type . '" role="alert">
+                    <div class="flex justify-between items-start">
+                        <div class="text-sm font-medium">' . htmlspecialchars($_GET['message']) . '</div>
+                    </div>
+                </div>';
+            }
+            ?>
+
+            <form action="<?= PROJECT_ROOT . '/login/update-password' ?>" method="post" class="space-y-5">
+                <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
+
+                <div>
+                    <label for="pass" class="block text-sm font-medium text-gray-700 mb-1">Nueva Contraseña</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="bi bi-lock text-gray-400"></i>
+                        </div>
+                        <input type="password" name="pass" id="pass" minlength="8" required
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white/50 focus:bg-white text-sm transition-colors shadow-sm"
+                            placeholder="Mínimo 8 caracteres">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirmar
+                        Contraseña</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="bi bi-shield-lock text-gray-400"></i>
+                        </div>
+                        <input type="password" name="confirmPassword" id="confirmPassword" minlength="8" required
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white/50 focus:bg-white text-sm transition-colors shadow-sm"
+                            placeholder="Repite la contraseña">
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit"
+                        class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors">
+                        <span>Restablecer Contraseña</span>
+                        <i class="bi bi-check2-circle ml-2"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

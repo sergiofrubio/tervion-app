@@ -131,7 +131,7 @@ function calcularEdad($fechaNacimiento) {
                         <div class="flex items-center justify-between mb-6">
                             <h4 class="text-base font-bold text-gray-900">Informes Clínicos</h4>
                             <?php if ($rol != "Paciente") : ?>
-                            <a href="<?= PROJECT_ROOT ?>/medical-history/create?paciente_id=<?= $usuario['usuario_id'] ?>" class="inline-flex items-center gap-1.5 rounded-xl bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary-700 transition-all">
+                            <a href="<?= PROJECT_ROOT ?>/historial/create?paciente_id=<?= $usuario['usuario_id'] ?>" class="inline-flex items-center gap-1.5 rounded-xl bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary-700 transition-all">
                                 <i class="bi bi-plus-circle"></i>
                                 Nuevo Informe
                             </a>
@@ -156,7 +156,7 @@ function calcularEdad($fechaNacimiento) {
                                                 <?php echo date('d/m/Y H:i', strtotime($informe['fecha_consulta'])); ?>
                                             </div>
                                         </div>
-                                        <a href="<?= PROJECT_ROOT ?>/medical-history/detail?id=<?= $informe['historial_id'] ?>" class="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">
+                                        <a href="<?= PROJECT_ROOT ?>/historial/detail?id=<?= $informe['historial_id'] ?>" class="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all">
                                             <i class="bi bi-eye text-lg"></i>
                                         </a>
                                     </div>

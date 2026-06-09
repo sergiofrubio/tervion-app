@@ -207,7 +207,7 @@ $citasPaginadas = array_slice($citas_filtradas, $iniciar, $articulos_x_pagina);
                                 <td class="sticky right-0 bg-white group-hover:bg-gray-50/50 px-6 py-4 whitespace-nowrap text-right text-sm font-medium border-l border-gray-100/50 shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.02)] transition-colors">
                                     <div class="flex items-center justify-end gap-1">
                                         <?php if (!($cita['estado'] == 'Programada' || $cita['estado'] == 'Pendiente' || $cita['estado'] == 'Cancelada')): ?>
-                                            <button onclick="window.location='<?= PROJECT_ROOT ?>/medical-history?usuario_id=<?= $cita['paciente_id'] ?>'" class="text-gray-400 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-all duration-200" title="Historial Médico">
+                                            <button onclick="window.location='<?= PROJECT_ROOT ?>/historial?usuario_id=<?= $cita['paciente_id'] ?>'" class="text-gray-400 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-all duration-200" title="Historial Médico">
                                                 <i class="bi bi-journal-medical text-lg"></i>
                                             </button>
                                         <?php endif; ?>

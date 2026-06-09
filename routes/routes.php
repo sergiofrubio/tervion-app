@@ -18,7 +18,7 @@ $router->add('GET', '/inicio', 'HomeController@index', true, ['Administrador', '
 $staffRoles = ['Administrador', 'Fisioterapeuta'];
 
 $router->add('GET', '/usuarios', 'UserController@list', true, $staffRoles);
-$router->add('POST', '/usuarios/search', 'UserController@search', true, $staffRoles);
+$router->add('GET', '/usuarios/search', 'UserController@search', true, $staffRoles);
 $router->add('GET', '/usuarios/create', 'UserController@create', true, ['Administrador']); // Solo admin crea usuarios
 $router->add('POST', '/usuarios/create', 'UserController@create', true, ['Administrador']);
 $router->add('POST', '/usuarios/delete', 'UserController@delete', true, ['Administrador']);

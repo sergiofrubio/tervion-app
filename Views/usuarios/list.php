@@ -2,7 +2,7 @@
 $pageTitle = "Usuarios";
 include TEMPLATE_DIR . 'header.php';
 
-$filtro_usuario_id = isset($_POST['usuario_id']) ? trim($_POST['usuario_id']) : '';
+$filtro_usuario_id = isset($_GET['usuario_id']) ? trim($_GET['usuario_id']) : '';
 
 // Filter the array if needed
 $usuarios_filtrados = [];
@@ -72,7 +72,7 @@ $usuariosPaginados = array_slice($usuarios_filtrados, $iniciar, $articulos_x_pag
 
     <!-- Filter -->
     <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-gray-100">
-        <form method="post" action="<?= PROJECT_ROOT ?>/usuarios/search" class="flex flex-col sm:flex-row gap-4 items-end">
+        <form method="get" action="<?= PROJECT_ROOT ?>/usuarios" class="flex flex-col sm:flex-row gap-4 items-end">
             <div class="w-full sm:w-auto flex-1 max-w-sm">
                 <label for="usuario_id" class="block text-sm font-medium text-gray-700 mb-1.5">Buscar por ID</label>
                 <div class="relative rounded-xl shadow-sm">
@@ -174,16 +174,16 @@ $usuariosPaginados = array_slice($usuarios_filtrados, $iniciar, $articulos_x_pag
                 </div>
                 <div>
                     <nav class="relative z-0 inline-flex rounded-lg shadow-sm -space-x-px" aria-label="Pagination">
-                        <a href="?pagina=<?= max(1, $pagina - 1) ?>" class="relative inline-flex items-center px-3 py-2 rounded-l-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina <= 1 ? 'pointer-events-none opacity-50' : '' ?>">
+                        <a href="?pagina=<?= max(1, $pagina - 1) ?><?= $filtro_usuario_id !== '' ? '&usuario_id=' . urlencode($filtro_usuario_id) : '' ?>" class="relative inline-flex items-center px-3 py-2 rounded-l-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina <= 1 ? 'pointer-events-none opacity-50' : '' ?>">
                             <span class="sr-only">Anterior</span>
                             <i class="bi bi-chevron-left text-xs"></i>
                         </a>
                         <?php for ($i = 0; $i < $n_botones_paginacion; $i++) : ?>
-                            <a href="?pagina=<?= $i + 1 ?>" aria-current="<?= $pagina == $i + 1 ? 'page' : 'false' ?>" class="relative inline-flex items-center px-4 py-2 border text-sm font-medium transition-colors <?= $pagina == $i + 1 ? 'z-10 bg-primary-50 border-primary-500 text-primary-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' ?>">
+                            <a href="?pagina=<?= $i + 1 ?><?= $filtro_usuario_id !== '' ? '&usuario_id=' . urlencode($filtro_usuario_id) : '' ?>" aria-current="<?= $pagina == $i + 1 ? 'page' : 'false' ?>" class="relative inline-flex items-center px-4 py-2 border text-sm font-medium transition-colors <?= $pagina == $i + 1 ? 'z-10 bg-primary-50 border-primary-500 text-primary-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' ?>">
                                 <?= $i + 1 ?>
                             </a>
                         <?php endfor; ?>
-                        <a href="?pagina=<?= min($n_botones_paginacion, $pagina + 1) ?>" class="relative inline-flex items-center px-3 py-2 rounded-r-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina >= $n_botones_paginacion ? 'pointer-events-none opacity-50' : '' ?>">
+                        <a href="?pagina=<?= min($n_botones_paginacion, $pagina + 1) ?><?= $filtro_usuario_id !== '' ? '&usuario_id=' . urlencode($filtro_usuario_id) : '' ?>" class="relative inline-flex items-center px-3 py-2 rounded-r-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina >= $n_botones_paginacion ? 'pointer-events-none opacity-50' : '' ?>">
                             <span class="sr-only">Siguiente</span>
                             <i class="bi bi-chevron-right text-xs"></i>
                         </a>

@@ -6,9 +6,17 @@ use Fpdf\Fpdf;
 
 class InvoiceController extends Controller
 {
+    /**
+     * Muestra la lista de facturas.
+     *
+     * Si el rol del usuario es Paciente, muestra solo sus facturas.
+     * Si es Administrador/Staff, muestra todas las facturas permitiendo filtrarlas.
+     *
+     * @return void
+     */
     public function list()
     {
-        $facturaModel = $this->model('Factura');
+        $facturaModel = $this->model('Invoice');
         $usuario_id = $_SESSION['usuario_id'];
         $rol = $_SESSION['rol'] ?? 'Administrador';
 
@@ -17,7 +25,7 @@ class InvoiceController extends Controller
                 'facturas' => $facturaModel->getByPaciente($usuario_id),
                 'pageTitle' => 'Mis Facturas - Velion'
             ];
-            $this->view('vista-pacientes/facturas/list', $data);
+            $this->view('patient-view/invoice/list', $data);
         } else {
             $filters = [
                 'paciente_id' => $_GET['paciente_id'] ?? null,
@@ -31,13 +39,21 @@ class InvoiceController extends Controller
                 'filters' => $filters,
                 'pageTitle' => 'Gestión de Facturas - Velion'
             ];
-            $this->view('facturas/list', $data);
+            $this->view('patient-view/invoice/list', $data);
         }
     }
 
+    /**
+     * Crea una nueva factura reglada (sistema Verifactu).
+     *
+     * Si la petición es POST, guarda la factura en la base de datos tras sanitizar y calcular impuestos.
+     * Si es GET, muestra el formulario de creación de factura.
+     *
+     * @return void
+     */
     public function create()
     {
-        $facturaModel = $this->model('Factura');
+        $facturaModel = $this->model('Invoice');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
                 'paciente_id'   => $_POST['paciente_id'],
@@ -59,13 +75,21 @@ class InvoiceController extends Controller
             $data = [
                 'pacientes' => $facturaModel->getPacientes()
             ];
-            $this->view('facturas/create', $data);
+            $this->view('invoice/create', $data);
         }
     }
 
+    /**
+     * Edita los detalles de una factura existente.
+     *
+     * En el flujo Verifactu, la edición se restringe a actualizar el estado del pago.
+     * Si es POST, realiza la actualización; si es GET, muestra el formulario de edición.
+     *
+     * @return void
+     */
     public function edit()
     {
-        $facturaModel = $this->model('Factura');
+        $facturaModel = $this->model('Invoice');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // En Verifactu, solo permitimos actualizar el estado del pago
             $id = $_POST['factura_id'];
@@ -86,7 +110,7 @@ class InvoiceController extends Controller
                 'factura' => $facturaModel->getById($id),
                 'pacientes' => $facturaModel->getPacientes()
             ];
-            $this->view('facturas/edit', $data);
+            $this->view('invoice/edit', $data);
         }
     }
 
@@ -95,7 +119,7 @@ class InvoiceController extends Controller
     //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //         $id = $_POST['factura_id'] ?? null;
     //         if ($id) {
-    //             $facturaModel = $this->model('Factura');
+    //             $facturaModel = $this->model('Invoice');
     //             $facturaModel->delete($id);
     //         }
     //     }
@@ -103,6 +127,11 @@ class InvoiceController extends Controller
     //     exit();
     // }
 
+    /**
+     * Genera y descarga el documento PDF de la factura (con código QR y datos Verifactu) usando FPDF.
+     *
+     * @return void
+     */
     public function pdf()
     {
         $id = $_GET['id'] ?? null;
@@ -111,7 +140,7 @@ class InvoiceController extends Controller
             exit();
         }
 
-        $facturaModel = $this->model('Factura');
+        $facturaModel = $this->model('Invoice');
         $factura = $facturaModel->getById($id);
         $clinica = $facturaModel->getClinica();
 

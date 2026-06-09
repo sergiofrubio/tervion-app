@@ -3,7 +3,7 @@ namespace App\Models;
 use App\Core\DataBase;
 use PDO;
 
-class MedicalHistory
+class MedicalReport
 {
     private $db;
 

@@ -3,11 +3,11 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use App\Models\Configuracion;
+use App\Models\Setting;
 use PDO;
 use PDOStatement;
 
-class ConfiguracionTest extends TestCase
+class SettingTest extends TestCase
 {
     private $dbMock;
     private $stmtMock;
@@ -33,8 +33,8 @@ class ConfiguracionTest extends TestCase
             ->with($this->stringContains('FROM horarios_terapeutas'))
             ->willReturn($this->stmtMock);
 
-        $configModel = new Configuracion($this->dbMock);
-        $result = $configModel->getHorariosFisios();
+        $settingModel = new Setting($this->dbMock);
+        $result = $settingModel->getHorariosFisios();
 
         $this->assertCount(1, $result);
     }
@@ -58,8 +58,8 @@ class ConfiguracionTest extends TestCase
             ->with($this->stringContains('INSERT INTO horarios_terapeutas'))
             ->willReturn($this->stmtMock);
 
-        $configModel = new Configuracion($this->dbMock);
-        $result = $configModel->saveHorario($data);
+        $settingModel = new Setting($this->dbMock);
+        $result = $settingModel->saveHorario($data);
 
         $this->assertTrue($result);
     }
@@ -81,8 +81,8 @@ class ConfiguracionTest extends TestCase
             ->with($this->stringContains('INSERT INTO especialidades'))
             ->willReturn($this->stmtMock);
 
-        $configModel = new Configuracion($this->dbMock);
-        $result = $configModel->saveEspecialidad($descripcion);
+        $settingModel = new Setting($this->dbMock);
+        $result = $settingModel->saveEspecialidad($descripcion);
 
         $this->assertTrue($result);
     }
@@ -104,8 +104,8 @@ class ConfiguracionTest extends TestCase
             ->with($this->stringContains('FROM clinicas LIMIT 1'))
             ->willReturn($this->stmtMock);
 
-        $configModel = new Configuracion($this->dbMock);
-        $result = $configModel->getClinica();
+        $settingModel = new Setting($this->dbMock);
+        $result = $settingModel->getClinica();
 
         $this->assertEquals($clinicaData, $result);
     }

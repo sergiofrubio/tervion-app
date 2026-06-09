@@ -37,33 +37,33 @@ $router->add('POST', '/citas/edit', 'AppointmentController@edit', true, $staffRo
 $router->add('GET', '/citas/edit', 'AppointmentController@edit', true, $staffRoles);
 $router->add('GET', '/citas/slots', 'AppointmentController@getSlots', true, $staffRoles);
 
-$router->add('GET', '/configuracion', 'ConfiguracionController@index', true, ['Administrador']);
-$router->add('GET', '/configuracion/horarios/create', 'ConfiguracionController@createHorario', true, ['Administrador']);
-$router->add('POST', '/configuracion/horarios/create', 'ConfiguracionController@createHorario', true, ['Administrador']);
-$router->add('GET', '/configuracion/horarios/edit', 'ConfiguracionController@editHorario', true, ['Administrador']);
-$router->add('POST', '/configuracion/horarios/edit', 'ConfiguracionController@editHorario', true, ['Administrador']);
+$router->add('GET', '/configuracion', 'SettingController@index', true, ['Administrador']);
+$router->add('GET', '/configuracion/horarios/create', 'SettingController@createHorario', true, ['Administrador']);
+$router->add('POST', '/configuracion/horarios/create', 'SettingController@createHorario', true, ['Administrador']);
+$router->add('GET', '/configuracion/horarios/edit', 'SettingController@editHorario', true, ['Administrador']);
+$router->add('POST', '/configuracion/horarios/edit', 'SettingController@editHorario', true, ['Administrador']);
 
-$router->add('GET', '/configuracion/ausencias/create', 'ConfiguracionController@createAusencia', true, ['Administrador']);
-$router->add('POST', '/configuracion/ausencias/create', 'ConfiguracionController@createAusencia', true, ['Administrador']);
-$router->add('GET', '/configuracion/ausencias/edit', 'ConfiguracionController@editAusencia', true, ['Administrador']);
-$router->add('POST', '/configuracion/ausencias/edit', 'ConfiguracionController@editAusencia', true, ['Administrador']);
+$router->add('GET', '/configuracion/ausencias/create', 'SettingController@createAusencia', true, ['Administrador']);
+$router->add('POST', '/configuracion/ausencias/create', 'SettingController@createAusencia', true, ['Administrador']);
+$router->add('GET', '/configuracion/ausencias/edit', 'SettingController@editAusencia', true, ['Administrador']);
+$router->add('POST', '/configuracion/ausencias/edit', 'SettingController@editAusencia', true, ['Administrador']);
 
-$router->add('GET', '/configuracion/especialidades/create', 'ConfiguracionController@createEspecialidad', true, ['Administrador']);
-$router->add('POST', '/configuracion/especialidades/create', 'ConfiguracionController@createEspecialidad', true, ['Administrador']);
-$router->add('GET', '/configuracion/especialidades/edit', 'ConfiguracionController@editEspecialidad', true, ['Administrador']);
-$router->add('POST', '/configuracion/especialidades/edit', 'ConfiguracionController@editEspecialidad', true, ['Administrador']);
+$router->add('GET', '/configuracion/especialidades/create', 'SettingController@createEspecialidad', true, ['Administrador']);
+$router->add('POST', '/configuracion/especialidades/create', 'SettingController@createEspecialidad', true, ['Administrador']);
+$router->add('GET', '/configuracion/especialidades/edit', 'SettingController@editEspecialidad', true, ['Administrador']);
+$router->add('POST', '/configuracion/especialidades/edit', 'SettingController@editEspecialidad', true, ['Administrador']);
 
-$router->add('GET', '/configuracion/bonos/create', 'ConfiguracionController@createBono', true, ['Administrador']);
-$router->add('POST', '/configuracion/bonos/create', 'ConfiguracionController@createBono', true, ['Administrador']);
-$router->add('GET', '/configuracion/bonos/edit', 'ConfiguracionController@editBono', true, ['Administrador']);
-$router->add('POST', '/configuracion/bonos/edit', 'ConfiguracionController@editBono', true, ['Administrador']);
+$router->add('GET', '/configuracion/bonos/create', 'SettingController@createBono', true, ['Administrador']);
+$router->add('POST', '/configuracion/bonos/create', 'SettingController@createBono', true, ['Administrador']);
+$router->add('GET', '/configuracion/bonos/edit', 'SettingController@editBono', true, ['Administrador']);
+$router->add('POST', '/configuracion/bonos/edit', 'SettingController@editBono', true, ['Administrador']);
 
-$router->add('POST', '/configuracion/clinica/update', 'ConfiguracionController@updateClinica', true, ['Administrador']);
+$router->add('POST', '/configuracion/clinica/update', 'SettingController@updateClinica', true, ['Administrador']);
 
-$router->add('GET', '/historial/create', 'MedicalHistoryController@create', true, $staffRoles);
-$router->add('POST', '/historial/create', 'MedicalHistoryController@create', true, $staffRoles);
-$router->add('GET', '/historial/detail', 'MedicalHistoryController@detail', true, $staffRoles);
-$router->add('GET', '/historial/pdf', 'MedicalHistoryController@pdf', true, $staffRoles);
+$router->add('GET', '/historial/create', 'MedicalReportController@create', true, $staffRoles);
+$router->add('POST', '/historial/create', 'MedicalReportController@create', true, $staffRoles);
+$router->add('GET', '/historial/detail', 'MedicalReportController@detail', true, $staffRoles);
+$router->add('GET', '/historial/pdf', 'MedicalReportController@pdf', true, $staffRoles);
 
 $router->add('GET', '/facturas', 'InvoiceController@list', true, $staffRoles);
 $router->add('GET', '/facturas/create', 'InvoiceController@create', true, $staffRoles);

@@ -3,26 +3,39 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 
-class ConfiguracionController extends Controller
+class SettingController extends Controller
 {
+    /**
+     * Muestra la página de configuración con listados de horarios, ausencias, especialidades, bonos e información de la clínica.
+     *
+     * @return void
+     */
     public function index()
     {
-        $configuracionModel = $this->model('Configuracion');
+        $settingModel = $this->model('Setting');
         
         $data = [
-            'horarios' => $configuracionModel->getHorariosFisios(),
-            'ausencias' => $configuracionModel->getAusenciasFisios(),
-            'especialidades' => $configuracionModel->getEspecialidades(),
-            'bonos' => $configuracionModel->getBonos(),
-            'clinica' => $configuracionModel->getClinica()
+            'horarios' => $settingModel->getHorariosFisios(),
+            'ausencias' => $settingModel->getAusenciasFisios(),
+            'especialidades' => $settingModel->getEspecialidades(),
+            'bonos' => $settingModel->getBonos(),
+            'clinica' => $settingModel->getClinica()
         ];
         
-        $this->view('configuracion/index', $data);
+        $this->view('setting/index', $data);
     }
 
+    /**
+     * Crea un nuevo horario de trabajo para un fisioterapeuta.
+     *
+     * Si la petición es POST, guarda el horario en la base de datos y redirige a configuración.
+     * Si es GET, muestra el formulario de creación de horarios con la lista de fisioterapeutas.
+     *
+     * @return void
+     */
     public function createHorario()
     {
-        $configuracionModel = $this->model('Configuracion');
+        $settingModel = $this->model('Setting');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
                 'fisioterapeuta_id' => $_POST['fisioterapeuta_id'],
@@ -30,19 +43,27 @@ class ConfiguracionController extends Controller
                 'hora_inicio' => $_POST['hora_inicio'],
                 'hora_fin' => $_POST['hora_fin']
             ];
-            if ($configuracionModel->saveHorario($data)) {
+            if ($settingModel->saveHorario($data)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
                 exit();
             }
         } else {
-            $data = ['fisios' => $configuracionModel->getFisios()];
-            $this->view('configuracion/horarios_form', $data);
+            $data = ['fisios' => $settingModel->getFisios()];
+            $this->view('setting/horarios_form', $data);
         }
     }
 
+    /**
+     * Crea una nueva ausencia de trabajo para un fisioterapeuta.
+     *
+     * Si la petición es POST, guarda la ausencia en la base de datos y redirige a configuración.
+     * Si es GET, muestra el formulario de creación de ausencias con la lista de fisioterapeutas.
+     *
+     * @return void
+     */
     public function createAusencia()
     {
-        $configuracionModel = $this->model('Configuracion');
+        $settingModel = $this->model('Setting');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
                 'fisioterapeuta_id' => $_POST['fisioterapeuta_id'],
@@ -50,33 +71,49 @@ class ConfiguracionController extends Controller
                 'fecha_fin' => $_POST['fecha_fin'],
                 'motivo' => htmlspecialchars($_POST['motivo'] ?? '', ENT_QUOTES, 'UTF-8')
             ];
-            if ($configuracionModel->saveAusencia($data)) {
+            if ($settingModel->saveAusencia($data)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
                 exit();
             }
         } else {
-            $data = ['fisios' => $configuracionModel->getFisios()];
-            $this->view('configuracion/ausencias_form', $data);
+            $data = ['fisios' => $settingModel->getFisios()];
+            $this->view('setting/ausencias_form', $data);
         }
     }
 
+    /**
+     * Crea una nueva especialidad médica.
+     *
+     * Si la petición es POST, guarda la especialidad en la base de datos y redirige a configuración.
+     * Si es GET, muestra el formulario de creación de especialidades.
+     *
+     * @return void
+     */
     public function createEspecialidad()
     {
-        $configuracionModel = $this->model('Configuracion');
+        $settingModel = $this->model('Setting');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $descripcion = htmlspecialchars($_POST['descripcion'] ?? '', ENT_QUOTES, 'UTF-8');
-            if ($configuracionModel->saveEspecialidad($descripcion)) {
+            if ($settingModel->saveEspecialidad($descripcion)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
                 exit();
             }
         } else {
-            $this->view('configuracion/especialidades_form');
+            $this->view('setting/especialidades_form');
         }
     }
 
+    /**
+     * Crea un nuevo bono de sesiones para la tienda.
+     *
+     * Si la petición es POST, guarda el bono en la base de datos y redirige a configuración.
+     * Si es GET, muestra el formulario de creación de bonos.
+     *
+     * @return void
+     */
     public function createBono()
     {
-        $configuracionModel = $this->model('Configuracion');
+        $settingModel = $this->model('Setting');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
                 'nombre' => htmlspecialchars($_POST['nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
@@ -84,19 +121,26 @@ class ConfiguracionController extends Controller
                 'precio' => (float)$_POST['precio'],
                 'estado' => $_POST['estado'] ?? 'Activo'
             ];
-            if ($configuracionModel->saveBono($data)) {
+            if ($settingModel->saveBono($data)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
                 exit();
             }
         } else {
-            $this->view('configuracion/bonos_form');
+            $this->view('setting/bonos_form');
         }
     }
 
+    /**
+     * Actualiza los datos de contacto y facturación de la clínica.
+     *
+     * Si la petición es POST, guarda los datos en la base de datos y redirige a configuración con un mensaje de éxito o error.
+     *
+     * @return void
+     */
     public function updateClinica()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $configuracionModel = $this->model('Configuracion');
+            $settingModel = $this->model('Setting');
             $data = [
                 'id_clinica' => $_POST['id_clinica'] ?? null,
                 'nombre_comercial' => htmlspecialchars($_POST['nombre_comercial'] ?? '', ENT_QUOTES, 'UTF-8'),
@@ -111,7 +155,7 @@ class ConfiguracionController extends Controller
                 'sitio_web' => htmlspecialchars($_POST['sitio_web'] ?? '', ENT_QUOTES, 'UTF-8')
             ];
             
-            if ($configuracionModel->saveClinica($data)) {
+            if ($settingModel->saveClinica($data)) {
                 $_SESSION['success_message'] = "Datos de la clínica guardados correctamente.";
             } else {
                 $_SESSION['error_message'] = "Error al guardar los datos de la clínica.";
@@ -121,9 +165,17 @@ class ConfiguracionController extends Controller
         }
     }
 
+    /**
+     * Edita un horario de trabajo existente de un fisioterapeuta.
+     *
+     * Si la petición es POST, actualiza el horario en la base de datos y redirige a configuración.
+     * Si es GET, muestra el formulario de edición con los detalles actuales del horario.
+     *
+     * @return void
+     */
     public function editHorario()
     {
-        $configuracionModel = $this->model('Configuracion');
+        $settingModel = $this->model('Setting');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['horario_id'];
             $data = [
@@ -132,23 +184,31 @@ class ConfiguracionController extends Controller
                 'hora_inicio' => $_POST['hora_inicio'],
                 'hora_fin' => $_POST['hora_fin']
             ];
-            if ($configuracionModel->updateHorario($id, $data)) {
+            if ($settingModel->updateHorario($id, $data)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
                 exit();
             }
         } else {
             $id = $_GET['id'];
             $data = [
-                'horario' => $configuracionModel->getHorarioById($id),
-                'fisios' => $configuracionModel->getFisios()
+                'horario' => $settingModel->getHorarioById($id),
+                'fisios' => $settingModel->getFisios()
             ];
-            $this->view('configuracion/horarios_form', $data);
+            $this->view('setting/horarios_form', $data);
         }
     }
 
+    /**
+     * Edita una ausencia existente de un fisioterapeuta.
+     *
+     * Si la petición es POST, actualiza la ausencia en la base de datos y redirige a configuración.
+     * Si es GET, muestra el formulario de edición con los detalles actuales de la ausencia.
+     *
+     * @return void
+     */
     public function editAusencia()
     {
-        $configuracionModel = $this->model('Configuracion');
+        $settingModel = $this->model('Setting');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['ausencia_id'];
             $data = [
@@ -157,40 +217,56 @@ class ConfiguracionController extends Controller
                 'fecha_fin' => $_POST['fecha_fin'],
                 'motivo' => htmlspecialchars($_POST['motivo'] ?? '', ENT_QUOTES, 'UTF-8')
             ];
-            if ($configuracionModel->updateAusencia($id, $data)) {
+            if ($settingModel->updateAusencia($id, $data)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
                 exit();
             }
         } else {
             $id = $_GET['id'];
             $data = [
-                'ausencia' => $configuracionModel->getAusenciaById($id),
-                'fisios' => $configuracionModel->getFisios()
+                'ausencia' => $settingModel->getAusenciaById($id),
+                'fisios' => $settingModel->getFisios()
             ];
-            $this->view('configuracion/ausencias_form', $data);
+            $this->view('setting/ausencias_form', $data);
         }
     }
 
+    /**
+     * Edita una especialidad médica existente.
+     *
+     * Si la petición es POST, actualiza la especialidad en la base de datos y redirige a configuración.
+     * Si es GET, muestra el formulario de edición con la descripción actual.
+     *
+     * @return void
+     */
     public function editEspecialidad()
     {
-        $configuracionModel = $this->model('Configuracion');
+        $settingModel = $this->model('Setting');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['especialidad_id'];
             $descripcion = htmlspecialchars($_POST['descripcion'] ?? '', ENT_QUOTES, 'UTF-8');
-            if ($configuracionModel->updateEspecialidad($id, $descripcion)) {
+            if ($settingModel->updateEspecialidad($id, $descripcion)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
                 exit();
             }
         } else {
             $id = $_GET['id'];
-            $data = ['especialidad' => $configuracionModel->getEspecialidadById($id)];
-            $this->view('configuracion/especialidades_form', $data);
+            $data = ['especialidad' => $settingModel->getEspecialidadById($id)];
+            $this->view('setting/especialidades_form', $data);
         }
     }
 
+    /**
+     * Edita un bono de sesiones existente.
+     *
+     * Si la petición es POST, actualiza los datos del bono en la base de datos y redirige a configuración.
+     * Si es GET, muestra el formulario de edición con los detalles actuales del bono.
+     *
+     * @return void
+     */
     public function editBono()
     {
-        $configuracionModel = $this->model('Configuracion');
+        $settingModel = $this->model('Setting');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['bono_id'];
             $data = [
@@ -199,14 +275,14 @@ class ConfiguracionController extends Controller
                 'precio' => (float)$_POST['precio'],
                 'estado' => $_POST['estado'] ?? 'Activo'
             ];
-            if ($configuracionModel->updateBono($id, $data)) {
+            if ($settingModel->updateBono($id, $data)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
                 exit();
             }
         } else {
             $id = $_GET['id'];
-            $data = ['bono' => $configuracionModel->getBonoById($id)];
-            $this->view('configuracion/bonos_form', $data);
+            $data = ['bono' => $settingModel->getBonoById($id)];
+            $this->view('setting/bonos_form', $data);
         }
     }
 }

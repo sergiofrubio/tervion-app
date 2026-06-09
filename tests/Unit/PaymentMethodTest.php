@@ -3,11 +3,11 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use App\Models\MetodoPago;
+use App\Models\PaymentMethod;
 use PDO;
 use PDOStatement;
 
-class MetodoPagoTest extends TestCase
+class PaymentMethodTest extends TestCase
 {
     private $dbMock;
     private $stmtMock;
@@ -37,7 +37,7 @@ class MetodoPagoTest extends TestCase
             ->with($this->stringContains('FROM metodos_pago WHERE usuario_id = :usuario_id'))
             ->willReturn($this->stmtMock);
 
-        $pagoModel = new MetodoPago($this->dbMock);
+        $pagoModel = new PaymentMethod($this->dbMock);
         $result = $pagoModel->getByUsuario('U123');
 
         $this->assertCount(1, $result);
@@ -68,7 +68,7 @@ class MetodoPagoTest extends TestCase
             ->method('execute')
             ->willReturn(true);
 
-        $pagoModel = new MetodoPago($this->dbMock);
+        $pagoModel = new PaymentMethod($this->dbMock);
         $result = $pagoModel->save($data);
 
         $this->assertTrue($result);
@@ -106,7 +106,7 @@ class MetodoPagoTest extends TestCase
                 [$this->stringContains('INSERT INTO metodos_pago'), $stmtInsert],
             ]);
 
-        $pagoModel = new MetodoPago($this->dbMock);
+        $pagoModel = new PaymentMethod($this->dbMock);
         $result = $pagoModel->save($data);
 
         $this->assertTrue($result);
@@ -132,7 +132,7 @@ class MetodoPagoTest extends TestCase
                 [$this->stringContains('UPDATE metodos_pago SET es_predeterminado = 1'), $stmtUpdate],
             ]);
 
-        $pagoModel = new MetodoPago($this->dbMock);
+        $pagoModel = new PaymentMethod($this->dbMock);
         $result = $pagoModel->setPredeterminado(1, 'U123');
 
         $this->assertTrue($result);

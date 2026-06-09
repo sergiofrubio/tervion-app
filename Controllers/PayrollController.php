@@ -8,6 +8,11 @@ class PayrollController extends Controller
     private $ss_trabajador_rate = 0.065; // 6.5% aprox (Contingencias, Desempleo, FP, MEI 2026)
     private $ss_empresa_rate = 0.33;    // 33% aprox
 
+    /**
+     * Muestra la lista de nóminas filtradas por mes y año.
+     *
+     * @return void
+     */
     public function list()
     {
         $payrollModel = $this->model('Payroll');
@@ -22,6 +27,11 @@ class PayrollController extends Controller
         $this->view('payroll/list', $data);
     }
 
+    /**
+     * Muestra la lista de todos los contratos laborales existentes.
+     *
+     * @return void
+     */
     public function listContracts()
     {
         $payrollModel = $this->model('Payroll');
@@ -29,6 +39,14 @@ class PayrollController extends Controller
         $this->view('payroll/contracts_list', $data);
     }
 
+    /**
+     * Crea un nuevo contrato de trabajo para un empleado.
+     *
+     * Si la petición es POST, guarda los datos del contrato y la información del empleado en la base de datos.
+     * Si es GET, muestra el formulario de creación de contratos con los usuarios disponibles.
+     *
+     * @return void
+     */
     public function createContract()
     {
         $payrollModel = $this->model('Payroll');
@@ -70,6 +88,14 @@ class PayrollController extends Controller
         }
     }
 
+    /**
+     * Edita un contrato de trabajo existente.
+     *
+     * Si la petición es POST, actualiza los datos del contrato y del empleado en la base de datos.
+     * Si es GET, muestra el formulario de edición cargado con la información actual del contrato.
+     *
+     * @return void
+     */
     public function editContract()
     {
         $payrollModel = $this->model('Payroll');
@@ -113,6 +139,14 @@ class PayrollController extends Controller
         }
     }
 
+    /**
+     * Genera una nueva nómina para un contrato y periodo determinados.
+     *
+     * Si la petición es POST, calcula los devengos, deducciones e importe líquido, guarda la nómina y redirige.
+     * Si es GET, muestra la vista para seleccionar el contrato y mes/año a generar.
+     *
+     * @return void
+     */
     public function generate()
     {
         $payrollModel = $this->model('Payroll');
@@ -163,6 +197,11 @@ class PayrollController extends Controller
         }
     }
 
+    /**
+     * Muestra el detalle completo de una nómina generada.
+     *
+     * @return void
+     */
     public function detail()
     {
         $payrollModel = $this->model('Payroll');
@@ -171,6 +210,11 @@ class PayrollController extends Controller
         $this->view('payroll/detail', $data);
     }
 
+    /**
+     * Genera y descarga un recibo individual de salarios (nómina) en formato PDF usando FPDF.
+     *
+     * @return void
+     */
     public function pdf()
     {
         $payrollModel = $this->model('Payroll');

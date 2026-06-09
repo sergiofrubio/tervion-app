@@ -3,11 +3,11 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use App\Models\Factura;
+use App\Models\Invoice;
 use PDO;
 use PDOStatement;
 
-class FacturaTest extends TestCase
+class InvoiceTest extends TestCase
 {
     private $dbMock;
     private $stmtMock;
@@ -37,7 +37,7 @@ class FacturaTest extends TestCase
             ->with($this->stringContains('SELECT f.*'))
             ->willReturn($this->stmtMock);
 
-        $facturaModel = new Factura($this->dbMock);
+        $facturaModel = new Invoice($this->dbMock);
         $result = $facturaModel->getAll(['estado' => 'Pagada']);
 
         $this->assertEquals($facturasData, $result);
@@ -68,7 +68,7 @@ class FacturaTest extends TestCase
             ->with($this->stringContains('WHERE f.factura_id = :id'))
             ->willReturn($this->stmtMock);
 
-        $facturaModel = new Factura($this->dbMock);
+        $facturaModel = new Invoice($this->dbMock);
         $result = $facturaModel->getById(1);
 
         $this->assertEquals($facturaData, $result);
@@ -123,7 +123,7 @@ class FacturaTest extends TestCase
                 [$this->stringContains('INSERT INTO facturas'), $stmtInsert]
             ]);
 
-        $facturaModel = new Factura($this->dbMock);
+        $facturaModel = new Invoice($this->dbMock);
         
         $inputData = [
             'paciente_id' => 'P123',

@@ -4,7 +4,7 @@ namespace App\Models;
 use App\Core\DataBase;
 use PDO;
 
-class Configuracion
+class Setting
 {
     private $db;
 

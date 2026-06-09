@@ -2,9 +2,8 @@
 namespace App\Models;
 
 use App\Core\DataBase;
-use PDO;
 
-class Tienda
+class Shop
 {
     private $db;
 

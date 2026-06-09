@@ -3,6 +3,13 @@ namespace App\Controllers;
 use App\Core\Controller;
 
 class HomeController extends Controller {
+    /**
+     * Muestra la página de inicio o el panel de control (dashboard) correspondiente según el rol de usuario.
+     *
+     * Redirige al inicio de sesión si no hay una sesión activa.
+     *
+     * @return void
+     */
     public function index() {
         // if (session_status() === PHP_SESSION_NONE) {
         //     session_start();
@@ -17,7 +24,7 @@ class HomeController extends Controller {
             $data = [
                 'nombrePaciente' => $_SESSION['nombre'] ?? 'Paciente'
             ];
-            $this->view('vista-pacientes/inicio', $data);
+            $this->view('patient-view/index', $data);
         } else {
             $dashboardModel = $this->model('Dashboard');
             
@@ -29,7 +36,7 @@ class HomeController extends Controller {
                 'recentPatients' => $dashboardModel->getRecentPatients(3)
             ];
 
-            $this->view('inicio', $data);
+            $this->view('index', $data);
         }
     }
 }

@@ -3,8 +3,16 @@ namespace App\Controllers;
 use App\Core\Controller;
 use Fpdf\Fpdf;
 
-class MedicalHistoryController extends Controller
+class MedicalReportController extends Controller
 {
+    /**
+     * Crea un nuevo informe médico para un paciente.
+     *
+     * Si la petición es POST, guarda los datos del informe en la base de datos y redirige al detalle del usuario.
+     * Si es GET, muestra la vista del formulario de creación con los datos del paciente.
+     *
+     * @return void
+     */
     public function create()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -12,7 +20,7 @@ class MedicalHistoryController extends Controller
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $historyModel = $this->model('MedicalHistory');
+            $historyModel = $this->model('MedicalReport');
             
             $data = [
                 'paciente_id' => $_POST['paciente_id'],
@@ -36,14 +44,19 @@ class MedicalHistoryController extends Controller
             $userModel = $this->model('User');
             $paciente = $userModel->getByusuario_id($paciente_id);
             
-            $this->view('historial/create', ['paciente' => $paciente]);
+            $this->view('medical-report/create', ['paciente' => $paciente]);
         }
     }
 
+    /**
+     * Muestra el detalle de un informe médico específico.
+     *
+     * @return void
+     */
     public function detail()
     {
         $id = $_GET['id'] ?? null;
-        $historyModel = $this->model('MedicalHistory');
+        $historyModel = $this->model('MedicalReport');
         $report = $historyModel->getById($id);
 
         if (!$report) {
@@ -51,13 +64,18 @@ class MedicalHistoryController extends Controller
             return;
         }
 
-        $this->view('historial/detail', ['report' => $report]);
+        $this->view('medical-report/detail', ['report' => $report]);
     }
 
+    /**
+     * Genera y descarga un documento PDF con los detalles del informe médico utilizando FPDF.
+     *
+     * @return void
+     */
     public function pdf()
     {
         $id = $_GET['id'] ?? null;
-        $historyModel = $this->model('MedicalHistory');
+        $historyModel = $this->model('MedicalReport');
         $report = $historyModel->getById($id);
 
         if (!$report) {

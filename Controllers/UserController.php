@@ -6,13 +6,26 @@ use Fpdf\Fpdf;
 
 class UserController extends Controller
 {
+    /**
+     * Muestra la lista general de usuarios de la aplicación.
+     *
+     * @return void
+     */
     public function list()
     {
         $user = $this->model('User');
         $data = ['users' => $user->getAll()];  // Empaquetamos los datos
-        $this->view('usuarios/list', $data);      // Pasamos los datos a la vista
+        $this->view('user/list', $data);      // Pasamos los datos a la vista
     }
 
+    /**
+     * Crea un nuevo usuario.
+     *
+     * Si la petición es POST, guarda los datos del usuario tras sanitizarlos y redirige al listado.
+     * Si es GET, muestra el formulario de creación de usuario junto con las especialidades disponibles.
+     *
+     * @return void
+     */
     public function create()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -44,10 +57,15 @@ class UserController extends Controller
         } else {
             $userModel = $this->model('User');
             $data = ['especialidades' => $userModel->getSpecialties()];
-            $this->view('usuarios/form', $data);
+            $this->view('user/form', $data);
         }
     }
 
+    /**
+     * Elimina un usuario por su identificador.
+     *
+     * @return void
+     */
     public function delete()
     {
         $user = $this->model('User');
@@ -61,6 +79,14 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Edita los detalles de un usuario existente.
+     *
+     * Si la petición es POST, actualiza los datos del usuario en la base de datos.
+     * Si es GET, muestra el formulario de edición con los datos del usuario y especialidades.
+     *
+     * @return void
+     */
     public function edit()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -99,10 +125,15 @@ class UserController extends Controller
                 'usuario' => $user->getByusuario_id($id),
                 'especialidades' => $user->getSpecialties()
             ];
-            $this->view('usuarios/form', $data);
+            $this->view('user/form', $data);
         }
     }
 
+    /**
+     * Muestra la vista detallada de un usuario (información personal, informes médicos y citas).
+     *
+     * @return void
+     */
     public function detail()
     {
         $id = $_GET['usuario_id'] ?? ($_GET['id'] ?? null);
@@ -129,9 +160,14 @@ class UserController extends Controller
             'citas' => $appointmentModel->getByPatient($id)
         ];
 
-        $this->view('usuarios/detail', $data);
+        $this->view('user/detail', $data);
     }
 
+    /**
+     * Genera y descarga un reporte en PDF (en orientación horizontal) con el listado general de usuarios usando FPDF.
+     *
+     * @return void
+     */
     public function createPDF()
     {
         $userModel = $this->model('User');
@@ -173,6 +209,13 @@ class UserController extends Controller
         $pdf->Output('D', 'Reporte_Usuarios_Velion.pdf');
     }
 
+    /**
+     * Busca usuarios por rol y un término de búsqueda (query) específico.
+     *
+     * Retorna la respuesta en formato JSON.
+     *
+     * @return void
+     */
     public function search()
     {
         $rol = $_GET['rol'] ?? '';

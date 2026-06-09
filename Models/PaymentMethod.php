@@ -3,7 +3,7 @@ namespace App\Models;
 use App\Core\DataBase;
 use PDO;
 
-class MetodoPago
+class PaymentMethod
 {
     private $db;
 

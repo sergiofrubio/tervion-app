@@ -2,15 +2,18 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Models\MetodoPago;
+use App\Models\PaymentMethod;
 
 class ShopController extends Controller
 {
+    /**
+     * Muestra la lista de bonos activos disponibles para compra en la tienda.
+     *
+     * @return void
+     */
     public function list()
-    {
-        $this->checkAuth();
-        
-        $configModel = $this->model('Configuracion');
+    {   
+        $configModel = $this->model('Setting');
         
         // Obtener bonos activos para mostrar en la tienda
         $bonos = $configModel->getBonos();
@@ -24,16 +27,21 @@ class ShopController extends Controller
             'bonosActivos' => $bonosActivos
         ];
 
-        $this->view('vista-pacientes/tienda/list', $data);
+        $this->view('patient-view/shop/list', $data);
     }
 
+    /**
+     * Muestra la página de pago para un bono específico.
+     *
+     * Si el bono no existe o no es válido, redirige de vuelta a la tienda.
+     *
+     * @return void
+     */
     public function pago()
-    {
-        $this->checkAuth();
-        
+    {       
         $idBono = $_GET['id'] ?? 0;
-        $metodoPagoModel = new MetodoPago();
-        $configModel = $this->model('Configuracion');
+        $metodoPagoModel = new PaymentMethod();
+        $configModel = $this->model('Setting');
         
         $metodosPago = $metodoPagoModel->getByUsuario($_SESSION['usuario_id']);
         $bono = $configModel->getBonoById($idBono);
@@ -49,15 +57,21 @@ class ShopController extends Controller
             'metodosPago' => $metodosPago
         ];
 
-        $this->view('vista-pacientes/tienda/pago', $data);
+        $this->view('patient-view/shop/pago', $data);
     }
 
+    /**
+     * Procesa la transacción de pago para la compra de un bono.
+     *
+     * Permite opcionalmente guardar el método de pago (tarjeta) en la base de datos
+     * y redirige al panel de citas con un mensaje de éxito.
+     *
+     * @return void
+     */
     public function procesarPago()
-    {
-        $this->checkAuth();
-        
+    {       
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $metodoPagoModel = new MetodoPago();
+            $metodoPagoModel = new PaymentMethod();
             $usuario_id = $_SESSION['usuario_id'];
             
             // Si el usuario marcó "Guardar tarjeta" y no está usando una guardada

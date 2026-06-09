@@ -5,19 +5,35 @@ use App\Core\Controller;
 class AppointmentController extends Controller
 {
 
+    /**
+     * Muestra la lista de citas para el usuario.
+     *
+     * Si el rol del usuario es Paciente, muestra solo sus citas.
+     * Si no, muestra todas las citas de la clínica.
+     *
+     * @return void
+     */
     public function list()
     {
         $appointment = $this->model('Appointment');
         
         if ($_SESSION['rol'] === 'Paciente') {
             $data = ['appointments' => $appointment->getByPatient($_SESSION['usuario_id'])];
-            $this->view('vista-pacientes/citas/list', $data);
+            $this->view('patient-view/appointment/list', $data);
         } else {
             $data = ['appointments' => $appointment->getAll()];
-            $this->view('citas/list', $data);
+            $this->view('appointment/list', $data);
         }
     }
 
+    /**
+     * Crea una nueva cita.
+     *
+     * Si la petición es POST, guarda los datos de la cita y redirige a la lista de citas.
+     * Si es GET, muestra el formulario de creación de citas con las especialidades disponibles.
+     *
+     * @return void
+     */
     public function create()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -30,7 +46,7 @@ class AppointmentController extends Controller
             $especialidad_id = $_POST['especialidad_id'] ?? '';
 
             if (!empty($paciente_id) && !empty($fisioterapeuta_id) && !empty($fecha_hora) && $appointment->save($paciente_id, $fisioterapeuta_id, $fecha_hora, $estado, $especialidad_id)) {
-                $redirect = ($_SESSION['rol'] === 'Paciente') ? '/vista-pacientes/citas' : '/citas';
+                $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
                 header('Location: ' . PROJECT_ROOT . $redirect . '?alert=success&message=Cita programada correctamente');
                 exit();
             } else {
@@ -43,13 +59,21 @@ class AppointmentController extends Controller
             ];
             
             if ($_SESSION['rol'] === 'Paciente') {
-                $this->view('vista-pacientes/citas/create', $data);
+                $this->view('patient-view/appointment/create', $data);
             } else {
-                $this->view('citas/form', $data);
+                $this->view('appointment/form', $data);
             }
         }
     }
 
+    /**
+     * Elimina una cita específica.
+     *
+     * Si el rol del usuario es Paciente, verifica primero que la cita le pertenezca.
+     * Redirige a la lista de citas tras completarse.
+     *
+     * @return void
+     */
     public function delete()
     {
         $appointment = $this->model('Appointment');
@@ -59,13 +83,13 @@ class AppointmentController extends Controller
         if ($_SESSION['rol'] === 'Paciente') {
             $cita = $appointment->getById($id);
             if (!$cita || $cita['paciente_id'] !== $_SESSION['usuario_id']) {
-                header('Location: ' . PROJECT_ROOT . '/vista-pacientes/citas?alert=danger&message=No tienes permiso para eliminar esta cita');
+                header('Location: ' . PROJECT_ROOT . '/patient-view/appointment?alert=danger&message=No tienes permiso para eliminar esta cita');
                 exit();
             }
         }
 
         if ($appointment->delete($id)) {
-            $redirect = ($_SESSION['rol'] === 'Paciente') ? '/vista-pacientes/citas' : '/citas';
+            $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
             header('Location: ' . PROJECT_ROOT . $redirect . '?alert=success&message=Cita eliminada correctamente');
             exit();
         } else {
@@ -73,6 +97,14 @@ class AppointmentController extends Controller
         }
     }
 
+    /**
+     * Edita una cita existente.
+     *
+     * Si la petición es POST, actualiza los datos de la cita tras validar los permisos (para pacientes).
+     * Si es GET, muestra el formulario de edición con los detalles actuales de la cita.
+     *
+     * @return void
+     */
     public function edit()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -83,7 +115,7 @@ class AppointmentController extends Controller
             if ($_SESSION['rol'] === 'Paciente') {
                 $citaExistente = $appointment->getById($id);
                 if (!$citaExistente || $citaExistente['paciente_id'] !== $_SESSION['usuario_id']) {
-                    header('Location: ' . PROJECT_ROOT . '/vista-pacientes/citas?alert=danger&message=No tienes permiso para editar esta cita');
+                    header('Location: ' . PROJECT_ROOT . '/patient-view/appointment?alert=danger&message=No tienes permiso para editar esta cita');
                     exit();
                 }
                 $paciente_id = $_SESSION['usuario_id'];
@@ -97,7 +129,7 @@ class AppointmentController extends Controller
             $especialidad_id = $_POST['especialidad_id'];
 
             if ($appointment->update($id, $paciente_id, $fisioterapeuta_id, $fecha_hora, $estado, $especialidad_id)) {
-                $redirect = ($_SESSION['rol'] === 'Paciente') ? '/vista-pacientes/citas' : '/citas';
+                $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
                 header('Location: ' . PROJECT_ROOT . $redirect . '?alert=success&message=Cita actualizada correctamente');
                 exit();
             } else {
@@ -115,15 +147,22 @@ class AppointmentController extends Controller
             if ($_SESSION['rol'] === 'Paciente') {
                 // Verificar propiedad
                 if (!$data['appointment'] || $data['appointment']['paciente_id'] !== $_SESSION['usuario_id']) {
-                    header('Location: ' . PROJECT_ROOT . '/vista-pacientes/citas?alert=danger&message=No tienes permiso para ver esta cita');
+                    header('Location: ' . PROJECT_ROOT . '/patient-view/appointment?alert=danger&message=No tienes permiso para ver esta cita');
                     exit();
                 }
-                $this->view('vista-pacientes/citas/edit', $data);
+                $this->view('patient-view/appointment/edit', $data);
             } else {
-                $this->view('citas/form', $data);
+                $this->view('appointment/form', $data);
             }
         }
     }
+    /**
+     * Obtiene los horarios (slots) disponibles para un fisioterapeuta en una fecha específica.
+     *
+     * Retorna la información formateada en JSON.
+     *
+     * @return void
+     */
     public function getSlots()
     {
         $fisio_id = $_GET['fisio_id'] ?? '';

@@ -3,11 +3,11 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use App\Models\MedicalHistory;
+use App\Models\MedicalReport;
 use PDO;
 use PDOStatement;
 
-class MedicalHistoryTest extends TestCase
+class MedicalReportTest extends TestCase
 {
     private $dbMock;
     private $stmtMock;
@@ -44,8 +44,8 @@ class MedicalHistoryTest extends TestCase
             ->with($this->stringContains('SELECT hm.*'))
             ->willReturn($this->stmtMock);
 
-        $historyModel = new MedicalHistory($this->dbMock);
-        $result = $historyModel->getById(1);
+        $reportModel = new MedicalReport($this->dbMock);
+        $result = $reportModel->getById(1);
 
         $this->assertEquals($historyData, $result);
     }
@@ -75,8 +75,8 @@ class MedicalHistoryTest extends TestCase
             ->with($this->stringContains('INSERT INTO historiales_medicos'))
             ->willReturn($this->stmtMock);
 
-        $historyModel = new MedicalHistory($this->dbMock);
-        $result = $historyModel->save($data);
+        $reportModel = new MedicalReport($this->dbMock);
+        $result = $reportModel->save($data);
 
         $this->assertTrue($result);
     }
@@ -105,8 +105,8 @@ class MedicalHistoryTest extends TestCase
             ->with($this->stringContains('WHERE hm.paciente_id = :paciente_id'))
             ->willReturn($this->stmtMock);
 
-        $historyModel = new MedicalHistory($this->dbMock);
-        $result = $historyModel->getByPaciente($paciente_id);
+        $reportModel = new MedicalReport($this->dbMock);
+        $result = $reportModel->getByPaciente($paciente_id);
 
         $this->assertEquals($records, $result);
     }

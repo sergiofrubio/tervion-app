@@ -1,6 +1,6 @@
 /vendor/
 .settings/
-/data/
+/data/mailpit*
 .buildpath
 .project
 .idea/

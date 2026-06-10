@@ -18,7 +18,7 @@ services:
       MYSQL_DATABASE: velion
     volumes:
       - db_data:/var/lib/mysql
-      - ./Core/velion.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./data/velion.sql:/docker-entrypoint-initdb.d/init.sql
 
   # redis:
   #   image: redis:alpine

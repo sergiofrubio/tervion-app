@@ -25,6 +25,9 @@ namespace Tests\Unit {
             if (!defined('PROJECT_ROOT')) {
                 define('PROJECT_ROOT', '');
             }
+            if (!defined('TESTING')) {
+                define('TESTING', true);
+            }
             MockController::$called = false;
         }
 
@@ -83,7 +86,7 @@ namespace Tests\Unit {
             $router->handleRequest();
             $output = ob_get_clean();
 
-            $this->assertStringContainsString("Page not found.", $output);
+            $this->assertStringContainsString("Página no encontrada", $output);
         }
     }
 }

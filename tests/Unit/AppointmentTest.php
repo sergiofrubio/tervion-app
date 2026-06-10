@@ -128,10 +128,15 @@ class AppointmentTest extends TestCase
 
         $this->dbMock->expects($this->exactly(2))
             ->method('prepare')
-            ->willReturnMap([
-                [$this->stringContains('FROM horarios_terapeutas'), $stmtHorarios],
-                [$this->stringContains('FROM ausencias_terapeutas'), $stmtAusencias],
-            ]);
+            ->willReturnCallback(function($query) use ($stmtHorarios, $stmtAusencias) {
+                if (strpos($query, 'horarios_terapeutas') !== false) {
+                    return $stmtHorarios;
+                }
+                if (strpos($query, 'ausencias_terapeutas') !== false) {
+                    return $stmtAusencias;
+                }
+                return null;
+            });
 
         $appointmentModel = new Appointment($this->dbMock);
         $result = $appointmentModel->getAvailableSlots('F456', '2026-05-25');
@@ -162,11 +167,18 @@ class AppointmentTest extends TestCase
 
         $this->dbMock->expects($this->exactly(3))
             ->method('prepare')
-            ->willReturnMap([
-                [$this->stringContains('FROM horarios_terapeutas'), $stmtHorarios],
-                [$this->stringContains('FROM ausencias_terapeutas'), $stmtAusencias],
-                [$this->stringContains('FROM citas'), $stmtCitas],
-            ]);
+            ->willReturnCallback(function($query) use ($stmtHorarios, $stmtAusencias, $stmtCitas) {
+                if (strpos($query, 'horarios_terapeutas') !== false) {
+                    return $stmtHorarios;
+                }
+                if (strpos($query, 'ausencias_terapeutas') !== false) {
+                    return $stmtAusencias;
+                }
+                if (strpos($query, 'citas') !== false) {
+                    return $stmtCitas;
+                }
+                return null;
+            });
 
         $appointmentModel = new Appointment($this->dbMock);
         $result = $appointmentModel->getAvailableSlots('F456', '2026-05-25', 60);

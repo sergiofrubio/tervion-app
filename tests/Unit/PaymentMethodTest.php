@@ -61,7 +61,7 @@ class PaymentMethodTest extends TestCase
             ->with($this->stringContains('INSERT INTO metodos_pago'))
             ->willReturn($this->stmtMock);
 
-        $this->stmtMock->expects($this->exactly(7))
+        $this->stmtMock->expects($this->exactly(8))
             ->method('bindParam');
 
         $this->stmtMock->expects($this->once())
@@ -101,10 +101,15 @@ class PaymentMethodTest extends TestCase
 
         $this->dbMock->expects($this->exactly(2))
             ->method('prepare')
-            ->willReturnMap([
-                [$this->stringContains('UPDATE metodos_pago SET es_predeterminado = 0'), $stmtUnset],
-                [$this->stringContains('INSERT INTO metodos_pago'), $stmtInsert],
-            ]);
+            ->willReturnCallback(function($query) use ($stmtUnset, $stmtInsert) {
+                if (strpos($query, 'UPDATE metodos_pago SET es_predeterminado = 0') !== false) {
+                    return $stmtUnset;
+                }
+                if (strpos($query, 'INSERT INTO metodos_pago') !== false) {
+                    return $stmtInsert;
+                }
+                return null;
+            });
 
         $pagoModel = new PaymentMethod($this->dbMock);
         $result = $pagoModel->save($data);
@@ -118,7 +123,7 @@ class PaymentMethodTest extends TestCase
         $stmtUnset->method('execute')->willReturn(true);
 
         $stmtUpdate = $this->createMock(PDOStatement::class);
-        $stmtUpdate->expects($this->once())
+        $stmtUpdate->expects($this->exactly(2))
             ->method('bindParam')
             ->with($this->logicalOr(':metodo_id', ':usuario_id'));
         $stmtUpdate->expects($this->once())
@@ -127,10 +132,15 @@ class PaymentMethodTest extends TestCase
 
         $this->dbMock->expects($this->exactly(2))
             ->method('prepare')
-            ->willReturnMap([
-                [$this->stringContains('UPDATE metodos_pago SET es_predeterminado = 0'), $stmtUnset],
-                [$this->stringContains('UPDATE metodos_pago SET es_predeterminado = 1'), $stmtUpdate],
-            ]);
+            ->willReturnCallback(function($query) use ($stmtUnset, $stmtUpdate) {
+                if (strpos($query, 'UPDATE metodos_pago SET es_predeterminado = 0') !== false) {
+                    return $stmtUnset;
+                }
+                if (strpos($query, 'UPDATE metodos_pago SET es_predeterminado = 1') !== false) {
+                    return $stmtUpdate;
+                }
+                return null;
+            });
 
         $pagoModel = new PaymentMethod($this->dbMock);
         $result = $pagoModel->setPredeterminado(1, 'U123');

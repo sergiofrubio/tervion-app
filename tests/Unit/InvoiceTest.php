@@ -118,10 +118,15 @@ class InvoiceTest extends TestCase
 
         $this->dbMock->expects($this->exactly(2))
             ->method('prepare')
-            ->willReturnMap([
-                [$this->stringContains('SELECT * FROM facturas WHERE serie = :serie'), $stmtUltima],
-                [$this->stringContains('INSERT INTO facturas'), $stmtInsert]
-            ]);
+            ->willReturnCallback(function($query) use ($stmtUltima, $stmtInsert) {
+                if (strpos($query, 'SELECT * FROM facturas WHERE serie = :serie') !== false) {
+                    return $stmtUltima;
+                }
+                if (strpos($query, 'INSERT INTO facturas') !== false) {
+                    return $stmtInsert;
+                }
+                return null;
+            });
 
         $facturaModel = new Invoice($this->dbMock);
         

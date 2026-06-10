@@ -91,6 +91,18 @@ $router->add('POST', '/nominas/generate', 'PayrollController@generate', true, ['
 $router->add('GET', '/nominas/detail', 'PayrollController@detail', true, ['Administrador']);
 $router->add('GET', '/nominas/pdf', 'PayrollController@pdf', true, ['Administrador']);
 
+// Rutas de Contabilidad y Obligaciones Fiscales
+$router->add('GET', '/contabilidad', 'AccountingController@dashboard', true, ['Administrador']);
+$router->add('GET', '/contabilidad/gastos', 'AccountingController@expenses', true, ['Administrador']);
+$router->add('POST', '/contabilidad/gastos', 'AccountingController@expenses', true, ['Administrador']);
+$router->add('POST', '/contabilidad/gastos/delete', 'AccountingController@deleteExpense', true, ['Administrador']);
+$router->add('GET', '/contabilidad/impuestos', 'AccountingController@taxes', true, ['Administrador']);
+$router->add('GET', '/contabilidad/exportar/emitidas', 'AccountingController@exportLibroEmitidas', true, ['Administrador']);
+$router->add('GET', '/contabilidad/exportar/recibidas', 'AccountingController@exportLibroRecibidas', true, ['Administrador']);
+$router->add('POST', '/contabilidad/gastos/auto-import', 'AccountingController@autoImport', true, ['Administrador']);
+$router->add('POST', '/contabilidad/banco/importar', 'AccountingController@importBankFeed', true, ['Administrador']);
+$router->add('GET', '/contabilidad/cron/trimestral', 'AccountingController@runQuarterlyCron', true, ['Administrador']);
+
 // Rutas para Pacientes
 $router->add('GET', '/vista-pacientes/citas', 'AppointmentController@list', true, ['Paciente']);
 $router->add('GET', '/vista-pacientes/citas/nueva', 'AppointmentController@create', true, ['Paciente']);

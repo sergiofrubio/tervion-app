@@ -38,6 +38,9 @@ class Router
             if ($route['auth']) {
                 if (!isset($_SESSION['usuario_id'])) {
                     require_once __DIR__ . '/../Views/404.php';
+                    if (defined('TESTING') && TESTING) {
+                        return;
+                    }
                     exit();
                 }
             }
@@ -47,6 +50,9 @@ class Router
                 $userRole = $_SESSION['rol'] ?? '';
                 if (!in_array($userRole, $route['roles'])) {
                     require_once __DIR__ . '/../Views/404.php';
+                    if (defined('TESTING') && TESTING) {
+                        return;
+                    }
                     exit();
                 }
             }
@@ -55,6 +61,9 @@ class Router
         }
 
         require_once __DIR__ . '/../Views/404.php';
+        if (defined('TESTING') && TESTING) {
+            return;
+        }
         exit();
     }
 }

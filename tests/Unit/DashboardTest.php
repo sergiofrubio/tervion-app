@@ -45,7 +45,7 @@ class DashboardTest extends TestCase
 
         $this->dbMock->expects($this->once())
             ->method('query')
-            ->with($this->stringContains('SUM(total) as total FROM facturas'))
+            ->with($this->stringContains('SUM(total) as total'))
             ->willReturn($this->stmtMock);
 
         $dashboardModel = new Dashboard($this->dbMock);

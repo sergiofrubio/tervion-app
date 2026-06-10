@@ -53,8 +53,34 @@ class PayrollController extends Controller
         $userModel = $this->model('User');
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $usuario_id = htmlspecialchars($_POST['usuario_id'] ?? '', ENT_QUOTES, 'UTF-8');
+            
+            $workerData = [
+                'usuario_id' => $usuario_id,
+                'nombre' => htmlspecialchars($_POST['nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'apellidos' => htmlspecialchars($_POST['apellidos'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'telefono' => htmlspecialchars($_POST['telefono'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'fecha_nacimiento' => $_POST['fecha_nacimiento'] ?? '',
+                'direccion' => htmlspecialchars($_POST['direccion'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'provincia' => htmlspecialchars($_POST['provincia'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'municipio' => htmlspecialchars($_POST['municipio'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'cp' => htmlspecialchars($_POST['cp'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'email' => htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'pass' => password_hash($_POST['pass'] ?? '123456', PASSWORD_DEFAULT),
+                'rol' => $_POST['rol'] ?? 'Fisioterapeuta',
+                'genero' => $_POST['genero'] ?? 'Otro',
+                'nss' => htmlspecialchars($_POST['nss'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'iban' => htmlspecialchars($_POST['iban'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'grupo_cotizacion' => !empty($_POST['grupo_cotizacion']) ? (int)$_POST['grupo_cotizacion'] : 1,
+                'especialidad' => !empty($_POST['especialidad']) ? (int)$_POST['especialidad'] : null
+            ];
+
+            if (!$userModel->save($workerData)) {
+                die("Error al registrar el nuevo trabajador.");
+            }
+
             $data = [
-                'usuario_id' => $_POST['usuario_id'],
+                'usuario_id' => $usuario_id,
                 'fecha_inicio' => $_POST['fecha_inicio'],
                 'fecha_fin' => !empty($_POST['fecha_fin']) ? $_POST['fecha_fin'] : null,
                 'tipo_contrato' => $_POST['tipo_contrato'],
@@ -65,25 +91,14 @@ class PayrollController extends Controller
                 'activo' => isset($_POST['activo']) ? 1 : 0
             ];
 
-            // Guardar datos adicionales del empleado (NSS, IBAN)
-            $payrollModel->saveEmployee([
-                'usuario_id' => $_POST['usuario_id'],
-                'nss' => $_POST['nss'],
-                'iban' => $_POST['iban'],
-                'grupo_cotizacion' => $_POST['grupo_cotizacion'] ?? 1
-            ]);
-
             if ($payrollModel->saveContract($data)) {
                 header('Location: ' . PROJECT_ROOT . '/nominas/contratos');
                 exit();
             }
         } else {
             $data = [
-                'usuarios' => $userModel->getByRol('Fisioterapeuta'), // Asumimos que los contratos son para el staff
-                'admins' => $userModel->getByRol('Administrador')
+                'especialidades' => $userModel->getSpecialties()
             ];
-            // Combinar usuarios para selección
-            $data['empleables'] = array_merge($data['usuarios'], $data['admins']);
             $this->view('payroll/contract_form', $data);
         }
     }

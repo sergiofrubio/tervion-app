@@ -18,11 +18,13 @@ class Login
                         CASE 
                             WHEN p.usuario_id IS NOT NULL THEN 'Paciente'
                             WHEN f.usuario_id IS NOT NULL THEN 'Fisioterapeuta'
+                            WHEN s.usuario_id IS NOT NULL THEN 'Secretario'
                             ELSE 'Administrador' 
                         END as rol
                   FROM usuarios u 
                   LEFT JOIN pacientes p ON u.usuario_id = p.usuario_id 
                   LEFT JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id 
+                  LEFT JOIN secretarios s ON u.usuario_id = s.usuario_id
                   WHERE u.email = :email";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);

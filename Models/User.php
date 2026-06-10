@@ -18,12 +18,16 @@ class User
                         CASE 
                             WHEN p.usuario_id IS NOT NULL THEN 'Paciente'
                             WHEN f.usuario_id IS NOT NULL THEN 'Fisioterapeuta'
+                            WHEN s.usuario_id IS NOT NULL THEN 'Secretario'
                             ELSE 'Administrador' 
                         END as rol,
-                        f.especialidad_id as especialidad
+                        f.especialidad_id as especialidad,
+                        e.nss, e.iban, e.grupo_cotizacion
                   FROM usuarios u 
                   LEFT JOIN pacientes p ON u.usuario_id = p.usuario_id 
                   LEFT JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id 
+                  LEFT JOIN secretarios s ON u.usuario_id = s.usuario_id
+                  LEFT JOIN empleados e ON u.usuario_id = e.usuario_id
                   WHERE u.usuario_id = :usuario_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':usuario_id', $usuario_id);
@@ -58,12 +62,28 @@ class User
                 $s2 = $this->db->prepare($q2);
                 $s2->bindParam(':usuario_id', $data['usuario_id']);
                 $s2->execute();
-            } elseif ($data['rol'] === 'Fisioterapeuta') {
-                $q2 = "INSERT INTO fisioterapeutas (usuario_id, especialidad_id) VALUES (:usuario_id, :especialidad_id)";
-                $s2 = $this->db->prepare($q2);
-                $s2->bindParam(':usuario_id', $data['usuario_id']);
-                $s2->bindParam(':especialidad_id', $data['especialidad'], PDO::PARAM_INT);
-                $s2->execute();
+            } else {
+                // Es un trabajador (Fisioterapeuta, Secretario, Administrador)
+                $qEmp = "INSERT INTO empleados (usuario_id, nss, iban, grupo_cotizacion) VALUES (:usuario_id, :nss, :iban, :grupo_cotizacion)";
+                $sEmp = $this->db->prepare($qEmp);
+                $sEmp->bindParam(':usuario_id', $data['usuario_id']);
+                $sEmp->bindParam(':nss', $data['nss']);
+                $sEmp->bindParam(':iban', $data['iban']);
+                $sEmp->bindValue(':grupo_cotizacion', $data['grupo_cotizacion'] ?? 1, PDO::PARAM_INT);
+                $sEmp->execute();
+
+                if ($data['rol'] === 'Fisioterapeuta') {
+                    $q2 = "INSERT INTO fisioterapeutas (usuario_id, especialidad_id) VALUES (:usuario_id, :especialidad_id)";
+                    $s2 = $this->db->prepare($q2);
+                    $s2->bindParam(':usuario_id', $data['usuario_id']);
+                    $s2->bindParam(':especialidad_id', $data['especialidad'], PDO::PARAM_INT);
+                    $s2->execute();
+                } elseif ($data['rol'] === 'Secretario') {
+                    $q2 = "INSERT INTO secretarios (usuario_id) VALUES (:usuario_id)";
+                    $s2 = $this->db->prepare($q2);
+                    $s2->bindParam(':usuario_id', $data['usuario_id']);
+                    $s2->execute();
+                }
             }
 
             $this->db->commit();
@@ -80,11 +100,13 @@ class User
                         CASE 
                             WHEN p.usuario_id IS NOT NULL THEN 'Paciente'
                             WHEN f.usuario_id IS NOT NULL THEN 'Fisioterapeuta'
+                            WHEN s.usuario_id IS NOT NULL THEN 'Secretario'
                             ELSE 'Administrador' 
                         END as rol
                   FROM usuarios u 
                   LEFT JOIN pacientes p ON u.usuario_id = p.usuario_id 
-                  LEFT JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id";
+                  LEFT JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id
+                  LEFT JOIN secretarios s ON u.usuario_id = s.usuario_id";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -95,10 +117,38 @@ class User
         if ($rol === 'Paciente') {
             $query = "SELECT u.* FROM usuarios u JOIN pacientes p ON u.usuario_id = p.usuario_id";
         } elseif ($rol === 'Fisioterapeuta') {
-            $query = "SELECT u.* FROM usuarios u JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id";
+            $query = "SELECT u.*, f.especialidad_id FROM usuarios u JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id";
+        } elseif ($rol === 'Secretario') {
+            $query = "SELECT u.* FROM usuarios u JOIN secretarios s ON u.usuario_id = s.usuario_id";
         } else {
-            return []; // O manejar administradores
+            // Admin: no record in pacientes, fisioterapeutas, or secretarios
+            $query = "SELECT u.* FROM usuarios u 
+                      LEFT JOIN pacientes p ON u.usuario_id = p.usuario_id 
+                      LEFT JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id
+                      LEFT JOIN secretarios s ON u.usuario_id = s.usuario_id
+                      WHERE p.usuario_id IS NULL AND f.usuario_id IS NULL AND s.usuario_id IS NULL";
         }
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getWorkers()
+    {
+        // Todos los usuarios excepto pacientes
+        $query = "SELECT u.*, 
+                        CASE 
+                            WHEN f.usuario_id IS NOT NULL THEN 'Fisioterapeuta'
+                            WHEN s.usuario_id IS NOT NULL THEN 'Secretario'
+                            ELSE 'Administrador' 
+                        END as rol,
+                        e.nss, e.iban, e.grupo_cotizacion
+                  FROM usuarios u
+                  LEFT JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id
+                  LEFT JOIN secretarios s ON u.usuario_id = s.usuario_id
+                  LEFT JOIN pacientes p ON u.usuario_id = p.usuario_id
+                  LEFT JOIN empleados e ON u.usuario_id = e.usuario_id
+                  WHERE p.usuario_id IS NULL";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -109,8 +159,30 @@ class User
         $table = '';
         if ($rol === 'Paciente') $table = 'pacientes';
         elseif ($rol === 'Fisioterapeuta') $table = 'fisioterapeutas';
+        elseif ($rol === 'Secretario') $table = 'secretarios';
         
-        if (empty($table)) return [];
+        if (empty($table)) {
+            if ($rol === 'Administrador') {
+                $sql = "SELECT u.usuario_id, u.nombre, u.apellidos 
+                        FROM usuarios u 
+                        LEFT JOIN pacientes p ON u.usuario_id = p.usuario_id 
+                        LEFT JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id
+                        LEFT JOIN secretarios s ON u.usuario_id = s.usuario_id
+                        WHERE p.usuario_id IS NULL AND f.usuario_id IS NULL AND s.usuario_id IS NULL";
+                if (!empty($query)) {
+                    $sql .= " AND (u.nombre LIKE :q OR u.apellidos LIKE :q OR u.usuario_id LIKE :q)";
+                }
+                $sql .= " ORDER BY u.nombre ASC LIMIT 10";
+                $stmt = $this->db->prepare($sql);
+                if (!empty($query)) {
+                    $searchTerm = "%$query%";
+                    $stmt->bindParam(':q', $searchTerm);
+                }
+                $stmt->execute();
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            return [];
+        }
 
         $sql = "SELECT u.usuario_id, u.nombre, u.apellidos 
                 FROM usuarios u 
@@ -140,7 +212,6 @@ class User
 
     public function delete($usuario_id)
     {
-        // On cascade delete should handle the other tables if FKs are set (they are)
         $query = "DELETE FROM usuarios WHERE usuario_id = :usuario_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':usuario_id', $usuario_id);
@@ -188,22 +259,43 @@ class User
             }
             $stmt->execute();
 
-            // Handle Rol change or update
-            // First remove from existing role tables (safe because we only have 2 roles)
+            // Eliminar de tablas de rol específicas
             $this->db->prepare("DELETE FROM pacientes WHERE usuario_id = :id")->execute([':id' => $usuario_id]);
             $this->db->prepare("DELETE FROM fisioterapeutas WHERE usuario_id = :id")->execute([':id' => $usuario_id]);
+            $this->db->prepare("DELETE FROM secretarios WHERE usuario_id = :id")->execute([':id' => $usuario_id]);
 
             if ($data['rol'] === 'Paciente') {
+                // Eliminar de empleados si existía
+                $this->db->prepare("DELETE FROM empleados WHERE usuario_id = :id")->execute([':id' => $usuario_id]);
+
                 $q2 = "INSERT INTO pacientes (usuario_id) VALUES (:usuario_id)";
                 $s2 = $this->db->prepare($q2);
                 $s2->bindParam(':usuario_id', $usuario_id);
                 $s2->execute();
-            } elseif ($data['rol'] === 'Fisioterapeuta') {
-                $q2 = "INSERT INTO fisioterapeutas (usuario_id, especialidad_id) VALUES (:usuario_id, :especialidad_id)";
-                $s2 = $this->db->prepare($q2);
-                $s2->bindParam(':usuario_id', $usuario_id);
-                $s2->bindParam(':especialidad_id', $data['especialidad'], PDO::PARAM_INT);
-                $s2->execute();
+            } else {
+                // Es un trabajador (Fisioterapeuta, Secretario, Administrador)
+                $qEmp = "INSERT INTO empleados (usuario_id, nss, iban, grupo_cotizacion) 
+                         VALUES (:usuario_id, :nss, :iban, :grupo_cotizacion)
+                         ON DUPLICATE KEY UPDATE nss = :nss, iban = :iban, grupo_cotizacion = :grupo_cotizacion";
+                $sEmp = $this->db->prepare($qEmp);
+                $sEmp->bindParam(':usuario_id', $usuario_id);
+                $sEmp->bindParam(':nss', $data['nss']);
+                $sEmp->bindParam(':iban', $data['iban']);
+                $sEmp->bindValue(':grupo_cotizacion', $data['grupo_cotizacion'] ?? 1, PDO::PARAM_INT);
+                $sEmp->execute();
+
+                if ($data['rol'] === 'Fisioterapeuta') {
+                    $q2 = "INSERT INTO fisioterapeutas (usuario_id, especialidad_id) VALUES (:usuario_id, :especialidad_id)";
+                    $s2 = $this->db->prepare($q2);
+                    $s2->bindParam(':usuario_id', $usuario_id);
+                    $s2->bindParam(':especialidad_id', $data['especialidad'], PDO::PARAM_INT);
+                    $s2->execute();
+                } elseif ($data['rol'] === 'Secretario') {
+                    $q2 = "INSERT INTO secretarios (usuario_id) VALUES (:usuario_id)";
+                    $s2 = $this->db->prepare($q2);
+                    $s2->bindParam(':usuario_id', $usuario_id);
+                    $s2->execute();
+                }
             }
 
             $this->db->commit();
@@ -213,4 +305,4 @@ class User
             return false;
         }
     }
-}
+}

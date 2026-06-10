@@ -1,7 +1,7 @@
 <?php
 $u = $usuario ?? [];
 $isEdit = !empty($u);
-$pageTitle = $isEdit ? "Editar Usuario" : "Agregar Usuario";
+$pageTitle = $isEdit ? "Editar Paciente" : "Registrar Paciente";
 include TEMPLATE_DIR . 'header.php';
 ?>
 
@@ -9,10 +9,10 @@ include TEMPLATE_DIR . 'header.php';
     <!-- Header -->
     <div class="mb-8 flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900 tracking-tight"><?= $isEdit ? "Editar Usuario" : "Nuevo Usuario" ?></h1>
-            <p class="mt-1 text-sm text-gray-500"><?= $isEdit ? "Modifica la información del usuario seleccionado." : "Completa la información para registrar un nuevo usuario en el sistema." ?></p>
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight"><?= $isEdit ? "Editar Paciente" : "Nuevo Paciente" ?></h1>
+            <p class="mt-1 text-sm text-gray-500"><?= $isEdit ? "Modifica la información personal del paciente." : "Completa los datos para registrar un nuevo paciente en la clínica." ?></p>
         </div>
-        <a href="<?= PROJECT_ROOT ?>/usuarios" class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-primary-600 transition-colors">
+        <a href="<?= PROJECT_ROOT ?>/pacientes" class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-primary-600 transition-colors">
             <i class="bi bi-arrow-left"></i>
             Volver al listado
         </a>
@@ -20,9 +20,9 @@ include TEMPLATE_DIR . 'header.php';
 
     <!-- Form Card -->
     <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-        <form action="<?= PROJECT_ROOT ?>/usuarios/<?= $isEdit ? 'edit' : 'create' ?>" method="POST" class="p-8">
+        <form action="<?= PROJECT_ROOT ?>/pacientes/<?= $isEdit ? 'edit' : 'create' ?>" method="POST" class="p-8">
             <?php if ($isEdit): ?>
-                <input type="hidden" name="original_id" value="<?= $u['usuario_id'] ?>">
+                <input type="hidden" name="usuario_id" value="<?= $u['usuario_id'] ?>">
             <?php endif; ?>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -38,20 +38,20 @@ include TEMPLATE_DIR . 'header.php';
                     <label for="usuario_id" class="block text-sm font-medium text-gray-700">DNI / NIE / ID</label>
                     <input type="text" name="usuario_id" id="usuario_id" required maxlength="9"
                         value="<?= htmlspecialchars($u['usuario_id'] ?? '') ?>"
-                        class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-3 transition-all"
+                        <?= $isEdit ? 'disabled class="block w-full rounded-xl border-gray-200 bg-gray-50 text-gray-500 sm:text-sm border p-3 cursor-not-allowed"' : 'class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-3 transition-all"' ?>
                         placeholder="Ej. 12345678X">
                     <?php if ($isEdit): ?>
-                        <p class="text-xs text-amber-600 font-medium"><i class="bi bi-exclamation-triangle"></i> Si cambias el ID, asegúrate de que sea correcto.</p>
+                        <input type="hidden" name="usuario_id" value="<?= $u['usuario_id'] ?>">
                     <?php endif; ?>
                 </div>
 
                 <div class="space-y-2">
-                    <label for="rol" class="block text-sm font-medium text-gray-700">Rol de Usuario</label>
-                    <select name="rol" id="rol" required
+                    <label for="genero" class="block text-sm font-medium text-gray-700">Género</label>
+                    <select name="genero" id="genero" required
                         class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-3 transition-all bg-white">
-                        <option value="Paciente" <?= ($u['rol'] ?? '') === 'Paciente' ? 'selected' : '' ?>>Paciente</option>
-                        <option value="Fisioterapeuta" <?= ($u['rol'] ?? '') === 'Fisioterapeuta' ? 'selected' : '' ?>>Fisioterapeuta</option>
-                        <option value="Administrador" <?= ($u['rol'] ?? '') === 'Administrador' ? 'selected' : '' ?>>Administrador</option>
+                        <option value="Hombre" <?= ($u['genero'] ?? '') === 'Hombre' ? 'selected' : '' ?>>Hombre</option>
+                        <option value="Mujer" <?= ($u['genero'] ?? '') === 'Mujer' ? 'selected' : '' ?>>Mujer</option>
+                        <option value="Otro" <?= ($u['genero'] ?? '') === 'Otro' ? 'selected' : '' ?>>Otro</option>
                     </select>
                 </div>
 
@@ -76,16 +76,6 @@ include TEMPLATE_DIR . 'header.php';
                     <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" required
                         value="<?= $u['fecha_nacimiento'] ?? '' ?>"
                         class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-3 transition-all">
-                </div>
-
-                <div class="space-y-2">
-                    <label for="genero" class="block text-sm font-medium text-gray-700">Género</label>
-                    <select name="genero" id="genero" required
-                        class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-3 transition-all bg-white">
-                        <option value="Hombre" <?= ($u['genero'] ?? '') === 'Hombre' ? 'selected' : '' ?>>Hombre</option>
-                        <option value="Mujer" <?= ($u['genero'] ?? '') === 'Mujer' ? 'selected' : '' ?>>Mujer</option>
-                        <option value="Otro" <?= ($u['genero'] ?? '') === 'Otro' ? 'selected' : '' ?>>Otro</option>
-                    </select>
                 </div>
 
                 <!-- Contacto Section -->
@@ -149,41 +139,25 @@ include TEMPLATE_DIR . 'header.php';
                 <div class="space-y-6 md:col-span-2 pt-4 pb-4 border-b border-gray-50">
                     <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
                         <i class="bi bi-shield-lock text-primary-600"></i>
-                        <?= $isEdit ? "Seguridad" : "Seguridad y Adicionales" ?>
+                        Seguridad
                     </h2>
                 </div>
 
                 <div class="space-y-2">
-                    <label for="pass" class="block text-sm font-medium text-gray-700"><?= $isEdit ? "Cambiar Contraseña" : "Contraseña Temporal" ?></label>
+                    <label for="pass" class="block text-sm font-medium text-gray-700"><?= $isEdit ? "Cambiar Contraseña" : "Contraseña de Acceso" ?></label>
                     <input type="password" name="pass" id="pass"
                         class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-3 transition-all"
                         placeholder="<?= $isEdit ? 'Nueva contraseña' : 'Mínimo 6 caracteres' ?>">
                     <p class="text-xs text-gray-500"><?= $isEdit ? "Dejar en blanco para mantener la contraseña actual." : "Si se deja vacío, será '123456' por defecto." ?></p>
                 </div>
-
-                <?php if (isset($especialidades)): ?>
-                <div class="space-y-2" x-data="{ isFisio: '<?= $u['rol'] ?? '' ?>' === 'Fisioterapeuta' }" x-init="$watch('$root.querySelector(\'#rol\').value', value => isFisio = value === 'Fisioterapeuta')">
-                    <label for="especialidad" class="block text-sm font-medium text-gray-700">Especialidad Principal</label>
-                    <select name="especialidad" id="especialidad"
-                        class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-3 transition-all bg-white">
-                        <option value="">Seleccionar especialidad...</option>
-                        <?php foreach ($especialidades as $esp): ?>
-                            <option value="<?= $esp['especialidad_id'] ?>" <?= (isset($u['especialidad_id']) && $esp['especialidad_id'] == $u['especialidad_id']) ? 'selected' : '' ?>>
-                                <?= $esp['descripcion'] ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                    <p class="text-xs text-gray-500">Solo requerido para fisioterapeutas.</p>
-                </div>
-                <?php endif; ?>
             </div> 
 
             <div class="mt-10 pt-6 border-t border-gray-50 flex items-center justify-end gap-3">
-                <a href="<?= PROJECT_ROOT ?>/usuarios" class="px-6 py-3 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">
+                <a href="<?= PROJECT_ROOT ?>/pacientes" class="px-6 py-3 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">
                     Cancelar
                 </a>
                 <button type="submit" class="inline-flex justify-center items-center gap-2 rounded-xl bg-primary-600 px-8 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all">
-                    <?= $isEdit ? "Guardar Cambios" : "Guardar Usuario" ?>
+                    <?= $isEdit ? "Guardar Cambios" : "Guardar Paciente" ?>
                 </button>
             </div>
         </form>

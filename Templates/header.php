@@ -111,11 +111,11 @@
                     Mi Perfil
                 </a>
             <?php else : ?>
-                <!-- Menú para Administradores / Fisioterapeutas -->
-                <a href="<?= PROJECT_ROOT ?>/usuarios"
-                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/usuarios') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
-                    <i class="bi bi-people text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/usuarios') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
-                    Usuarios
+                <!-- Menú para Administradores / Fisioterapeutas / Secretarios -->
+                 <a href="<?= PROJECT_ROOT ?>/pacientes"
+                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/pacientes') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
+                    <i class="bi bi-people text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/pacientes') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
+                    Pacientes
                 </a>
                 <a href="<?= PROJECT_ROOT ?>/citas"
                     class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/citas') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">

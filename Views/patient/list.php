@@ -1,85 +1,72 @@
 <?php
-$pageTitle = "Usuarios";
+$pageTitle = "Pacientes";
+$isAdminOrSecretary = isset($_SESSION['rol']) && ($_SESSION['rol'] === 'Administrador' || $_SESSION['rol'] === 'Secretario');
 include TEMPLATE_DIR . 'header.php';
 
 $filtro_usuario_id = isset($_GET['usuario_id']) ? trim($_GET['usuario_id']) : '';
 
 // Filter the array if needed
-$usuarios_filtrados = [];
+$pacientes_filtrados = [];
 if ($filtro_usuario_id !== '') {
-    foreach ($users as $u) {
-        if (strpos((string)$u['usuario_id'], $filtro_usuario_id) !== false) {
-            $usuarios_filtrados[] = $u;
+    foreach ($patients as $p) {
+        if (strpos((string)$p['usuario_id'], $filtro_usuario_id) !== false || 
+            strpos(strtolower($p['nombre']), strtolower($filtro_usuario_id)) !== false ||
+            strpos(strtolower($p['apellidos']), strtolower($filtro_usuario_id)) !== false) {
+            $pacientes_filtrados[] = $p;
         }
     }
 } else {
-    $usuarios_filtrados = $users;
+    $pacientes_filtrados = $patients;
 }
 
 $articulos_x_pagina = 10;
 $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 if ($pagina < 1) $pagina = 1;
 
-$total_usuarios = count($usuarios_filtrados);
-$n_botones_paginacion = ceil($total_usuarios / $articulos_x_pagina);
+$total_pacientes = count($pacientes_filtrados);
+$n_botones_paginacion = ceil($total_pacientes / $articulos_x_pagina);
 
 if ($pagina > $n_botones_paginacion && $n_botones_paginacion > 0) {
     $pagina = 1;
 }
 
 $iniciar = ($pagina - 1) * $articulos_x_pagina;
-$usuariosPaginados = array_slice($usuarios_filtrados, $iniciar, $articulos_x_pagina);
+$pacientesPaginados = array_slice($pacientes_filtrados, $iniciar, $articulos_x_pagina);
 ?>
 
 <div class="space-y-6 animate-fade-in-up">
     <!-- Header -->
     <div class="sm:flex sm:items-center sm:justify-between">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Usuarios</h1>
-            <p class="mt-1 text-sm text-gray-500">Gestiona los pacientes y usuarios del sistema.</p>
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Pacientes</h1>
+            <p class="mt-1 text-sm text-gray-500">Gestiona los expedientes e historial clínico de los pacientes.</p>
         </div>
         <div class="mt-4 sm:mt-0 flex flex-col sm:flex-row gap-3">
-            <form action="<?= PROJECT_ROOT ?>/usuarios/pdf" method="POST" class="w-full sm:w-auto">
-                <input type="hidden" value="pdf" id="action" name="action">
+            <form action="<?= PROJECT_ROOT ?>/pacientes/pdf" method="POST" class="w-full sm:w-auto">
                 <button type="submit" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all">
                     <i class="bi bi-file-earmark-pdf text-red-500 text-lg"></i>
                     Exportar PDF
                 </button>
             </form>
-            <a href="<?= PROJECT_ROOT ?>/usuarios/create" class="inline-flex justify-center items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all">
+            <?php if ($isAdminOrSecretary): ?>
+            <a href="<?= PROJECT_ROOT ?>/pacientes/create" class="inline-flex justify-center items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all">
                 <i class="bi bi-plus-lg"></i>
-                Agregar Usuario
+                Nuevo Paciente
             </a>
+            <?php endif; ?>
         </div>
     </div>
 
-    <?php if (isset($_SESSION['alert'])): ?>
-        <?php 
-        $alert_type = $_SESSION['alert']['type'];
-        $alert_message = $_SESSION['alert']['message'];
-        $bg_color = $alert_type === 'danger' ? 'bg-red-50 text-red-800 border-red-200' : ($alert_type === 'success' ? 'bg-green-50 text-green-800 border-green-200' : 'bg-blue-50 text-blue-800 border-blue-200');
-        ?>
-        <div class="rounded-lg border p-4 <?= $bg_color ?>" role="alert" x-data="{ show: true }" x-show="show">
-            <div class="flex justify-between items-center">
-                <div class="text-sm font-medium"><?= $alert_message ?></div>
-                <button @click="show = false" class="text-gray-500 hover:text-gray-700 focus:outline-none">
-                    <i class="bi bi-x-lg"></i>
-                </button>
-            </div>
-        </div>
-        <?php unset($_SESSION['alert']); ?>
-    <?php endif; ?>
-
     <!-- Filter -->
     <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-gray-100">
-        <form method="get" action="<?= PROJECT_ROOT ?>/usuarios" class="flex flex-col sm:flex-row gap-4 items-end">
+        <form method="get" action="<?= PROJECT_ROOT ?>/pacientes" class="flex flex-col sm:flex-row gap-4 items-end">
             <div class="w-full sm:w-auto flex-1 max-w-sm">
-                <label for="usuario_id" class="block text-sm font-medium text-gray-700 mb-1.5">Buscar por ID</label>
+                <label for="usuario_id" class="block text-sm font-medium text-gray-700 mb-1.5">Buscar Paciente</label>
                 <div class="relative rounded-xl shadow-sm">
                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                         <i class="bi bi-search text-gray-400"></i>
                     </div>
-                    <input type="text" name="usuario_id" id="usuario_id" value="<?= htmlspecialchars($filtro_usuario_id) ?>" class="block w-full rounded-xl border-0 py-2.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6 transition-all" placeholder="Ej. 123">
+                    <input type="text" name="usuario_id" id="usuario_id" value="<?= htmlspecialchars($filtro_usuario_id) ?>" class="block w-full rounded-xl border-0 py-2.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6 transition-all" placeholder="Buscar por DNI, Nombre o Apellidos...">
                 </div>
             </div>
             <div class="w-full sm:w-auto">
@@ -96,52 +83,56 @@ $usuariosPaginados = array_slice($usuarios_filtrados, $iniciar, $articulos_x_pag
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50/50">
                     <tr>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Nombre</th>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">DNI/ID</th>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Nombre Completo</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Teléfono</th>
                         <th scope="col" class="sticky right-0 bg-gray-50/90 backdrop-blur-sm px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider border-l border-gray-100 shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.02)]">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 bg-white">
-                    <?php if (!empty($usuariosPaginados)) : ?>
-                        <?php foreach ($usuariosPaginados as $usuario) : ?>
+                    <?php if (!empty($pacientesPaginados)) : ?>
+                        <?php foreach ($pacientesPaginados as $paciente) : ?>
                             <tr class="hover:bg-gray-50/50 transition-colors group">
-                                <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-500">#<?= $usuario['usuario_id'] ?></td>
+                                <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-500">#<?= $paciente['usuario_id'] ?></td>
                                 <td class="px-6 py-4 text-sm">
                                     <div class="flex items-center">
                                         <div class="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold mr-3 shadow-sm">
-                                            <?= substr($usuario['nombre'], 0, 1) ?>
+                                            <?= substr($paciente['nombre'], 0, 1) ?>
                                         </div>
-                                        <div class="font-medium text-gray-900"><?= $usuario['nombre'] . ' ' . $usuario['apellidos'] ?></div>
+                                        <div class="font-medium text-gray-900"><?= $paciente['nombre'] . ' ' . $paciente['apellidos'] ?></div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-500">
-                                    <a href="mailto:<?= $usuario['email'] ?>" class="hover:text-primary-600 transition-colors flex items-center gap-1.5">
+                                    <a href="mailto:<?= $paciente['email'] ?>" class="hover:text-primary-600 transition-colors flex items-center gap-1.5">
                                         <i class="bi bi-envelope"></i>
-                                        <?= $usuario['email'] ?>
+                                        <?= $paciente['email'] ?>
                                     </a>
                                 </td>
                                 <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                    <a href="tel:<?= $usuario['telefono'] ?>" class="hover:text-primary-600 transition-colors flex items-center gap-1.5">
+                                    <a href="tel:<?= $paciente['telefono'] ?>" class="hover:text-primary-600 transition-colors flex items-center gap-1.5">
                                         <i class="bi bi-telephone"></i>
-                                        <?= $usuario['telefono'] ?>
+                                        <?= $paciente['telefono'] ?>
                                     </a>
                                 </td>
                                 <td class="sticky right-0 bg-white group-hover:bg-gray-50/50 px-6 py-4 whitespace-nowrap text-right text-sm font-medium border-l border-gray-100/50 shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.02)] transition-colors">
                                     <div class="flex items-center justify-end gap-1">
-                                        <a href="<?= PROJECT_ROOT ?>/usuarios/detail?usuario_id=<?= $usuario['usuario_id'] ?>" class="text-gray-400 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-all duration-200" title="Ver detalle">
+                                        <a href="<?= PROJECT_ROOT ?>/pacientes/detail?usuario_id=<?= $paciente['usuario_id'] ?>" class="text-gray-400 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-all duration-200" title="Ver Historial / Detalle">
                                             <i class="bi bi-eye text-lg"></i>
                                         </a>
-                                        <a href="<?= PROJECT_ROOT ?>/usuarios/edit?id=<?= $usuario['usuario_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-2 rounded-lg transition-all duration-200" title="Editar">
+                                        <?php if ($isAdminOrSecretary): ?>
+                                        <a href="<?= PROJECT_ROOT ?>/pacientes/edit?id=<?= $paciente['usuario_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-2 rounded-lg transition-all duration-200" title="Editar">
                                             <i class="bi bi-pencil-square text-lg"></i>
                                         </a>
-                                        <form action="<?= PROJECT_ROOT ?>/usuarios/delete" method="POST" class="inline-block m-0" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
-                                            <input type="hidden" name="id" value="<?= $usuario['usuario_id'] ?>">
+                                        <?php endif; ?>
+                                        <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Administrador'): ?>
+                                        <form action="<?= PROJECT_ROOT ?>/pacientes/delete" method="POST" class="inline-block m-0" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este paciente?');">
+                                            <input type="hidden" name="id" value="<?= $paciente['usuario_id'] ?>">
                                             <button type="submit" class="text-gray-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-lg transition-all duration-200" title="Eliminar">
                                                 <i class="bi bi-trash3 text-lg"></i>
                                             </button>
                                         </form>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>
@@ -153,8 +144,8 @@ $usuariosPaginados = array_slice($usuarios_filtrados, $iniciar, $articulos_x_pag
                                     <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
                                         <i class="bi bi-people text-2xl text-gray-400"></i>
                                     </div>
-                                    <h3 class="text-sm font-medium text-gray-900">No hay usuarios</h3>
-                                    <p class="mt-1 text-sm text-gray-500">No se encontraron usuarios con los filtros aplicados.</p>
+                                    <h3 class="text-sm font-medium text-gray-900">No hay pacientes</h3>
+                                    <p class="mt-1 text-sm text-gray-500">No se encontraron pacientes registrados con los filtros aplicados.</p>
                                 </div>
                             </td>
                         </tr>
@@ -169,7 +160,7 @@ $usuariosPaginados = array_slice($usuarios_filtrados, $iniciar, $articulos_x_pag
             <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                 <div>
                     <p class="text-sm text-gray-700">
-                        Mostrando <span class="font-semibold text-gray-900"><?= min($iniciar + 1, $total_usuarios) ?></span> a <span class="font-semibold text-gray-900"><?= min($iniciar + $articulos_x_pagina, $total_usuarios) ?></span> de <span class="font-semibold text-gray-900"><?= $total_usuarios ?></span> usuarios
+                        Mostrando <span class="font-semibold text-gray-900"><?= min($iniciar + 1, $total_pacientes) ?></span> a <span class="font-semibold text-gray-900"><?= min($iniciar + $articulos_x_pagina, $total_pacientes) ?></span> de <span class="font-semibold text-gray-900"><?= $total_pacientes ?></span> pacientes
                     </p>
                 </div>
                 <div>

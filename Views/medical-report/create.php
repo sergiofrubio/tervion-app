@@ -9,7 +9,7 @@ include TEMPLATE_DIR . 'header.php';
             <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Nuevo Informe Clínico</h1>
             <p class="mt-1 text-sm text-gray-500">Registrar una nueva entrada en el historial de <?= $paciente['nombre'] . ' ' . $paciente['apellidos'] ?>.</p>
         </div>
-        <a href="<?= PROJECT_ROOT ?>/usuarios/detail?id=<?= $paciente['usuario_id'] ?>" class="inline-flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-primary-600 transition-colors">
+        <a href="<?= PROJECT_ROOT ?>/pacientes/detail?usuario_id=<?= $paciente['usuario_id'] ?>" class="inline-flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-primary-600 transition-colors">
             <i class="bi bi-arrow-left"></i>
             Volver al perfil
         </a>

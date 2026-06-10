@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             debounceTimer = setTimeout(() => {
-                fetch(`<?= PROJECT_ROOT ?>/usuarios/search?rol=${rol}&q=${encodeURIComponent(query)}`)
+                fetch(`<?= PROJECT_ROOT ?>/trabajadores/search?q=${encodeURIComponent(query)}`)
                     .then(response => response.json())
                     .then(data => {
                         results.innerHTML = '';

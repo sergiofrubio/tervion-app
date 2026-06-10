@@ -16,7 +16,7 @@ include TEMPLATE_DIR . 'header.php';
                 <i class="bi bi-plus-lg"></i>
                 Nueva Cita
             </a>
-            <a href="<?= PROJECT_ROOT ?>/usuarios/create" class="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-5 py-3 text-sm font-semibold text-white shadow-md hover:bg-gray-800 transition-all hover:scale-105 active:scale-95">
+            <a href="<?= PROJECT_ROOT ?>/pacientes/create" class="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-5 py-3 text-sm font-semibold text-white shadow-md hover:bg-gray-800 transition-all hover:scale-105 active:scale-95">
                 <i class="bi bi-person-plus"></i>
                 Nuevo Paciente
             </a>
@@ -149,13 +149,13 @@ include TEMPLATE_DIR . 'header.php';
                                     <h4 class="text-sm font-bold text-gray-900 truncate"><?= $patient['nombre'] . ' ' . $patient['apellidos'] ?></h4>
                                     <p class="text-xs text-gray-500"><?= date('d/m/Y', strtotime($patient['fecha_creacion'])) ?></p>
                                 </div>
-                                <a href="<?= PROJECT_ROOT ?>/users/userdetail?id=<?= $patient['usuario_id'] ?>" class="p-1.5 text-gray-300 hover:text-gray-500 transition-colors">
+                                <a href="<?= PROJECT_ROOT ?>/pacientes/detail?usuario_id=<?= $patient['usuario_id'] ?>" class="p-1.5 text-gray-300 hover:text-gray-500 transition-colors">
                                     <i class="bi bi-eye"></i>
                                 </a>
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
-                    <a href="<?= PROJECT_ROOT ?>/users" class="block text-center w-full mt-2 py-2 text-xs font-bold text-gray-500 hover:text-primary-600 transition-colors uppercase tracking-widest border-t border-gray-50 pt-4">
+                    <a href="<?= PROJECT_ROOT ?>/pacientes" class="block text-center w-full mt-2 py-2 text-xs font-bold text-gray-500 hover:text-primary-600 transition-colors uppercase tracking-widest border-t border-gray-50 pt-4">
                         Ver listado completo
                     </a>
                 </div>

@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Detalle de Usuario";
+$pageTitle = "Detalle de Paciente";
 include TEMPLATE_DIR . 'header.php';
 
 function calcularEdad($fechaNacimiento) {
@@ -27,16 +27,13 @@ function calcularEdad($fechaNacimiento) {
                 <div class="mt-6 sm:mt-0 flex-1 text-center sm:text-left">
                     <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                         <h1 class="text-2xl font-bold text-gray-900"><?= $usuario['nombre'] . ' ' . $usuario['apellidos'] ?></h1>
-                        <!-- <span class="inline-flex items-center rounded-full bg-primary-50 px-2.5 py-0.5 text-sm font-medium text-primary-700 ring-1 ring-inset ring-primary-700/10">
-                            <?= $usuario['rol'] ?>
-                        </span> -->
                     </div>
                     <p class="text-sm text-gray-500 mt-1">
-                        <i class="bi bi-person-vcard mr-1"></i> ID: <?= $usuario['usuario_id'] ?>
+                        <i class="bi bi-person-vcard mr-1"></i> DNI/ID: <?= $usuario['usuario_id'] ?>
                     </p>
                 </div>
                 <div class="mt-6 sm:mt-0">
-                    <a href="<?= PROJECT_ROOT ?>/usuarios" class="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all">
+                    <a href="<?= PROJECT_ROOT ?>/pacientes" class="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all">
                         <i class="bi bi-arrow-left"></i>
                         Volver
                     </a>
@@ -112,15 +109,6 @@ function calcularEdad($fechaNacimiento) {
                             <i class="bi bi-calendar-check"></i>
                             Citas
                         </button>
-                        <?php if ($rol == "Paciente") : ?>
-                        <button 
-                            @click="activeTab = 'settings'"
-                            :class="activeTab === 'settings' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
-                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all flex items-center gap-2">
-                            <i class="bi bi-gear"></i>
-                            Gestionar Cuenta
-                        </button>
-                        <?php endif; ?>
                     </nav>
                 </div>
 
@@ -130,7 +118,7 @@ function calcularEdad($fechaNacimiento) {
                     <div x-show="activeTab === 'history'" x-cloak x-transition>
                         <div class="flex items-center justify-between mb-6">
                             <h4 class="text-base font-bold text-gray-900">Informes Clínicos</h4>
-                            <?php if ($rol != "Paciente") : ?>
+                            <?php if ($rol !== "Paciente") : ?>
                             <a href="<?= PROJECT_ROOT ?>/historial/create?paciente_id=<?= $usuario['usuario_id'] ?>" class="inline-flex items-center gap-1.5 rounded-xl bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary-700 transition-all">
                                 <i class="bi bi-plus-circle"></i>
                                 Nuevo Informe
@@ -173,15 +161,14 @@ function calcularEdad($fechaNacimiento) {
                                 <thead class="bg-gray-50/50">
                                     <tr>
                                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Fecha</th>
-                                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Motivo</th>
+                                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Motivo/Descripción</th>
                                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Estado</th>
-                                        <th class="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100 bg-white">
                                     <?php if (empty($citas)) : ?>
                                         <tr>
-                                            <td colspan="4" class="px-4 py-8 text-center text-sm text-gray-500 italic">
+                                            <td colspan="3" class="px-4 py-8 text-center text-sm text-gray-500 italic">
                                                 No se han encontrado citas programadas.
                                             </td>
                                         </tr>
@@ -192,45 +179,18 @@ function calcularEdad($fechaNacimiento) {
                                                     <?= date('d/m/Y H:i', strtotime($cita['fecha_hora'])) ?>
                                                 </td>
                                                 <td class="px-4 py-3 text-sm text-gray-600">
-                                                    <?= $cita['descripcion'] ?>
+                                                    <?= $cita['descripcion'] ?? 'Consulta General' ?>
                                                 </td>
                                                 <td class="px-4 py-3 text-sm">
                                                     <span class="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                                                        Programada
+                                                        <?= htmlspecialchars($cita['estado']) ?>
                                                     </span>
-                                                </td>
-                                                <td class="px-4 py-3 text-right text-sm">
-                                                    <button class="p-1.5 text-gray-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-all">
-                                                        <i class="bi bi-pencil"></i>
-                                                    </button>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
-
-                    <!-- Settings Tab Placeholder -->
-                    <div x-show="activeTab === 'settings'" x-cloak x-transition>
-                        <h4 class="text-base font-bold text-gray-900 mb-6">Gestión de Cuenta</h4>
-                        <div class="bg-amber-50 rounded-2xl border border-amber-100 p-6">
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 flex-shrink-0">
-                                    <i class="bi bi-shield-lock text-xl"></i>
-                                </div>
-                                <div>
-                                    <h5 class="text-sm font-bold text-amber-900">Seguridad de la cuenta</h5>
-                                    <p class="text-sm text-amber-800 mt-1 leading-relaxed">
-                                        Como paciente, puedes modificar tus datos de contacto y cambiar tu contraseña desde esta sección. 
-                                        Para cambios en tu historial clínico, contacta con tu fisioterapeuta.
-                                    </p>
-                                    <button class="mt-4 inline-flex items-center gap-2 rounded-xl bg-amber-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-700 transition-all">
-                                        Editar Perfil
-                                    </button>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -151,8 +151,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
+            const searchUrl = rol === 'Paciente' ? `<?= PROJECT_ROOT ?>/pacientes/search?q=${encodeURIComponent(query)}` : `<?= PROJECT_ROOT ?>/trabajadores/search?q=${encodeURIComponent(query)}`;
             debounceTimer = setTimeout(() => {
-                fetch(`<?= PROJECT_ROOT ?>/usuarios/search?rol=${rol}&q=${encodeURIComponent(query)}`)
+                fetch(searchUrl)
                     .then(response => response.json())
                     .then(data => {
                         results.innerHTML = '';

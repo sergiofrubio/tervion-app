@@ -39,7 +39,7 @@ class InvoiceController extends Controller
                 'filters' => $filters,
                 'pageTitle' => 'Gestión de Facturas - Velion'
             ];
-            $this->view('patient-view/invoice/list', $data);
+            $this->view('invoice/list', $data);
         }
     }
 

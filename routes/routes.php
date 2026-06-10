@@ -17,19 +17,23 @@ $router->add('GET', '/logout', 'LoginController@finishSesion', false);
 // Rutas Generales (Requieren autenticación, accesibles por todos los roles)
 $router->add('GET', '/inicio', 'HomeController@index', true, ['Administrador', 'Fisioterapeuta', 'Paciente']);
 
-// Rutas para Administradores y Fisioterapeutas
-$staffRoles = ['Administrador', 'Fisioterapeuta'];
+// Rutas para Administradores y Fisioterapeutas/Secretarios (Staff)
+$staffRoles = ['Administrador', 'Fisioterapeuta', 'Secretario'];
 
-$router->add('GET', '/usuarios', 'UserController@list', true, $staffRoles);
-$router->add('GET', '/usuarios/search', 'UserController@search', true, $staffRoles);
-$router->add('GET', '/usuarios/create', 'UserController@create', true, ['Administrador']); // Solo admin crea usuarios
-$router->add('POST', '/usuarios/create', 'UserController@create', true, ['Administrador']);
-$router->add('POST', '/usuarios/delete', 'UserController@delete', true, ['Administrador']);
-$router->add('GET', '/usuarios/edit', 'UserController@edit', true, ['Administrador']);
-$router->add('POST', '/usuarios/edit', 'UserController@edit', true, ['Administrador']);
-$router->add('GET', '/usuarios/detail', 'UserController@detail', true, $staffRoles);
-$router->add('GET', '/usuarios/pdf', 'UserController@createPDF', true, $staffRoles);
-$router->add('POST', '/usuarios/pdf', 'UserController@createPDF', true, $staffRoles);
+// Rutas para Pacientes
+$router->add('GET', '/pacientes', 'PatientController@list', true, $staffRoles);
+$router->add('GET', '/pacientes/search', 'PatientController@search', true, $staffRoles);
+$router->add('GET', '/pacientes/create', 'PatientController@create', true, ['Administrador', 'Secretario']);
+$router->add('POST', '/pacientes/create', 'PatientController@create', true, ['Administrador', 'Secretario']);
+$router->add('POST', '/pacientes/delete', 'PatientController@delete', true, ['Administrador']);
+$router->add('GET', '/pacientes/edit', 'PatientController@edit', true, ['Administrador', 'Secretario']);
+$router->add('POST', '/pacientes/edit', 'PatientController@edit', true, ['Administrador', 'Secretario']);
+$router->add('GET', '/pacientes/detail', 'PatientController@detail', true, $staffRoles);
+$router->add('GET', '/pacientes/pdf', 'PatientController@createPDF', true, $staffRoles);
+$router->add('POST', '/pacientes/pdf', 'PatientController@createPDF', true, $staffRoles);
+
+// Ruta de búsqueda de trabajadores (usado para asignar citas)
+$router->add('GET', '/trabajadores/search', 'PatientController@searchWorkers', true, $staffRoles);
 
 
 $router->add('GET', '/citas', 'AppointmentController@list', true, $staffRoles);

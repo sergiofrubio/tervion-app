@@ -15,7 +15,7 @@ include TEMPLATE_DIR . 'header.php';
                 <i class="bi bi-file-earmark-pdf"></i>
                 Exportar PDF
             </a>
-            <a href="<?= PROJECT_ROOT ?>/usuarios/detail?id=<?= $report['paciente_id'] ?>" class="inline-flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-primary-600 transition-colors px-3">
+            <a href="<?= PROJECT_ROOT ?>/pacientes/detail?usuario_id=<?= $report['paciente_id'] ?>" class="inline-flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-primary-600 transition-colors px-3">
                 <i class="bi bi-arrow-left"></i>
                 Cerrar
             </a>

@@ -10,7 +10,7 @@ class ShopTest extends TestCase
 {
     public function testRegistrarCompraBono()
     {
-        $dbMock = $this->createMock(PDO::class);
+        $dbMock = $this->createStub(PDO::class);
         $tiendaModel = new Shop($dbMock);
         
         $result = $tiendaModel->registrarCompraBono('U123', 5);

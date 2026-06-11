@@ -7,6 +7,9 @@ use App\Models\User;
 use PDO;
 use PDOStatement;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+
+#[AllowMockObjectsWithoutExpectations]
 class PatientTest extends TestCase
 {
     private $dbMock;

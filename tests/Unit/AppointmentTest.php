@@ -7,6 +7,9 @@ use App\Models\Appointment;
 use PDO;
 use PDOStatement;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+
+#[AllowMockObjectsWithoutExpectations]
 class AppointmentTest extends TestCase
 {
     private $dbMock;

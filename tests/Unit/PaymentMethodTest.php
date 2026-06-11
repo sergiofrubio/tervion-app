@@ -7,6 +7,9 @@ use App\Models\PaymentMethod;
 use PDO;
 use PDOStatement;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+
+#[AllowMockObjectsWithoutExpectations]
 class PaymentMethodTest extends TestCase
 {
     private $dbMock;

@@ -7,6 +7,9 @@ use App\Models\Invoice;
 use PDO;
 use PDOStatement;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+
+#[AllowMockObjectsWithoutExpectations]
 class InvoiceTest extends TestCase
 {
     private $dbMock;

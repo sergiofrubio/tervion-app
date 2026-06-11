@@ -8,6 +8,9 @@ use App\Models\Accounting;
 use PDO;
 use PDOStatement;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+
+#[AllowMockObjectsWithoutExpectations]
 class AccountingTest extends TestCase
 {
     private $dbMock;

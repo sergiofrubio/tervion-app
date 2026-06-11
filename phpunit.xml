@@ -11,4 +11,12 @@
     <php>
         <env name="APP_URL" value="http://localhost"/>
     </php>
+    <source>
+        <include>
+            <directory suffix=".php">Controllers</directory>
+            <directory suffix=".php">Core</directory>
+            <directory suffix=".php">Models</directory>
+            <directory suffix=".php">Routes</directory>
+        </include>
+    </source>
 </phpunit>

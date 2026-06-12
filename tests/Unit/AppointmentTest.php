@@ -95,6 +95,42 @@ class AppointmentTest extends TestCase
         $result = $appointmentModel->delete(1);
 
         $this->assertTrue($result);
+     }
+
+    public function testGetAll()
+    {
+        $citasData = [
+            [
+                'cita_id' => 1,
+                'paciente_id' => 'P123',
+                'paciente_nombre' => 'Jane',
+                'fisioterapeuta_id' => 'F456',
+                'fecha_hora' => '2026-06-12 10:00:00',
+                'estado' => 'Programada'
+            ]
+        ];
+
+        $this->stmtMock->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
+
+        $this->stmtMock->expects($this->once())
+            ->method('fetchAll')
+            ->with(PDO::FETCH_ASSOC)
+            ->willReturn($citasData);
+
+        $this->dbMock->expects($this->once())
+            ->method('prepare')
+            ->with($this->logicalAnd(
+                $this->stringContains('SELECT c.*'),
+                $this->stringContains('WHERE DATE(c.fecha_hora) = CURDATE()')
+            ))
+            ->willReturn($this->stmtMock);
+
+        $appointmentModel = new Appointment($this->dbMock);
+        $result = $appointmentModel->getAll();
+
+        $this->assertEquals($citasData, $result);
     }
 
     public function testGetAvailableSlotsNoHorarios()

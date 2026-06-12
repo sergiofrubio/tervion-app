@@ -4,7 +4,6 @@ include TEMPLATE_DIR . 'header.php';
 
 $filtro_fecha_hora = isset($_POST['fecha_hora']) ? $_POST['fecha_hora'] : '';
 $filtro_estado = isset($_POST['estado']) ? $_POST['estado'] : '';
-$filtro_especialidad = isset($_POST['especialidad']) ? $_POST['especialidad'] : '';
 
 $citas_filtradas = [];
 if (!empty($appointments)) {
@@ -16,27 +15,12 @@ if (!empty($appointments)) {
         if ($filtro_estado !== '' && isset($cita['estado']) && $cita['estado'] !== $filtro_estado) {
             $match = false;
         }
-        if ($filtro_especialidad !== '' && isset($cita['especialidad_id']) && (string)$cita['especialidad_id'] !== $filtro_especialidad) {
-            $match = false;
-        }
         if ($match) {
             $citas_filtradas[] = $cita;
         }
     }
 }
 
-// Extraer especialidades para el dropdown
-$especialidades = [];
-if (!empty($appointments)) {
-    foreach ($appointments as $cita) {
-        if (isset($cita['especialidad_id']) && isset($cita['descripcion'])) {
-            $especialidades[$cita['especialidad_id']] = [
-                'especialidad_id' => $cita['especialidad_id'],
-                'descripcion' => $cita['descripcion']
-            ];
-        }
-    }
-}
 
 $articulos_x_pagina = 5;
 $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
@@ -112,15 +96,6 @@ $citasPaginadas = array_slice($citas_filtradas, $iniciar, $articulos_x_pagina);
                     <option value="Pendiente" <?= $filtro_estado === 'Pendiente' ? 'selected' : '' ?>>Pendiente</option>
                 </select>
             </div>
-            <div class="w-full lg:w-auto flex-1">
-                <label for="especialidad" class="block text-sm font-medium text-gray-700 mb-1.5">Especialidad</label>
-                <select id="especialidad" name="especialidad" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-2.5 bg-white transition-colors">
-                    <option value="" <?= $filtro_especialidad === '' ? 'selected' : '' ?>>Todas</option>
-                    <?php foreach ($especialidades as $especialidad) : ?>
-                        <option value="<?= $especialidad['especialidad_id'] ?>" <?= $filtro_especialidad === (string)$especialidad['especialidad_id'] ? 'selected' : '' ?>><?= $especialidad['especialidad_id'] . ' - ' . $especialidad['descripcion'] ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
             <div class="w-full lg:w-auto">
                 <button type="submit" class="w-full lg:w-auto inline-flex justify-center items-center gap-2 rounded-xl bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 transition-all">
                     <i class="bi bi-funnel"></i>
@@ -140,7 +115,6 @@ $citasPaginadas = array_slice($citas_filtradas, $iniciar, $articulos_x_pagina);
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Fecha</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Paciente</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Contacto</th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Especialidad</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Fis. Asoc.</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Estado</th>
                         <th scope="col" class="sticky right-0 bg-gray-50/90 backdrop-blur-sm px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider border-l border-gray-100 shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.02)]">Acciones</th>
@@ -164,11 +138,6 @@ $citasPaginadas = array_slice($citas_filtradas, $iniciar, $articulos_x_pagina);
                                     <a href="tel:<?= $cita['paciente_telefono'] ?>" class="hover:text-primary-600 transition-colors">
                                         <?= $cita['paciente_telefono'] ?>
                                     </a>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-600">
-                                    <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
-                                        <?= $cita['descripcion'] ?>
-                                    </span>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-600">
                                     <div class="flex items-center gap-2">

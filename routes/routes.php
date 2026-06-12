@@ -57,10 +57,8 @@ $router->add('POST', '/configuracion/ausencias/create', 'SettingController@creat
 $router->add('GET', '/configuracion/ausencias/edit', 'SettingController@editAusencia', true, ['Administrador']);
 $router->add('POST', '/configuracion/ausencias/edit', 'SettingController@editAusencia', true, ['Administrador']);
 
-$router->add('GET', '/configuracion/especialidades/create', 'SettingController@createEspecialidad', true, ['Administrador']);
-$router->add('POST', '/configuracion/especialidades/create', 'SettingController@createEspecialidad', true, ['Administrador']);
-$router->add('GET', '/configuracion/especialidades/edit', 'SettingController@editEspecialidad', true, ['Administrador']);
-$router->add('POST', '/configuracion/especialidades/edit', 'SettingController@editEspecialidad', true, ['Administrador']);
+
+
 
 $router->add('GET', '/configuracion/bonos/create', 'SettingController@createBono', true, ['Administrador']);
 $router->add('POST', '/configuracion/bonos/create', 'SettingController@createBono', true, ['Administrador']);

@@ -8,7 +8,6 @@ $proximaCita = $proximaCita ?? [
     'fecha' => '15 de Mayo, 2026',
     'hora' => '10:30',
     'fisioterapeuta' => 'Dr. Alejandro Ruiz',
-    'especialidad' => 'Fisioterapia Deportiva',
     'estado' => 'Confirmada'
 ];
 
@@ -63,7 +62,6 @@ $recientes = $recientes ?? [
             <div class="mt-2 space-y-1">
                 <p class="text-xl font-bold text-gray-900"><?= $proximaCita['fecha'] ?></p>
                 <p class="text-sm font-medium text-gray-600"><?= $proximaCita['hora'] ?> • <?= $proximaCita['fisioterapeuta'] ?></p>
-                <p class="text-xs text-gray-400"><?= $proximaCita['especialidad'] ?></p>
             </div>
             <div class="mt-4 pt-4 border-t border-gray-50">
                 <a href="<?= PROJECT_ROOT ?>/vista-pacientes/citas" class="text-primary-600 text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all">

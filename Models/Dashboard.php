@@ -40,10 +40,9 @@ class Dashboard
 
     public function getUpcomingAppointments($limit = 4)
     {
-        $query = "SELECT c.*, u.nombre as paciente_nombre, u.apellidos as paciente_apellidos, e.descripcion as especialidad 
+        $query = "SELECT c.*, u.nombre as paciente_nombre, u.apellidos as paciente_apellidos 
                   FROM citas c 
                   JOIN usuarios u ON c.paciente_id = u.usuario_id 
-                  JOIN especialidades e ON c.especialidad_id = e.especialidad_id 
                   WHERE DATE(c.fecha_hora) >= CURRENT_DATE() 
                   AND c.estado != 'Cancelada'
                   ORDER BY c.fecha_hora ASC 

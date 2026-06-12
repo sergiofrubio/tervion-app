@@ -59,18 +59,7 @@ include TEMPLATE_DIR . 'header.php';
                         </select>
                     </div>
 
-                    <!-- Especialidad condicional -->
-                    <div class="sm:col-span-2" x-show="workerRol === 'Fisioterapeuta'" x-transition>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Especialidad Principal</label>
-                        <select name="especialidad" class="block w-full rounded-xl border-gray-200 focus:ring-2 focus:ring-primary-600 sm:text-sm py-2.5 bg-white transition-all">
-                            <option value="">Seleccione especialidad...</option>
-                            <?php if(isset($especialidades)): ?>
-                                <?php foreach($especialidades as $esp): ?>
-                                    <option value="<?= $esp['especialidad_id'] ?>"><?= $esp['descripcion'] ?></option>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </select>
-                    </div>
+
 
                     <div class="sm:col-span-2 pt-2 border-t border-gray-100/50 grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>

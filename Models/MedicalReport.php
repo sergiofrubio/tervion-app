@@ -16,13 +16,10 @@ class MedicalReport
     {
         $query = "SELECT hm.*, 
                          p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.fecha_nacimiento as paciente_fecha_nacimiento, p.genero as paciente_genero,
-                         f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos,
-                         e.descripcion as especialidad
+                         f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos
                   FROM historiales_medicos hm
                   JOIN usuarios p ON hm.paciente_id = p.usuario_id
                   JOIN usuarios f ON hm.fisioterapeuta_id = f.usuario_id
-                  LEFT JOIN fisioterapeutas fisio ON f.usuario_id = fisio.usuario_id
-                  LEFT JOIN especialidades e ON fisio.especialidad_id = e.especialidad_id
                   WHERE hm.historial_id = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -48,11 +45,8 @@ class MedicalReport
 
     public function getByPaciente($paciente_id)
     {
-        $query = "SELECT hm.*, e.descripcion as especialidad
+        $query = "SELECT hm.*
                   FROM historiales_medicos hm
-                  JOIN usuarios f ON hm.fisioterapeuta_id = f.usuario_id
-                  LEFT JOIN fisioterapeutas fisio ON f.usuario_id = fisio.usuario_id
-                  LEFT JOIN especialidades e ON fisio.especialidad_id = e.especialidad_id
                   WHERE hm.paciente_id = :paciente_id
                   ORDER BY hm.fecha_consulta DESC";
         $stmt = $this->db->prepare($query);

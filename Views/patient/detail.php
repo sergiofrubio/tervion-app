@@ -138,7 +138,7 @@ function calcularEdad($fechaNacimiento) {
                                 <?php foreach ($informes as $informe) : ?>
                                     <div class="flex items-center justify-between p-4 rounded-2xl border border-gray-100 hover:bg-gray-50/50 transition-colors">
                                         <div>
-                                            <div class="text-sm font-bold text-gray-900"><?php echo $informe['especialidad']; ?></div>
+                                            <div class="text-sm font-bold text-gray-900"><?php echo date('d/m/Y H:i', strtotime($informe['fecha_consulta'])); ?></div>
                                             <div class="text-xs text-gray-500 mt-1">
                                                 <i class="bi bi-clock mr-1"></i>
                                                 <?php echo date('d/m/Y H:i', strtotime($informe['fecha_consulta'])); ?>

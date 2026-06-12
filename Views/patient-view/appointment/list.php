@@ -82,15 +82,6 @@ if (!empty($appointments)) {
                                             <p class="text-sm font-bold text-gray-700"><?= $cita['fisioterapeuta_nombre'] . " " . $cita['fisioterapeuta_apellidos'] ?></p>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-9 h-9 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-primary-50 group-hover:text-primary-500 transition-colors">
-                                            <i class="bi bi-shield-check"></i>
-                                        </div>
-                                        <div>
-                                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">Especialidad</p>
-                                            <p class="text-sm font-bold text-gray-700"><?= $cita['descripcion'] ?></p>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
@@ -132,7 +123,7 @@ if (!empty($appointments)) {
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-50">
                             <th class="px-8 py-5 text-[11px] font-bold text-gray-400 uppercase tracking-widest">Fecha y Hora</th>
-                            <th class="px-8 py-5 text-[11px] font-bold text-gray-400 uppercase tracking-widest">Servicio / Especialidad</th>
+                            <th class="px-8 py-5 text-[11px] font-bold text-gray-400 uppercase tracking-widest">Servicio</th>
                             <th class="px-8 py-5 text-[11px] font-bold text-gray-400 uppercase tracking-widest">Profesional</th>
                             <th class="px-8 py-5 text-[11px] font-bold text-gray-400 uppercase tracking-widest text-right">Estado</th>
                         </tr>

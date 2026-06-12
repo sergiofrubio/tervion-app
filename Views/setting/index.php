@@ -8,7 +8,7 @@ include TEMPLATE_DIR . 'header.php';
     <div class="sm:flex sm:items-center sm:justify-between">
         <div>
             <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Configuración del Sistema</h1>
-            <p class="mt-1 text-sm text-gray-500">Gestiona horarios, ausencias, especialidades y bonos de la clínica.</p>
+            <p class="mt-1 text-sm text-gray-500">Gestiona horarios, ausencias y bonos de la clínica.</p>
         </div>
     </div>
 
@@ -51,13 +51,6 @@ include TEMPLATE_DIR . 'header.php';
                     class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all flex items-center gap-2">
                     <i class="bi bi-calendar-x"></i>
                     Ausencias
-                </button>
-                <button 
-                    @click="activeTab = 'especialidades'"
-                    :class="activeTab === 'especialidades' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
-                    class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all flex items-center gap-2">
-                    <i class="bi bi-tags"></i>
-                    Especialidades
                 </button>
                 <button 
                     @click="activeTab = 'bonos'"
@@ -253,46 +246,6 @@ include TEMPLATE_DIR . 'header.php';
                 </div>
             </div>
 
-            <!-- Especialidades Tab -->
-            <div x-show="activeTab === 'especialidades'" x-cloak x-transition>
-                <div class="flex items-center justify-between mb-6">
-                    <h4 class="text-base font-bold text-gray-900">Especialidades Médicas</h4>
-                    <a href="<?= PROJECT_ROOT ?>/configuracion/especialidades/create" class="inline-flex items-center gap-1.5 rounded-xl bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary-700 transition-all">
-                        <i class="bi bi-plus-circle"></i>
-                        Nueva Especialidad
-                    </a>
-                </div>
-                
-                <div class="overflow-x-auto rounded-2xl border border-gray-100">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50/50">
-                            <tr>
-                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
-                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Descripción</th>
-                                <th class="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100 bg-white">
-                            <?php if (empty($especialidades)) : ?>
-                                <tr>
-                                    <td colspan="3" class="px-4 py-8 text-center text-sm text-gray-500 italic">No hay especialidades registradas.</td>
-                                </tr>
-                            <?php else : ?>
-                                <?php foreach ($especialidades as $especialidad) : ?>
-                                    <tr class="hover:bg-gray-50/50 transition-colors">
-                                        <td class="px-4 py-3 text-sm font-medium text-gray-900">#<?= $especialidad['especialidad_id'] ?></td>
-                                        <td class="px-4 py-3 text-sm text-gray-600"><?= $especialidad['descripcion'] ?></td>
-                                        <td class="px-4 py-3 text-right text-sm">
-                                            <a href="<?= PROJECT_ROOT ?>/configuracion/especialidades/edit?id=<?= $especialidad['especialidad_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-1.5 rounded-lg transition-all inline-block" title="Editar"><i class="bi bi-pencil"></i></a>
-                                            <button class="text-gray-400 hover:text-red-600 hover:bg-red-50 p-1.5 rounded-lg transition-all" title="Eliminar"><i class="bi bi-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
 
             <!-- Bonos Tab -->
             <div x-show="activeTab === 'bonos'" x-cloak x-transition>

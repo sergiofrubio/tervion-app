@@ -6,7 +6,7 @@ use App\Core\Controller;
 class SettingController extends Controller
 {
     /**
-     * Muestra la página de configuración con listados de horarios, ausencias, especialidades, bonos e información de la clínica.
+     * Muestra la página de configuración con listados de horarios, ausencias, bonos e información de la clínica.
      *
      * @return void
      */
@@ -17,7 +17,6 @@ class SettingController extends Controller
         $data = [
             'horarios' => $settingModel->getHorariosFisios(),
             'ausencias' => $settingModel->getAusenciasFisios(),
-            'especialidades' => $settingModel->getEspecialidades(),
             'bonos' => $settingModel->getBonos(),
             'clinica' => $settingModel->getClinica()
         ];
@@ -81,27 +80,6 @@ class SettingController extends Controller
         }
     }
 
-    /**
-     * Crea una nueva especialidad médica.
-     *
-     * Si la petición es POST, guarda la especialidad en la base de datos y redirige a configuración.
-     * Si es GET, muestra el formulario de creación de especialidades.
-     *
-     * @return void
-     */
-    public function createEspecialidad()
-    {
-        $settingModel = $this->model('Setting');
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $descripcion = htmlspecialchars($_POST['descripcion'] ?? '', ENT_QUOTES, 'UTF-8');
-            if ($settingModel->saveEspecialidad($descripcion)) {
-                header('Location: ' . PROJECT_ROOT . '/configuracion');
-                $this->exitApp();
-            }
-        } else {
-            $this->view('setting/especialidades_form');
-        }
-    }
 
     /**
      * Crea un nuevo bono de sesiones para la tienda.
@@ -231,30 +209,6 @@ class SettingController extends Controller
         }
     }
 
-    /**
-     * Edita una especialidad médica existente.
-     *
-     * Si la petición es POST, actualiza la especialidad en la base de datos y redirige a configuración.
-     * Si es GET, muestra el formulario de edición con la descripción actual.
-     *
-     * @return void
-     */
-    public function editEspecialidad()
-    {
-        $settingModel = $this->model('Setting');
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['especialidad_id'];
-            $descripcion = htmlspecialchars($_POST['descripcion'] ?? '', ENT_QUOTES, 'UTF-8');
-            if ($settingModel->updateEspecialidad($id, $descripcion)) {
-                header('Location: ' . PROJECT_ROOT . '/configuracion');
-                $this->exitApp();
-            }
-        } else {
-            $id = $_GET['id'];
-            $data = ['especialidad' => $settingModel->getEspecialidadById($id)];
-            $this->view('setting/especialidades_form', $data);
-        }
-    }
 
     /**
      * Edita un bono de sesiones existente.

@@ -14,19 +14,8 @@ class User
 
     public function getByusuario_id($usuario_id)
     {
-        $query = "SELECT u.*, 
-                        CASE 
-                            WHEN p.usuario_id IS NOT NULL THEN 'Paciente'
-                            WHEN f.usuario_id IS NOT NULL THEN 'Fisioterapeuta'
-                            WHEN s.usuario_id IS NOT NULL THEN 'Secretario'
-                            ELSE 'Administrador' 
-                        END as rol,
-                        f.especialidad_id as especialidad,
-                        e.nss, e.iban, e.grupo_cotizacion
+        $query = "SELECT u.*, e.nss, e.iban, e.grupo_cotizacion
                   FROM usuarios u 
-                  LEFT JOIN pacientes p ON u.usuario_id = p.usuario_id 
-                  LEFT JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id 
-                  LEFT JOIN secretarios s ON u.usuario_id = s.usuario_id
                   LEFT JOIN empleados e ON u.usuario_id = e.usuario_id
                   WHERE u.usuario_id = :usuario_id";
         $stmt = $this->db->prepare($query);
@@ -40,8 +29,8 @@ class User
         try {
             $this->db->beginTransaction();
 
-            $query = "INSERT INTO usuarios (usuario_id, nombre, apellidos, telefono, fecha_nacimiento, direccion, provincia, municipio, cp, email, pass, genero) 
-                      VALUES (:usuario_id, :nombre, :apellidos, :telefono, :fecha_nacimiento, :direccion, :provincia, :municipio, :cp, :email, :pass, :genero)";
+            $query = "INSERT INTO usuarios (usuario_id, nombre, apellidos, telefono, fecha_nacimiento, direccion, provincia, municipio, cp, email, pass, genero, rol) 
+                      VALUES (:usuario_id, :nombre, :apellidos, :telefono, :fecha_nacimiento, :direccion, :provincia, :municipio, :cp, :email, :pass, :genero, :rol)";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':usuario_id', $data['usuario_id']);
             $stmt->bindParam(':nombre', $data['nombre']);
@@ -55,14 +44,10 @@ class User
             $stmt->bindParam(':email', $data['email']);
             $stmt->bindParam(':pass', $data['pass']);
             $stmt->bindParam(':genero', $data['genero']);
+            $stmt->bindParam(':rol', $data['rol']);
             $stmt->execute();
 
-            if ($data['rol'] === 'Paciente') {
-                $q2 = "INSERT INTO pacientes (usuario_id) VALUES (:usuario_id)";
-                $s2 = $this->db->prepare($q2);
-                $s2->bindParam(':usuario_id', $data['usuario_id']);
-                $s2->execute();
-            } else {
+            if ($data['rol'] !== 'Paciente') {
                 // Es un trabajador (Fisioterapeuta, Secretario, Administrador)
                 $qEmp = "INSERT INTO empleados (usuario_id, nss, iban, grupo_cotizacion) VALUES (:usuario_id, :nss, :iban, :grupo_cotizacion)";
                 $sEmp = $this->db->prepare($qEmp);
@@ -71,19 +56,6 @@ class User
                 $sEmp->bindParam(':iban', $data['iban']);
                 $sEmp->bindValue(':grupo_cotizacion', $data['grupo_cotizacion'] ?? 1, PDO::PARAM_INT);
                 $sEmp->execute();
-
-                if ($data['rol'] === 'Fisioterapeuta') {
-                    $q2 = "INSERT INTO fisioterapeutas (usuario_id, especialidad_id) VALUES (:usuario_id, :especialidad_id)";
-                    $s2 = $this->db->prepare($q2);
-                    $s2->bindParam(':usuario_id', $data['usuario_id']);
-                    $s2->bindParam(':especialidad_id', $data['especialidad'], PDO::PARAM_INT);
-                    $s2->execute();
-                } elseif ($data['rol'] === 'Secretario') {
-                    $q2 = "INSERT INTO secretarios (usuario_id) VALUES (:usuario_id)";
-                    $s2 = $this->db->prepare($q2);
-                    $s2->bindParam(':usuario_id', $data['usuario_id']);
-                    $s2->execute();
-                }
             }
 
             $this->db->commit();
@@ -96,17 +68,7 @@ class User
 
     public function getAll()
     {
-        $query = "SELECT u.*, 
-                        CASE 
-                            WHEN p.usuario_id IS NOT NULL THEN 'Paciente'
-                            WHEN f.usuario_id IS NOT NULL THEN 'Fisioterapeuta'
-                            WHEN s.usuario_id IS NOT NULL THEN 'Secretario'
-                            ELSE 'Administrador' 
-                        END as rol
-                  FROM usuarios u 
-                  LEFT JOIN pacientes p ON u.usuario_id = p.usuario_id 
-                  LEFT JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id
-                  LEFT JOIN secretarios s ON u.usuario_id = s.usuario_id";
+        $query = "SELECT * FROM usuarios";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -114,21 +76,9 @@ class User
 
     public function getByRol($rol)
     {
-        if ($rol === 'Paciente') {
-            $query = "SELECT u.* FROM usuarios u JOIN pacientes p ON u.usuario_id = p.usuario_id";
-        } elseif ($rol === 'Fisioterapeuta') {
-            $query = "SELECT u.*, f.especialidad_id FROM usuarios u JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id";
-        } elseif ($rol === 'Secretario') {
-            $query = "SELECT u.* FROM usuarios u JOIN secretarios s ON u.usuario_id = s.usuario_id";
-        } else {
-            // Admin: no record in pacientes, fisioterapeutas, or secretarios
-            $query = "SELECT u.* FROM usuarios u 
-                      LEFT JOIN pacientes p ON u.usuario_id = p.usuario_id 
-                      LEFT JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id
-                      LEFT JOIN secretarios s ON u.usuario_id = s.usuario_id
-                      WHERE p.usuario_id IS NULL AND f.usuario_id IS NULL AND s.usuario_id IS NULL";
-        }
+        $query = "SELECT u.* FROM usuarios u WHERE u.rol = :rol";
         $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':rol', $rol);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -136,19 +86,10 @@ class User
     public function getWorkers()
     {
         // Todos los usuarios excepto pacientes
-        $query = "SELECT u.*, 
-                        CASE 
-                            WHEN f.usuario_id IS NOT NULL THEN 'Fisioterapeuta'
-                            WHEN s.usuario_id IS NOT NULL THEN 'Secretario'
-                            ELSE 'Administrador' 
-                        END as rol,
-                        e.nss, e.iban, e.grupo_cotizacion
+        $query = "SELECT u.*, e.nss, e.iban, e.grupo_cotizacion
                   FROM usuarios u
-                  LEFT JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id
-                  LEFT JOIN secretarios s ON u.usuario_id = s.usuario_id
-                  LEFT JOIN pacientes p ON u.usuario_id = p.usuario_id
                   LEFT JOIN empleados e ON u.usuario_id = e.usuario_id
-                  WHERE p.usuario_id IS NULL";
+                  WHERE u.rol != 'Paciente'";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -156,56 +97,38 @@ class User
 
     public function searchByRol($rol, $query)
     {
-        $table = '';
-        if ($rol === 'Paciente') $table = 'pacientes';
-        elseif ($rol === 'Fisioterapeuta') $table = 'fisioterapeutas';
-        elseif ($rol === 'Secretario') $table = 'secretarios';
-        
-        if (empty($table)) {
-            if ($rol === 'Administrador') {
-                $sql = "SELECT u.usuario_id, u.nombre, u.apellidos 
-                        FROM usuarios u 
-                        LEFT JOIN pacientes p ON u.usuario_id = p.usuario_id 
-                        LEFT JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id
-                        LEFT JOIN secretarios s ON u.usuario_id = s.usuario_id
-                        WHERE p.usuario_id IS NULL AND f.usuario_id IS NULL AND s.usuario_id IS NULL";
-                if (!empty($query)) {
-                    $sql .= " AND (u.nombre LIKE :q OR u.apellidos LIKE :q OR u.usuario_id LIKE :q)";
-                }
-                $sql .= " ORDER BY u.nombre ASC LIMIT 10";
-                $stmt = $this->db->prepare($sql);
-                if (!empty($query)) {
-                    $searchTerm = "%$query%";
-                    $stmt->bindParam(':q', $searchTerm);
-                }
-                $stmt->execute();
-                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($rol === 'Administrador') {
+            $sql = "SELECT u.usuario_id, u.nombre, u.apellidos 
+                    FROM usuarios u 
+                    WHERE u.rol = 'Administrador'";
+            if (!empty($query)) {
+                $sql .= " AND (u.nombre LIKE :q OR u.apellidos LIKE :q OR u.usuario_id LIKE :q)";
             }
-            return [];
+            $sql .= " ORDER BY u.nombre ASC LIMIT 10";
+            $stmt = $this->db->prepare($sql);
+            if (!empty($query)) {
+                $searchTerm = "%$query%";
+                $stmt->bindParam(':q', $searchTerm);
+            }
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         $sql = "SELECT u.usuario_id, u.nombre, u.apellidos 
                 FROM usuarios u 
-                JOIN $table r ON u.usuario_id = r.usuario_id";
+                WHERE u.rol = :rol";
         
         if (!empty($query)) {
-            $sql .= " WHERE (u.nombre LIKE :q OR u.apellidos LIKE :q OR u.usuario_id LIKE :q)";
+            $sql .= " AND (u.nombre LIKE :q OR u.apellidos LIKE :q OR u.usuario_id LIKE :q)";
         }
         $sql .= " ORDER BY u.nombre ASC LIMIT 10";
         
         $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':rol', $rol);
         if (!empty($query)) {
             $searchTerm = "%$query%";
             $stmt->bindParam(':q', $searchTerm);
         }
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function getSpecialties()
-    {
-        $query = "SELECT * FROM especialidades";
-        $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -233,7 +156,8 @@ class User
                         municipio = :municipio, 
                         cp = :cp, 
                         email = :email, 
-                        genero = :genero";
+                        genero = :genero,
+                        rol = :rol";
             
             if (!empty($data['pass'])) {
                 $query .= ", pass = :pass";
@@ -253,25 +177,16 @@ class User
             $stmt->bindParam(':cp', $data['cp']);
             $stmt->bindParam(':email', $data['email']);
             $stmt->bindParam(':genero', $data['genero']);
+            $stmt->bindParam(':rol', $data['rol']);
             
             if (!empty($data['pass'])) {
                 $stmt->bindParam(':pass', $data['pass']);
             }
             $stmt->execute();
 
-            // Eliminar de tablas de rol específicas
-            $this->db->prepare("DELETE FROM pacientes WHERE usuario_id = :id")->execute([':id' => $usuario_id]);
-            $this->db->prepare("DELETE FROM fisioterapeutas WHERE usuario_id = :id")->execute([':id' => $usuario_id]);
-            $this->db->prepare("DELETE FROM secretarios WHERE usuario_id = :id")->execute([':id' => $usuario_id]);
-
             if ($data['rol'] === 'Paciente') {
-                // Eliminar de empleados si existía
+                // Si pasa a paciente, eliminar sus datos de empleado
                 $this->db->prepare("DELETE FROM empleados WHERE usuario_id = :id")->execute([':id' => $usuario_id]);
-
-                $q2 = "INSERT INTO pacientes (usuario_id) VALUES (:usuario_id)";
-                $s2 = $this->db->prepare($q2);
-                $s2->bindParam(':usuario_id', $usuario_id);
-                $s2->execute();
             } else {
                 // Es un trabajador (Fisioterapeuta, Secretario, Administrador)
                 $qEmp = "INSERT INTO empleados (usuario_id, nss, iban, grupo_cotizacion) 
@@ -283,19 +198,6 @@ class User
                 $sEmp->bindParam(':iban', $data['iban']);
                 $sEmp->bindValue(':grupo_cotizacion', $data['grupo_cotizacion'] ?? 1, PDO::PARAM_INT);
                 $sEmp->execute();
-
-                if ($data['rol'] === 'Fisioterapeuta') {
-                    $q2 = "INSERT INTO fisioterapeutas (usuario_id, especialidad_id) VALUES (:usuario_id, :especialidad_id)";
-                    $s2 = $this->db->prepare($q2);
-                    $s2->bindParam(':usuario_id', $usuario_id);
-                    $s2->bindParam(':especialidad_id', $data['especialidad'], PDO::PARAM_INT);
-                    $s2->execute();
-                } elseif ($data['rol'] === 'Secretario') {
-                    $q2 = "INSERT INTO secretarios (usuario_id) VALUES (:usuario_id)";
-                    $s2 = $this->db->prepare($q2);
-                    $s2->bindParam(':usuario_id', $usuario_id);
-                    $s2->execute();
-                }
             }
 
             $this->db->commit();
@@ -305,4 +207,4 @@ class User
             return false;
         }
     }
-}
+}

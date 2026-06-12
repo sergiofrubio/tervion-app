@@ -44,7 +44,6 @@ include TEMPLATE_DIR . 'header.php';
                 </div>
                 <div>
                     <h4 class="text-lg font-bold text-gray-900"><?= $report['fisioterapeuta_nombre'] . ' ' . $report['fisioterapeuta_apellidos'] ?></h4>
-                    <p class="text-sm text-gray-500"><?= $report['especialidad'] ?></p>
                 </div>
             </div>
         </div>

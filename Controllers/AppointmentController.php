@@ -30,7 +30,7 @@ class AppointmentController extends Controller
      * Crea una nueva cita.
      *
      * Si la petición es POST, guarda los datos de la cita y redirige a la lista de citas.
-     * Si es GET, muestra el formulario de creación de citas con las especialidades disponibles.
+     * Si es GET, muestra el formulario de creación de citas.
      *
      * @return void
      */
@@ -43,9 +43,8 @@ class AppointmentController extends Controller
             $fisioterapeuta_id = $_POST['fisioterapeuta_id'] ?? '';
             $fecha_hora = $_POST['fecha_hora'] ?? '';
             $estado = 'Programada';
-            $especialidad_id = $_POST['especialidad_id'] ?? 1;
 
-            if (!empty($paciente_id) && !empty($fisioterapeuta_id) && !empty($fecha_hora) && $appointment->save($paciente_id, $fisioterapeuta_id, $fecha_hora, $estado, $especialidad_id)) {
+            if (!empty($paciente_id) && !empty($fisioterapeuta_id) && !empty($fecha_hora) && $appointment->save($paciente_id, $fisioterapeuta_id, $fecha_hora, $estado)) {
                 $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
                 header('Location: ' . PROJECT_ROOT . $redirect . '?alert=success&message=Cita programada correctamente');
                 $this->exitApp();
@@ -55,7 +54,6 @@ class AppointmentController extends Controller
         } else {
             $userModel = $this->model('User');
             $data = [
-                'especialidades' => $userModel->getSpecialties(),
                 'fisioterapeutas' => $userModel->getByRol('Fisioterapeuta')
             ];
             
@@ -127,9 +125,8 @@ class AppointmentController extends Controller
             $fisioterapeuta_id = $_POST['fisioterapeuta_id'];
             $fecha_hora = $_POST['fecha_hora'];
             $estado = 'Programada';
-            $especialidad_id = $_POST['especialidad_id'] ?? 1;
 
-            if ($appointment->update($id, $paciente_id, $fisioterapeuta_id, $fecha_hora, $estado, $especialidad_id)) {
+            if ($appointment->update($id, $paciente_id, $fisioterapeuta_id, $fecha_hora, $estado)) {
                 $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
                 header('Location: ' . PROJECT_ROOT . $redirect . '?alert=success&message=Cita actualizada correctamente');
                 $this->exitApp();
@@ -142,7 +139,6 @@ class AppointmentController extends Controller
             $userModel = $this->model('User');
             $data = [
                 'appointment' => $appointment->getById($id),
-                'especialidades' => $userModel->getSpecialties(),
                 'fisioterapeutas' => $userModel->getByRol('Fisioterapeuta')
             ];
             

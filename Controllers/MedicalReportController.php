@@ -103,8 +103,7 @@ class MedicalReportController extends Controller
         $pdf->SetFont('Arial', 'B', 12);
         $pdf->Cell(0, 10, iconv('UTF-8', 'windows-1252', 'Detalles de la Consulta'), 0, 1, 'L', true);
         $pdf->SetFont('Arial', '', 11);
-        $pdf->Cell(95, 8, iconv('UTF-8', 'windows-1252', 'Fecha: ' . date('d/m/Y H:i', strtotime($report['fecha_consulta']))), 0, 0);
-        $pdf->Cell(95, 8, iconv('UTF-8', 'windows-1252', 'Especialidad: ' . $report['especialidad']), 0, 1);
+        $pdf->Cell(0, 8, iconv('UTF-8', 'windows-1252', 'Fecha: ' . date('d/m/Y H:i', strtotime($report['fecha_consulta']))), 0, 1);
         $pdf->Cell(0, 8, iconv('UTF-8', 'windows-1252', 'Fisioterapeuta: ' . $report['fisioterapeuta_nombre'] . ' ' . $report['fisioterapeuta_apellidos']), 0, 1);
         $pdf->Ln(5);
 

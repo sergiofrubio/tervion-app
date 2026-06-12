@@ -121,8 +121,8 @@ class RegisterController extends Controller
 
             // 1. Insertar el usuario Administrador
             $hashedPass = password_hash($pass, PASSWORD_DEFAULT);
-            $stmtUser = $db->prepare("INSERT INTO usuarios (usuario_id, nombre, apellidos, telefono, fecha_nacimiento, direccion, provincia, municipio, cp, email, pass, genero) 
-                                      VALUES (:usuario_id, :nombre, :apellidos, :telefono, :fecha_nacimiento, :direccion, :provincia, :municipio, :cp, :email, :pass, :genero)");
+            $stmtUser = $db->prepare("INSERT INTO usuarios (usuario_id, nombre, apellidos, telefono, fecha_nacimiento, direccion, provincia, municipio, cp, email, pass, genero, rol) 
+                                      VALUES (:usuario_id, :nombre, :apellidos, :telefono, :fecha_nacimiento, :direccion, :provincia, :municipio, :cp, :email, :pass, :genero, 'Administrador')");
             $stmtUser->execute([
                 ':usuario_id' => $usuario_id,
                 ':nombre' => $nombre,

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 15-05-2026 a las 19:02:24
+-- Tiempo de generación: 12-06-2026 a las 20:09:46
 -- Versión del servidor: 8.0.44
 -- Versión de PHP: 8.3.26
 
@@ -97,7 +97,6 @@ CREATE TABLE `citas` (
   `fecha_hora` datetime NOT NULL,
   `estado` enum('Programada','Cancelada','Realizada','Pendiente') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `bono_paciente_id` int DEFAULT NULL,
-  `especialidad_id` int NOT NULL,
   `creado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `modificado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
@@ -108,18 +107,18 @@ CREATE TABLE `citas` (
 -- Volcado de datos para la tabla `citas`
 --
 
-INSERT INTO `citas` (`cita_id`, `paciente_id`, `fisioterapeuta_id`, `fecha_hora`, `estado`, `bono_paciente_id`, `especialidad_id`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
-(1, '123456789', '234567890', '2024-01-15 10:00:00', 'Realizada', NULL, 1, NULL, '2026-05-04 17:37:34', NULL, NULL),
-(2, '123456789', '234567890', '2024-02-20 11:00:00', 'Realizada', NULL, 1, NULL, '2026-05-04 17:37:34', NULL, NULL),
-(3, '123456789', '234567890', '2024-03-25 09:00:00', 'Realizada', NULL, 1, NULL, '2026-05-04 17:37:34', NULL, NULL),
-(4, '123456789', '234567890', '2024-04-20 10:00:00', 'Programada', NULL, 1, NULL, '2026-05-04 17:37:34', NULL, NULL),
-(5, '234567890', '345678901', '2024-05-05 14:00:00', 'Cancelada', NULL, 2, NULL, '2026-05-04 17:37:34', NULL, NULL),
-(8, '123456789', '234567890', '2026-05-12 08:42:00', 'Programada', NULL, 1, NULL, '2026-05-10 08:42:05', NULL, NULL),
-(9, '123456789', '234567890', '2026-05-12 08:42:00', 'Programada', NULL, 1, NULL, '2026-05-10 08:42:29', NULL, NULL),
-(10, '123456789', '234567890', '2026-05-12 08:45:00', 'Programada', NULL, 1, NULL, '2026-05-10 08:45:47', NULL, NULL),
-(11, '123456789', '234567890', '2026-05-12 08:47:00', 'Programada', NULL, 1, NULL, '2026-05-10 08:47:34', NULL, NULL),
-(12, '123456789', '234567890', '2026-05-12 08:49:00', 'Programada', NULL, 1, NULL, '2026-05-10 08:49:44', NULL, NULL),
-(13, '123456789', '234567890', '2026-05-12 08:50:00', 'Programada', NULL, 1, NULL, '2026-05-10 08:50:29', NULL, NULL);
+INSERT INTO `citas` (`cita_id`, `paciente_id`, `fisioterapeuta_id`, `fecha_hora`, `estado`, `bono_paciente_id`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
+(1, '123456789', '234567890', '2024-01-15 10:00:00', 'Realizada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
+(2, '123456789', '234567890', '2024-02-20 11:00:00', 'Realizada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
+(3, '123456789', '234567890', '2024-03-25 09:00:00', 'Realizada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
+(4, '123456789', '234567890', '2024-04-20 10:00:00', 'Programada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
+(5, '234567890', '345678901', '2024-05-05 14:00:00', 'Cancelada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
+(8, '123456789', '234567890', '2026-05-12 08:42:00', 'Programada', NULL, NULL, '2026-05-10 08:42:05', NULL, NULL),
+(9, '123456789', '234567890', '2026-05-12 08:42:00', 'Programada', NULL, NULL, '2026-05-10 08:42:29', NULL, NULL),
+(10, '123456789', '234567890', '2026-05-12 08:45:00', 'Programada', NULL, NULL, '2026-05-10 08:45:47', NULL, NULL),
+(11, '123456789', '234567890', '2026-05-12 08:47:00', 'Programada', NULL, NULL, '2026-05-10 08:47:34', NULL, NULL),
+(12, '123456789', '234567890', '2026-05-12 08:49:00', 'Programada', NULL, NULL, '2026-05-10 08:49:44', NULL, NULL),
+(13, '123456789', '234567890', '2026-05-12 08:50:00', 'Programada', NULL, NULL, '2026-05-10 08:50:29', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -162,6 +161,13 @@ CREATE TABLE `contratos` (
   `activo` tinyint(1) DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Volcado de datos para la tabla `contratos`
+--
+
+INSERT INTO `contratos` (`contrato_id`, `usuario_id`, `fecha_inicio`, `fecha_fin`, `tipo_contrato`, `salario_base_mensual`, `complementos_mensuales`, `pagas_extra`, `irpf_porcentaje`, `activo`) VALUES
+(1, '234567890', '2025-01-01', NULL, 'Indefinido', 2200.00, 300.00, 2, 15.00, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -201,46 +207,12 @@ CREATE TABLE `empleados` (
   `grupo_cotizacion` int DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
-
 --
--- Estructura de tabla para la tabla `especialidades`
+-- Volcado de datos para la tabla `empleados`
 --
 
-CREATE TABLE `especialidades` (
-  `especialidad_id` int NOT NULL,
-  `descripcion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `creado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `modificado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Volcado de datos para la tabla `especialidades`
---
-
-INSERT INTO `especialidades` (`especialidad_id`, `descripcion`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
-(1, 'Fisioterapia Deportiva', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(2, 'Fisioterapia Neurologica', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(3, 'Fisioterapia Respiratoria', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(4, 'Fisioterapia Pediatrica', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(5, 'Fisioterapia Geriatrica', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(6, 'Fisioterapia Ortopedica', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(7, 'Fisioterapia Cardiovascular', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(8, 'Fisioterapia Oncologica', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(9, 'Fisioterapia del Suelo Pelvico', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(10, 'Fisioterapia Musculoesqueletica', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(11, 'Fisioterapia Acuatica (Hidroterapia)', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(12, 'Fisioterapia Manual', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(13, 'Fisioterapia Deportiva Adaptada', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(14, 'Fisioterapia del Dolor', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(15, 'Fisioterapia Vestibular', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(16, 'Fisioterapia en Salud Mental', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(17, 'Fisioterapia Dermatofuncional', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(18, 'Fisioterapia en Disfunciones Temporomandibulares', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(19, 'Fisioterapia en Traumatologia y Cirugi­a Ortopedica', NULL, '2026-05-04 17:30:18', NULL, NULL),
-(20, 'Fisioterapia en Salud de la Mujer (Maternidad y Postparto)', NULL, '2026-05-04 17:30:18', NULL, NULL);
+INSERT INTO `empleados` (`usuario_id`, `nss`, `iban`, `grupo_cotizacion`) VALUES
+('234567890', '281234567890', 'ES2100001234567890123456', 2);
 
 -- --------------------------------------------------------
 
@@ -281,20 +253,56 @@ INSERT INTO `facturas` (`factura_id`, `serie`, `numero`, `tipo_factura`, `pacien
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `fisioterapeutas`
+-- Estructura de tabla para la tabla `gastos`
 --
 
-CREATE TABLE `fisioterapeutas` (
-  `usuario_id` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `especialidad_id` int DEFAULT NULL
+CREATE TABLE `gastos` (
+  `gasto_id` int NOT NULL,
+  `nif_proveedor` varchar(20) NOT NULL,
+  `nombre_proveedor` varchar(255) NOT NULL,
+  `numero_factura` varchar(50) NOT NULL,
+  `fecha_emision` date NOT NULL,
+  `concepto` varchar(255) NOT NULL,
+  `base_imponible` decimal(10,2) NOT NULL,
+  `tipo_iva` decimal(5,2) NOT NULL DEFAULT '21.00',
+  `cuota_iva` decimal(10,2) NOT NULL,
+  `retencion_irpf` decimal(5,2) NOT NULL DEFAULT '0.00',
+  `cuota_irpf` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `total` decimal(10,2) NOT NULL,
+  `categoria` enum('Alquileres','Suministros','Personal','Servicios profesionales','Bienes de inversiÃ³n','Otros') NOT NULL DEFAULT 'Otros',
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Volcado de datos para la tabla `fisioterapeutas`
+-- Volcado de datos para la tabla `gastos`
 --
 
-INSERT INTO `fisioterapeutas` (`usuario_id`, `especialidad_id`) VALUES
-('234567890', 5);
+INSERT INTO `gastos` (`gasto_id`, `nif_proveedor`, `nombre_proveedor`, `numero_factura`, `fecha_emision`, `concepto`, `base_imponible`, `tipo_iva`, `cuota_iva`, `retencion_irpf`, `cuota_irpf`, `total`, `categoria`, `fecha_creacion`) VALUES
+(1, 'A95075578', 'Iberdrola Clientes S.A.U.', 'BANC-20260609-97', '2026-06-09', 'Conciliación bancaria: PAGO CON TARJETA IBERDROLA', 118.60, 21.00, 24.91, 0.00, 0.00, 143.51, 'Suministros', '2026-06-10 15:44:20'),
+(2, 'B82345678', 'Gestoría Rivas S.L.', 'BANC-20260607-38', '2026-06-07', 'Conciliación bancaria: RECIBO GESTORIA RIVAS CUOTA', 85.61, 21.00, 17.98, 15.00, 12.84, 90.75, 'Servicios profesionales', '2026-06-10 15:44:20'),
+(3, 'F91122334', 'Patrimonial Centro Histórico S.A.', 'BANC-20260605-31', '2026-06-05', 'Conciliación bancaria: TRANSFERENCIA ALQUILER LOCAL JUNIO', 1423.53, 21.00, 298.94, 19.00, 270.47, 1452.00, 'Alquileres', '2026-06-10 15:44:20'),
+(4, 'TGSS0001', 'Tesorería General de la S.S.', 'BANC-20260604-56', '2026-06-04', 'Conciliación bancaria: TRANSFERENCIA SEGUROS SOCIALES TGSS', 450.00, 0.00, 0.00, 0.00, 0.00, 450.00, 'Personal', '2026-06-10 15:44:20'),
+(5, 'B99221100', 'FisioDistribuciones España S.L.', 'BANC-20260531-13', '2026-05-31', 'Conciliación bancaria: COMPRA MATERIAL SANITARIO FISIODIST', 145.50, 21.00, 30.56, 0.00, 0.00, 176.06, 'Otros', '2026-06-10 15:44:20'),
+(6, 'A95075578', 'Iberdrola Clientes S.A.U.', 'BANC-20260609-75', '2026-06-09', 'Conciliación bancaria: PAGO CON TARJETA IBERDROLA', 118.60, 21.00, 24.91, 0.00, 0.00, 143.51, 'Suministros', '2026-06-10 15:44:32'),
+(7, 'B82345678', 'Gestoría Rivas S.L.', 'BANC-20260607-57', '2026-06-07', 'Conciliación bancaria: RECIBO GESTORIA RIVAS CUOTA', 85.61, 21.00, 17.98, 15.00, 12.84, 90.75, 'Servicios profesionales', '2026-06-10 15:44:32'),
+(8, 'F91122334', 'Patrimonial Centro Histórico S.A.', 'BANC-20260605-75', '2026-06-05', 'Conciliación bancaria: TRANSFERENCIA ALQUILER LOCAL JUNIO', 1423.53, 21.00, 298.94, 19.00, 270.47, 1452.00, 'Alquileres', '2026-06-10 15:44:32'),
+(9, 'TGSS0001', 'Tesorería General de la S.S.', 'BANC-20260604-90', '2026-06-04', 'Conciliación bancaria: TRANSFERENCIA SEGUROS SOCIALES TGSS', 450.00, 0.00, 0.00, 0.00, 0.00, 450.00, 'Personal', '2026-06-10 15:44:32'),
+(10, 'B99221100', 'FisioDistribuciones España S.L.', 'BANC-20260531-19', '2026-05-31', 'Conciliación bancaria: COMPRA MATERIAL SANITARIO FISIODIST', 145.50, 21.00, 30.56, 0.00, 0.00, 176.06, 'Otros', '2026-06-10 15:44:32'),
+(11, 'A95075578', 'Iberdrola Clientes S.A.U.', 'BANC-20260609-14', '2026-06-09', 'Conciliación bancaria: PAGO CON TARJETA IBERDROLA', 118.60, 21.00, 24.91, 0.00, 0.00, 143.51, 'Suministros', '2026-06-10 15:46:02'),
+(12, 'B82345678', 'Gestoría Rivas S.L.', 'BANC-20260607-32', '2026-06-07', 'Conciliación bancaria: RECIBO GESTORIA RIVAS CUOTA', 85.61, 21.00, 17.98, 15.00, 12.84, 90.75, 'Servicios profesionales', '2026-06-10 15:46:02'),
+(13, 'F91122334', 'Patrimonial Centro Histórico S.A.', 'BANC-20260605-45', '2026-06-05', 'Conciliación bancaria: TRANSFERENCIA ALQUILER LOCAL JUNIO', 1423.53, 21.00, 298.94, 19.00, 270.47, 1452.00, 'Alquileres', '2026-06-10 15:46:02'),
+(14, 'TGSS0001', 'Tesorería General de la S.S.', 'BANC-20260604-21', '2026-06-04', 'Conciliación bancaria: TRANSFERENCIA SEGUROS SOCIALES TGSS', 450.00, 0.00, 0.00, 0.00, 0.00, 450.00, 'Personal', '2026-06-10 15:46:02'),
+(15, 'B99221100', 'FisioDistribuciones España S.L.', 'BANC-20260531-70', '2026-05-31', 'Conciliación bancaria: COMPRA MATERIAL SANITARIO FISIODIST', 145.50, 21.00, 30.56, 0.00, 0.00, 176.06, 'Otros', '2026-06-10 15:46:02'),
+(16, 'A95075578', 'Iberdrola Clientes S.A.U.', 'BANC-20260609-68', '2026-06-09', 'Conciliación bancaria: PAGO CON TARJETA IBERDROLA', 118.60, 21.00, 24.91, 0.00, 0.00, 143.51, 'Suministros', '2026-06-10 15:46:06'),
+(17, 'B82345678', 'Gestoría Rivas S.L.', 'BANC-20260607-69', '2026-06-07', 'Conciliación bancaria: RECIBO GESTORIA RIVAS CUOTA', 85.61, 21.00, 17.98, 15.00, 12.84, 90.75, 'Servicios profesionales', '2026-06-10 15:46:06'),
+(18, 'F91122334', 'Patrimonial Centro Histórico S.A.', 'BANC-20260605-95', '2026-06-05', 'Conciliación bancaria: TRANSFERENCIA ALQUILER LOCAL JUNIO', 1423.53, 21.00, 298.94, 19.00, 270.47, 1452.00, 'Alquileres', '2026-06-10 15:46:06'),
+(19, 'TGSS0001', 'Tesorería General de la S.S.', 'BANC-20260604-77', '2026-06-04', 'Conciliación bancaria: TRANSFERENCIA SEGUROS SOCIALES TGSS', 450.00, 0.00, 0.00, 0.00, 0.00, 450.00, 'Personal', '2026-06-10 15:46:06'),
+(20, 'B99221100', 'FisioDistribuciones España S.L.', 'BANC-20260531-52', '2026-05-31', 'Conciliación bancaria: COMPRA MATERIAL SANITARIO FISIODIST', 145.50, 21.00, 30.56, 0.00, 0.00, 176.06, 'Otros', '2026-06-10 15:46:06'),
+(21, 'A95075578', 'Iberdrola Clientes S.A.U.', 'BANC-20260609-32', '2026-06-09', 'Conciliación bancaria: PAGO CON TARJETA IBERDROLA', 118.60, 21.00, 24.91, 0.00, 0.00, 143.51, 'Suministros', '2026-06-10 15:46:23'),
+(22, 'B82345678', 'Gestoría Rivas S.L.', 'BANC-20260607-34', '2026-06-07', 'Conciliación bancaria: RECIBO GESTORIA RIVAS CUOTA', 85.61, 21.00, 17.98, 15.00, 12.84, 90.75, 'Servicios profesionales', '2026-06-10 15:46:23'),
+(23, 'F91122334', 'Patrimonial Centro Histórico S.A.', 'BANC-20260605-97', '2026-06-05', 'Conciliación bancaria: TRANSFERENCIA ALQUILER LOCAL JUNIO', 1423.53, 21.00, 298.94, 19.00, 270.47, 1452.00, 'Alquileres', '2026-06-10 15:46:23'),
+(24, 'TGSS0001', 'Tesorería General de la S.S.', 'BANC-20260604-68', '2026-06-04', 'Conciliación bancaria: TRANSFERENCIA SEGUROS SOCIALES TGSS', 450.00, 0.00, 0.00, 0.00, 0.00, 450.00, 'Personal', '2026-06-10 15:46:23'),
+(25, 'B99221100', 'FisioDistribuciones España S.L.', 'BANC-20260531-71', '2026-05-31', 'Conciliación bancaria: COMPRA MATERIAL SANITARIO FISIODIST', 145.50, 21.00, 30.56, 0.00, 0.00, 176.06, 'Otros', '2026-06-10 15:46:23');
 
 -- --------------------------------------------------------
 
@@ -397,23 +405,6 @@ CREATE TABLE `nominas` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `pacientes`
---
-
-CREATE TABLE `pacientes` (
-  `usuario_id` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Volcado de datos para la tabla `pacientes`
---
-
-INSERT INTO `pacientes` (`usuario_id`) VALUES
-('123456789');
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `pagos`
 --
 
@@ -461,6 +452,7 @@ CREATE TABLE `usuarios` (
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `pass` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `genero` enum('Hombre','Mujer','Otro') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `rol` enum('Administrador','Fisioterapeuta','Secretario','Paciente') NOT NULL DEFAULT 'Paciente',
   `creado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `modificado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
@@ -471,10 +463,10 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`usuario_id`, `nombre`, `apellidos`, `telefono`, `fecha_nacimiento`, `direccion`, `provincia`, `municipio`, `cp`, `email`, `pass`, `genero`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
-('123456789', 'Juan', 'Perez', '123456789', '1990-01-01', 'Calle 123', 'Provincia 1', 'Ciudad 1', '12345', 'patient@example.com', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Hombre', NULL, '2026-05-04 17:30:03', NULL, NULL),
-('234567890', 'Maria', 'Lopez', '234567890', '1995-05-05', 'Avenida 456', 'Provincia 2', 'Ciudad 2', '23456', 'fisio@example.com', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Mujer', NULL, '2026-05-04 17:30:03', NULL, NULL),
-('345678901', 'Pedro', 'Gomez', '345678901', '1985-10-10', 'Plaza 789', 'Provincia 3', 'Ciudad 3', '34567', 'admin@example.com', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Hombre', NULL, '2026-05-04 17:30:03', NULL, NULL);
+INSERT INTO `usuarios` (`usuario_id`, `nombre`, `apellidos`, `telefono`, `fecha_nacimiento`, `direccion`, `provincia`, `municipio`, `cp`, `email`, `pass`, `genero`, `rol`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
+('123456789', 'Juan', 'Perez', '123456789', '1990-01-01', 'Calle 123', 'Provincia 1', 'Ciudad 1', '12345', 'patient@example.com', '$2y$12$bIEopyzNCTfMkRN7b/W.EOf22V1.Ss/n9bDOYE6pew9w5oX4ciseC', 'Hombre', 'Paciente', NULL, '2026-05-04 17:30:03', NULL, '2026-06-09 17:16:00'),
+('234567890', 'Maria', 'Lopez', '234567890', '1995-05-05', 'Avenida 456', 'Provincia 2', 'Ciudad 2', '23456', 'fisio@example.com', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Mujer', 'Fisioterapeuta', NULL, '2026-05-04 17:30:03', NULL, '2026-06-12 20:07:40'),
+('345678901', 'Pedro', 'Gomez', '345678901', '1985-10-10', 'Plaza 789', 'Provincia 3', 'Ciudad 3', '34567', 'admin@example.com', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Hombre', 'Administrador', NULL, '2026-05-04 17:30:03', NULL, '2026-06-12 20:07:40');
 
 --
 -- Índices para tablas volcadas
@@ -514,7 +506,6 @@ ALTER TABLE `citas`
   ADD PRIMARY KEY (`cita_id`),
   ADD KEY `paciente_id` (`paciente_id`),
   ADD KEY `fisioterapeuta_id` (`fisioterapeuta_id`),
-  ADD KEY `especialidad_id` (`especialidad_id`),
   ADD KEY `fk_citas_creador` (`creado_por`),
   ADD KEY `fk_citas_modificador` (`modificado_por`),
   ADD KEY `fk_citas_bono` (`bono_paciente_id`);
@@ -549,14 +540,6 @@ ALTER TABLE `empleados`
   ADD PRIMARY KEY (`usuario_id`);
 
 --
--- Indices de la tabla `especialidades`
---
-ALTER TABLE `especialidades`
-  ADD PRIMARY KEY (`especialidad_id`),
-  ADD KEY `fk_especialidades_creador` (`creado_por`),
-  ADD KEY `fk_especialidades_modificador` (`modificado_por`);
-
---
 -- Indices de la tabla `facturas`
 --
 ALTER TABLE `facturas`
@@ -567,11 +550,10 @@ ALTER TABLE `facturas`
   ADD KEY `fk_facturas_modificador` (`modificado_por`);
 
 --
--- Indices de la tabla `fisioterapeutas`
+-- Indices de la tabla `gastos`
 --
-ALTER TABLE `fisioterapeutas`
-  ADD PRIMARY KEY (`usuario_id`),
-  ADD KEY `fk_fisios_especialidad` (`especialidad_id`);
+ALTER TABLE `gastos`
+  ADD PRIMARY KEY (`gasto_id`);
 
 --
 -- Indices de la tabla `historiales_medicos`
@@ -609,12 +591,6 @@ ALTER TABLE `nominas`
   ADD KEY `fk_nomina_contrato` (`contrato_id`);
 
 --
--- Indices de la tabla `pacientes`
---
-ALTER TABLE `pacientes`
-  ADD PRIMARY KEY (`usuario_id`);
-
---
 -- Indices de la tabla `pagos`
 --
 ALTER TABLE `pagos`
@@ -637,7 +613,8 @@ ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`usuario_id`),
   ADD UNIQUE KEY `email` (`email`),
   ADD KEY `fk_usuarios_creador` (`creado_por`),
-  ADD KEY `fk_usuarios_modificador` (`modificado_por`);
+  ADD KEY `fk_usuarios_modificador` (`modificado_por`),
+  ADD KEY `idx_usuarios_rol` (`rol`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -677,7 +654,7 @@ ALTER TABLE `clinicas`
 -- AUTO_INCREMENT de la tabla `contratos`
 --
 ALTER TABLE `contratos`
-  MODIFY `contrato_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `contrato_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `cuentas_clientes`
@@ -686,16 +663,16 @@ ALTER TABLE `cuentas_clientes`
   MODIFY `cuenta_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de la tabla `especialidades`
---
-ALTER TABLE `especialidades`
-  MODIFY `especialidad_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
-
---
 -- AUTO_INCREMENT de la tabla `facturas`
 --
 ALTER TABLE `facturas`
   MODIFY `factura_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `gastos`
+--
+ALTER TABLE `gastos`
+  MODIFY `gasto_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `historiales_medicos`
@@ -731,7 +708,7 @@ ALTER TABLE `pagos`
 -- AUTO_INCREMENT de la tabla `password_resets`
 --
 ALTER TABLE `password_resets`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
@@ -767,7 +744,6 @@ ALTER TABLE `bonos_pacientes`
 ALTER TABLE `citas`
   ADD CONSTRAINT `citas_ibfk_1` FOREIGN KEY (`paciente_id`) REFERENCES `usuarios` (`usuario_id`),
   ADD CONSTRAINT `citas_ibfk_2` FOREIGN KEY (`fisioterapeuta_id`) REFERENCES `usuarios` (`usuario_id`),
-  ADD CONSTRAINT `citas_ibfk_3` FOREIGN KEY (`especialidad_id`) REFERENCES `especialidades` (`especialidad_id`),
   ADD CONSTRAINT `fk_citas_bono` FOREIGN KEY (`bono_paciente_id`) REFERENCES `bonos_pacientes` (`bono_paciente_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_citas_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_citas_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
@@ -785,26 +761,12 @@ ALTER TABLE `empleados`
   ADD CONSTRAINT `fk_empleado_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `especialidades`
---
-ALTER TABLE `especialidades`
-  ADD CONSTRAINT `fk_especialidades_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_especialidades_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
 -- Filtros para la tabla `facturas`
 --
 ALTER TABLE `facturas`
   ADD CONSTRAINT `facturas_ibfk_1` FOREIGN KEY (`paciente_id`) REFERENCES `usuarios` (`usuario_id`),
   ADD CONSTRAINT `fk_facturas_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_facturas_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `fisioterapeutas`
---
-ALTER TABLE `fisioterapeutas`
-  ADD CONSTRAINT `fk_fisios_especialidad` FOREIGN KEY (`especialidad_id`) REFERENCES `especialidades` (`especialidad_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_fisios_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `historiales_medicos`
@@ -836,12 +798,6 @@ ALTER TABLE `metodos_pago`
 --
 ALTER TABLE `nominas`
   ADD CONSTRAINT `fk_nomina_contrato_link` FOREIGN KEY (`contrato_id`) REFERENCES `contratos` (`contrato_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `pacientes`
---
-ALTER TABLE `pacientes`
-  ADD CONSTRAINT `fk_pacientes_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `pagos`

@@ -114,7 +114,6 @@ include TEMPLATE_DIR . 'header.php';
                                     </div>
                                     <div>
                                         <h4 class="text-sm font-bold text-gray-900"><?= $appointment['paciente_nombre'] . ' ' . $appointment['paciente_apellidos'] ?></h4>
-                                        <p class="text-xs text-gray-500 mt-0.5"><?= $appointment['especialidad'] ?></p>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-4">

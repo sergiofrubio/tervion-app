@@ -37,13 +37,6 @@ class Setting
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getEspecialidades()
-    {
-        $query = "SELECT * FROM especialidades ORDER BY descripcion";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
 
     // Bonos
     public function getBonos()
@@ -57,9 +50,9 @@ class Setting
     // Get Physiotherapists
     public function getFisios()
     {
-        $query = "SELECT u.usuario_id, u.nombre, u.apellidos 
-                  FROM usuarios u 
-                  JOIN fisioterapeutas f ON u.usuario_id = f.usuario_id";
+        $query = "SELECT usuario_id, nombre, apellidos 
+                  FROM usuarios 
+                  WHERE rol = 'Fisioterapeuta'";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -81,13 +74,6 @@ class Setting
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getEspecialidadById($id)
-    {
-        $query = "SELECT * FROM especialidades WHERE especialidad_id = :id";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute([':id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
 
     public function getBonoById($id)
     {
@@ -114,13 +100,6 @@ class Setting
         return $stmt->execute($data);
     }
 
-    public function saveEspecialidad($descripcion)
-    {
-        $query = "INSERT INTO especialidades (descripcion) VALUES (:descripcion)";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':descripcion', $descripcion);
-        return $stmt->execute();
-    }
 
     public function saveBono($data)
     {
@@ -148,12 +127,6 @@ class Setting
         return $stmt->execute($data);
     }
 
-    public function updateEspecialidad($id, $descripcion)
-    {
-        $query = "UPDATE especialidades SET descripcion = :descripcion WHERE especialidad_id = :id";
-        $stmt = $this->db->prepare($query);
-        return $stmt->execute([':descripcion' => $descripcion, ':id' => $id]);
-    }
 
     public function updateBono($id, $data)
     {

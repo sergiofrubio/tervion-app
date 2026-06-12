@@ -71,8 +71,7 @@ class PayrollController extends Controller
                 'genero' => $_POST['genero'] ?? 'Otro',
                 'nss' => htmlspecialchars($_POST['nss'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'iban' => htmlspecialchars($_POST['iban'] ?? '', ENT_QUOTES, 'UTF-8'),
-                'grupo_cotizacion' => !empty($_POST['grupo_cotizacion']) ? (int)$_POST['grupo_cotizacion'] : 1,
-                'especialidad' => !empty($_POST['especialidad']) ? (int)$_POST['especialidad'] : null
+                'grupo_cotizacion' => !empty($_POST['grupo_cotizacion']) ? (int)$_POST['grupo_cotizacion'] : 1
             ];
 
             if (!$userModel->save($workerData)) {
@@ -96,10 +95,7 @@ class PayrollController extends Controller
                 $this->exitApp();
             }
         } else {
-            $data = [
-                'especialidades' => $userModel->getSpecialties()
-            ];
-            $this->view('payroll/contract_form', $data);
+            $this->view('payroll/contract_form');
         }
     }
 

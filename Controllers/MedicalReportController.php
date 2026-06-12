@@ -31,7 +31,7 @@ class MedicalReportController extends Controller
 
             if ($historyModel->save($data)) {
                 header('Location: ' . PROJECT_ROOT . '/users/detail?id=' . $data['paciente_id']);
-                exit();
+                $this->exitApp();
             } else {
                 echo "Error al guardar el historial médico.";
             }

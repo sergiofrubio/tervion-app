@@ -47,7 +47,7 @@ class ShopController extends Controller
         
         if (!$bono) {
             header('Location: ' . PROJECT_ROOT . '/vista-pacientes/tienda');
-            exit();
+            $this->exitApp();
         }
 
         $data = [
@@ -95,7 +95,7 @@ class ShopController extends Controller
             // ...
             
             header('Location: ' . PROJECT_ROOT . '/vista-pacientes/citas?success=purchased');
-            exit();
+            $this->exitApp();
         }
     }
 }

@@ -114,12 +114,11 @@ class Appointment
         $stmtA->execute([':fisio_id' => $fisioterapeuta_id, ':fecha' => $fecha]);
         if ($stmtA->fetch()) return [];
 
-        $queryCitas = "SELECT c.fecha_hora, s.duracion_minutos 
-                      FROM citas c 
-                      LEFT JOIN servicios s ON c.servicio_id = s.servicio_id 
-                      WHERE c.fisioterapeuta_id = :fisio_id 
-                      AND DATE(c.fecha_hora) = :fecha 
-                      AND c.estado != 'Cancelada'";
+        $queryCitas = "SELECT fecha_hora, 60 as duracion_minutos 
+                      FROM citas 
+                      WHERE fisioterapeuta_id = :fisio_id 
+                      AND DATE(fecha_hora) = :fecha 
+                      AND estado != 'Cancelada'";
         $stmtC = $this->db->prepare($queryCitas);
         $stmtC->execute([':fisio_id' => $fisioterapeuta_id, ':fecha' => $fecha]);
         $citas = $stmtC->fetchAll(PDO::FETCH_ASSOC);
@@ -157,5 +156,53 @@ class Appointment
         }
 
         return array_unique($availableSlots);
+    }
+
+    public function getAvailableDays($fisioterapeuta_id, $duracion_minutos = 60)
+    {
+        $availableDays = [];
+        $today = new \DateTime('today');
+        
+        for ($i = 0; $i < 60; $i++) {
+            $currentDate = clone $today;
+            $currentDate->modify("+$i days");
+            $fechaStr = $currentDate->format('Y-m-d');
+            
+            $slots = $this->getAvailableSlots($fisioterapeuta_id, $fechaStr, $duracion_minutos);
+            if (!empty($slots)) {
+                $availableDays[] = [
+                    'fecha' => $fechaStr,
+                    'dia_semana' => $currentDate->format('N'),
+                    'dia_mes' => $currentDate->format('d'),
+                    'mes_corto' => $this->getMesCorto((int)$currentDate->format('n')),
+                    'nombre_dia' => $this->getNombreDia($fechaStr),
+                    'total_slots' => count($slots)
+                ];
+            }
+        }
+        return $availableDays;
+    }
+
+    private function getMesCorto($mesNum)
+    {
+        $meses = [
+            1 => 'Ene', 2 => 'Feb', 3 => 'Mar', 4 => 'Abr', 5 => 'May', 6 => 'Jun',
+            7 => 'Jul', 8 => 'Ago', 9 => 'Sep', 10 => 'Oct', 11 => 'Nov', 12 => 'Dic'
+        ];
+        return $meses[$mesNum] ?? '';
+    }
+
+    private function getNombreDia($fecha)
+    {
+        $dias_semana = [
+            'Sunday' => 'Dom',
+            'Monday' => 'Lun',
+            'Tuesday' => 'Mar',
+            'Wednesday' => 'Mié',
+            'Thursday' => 'Jue',
+            'Friday' => 'Vie',
+            'Saturday' => 'Sáb'
+        ];
+        return $dias_semana[date('l', strtotime($fecha))] ?? '';
     }
 }

@@ -16,10 +16,12 @@ class RegisterController extends Controller
     {
         if (isset($_SESSION['email'])) {
             header('Location: ' . PROJECT_ROOT . '/inicio');
-            exit();
+            $this->exitApp();
         }
         $this->view('register/register', ['data' => [], 'error' => null]);
     }
+
+    public $db = null;
 
     /**
      * Procesa la solicitud de registro de cliente y autónomo.
@@ -30,10 +32,10 @@ class RegisterController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: ' . PROJECT_ROOT . '/registro');
-            exit();
+            $this->exitApp();
         }
 
-        $db = (new DataBase())->connect();
+        $db = $this->db ?: (new DataBase())->connect();
 
         // Datos del Autónomo / Administrador
         $usuario_id = trim($_POST['usuario_id'] ?? '');
@@ -164,7 +166,7 @@ class RegisterController extends Controller
 
             // Redirigir al login con mensaje de éxito
             header('Location: ' . PROJECT_ROOT . '/login?alert=success&message=' . urlencode('¡Registro completado con éxito! Ya puedes iniciar sesión con tu cuenta de administrador.'));
-            exit();
+            $this->exitApp();
 
         } catch (\Exception $e) {
             if ($db->inTransaction()) {

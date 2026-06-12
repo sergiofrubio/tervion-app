@@ -14,7 +14,7 @@ class AccountingController extends Controller
         $rol = $_SESSION['rol'] ?? '';
         if ($rol !== 'Administrador') {
             header('Location: ' . PROJECT_ROOT . '/inicio');
-            exit();
+            $this->exitApp();
         }
     }
 
@@ -59,7 +59,7 @@ class AccountingController extends Controller
 
             if ($gastoModel->save($data)) {
                 header('Location: ' . PROJECT_ROOT . '/contabilidad/gastos');
-                exit();
+                $this->exitApp();
             }
         }
 
@@ -92,7 +92,7 @@ class AccountingController extends Controller
             }
         }
         header('Location: ' . PROJECT_ROOT . '/contabilidad/gastos');
-        exit();
+        $this->exitApp();
     }
 
     /**
@@ -170,7 +170,7 @@ class AccountingController extends Controller
             ], ';');
         }
         fclose($output);
-        exit();
+        $this->exitApp();
     }
 
     /**
@@ -227,7 +227,7 @@ class AccountingController extends Controller
             ], ';');
         }
         fclose($output);
-        exit();
+        $this->exitApp();
     }
 
     /**
@@ -246,7 +246,7 @@ class AccountingController extends Controller
             }
         }
         header('Location: ' . PROJECT_ROOT . '/contabilidad');
-        exit();
+        $this->exitApp();
     }
 
     /**
@@ -265,7 +265,7 @@ class AccountingController extends Controller
             $_SESSION['flash_success'] = "Sincronización bancaria finalizada: {$createdCount} nuevos gastos deducibles auto-conciliados.";
         }
         header('Location: ' . PROJECT_ROOT . '/contabilidad');
-        exit();
+        $this->exitApp();
     }
 
     /**
@@ -298,7 +298,7 @@ class AccountingController extends Controller
                 'cuerpo' => $body
             ]
         ], JSON_PRETTY_PRINT);
-        exit();
+        $this->exitApp();
     }
 
     private function getCurrentQuarter()

@@ -41,7 +41,7 @@ class PatientController extends Controller
 
             if (!empty($data['usuario_id']) && !empty($data['nombre']) && $userModel->save($data)) {
                 header('Location: ' . PROJECT_ROOT . '/pacientes');
-                exit();
+                $this->exitApp();
             } else {
                 echo "Error al guardar el paciente o datos inválidos.";
             }
@@ -60,7 +60,7 @@ class PatientController extends Controller
 
         if ($userModel->delete($id)) {
             header('Location: ' . PROJECT_ROOT . '/pacientes');
-            exit();
+            $this->exitApp();
         } else {
             echo "Error al eliminar el paciente.";
         }
@@ -95,7 +95,7 @@ class PatientController extends Controller
 
             if ($userModel->update($id, $data)) {
                 header('Location: ' . PROJECT_ROOT . '/pacientes');
-                exit();
+                $this->exitApp();
             } else {
                 echo "Error al actualizar el paciente.";
             }
@@ -103,7 +103,7 @@ class PatientController extends Controller
             $id = $_GET['id'] ?? null;
             if (!$id) {
                 header('Location: ' . PROJECT_ROOT . '/pacientes');
-                exit();
+                $this->exitApp();
             }
             $userModel = $this->model('User');
             $data = [
@@ -121,7 +121,7 @@ class PatientController extends Controller
         $id = $_GET['usuario_id'] ?? ($_GET['id'] ?? null);
         if (!$id) {
             header('Location: ' . PROJECT_ROOT . '/pacientes');
-            exit();
+            $this->exitApp();
         }
 
         $userModel = $this->model('User');
@@ -129,10 +129,10 @@ class PatientController extends Controller
 
         if (!$usuario || $usuario['rol'] !== 'Paciente') {
             header('Location: ' . PROJECT_ROOT . '/pacientes');
-            exit();
+            $this->exitApp();
         }
 
-        $historyModel = $this->model('MedicalHistory');
+        $historyModel = $this->model('MedicalReport');
         $appointmentModel = $this->model('Appointment');
 
         $data = [
@@ -195,7 +195,7 @@ class PatientController extends Controller
         
         header('Content-Type: application/json');
         echo json_encode($results);
-        exit();
+        $this->exitApp();
     }
 
     /**
@@ -213,6 +213,6 @@ class PatientController extends Controller
         
         header('Content-Type: application/json');
         echo json_encode($results);
-        exit();
+        $this->exitApp();
     }
 }

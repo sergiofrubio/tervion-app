@@ -42,20 +42,21 @@ class AppointmentController extends Controller
             $paciente_id = ($_SESSION['rol'] === 'Paciente') ? $_SESSION['usuario_id'] : ($_POST['paciente_id'] ?? '');
             $fisioterapeuta_id = $_POST['fisioterapeuta_id'] ?? '';
             $fecha_hora = $_POST['fecha_hora'] ?? '';
-            $estado = $_POST['estado'] ?? 'Programada';
-            $especialidad_id = $_POST['especialidad_id'] ?? '';
+            $estado = 'Programada';
+            $especialidad_id = $_POST['especialidad_id'] ?? 1;
 
             if (!empty($paciente_id) && !empty($fisioterapeuta_id) && !empty($fecha_hora) && $appointment->save($paciente_id, $fisioterapeuta_id, $fecha_hora, $estado, $especialidad_id)) {
                 $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
                 header('Location: ' . PROJECT_ROOT . $redirect . '?alert=success&message=Cita programada correctamente');
-                exit();
+                $this->exitApp();
             } else {
                 echo "Error al guardar la cita o datos inválidos.";
             }
         } else {
             $userModel = $this->model('User');
             $data = [
-                'especialidades' => $userModel->getSpecialties()
+                'especialidades' => $userModel->getSpecialties(),
+                'fisioterapeutas' => $userModel->getByRol('Fisioterapeuta')
             ];
             
             if ($_SESSION['rol'] === 'Paciente') {
@@ -84,14 +85,14 @@ class AppointmentController extends Controller
             $cita = $appointment->getById($id);
             if (!$cita || $cita['paciente_id'] !== $_SESSION['usuario_id']) {
                 header('Location: ' . PROJECT_ROOT . '/patient-view/appointment?alert=danger&message=No tienes permiso para eliminar esta cita');
-                exit();
+                $this->exitApp();
             }
         }
 
         if ($appointment->delete($id)) {
             $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
             header('Location: ' . PROJECT_ROOT . $redirect . '?alert=success&message=Cita eliminada correctamente');
-            exit();
+            $this->exitApp();
         } else {
             echo "Error while deleting appointment.";
         }
@@ -116,7 +117,7 @@ class AppointmentController extends Controller
                 $citaExistente = $appointment->getById($id);
                 if (!$citaExistente || $citaExistente['paciente_id'] !== $_SESSION['usuario_id']) {
                     header('Location: ' . PROJECT_ROOT . '/patient-view/appointment?alert=danger&message=No tienes permiso para editar esta cita');
-                    exit();
+                    $this->exitApp();
                 }
                 $paciente_id = $_SESSION['usuario_id'];
             } else {
@@ -125,13 +126,13 @@ class AppointmentController extends Controller
 
             $fisioterapeuta_id = $_POST['fisioterapeuta_id'];
             $fecha_hora = $_POST['fecha_hora'];
-            $estado = $_POST['estado'];
-            $especialidad_id = $_POST['especialidad_id'];
+            $estado = 'Programada';
+            $especialidad_id = $_POST['especialidad_id'] ?? 1;
 
             if ($appointment->update($id, $paciente_id, $fisioterapeuta_id, $fecha_hora, $estado, $especialidad_id)) {
                 $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
                 header('Location: ' . PROJECT_ROOT . $redirect . '?alert=success&message=Cita actualizada correctamente');
-                exit();
+                $this->exitApp();
             } else {
                 echo "Error while updating appointment.";
             }
@@ -141,14 +142,15 @@ class AppointmentController extends Controller
             $userModel = $this->model('User');
             $data = [
                 'appointment' => $appointment->getById($id),
-                'especialidades' => $userModel->getSpecialties()
+                'especialidades' => $userModel->getSpecialties(),
+                'fisioterapeutas' => $userModel->getByRol('Fisioterapeuta')
             ];
             
             if ($_SESSION['rol'] === 'Paciente') {
                 // Verificar propiedad
                 if (!$data['appointment'] || $data['appointment']['paciente_id'] !== $_SESSION['usuario_id']) {
                     header('Location: ' . PROJECT_ROOT . '/patient-view/appointment?alert=danger&message=No tienes permiso para ver esta cita');
-                    exit();
+                    $this->exitApp();
                 }
                 $this->view('patient-view/appointment/edit', $data);
             } else {
@@ -171,7 +173,7 @@ class AppointmentController extends Controller
 
         if (empty($fisio_id) || empty($fecha)) {
             echo json_encode([]);
-            exit();
+            $this->exitApp();
         }
 
         $duracion = 60; // Default
@@ -187,6 +189,40 @@ class AppointmentController extends Controller
         $slots = $appointment->getAvailableSlots($fisio_id, $fecha, $duracion);
         header('Content-Type: application/json');
         echo json_encode(array_values($slots)); // array_values para reindexar tras array_unique
-        exit();
+        $this->exitApp();
+    }
+
+    /**
+     * Obtiene los días disponibles para un fisioterapeuta.
+     *
+     * Retorna la información formateada en JSON.
+     *
+     * @return void
+     */
+    public function getAvailableDays()
+    {
+        $fisio_id = $_GET['fisio_id'] ?? '';
+        $servicio_id = $_GET['servicio_id'] ?? '';
+
+        if (empty($fisio_id)) {
+            header('Content-Type: application/json');
+            echo json_encode([]);
+            $this->exitApp();
+        }
+
+        $duracion = 60; // Default
+        if (!empty($servicio_id)) {
+            $configModel = $this->model('Configuracion');
+            $servicio = $configModel->getServicioById($servicio_id);
+            if ($servicio) {
+                $duracion = $servicio['duracion_minutos'];
+            }
+        }
+
+        $appointment = $this->model('Appointment');
+        $days = $appointment->getAvailableDays($fisio_id, $duracion);
+        header('Content-Type: application/json');
+        echo json_encode($days);
+        $this->exitApp();
     }
 }

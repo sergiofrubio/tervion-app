@@ -45,7 +45,7 @@ class SettingController extends Controller
             ];
             if ($settingModel->saveHorario($data)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
-                exit();
+                $this->exitApp();
             }
         } else {
             $data = ['fisios' => $settingModel->getFisios()];
@@ -73,7 +73,7 @@ class SettingController extends Controller
             ];
             if ($settingModel->saveAusencia($data)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
-                exit();
+                $this->exitApp();
             }
         } else {
             $data = ['fisios' => $settingModel->getFisios()];
@@ -96,7 +96,7 @@ class SettingController extends Controller
             $descripcion = htmlspecialchars($_POST['descripcion'] ?? '', ENT_QUOTES, 'UTF-8');
             if ($settingModel->saveEspecialidad($descripcion)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
-                exit();
+                $this->exitApp();
             }
         } else {
             $this->view('setting/especialidades_form');
@@ -123,7 +123,7 @@ class SettingController extends Controller
             ];
             if ($settingModel->saveBono($data)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
-                exit();
+                $this->exitApp();
             }
         } else {
             $this->view('setting/bonos_form');
@@ -161,7 +161,7 @@ class SettingController extends Controller
                 $_SESSION['error_message'] = "Error al guardar los datos de la clínica.";
             }
             header('Location: ' . PROJECT_ROOT . '/configuracion');
-            exit();
+            $this->exitApp();
         }
     }
 
@@ -186,7 +186,7 @@ class SettingController extends Controller
             ];
             if ($settingModel->updateHorario($id, $data)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
-                exit();
+                $this->exitApp();
             }
         } else {
             $id = $_GET['id'];
@@ -219,7 +219,7 @@ class SettingController extends Controller
             ];
             if ($settingModel->updateAusencia($id, $data)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
-                exit();
+                $this->exitApp();
             }
         } else {
             $id = $_GET['id'];
@@ -247,7 +247,7 @@ class SettingController extends Controller
             $descripcion = htmlspecialchars($_POST['descripcion'] ?? '', ENT_QUOTES, 'UTF-8');
             if ($settingModel->updateEspecialidad($id, $descripcion)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
-                exit();
+                $this->exitApp();
             }
         } else {
             $id = $_GET['id'];
@@ -277,7 +277,7 @@ class SettingController extends Controller
             ];
             if ($settingModel->updateBono($id, $data)) {
                 header('Location: ' . PROJECT_ROOT . '/configuracion');
-                exit();
+                $this->exitApp();
             }
         } else {
             $id = $_GET['id'];

@@ -59,10 +59,10 @@
         <i class="bi bi-arrow-left"></i>
         Volver atrás
       </a>
-      <a href="<?= PROJECT_ROOT ?>/inicio" class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-gray-700 shadow-sm border border-gray-200 hover:bg-gray-50 transition-all hover:scale-105 active:scale-95">
+      <!-- <a href="<?= PROJECT_ROOT ?>/inicio" class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-gray-700 shadow-sm border border-gray-200 hover:bg-gray-50 transition-all hover:scale-105 active:scale-95">
         <i class="bi bi-house"></i>
         Ir al Inicio
-      </a>
+      </a> -->
     </div>
   </div>
 

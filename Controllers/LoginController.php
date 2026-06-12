@@ -27,7 +27,7 @@ class LoginController extends Controller {
     public function index(){
         if (isset($_SESSION['email'])) {
             header('Location: ' . PROJECT_ROOT . '/inicio');
-            exit();
+            $this->exitApp();
         }
         $this->view('login/login');
     }
@@ -71,7 +71,7 @@ class LoginController extends Controller {
         $_SESSION = array_merge($_SESSION, $usuario);
         
         header('Location: ' . PROJECT_ROOT . '/inicio');
-        exit();
+        $this->exitApp();
     }
 
     /**
@@ -96,7 +96,7 @@ class LoginController extends Controller {
 
         session_destroy();
         header("Location: " . PROJECT_ROOT . "/login?alert=success&message=Sesion finalizada");
-        exit();
+        $this->exitApp();
     }
 
     /**
@@ -108,7 +108,7 @@ class LoginController extends Controller {
      */
     private function redirectWithMessage($message, $alertType) {
         header("Location: " . PROJECT_ROOT . "/login?alert=$alertType&message=" . urlencode($message));
-        exit();
+        $this->exitApp();
     }
 
     /**
@@ -186,12 +186,12 @@ class LoginController extends Controller {
 
         if ($pass !== $confirmPassword) {
             header("Location: " . PROJECT_ROOT . "/login/reset-password?token=" . $token . "&alert=danger&message=" . urlencode("Las contraseñas no coinciden."));
-            exit();
+            $this->exitApp();
         }
 
         if (strlen($pass) < 8) {
             header("Location: " . PROJECT_ROOT . "/login/reset-password?token=" . $token . "&alert=danger&message=" . urlencode("La contraseña debe tener al menos 8 caracteres."));
-            exit();
+            $this->exitApp();
         }
 
         $resetRequest = $this->loginModel->getByToken($token);
@@ -203,7 +203,7 @@ class LoginController extends Controller {
                 $this->redirectWithMessage("Contraseña restablecida correctamente. Ya puedes iniciar sesión.", 'success');
             } else {
                 header("Location: " . PROJECT_ROOT . "/login/reset-password?token=" . $token . "&alert=danger&message=" . urlencode("Error al actualizar la contraseña."));
-                exit();
+                $this->exitApp();
             }
         } else {
             $this->redirectWithMessage("El token no es válido o ha expirado.", 'danger');

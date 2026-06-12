@@ -47,21 +47,4 @@ class EmailController extends Controller
         }
     }
 
-    /**
-     * Endpoint público para probar el envío de emails con Mailpit.
-     *
-     * @return void
-     */
-    public function testEmail()
-    {
-        $to = $_GET['to'] ?? 'test@example.com';
-        $subject = 'Correo de Prueba - Velion Mailpit';
-        $body = '<h1>Hola!</h1><p>Esta es una prueba de envío de correo local a través de Mailpit.</p>';
-
-        if ($this->sendEmail($to, $subject, $body)) {
-            echo "Email enviado exitosamente a $to. Revisa la bandeja de Mailpit en http://localhost:8025";
-        } else {
-            echo "Error al enviar el email. Verifica la configuración de Mailpit.";
-        }
-    }
 }

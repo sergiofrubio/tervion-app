@@ -69,7 +69,7 @@ class InvoiceController extends Controller
             
             if ($facturaModel->save($data)) {
                 header('Location: ' . PROJECT_ROOT . '/facturas');
-                exit();
+                $this->exitApp();
             }
         } else {
             $data = [
@@ -98,13 +98,13 @@ class InvoiceController extends Controller
             
             if ($facturaModel->updateStatus($id, $estado, $modificado_por)) {
                 header('Location: ' . PROJECT_ROOT . '/facturas');
-                exit();
+                $this->exitApp();
             }
         } else {
             $id = $_GET['id'] ?? null;
             if (!$id) {
                 header('Location: ' . PROJECT_ROOT . '/facturas');
-                exit();
+                $this->exitApp();
             }
             $data = [
                 'factura' => $facturaModel->getById($id),
@@ -137,7 +137,7 @@ class InvoiceController extends Controller
         $id = $_GET['id'] ?? null;
         if (!$id) {
             header('Location: ' . PROJECT_ROOT . '/facturas');
-            exit();
+            $this->exitApp();
         }
 
         $facturaModel = $this->model('Invoice');

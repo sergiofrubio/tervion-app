@@ -13,7 +13,7 @@ class HomeController extends Controller {
     public function index() {       
         if (!isset($_SESSION['email'])) {
             header('Location: ' . PROJECT_ROOT . '/login');
-            exit();
+            $this->exitApp();
         }
 
         if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Paciente') {

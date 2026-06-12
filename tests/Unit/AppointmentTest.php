@@ -192,4 +192,18 @@ class AppointmentTest extends TestCase
         // 10:30 overlaps with (10:00-11:00) => occupied
         $this->assertEquals(['09:00', '11:00'], array_values($result));
     }
+
+    public function testGetAvailableDaysEmpty()
+    {
+        $stmtHorarios = $this->createMock(PDOStatement::class);
+        $stmtHorarios->method('execute')->willReturn(true);
+        $stmtHorarios->method('fetchAll')->willReturn([]); // Sin horarios cargados
+
+        $this->dbMock->method('prepare')->willReturn($stmtHorarios);
+
+        $appointmentModel = new Appointment($this->dbMock);
+        $result = $appointmentModel->getAvailableDays('F456');
+
+        $this->assertEquals([], $result);
+    }
 }

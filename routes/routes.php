@@ -13,7 +13,6 @@ $router->add('GET', '/login/reset-password', 'LoginController@showResetForm', fa
 $router->add('POST', '/login/update-password', 'LoginController@updatePassword', false);
 $router->add('GET', '/registro', 'RegisterController@index', false);
 $router->add('POST', '/registro', 'RegisterController@register', false);
-$router->add('GET', '/test-email', 'EmailController@testEmail', false);
 $router->add('GET', '/logout', 'LoginController@finishSesion', false);
 
 // Rutas Generales (Requieren autenticación, accesibles por todos los roles)
@@ -44,7 +43,8 @@ $router->add('POST', '/citas/create', 'AppointmentController@create', true, $sta
 $router->add('POST', '/citas/delete', 'AppointmentController@delete', true, $staffRoles);
 $router->add('POST', '/citas/edit', 'AppointmentController@edit', true, $staffRoles);
 $router->add('GET', '/citas/edit', 'AppointmentController@edit', true, $staffRoles);
-$router->add('GET', '/citas/slots', 'AppointmentController@getSlots', true, $staffRoles);
+$router->add('GET', '/citas/slots', 'AppointmentController@getSlots', true, ['Administrador', 'Fisioterapeuta', 'Secretario', 'Paciente']);
+$router->add('GET', '/citas/dias-disponibles', 'AppointmentController@getAvailableDays', true, ['Administrador', 'Fisioterapeuta', 'Secretario', 'Paciente']);
 
 $router->add('GET', '/configuracion', 'SettingController@index', true, ['Administrador']);
 $router->add('GET', '/configuracion/horarios/create', 'SettingController@createHorario', true, ['Administrador']);

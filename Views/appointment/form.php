@@ -41,6 +41,7 @@ include TEMPLATE_DIR . 'header.php';
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
                             <i class="bi bi-search"></i>
                         </span>
+
                         <input type="text" id="paciente_search" placeholder="Buscar paciente por nombre o ID..." 
                             value="<?= $isEdit ? htmlspecialchars($a['paciente_nombre'] . ' ' . $a['paciente_apellidos']) : '' ?>"
                             class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-3 pl-10 transition-all bg-white" autocomplete="off">
@@ -50,43 +51,29 @@ include TEMPLATE_DIR . 'header.php';
                     </div>
                 </div>
 
-                <div class="space-y-2 relative group">
-                    <label for="fisio_search" class="block text-sm font-medium text-gray-700">Fisioterapeuta</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
-                            <i class="bi bi-search"></i>
-                        </span>
-                        <input type="text" id="fisio_search" placeholder="Buscar fisioterapeuta..." 
-                            value="<?= $isEdit ? htmlspecialchars($a['fisioterapeuta_nombre'] . ' ' . $a['fisioterapeuta_apellidos']) : '' ?>"
-                            class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-3 pl-10 transition-all bg-white" autocomplete="off">
-                        <input type="hidden" name="fisioterapeuta_id" id="fisioterapeuta_id" value="<?= $a['fisioterapeuta_id'] ?? '' ?>" required>
-                        <div id="fisio_results" class="absolute z-20 w-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 hidden max-h-64 overflow-y-auto py-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <label for="especialidad_id" class="block text-sm font-medium text-gray-700">Especialidad</label>
-                    <select name="especialidad_id" id="especialidad_id" required
-                        class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-3 transition-all bg-white">
-                        <option value="">Seleccionar especialidad...</option>
-                        <?php foreach ($especialidades as $e): ?>
-                            <option value="<?= $e['especialidad_id'] ?>" <?= ($isEdit && $e['especialidad_id'] == $a['especialidad_id']) ? 'selected' : '' ?>>
-                                <?= $e['descripcion'] ?>
-                            </option>
+                <div class="space-y-3 md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700">Fisioterapeuta</label>
+                    <input type="hidden" name="fisioterapeuta_id" id="fisioterapeuta_id" value="<?= $isEdit ? $a['fisioterapeuta_id'] : '' ?>" required>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4" id="fisios-cards-container">
+                        <?php foreach ($fisioterapeutas as $f): ?>
+                            <?php 
+                                $firstLetter = mb_substr($f['nombre'], 0, 1, 'UTF-8');
+                                $isSelected = ($isEdit && $f['usuario_id'] == $a['fisioterapeuta_id']);
+                                $avatarId = (intval(preg_replace('/[^0-9]/', '', $f['usuario_id'])) % 70) + 1;
+                                $avatarUrl = (isset($f['genero']) && $f['genero'] === 'Mujer') 
+                                    ? "https://randomuser.me/api/portraits/women/{$avatarId}.jpg" 
+                                    : "https://randomuser.me/api/portraits/men/{$avatarId}.jpg";
+                            ?>
+                            <button type="button" data-id="<?= $f['usuario_id'] ?>" 
+                                class="fisio-card flex flex-col items-center p-5 bg-white border-2 rounded-3xl hover:border-primary-400 hover:bg-primary-50/10 active:scale-95 transition-all text-center focus:outline-none group <?= $isSelected ? 'border-primary-500 bg-primary-50/30 ring-2 ring-primary-500/20' : 'border-gray-100' ?>">
+                                <div class="w-16 h-16 rounded-full overflow-hidden mb-3 border-2 border-white shadow-md group-hover:scale-105 transition-transform duration-200">
+                                    <img src="<?= $avatarUrl ?>" alt="<?= htmlspecialchars($f['nombre']) ?>" class="w-full h-full object-cover">
+                                </div>
+                                <span class="block text-sm font-extrabold text-gray-900 leading-tight"><?= htmlspecialchars($f['nombre'] . ' ' . $f['apellidos']) ?></span>
+                                <span class="block text-[10px] text-gray-400 uppercase font-black tracking-wider mt-1">Fisioterapeuta</span>
+                            </button>
                         <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div class="space-y-2">
-                    <label for="estado" class="block text-sm font-medium text-gray-700">Estado</label>
-                    <select name="estado" id="estado" required
-                        class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-3 transition-all bg-white">
-                        <option value="Programada" <?= ($isEdit && $a['estado'] == 'Programada') ? 'selected' : '' ?>>Programada</option>
-                        <option value="Pendiente" <?= ($isEdit && $a['estado'] == 'Pendiente') ? 'selected' : '' ?>>Pendiente</option>
-                        <option value="Realizada" <?= ($isEdit && $a['estado'] == 'Realizada') ? 'selected' : '' ?>>Realizada</option>
-                        <option value="Cancelada" <?= ($isEdit && $a['estado'] == 'Cancelada') ? 'selected' : '' ?>>Cancelada</option>
-                    </select>
+                    </div>
                 </div>
 
                 <!-- Selección de Fecha y Hora -->
@@ -97,19 +84,24 @@ include TEMPLATE_DIR . 'header.php';
                     </h2>
                 </div>
 
-                <div class="space-y-2">
-                    <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha de la Cita</label>
-                    <input type="date" id="fecha" required
-                        value="<?= $isEdit ? date('Y-m-d', strtotime($a['fecha_hora'])) : '' ?>"
-                        class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-3 transition-all bg-white">
+                <input type="hidden" name="fecha_hora" id="fecha_hora_hidden" value="<?= $isEdit ? $a['fecha_hora'] : '' ?>" required>
+
+                <!-- Días disponibles -->
+                <div class="space-y-3 md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700">1. Días Disponibles</label>
+                    <div id="dias-container" class="flex gap-3 overflow-x-auto pb-4 pt-1 px-1 scrollbar-thin scrollbar-thumb-gray-200">
+                        <div class="text-sm text-gray-400 italic p-6 bg-gray-50/50 rounded-2xl w-full text-center border border-gray-100">
+                            Selecciona un profesional para consultar su agenda de días disponibles.
+                        </div>
+                    </div>
                 </div>
 
-                <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-3">Selecciona una hora disponible</label>
-                    <input type="hidden" name="fecha_hora" id="fecha_hora_hidden" value="<?= $isEdit ? $a['fecha_hora'] : '' ?>" required>
+                <!-- Horas disponibles -->
+                <div class="space-y-3 md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700">2. Horas Disponibles</label>
                     <div id="slots-container" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
-                        <div class="col-span-full py-8 text-center bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
-                            <p class="text-gray-400 text-sm italic">Selecciona un fisioterapeuta y una fecha para ver huecos libres.</p>
+                        <div class="col-span-full text-sm text-gray-400 italic p-6 bg-gray-50/50 rounded-2xl text-center border border-gray-100">
+                            Selecciona un día primero para ver las horas.
                         </div>
                     </div>
                 </div>
@@ -130,13 +122,208 @@ include TEMPLATE_DIR . 'header.php';
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const fisioIdInput = document.getElementById('fisioterapeuta_id');
-    const fechaInput = document.getElementById('fecha');
+    const hiddenFisioInput = document.getElementById('fisioterapeuta_id');
+    const fisioCards = document.querySelectorAll('.fisio-card');
+    const diasContainer = document.getElementById('dias-container');
     const slotsContainer = document.getElementById('slots-container');
     const fechaHoraHidden = document.getElementById('fecha_hora_hidden');
     const submitBtn = document.getElementById('submit-btn');
 
-    function setupSearch(inputId, resultsId, hiddenId, rol) {
+    function generateCalendarHtml(year, month, availableDaysMap, selectedDateStr) {
+        const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        const daysOfWeek = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+        
+        const firstDayDate = new Date(year, month, 1);
+        let startDayIndex = firstDayDate.getDay() - 1;
+        if (startDayIndex < 0) startDayIndex = 6;
+        
+        const totalDays = new Date(year, month + 1, 0).getDate();
+        
+        let html = `
+            <div class="bg-white rounded-3xl p-5 border border-gray-100 shadow-sm flex-1">
+                <h3 class="text-sm font-extrabold text-gray-900 mb-4 text-center capitalize">${monthNames[month]} ${year}</h3>
+                <div class="grid grid-cols-7 gap-2 text-center text-[10px] font-black text-gray-400 uppercase tracking-wider mb-3">
+        `;
+        
+        daysOfWeek.forEach(day => {
+            html += `<div class="py-1">${day}</div>`;
+        });
+        
+        for (let i = 0; i < startDayIndex; i++) {
+            html += `<div></div>`;
+        }
+        
+        for (let day = 1; day <= totalDays; day++) {
+            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const dayInfo = availableDaysMap[dateStr];
+            const isAvailable = !!dayInfo;
+            const isSelected = dateStr === selectedDateStr;
+            
+            let cellClass = "";
+            let btnDisabled = "";
+            
+            if (isAvailable) {
+                if (isSelected) {
+                    cellClass = "bg-primary-600 text-white font-extrabold shadow-md hover:bg-primary-700";
+                } else {
+                    cellClass = "border-2 border-primary-500/20 text-primary-700 bg-primary-50/20 font-bold hover:border-primary-500 hover:bg-primary-50 hover:text-primary-800 transition-all";
+                }
+            } else {
+                cellClass = "text-gray-300 cursor-not-allowed pointer-events-none";
+                btnDisabled = "disabled";
+            }
+            
+            html += `
+                <button type="button" ${btnDisabled} data-date="${dateStr}"
+                    class="w-full aspect-square flex items-center justify-center text-xs rounded-xl focus:outline-none transition-all active:scale-95 ${cellClass}">
+                    ${day}
+                </button>
+            `;
+        }
+        
+        html += `
+                </div>
+            </div>
+        `;
+        
+        return html;
+    }
+
+    function loadAvailableDays(fisioId, initialDateTime = '') {
+        diasContainer.innerHTML = '<div class="text-sm text-gray-500 py-4 w-full text-center">Cargando días disponibles...</div>';
+        slotsContainer.innerHTML = '<div class="col-span-full text-sm text-gray-400 italic p-6 bg-gray-50/50 rounded-2xl text-center border border-gray-100">Selecciona un día primero para ver las horas.</div>';
+        
+        let initialDate = '';
+        let initialTime = '';
+        if (initialDateTime) {
+            const parts = initialDateTime.split(' ');
+            initialDate = parts[0];
+            if (parts[1]) {
+                initialTime = parts[1].substring(0, 5);
+            }
+        }
+
+        fetch(`<?= PROJECT_ROOT ?>/citas/dias-disponibles?fisio_id=${encodeURIComponent(fisioId)}`)
+            .then(response => response.json())
+            .then(days => {
+                diasContainer.innerHTML = '';
+                
+                const availableDaysMap = {};
+                days.forEach(d => {
+                    availableDaysMap[d.fecha] = d;
+                });
+                
+                if (initialDate && !availableDaysMap[initialDate]) {
+                    availableDaysMap[initialDate] = {
+                        fecha: initialDate,
+                        total_slots: 1
+                    };
+                }
+
+                if (days.length === 0 && !initialDate) {
+                    diasContainer.className = "flex w-full";
+                    diasContainer.innerHTML = '<div class="text-sm text-red-500 py-4 w-full text-center font-bold">No hay días disponibles programados para este profesional en los próximos 60 días.</div>';
+                    return;
+                }
+
+                const today = new Date();
+                const currentYear = today.getFullYear();
+                const currentMonth = today.getMonth();
+                
+                const nextMonthDate = new Date(currentYear, currentMonth + 1, 1);
+                const nextYear = nextMonthDate.getFullYear();
+                const nextMonth = nextMonthDate.getMonth();
+                
+                const currentCalHtml = generateCalendarHtml(currentYear, currentMonth, availableDaysMap, initialDate);
+                const nextCalHtml = generateCalendarHtml(nextYear, nextMonth, availableDaysMap, initialDate);
+                
+                diasContainer.className = "grid grid-cols-1 md:grid-cols-2 gap-6 w-full";
+                diasContainer.innerHTML = currentCalHtml + nextCalHtml;
+                
+                diasContainer.querySelectorAll('button[data-date]').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const dateStr = this.dataset.date;
+                        selectDate(dateStr);
+                    });
+                });
+                
+                function selectDate(dateStr) {
+                    diasContainer.querySelectorAll('button[data-date]').forEach(b => {
+                        const d = b.dataset.date;
+                        const isAv = !!availableDaysMap[d];
+                        const isSel = d === dateStr;
+                        
+                        if (isAv) {
+                            if (isSel) {
+                                b.className = "w-full aspect-square flex items-center justify-center text-xs rounded-xl focus:outline-none transition-all active:scale-95 bg-primary-600 text-white font-extrabold shadow-md hover:bg-primary-700";
+                            } else {
+                                b.className = "w-full aspect-square flex items-center justify-center text-xs rounded-xl focus:outline-none transition-all active:scale-95 border-2 border-primary-500/20 text-primary-700 bg-primary-50/20 font-bold hover:border-primary-500 hover:bg-primary-50 hover:text-primary-800 transition-all";
+                            }
+                        }
+                    });
+                    
+                    loadAvailableHours(fisioId, dateStr, dateStr === initialDate ? initialTime : '');
+                }
+                
+                if (initialDate) {
+                    selectDate(initialDate);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                diasContainer.innerHTML = '<div class="text-sm text-red-500 py-4 w-full text-center">Error al cargar la agenda.</div>';
+            });
+    }
+
+    function loadAvailableHours(fisioId, dateStr, initialTime = '') {
+        slotsContainer.innerHTML = '<div class="col-span-full text-sm text-gray-500 py-4 text-center">Cargando horas disponibles...</div>';
+
+        fetch(`<?= PROJECT_ROOT ?>/citas/slots?fisio_id=${encodeURIComponent(fisioId)}&fecha=${encodeURIComponent(dateStr)}`)
+            .then(response => response.json())
+            .then(slots => {
+                slotsContainer.innerHTML = '';
+                
+                if (initialTime && !slots.includes(initialTime)) {
+                    slots.push(initialTime);
+                    slots.sort();
+                }
+
+                if (slots.length === 0) {
+                    slotsContainer.innerHTML = '<div class="col-span-full text-sm text-red-500 py-4 text-center">No hay horas libres para este día.</div>';
+                    return;
+                }
+
+                slots.forEach(slot => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'slot-btn px-4 py-3 text-sm font-bold border-2 border-gray-100 rounded-xl hover:border-primary-500 hover:text-primary-600 transition-all text-gray-700 bg-white';
+                    btn.textContent = slot;
+
+                    const selectHour = () => {
+                        document.querySelectorAll('.slot-btn').forEach(b => {
+                            b.classList.remove('border-primary-500', 'bg-primary-50', 'text-primary-600');
+                            b.classList.add('border-gray-100', 'text-gray-700');
+                        });
+                        btn.classList.remove('border-gray-100', 'text-gray-700');
+                        btn.classList.add('border-primary-500', 'bg-primary-50', 'text-primary-600');
+                        fechaHoraHidden.value = `${dateStr} ${slot}:00`;
+                    };
+
+                    btn.addEventListener('click', selectHour);
+                    slotsContainer.appendChild(btn);
+
+                    if (slot === initialTime) {
+                        selectHour();
+                    }
+                });
+            })
+            .catch(err => {
+                console.error(err);
+                slotsContainer.innerHTML = '<div class="col-span-full text-sm text-red-500 py-4 text-center">Error al cargar las horas.</div>';
+            });
+    }
+
+    function setupSearch(inputId, resultsId, hiddenId, rol, onSelect) {
         const input = document.getElementById(inputId);
         const results = document.getElementById(resultsId);
         const hidden = document.getElementById(hiddenId);
@@ -173,8 +360,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                     hidden.value = user.usuario_id;
                                     results.classList.add('hidden');
                                     input.classList.add('border-primary-500', 'ring-1', 'ring-primary-500');
-                                    if (rol === 'Fisioterapeuta') {
-                                        updateSlots();
+                                    if (typeof onSelect === 'function') {
+                                        onSelect(user.usuario_id);
                                     }
                                 });
                                 results.appendChild(div);
@@ -195,58 +382,47 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function updateSlots() {
-        const fisioId = fisioIdInput.value;
-        const fecha = fechaInput.value;
-
-        if (!fisioId || !fecha) return;
-
-        slotsContainer.innerHTML = '<div class="col-span-full text-center py-4 text-gray-500">Cargando huecos disponibles...</div>';
-
-        fetch(`<?= PROJECT_ROOT ?>/citas/slots?fisio_id=${fisioId}&fecha=${fecha}`)
-            .then(response => response.json())
-            .then(slots => {
-                slotsContainer.innerHTML = '';
-                if (slots.length > 0) {
-                    slots.forEach(slot => {
-                        const btn = document.createElement('button');
-                        btn.type = 'button';
-                        btn.className = 'slot-btn px-4 py-2 text-sm font-medium border-2 border-gray-100 rounded-xl hover:border-primary-500 hover:text-primary-600 transition-all text-gray-600 bg-white';
-                        btn.textContent = slot;
-                        
-                        // Si estamos editando y coincide la hora, marcarlo
-                        const currentVal = fechaHoraHidden.value;
-                        if (currentVal && currentVal.includes(slot)) {
-                            btn.classList.add('bg-primary-50', 'border-primary-500', 'text-primary-600');
-                        }
-
-                        btn.addEventListener('click', () => {
-                            document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('bg-primary-50', 'border-primary-500', 'text-primary-600'));
-                            btn.classList.add('bg-primary-50', 'border-primary-500', 'text-primary-600');
-                            fechaHoraHidden.value = `${fecha} ${slot}:00`;
-                        });
-                        slotsContainer.appendChild(btn);
-                    });
-                } else {
-                    slotsContainer.innerHTML = '<div class="col-span-full py-8 text-center bg-red-50 rounded-2xl border-2 border-dashed border-red-100 text-red-500 text-sm">No hay huecos disponibles para este profesional en la fecha seleccionada.</div>';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching slots:', error);
-                slotsContainer.innerHTML = '<div class="col-span-full text-center py-4 text-red-500">Error al cargar disponibilidad</div>';
-            });
-    }
-
     setupSearch('paciente_search', 'paciente_results', 'paciente_id', 'Paciente');
-    setupSearch('fisio_search', 'fisio_results', 'fisioterapeuta_id', 'Fisioterapeuta');
+    
+    fisioCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const fisioId = this.dataset.id;
+            
+            fisioCards.forEach(c => {
+                c.classList.remove('border-primary-500', 'bg-primary-50/30', 'ring-2', 'ring-primary-500/20');
+                c.classList.add('border-gray-100', 'bg-white');
+            });
+            
+            this.classList.remove('border-gray-100', 'bg-white');
+            this.classList.add('border-primary-500', 'bg-primary-50/30', 'ring-2', 'ring-primary-500/20');
+            
+            hiddenFisioInput.value = fisioId;
+            loadAvailableDays(fisioId);
+        });
+    });
 
-    fechaInput.addEventListener('change', updateSlots);
-
-    // Initial load if editing
-    if (fisioIdInput.value && fechaInput.value) {
-        updateSlots();
+    // Carga inicial
+    if (hiddenFisioInput.value) {
+        loadAvailableDays(hiddenFisioInput.value, fechaHoraHidden.value);
     }
 });
 </script>
+
+<style>
+    .scrollbar-thin::-webkit-scrollbar {
+        height: 6px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background: #e2e8f0;
+        border-radius: 10px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+        background: #cbd5e1;
+    }
+</style>
 
 <?php include TEMPLATE_DIR . 'footer.php'; ?>

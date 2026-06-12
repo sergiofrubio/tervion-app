@@ -93,7 +93,7 @@ class PayrollController extends Controller
 
             if ($payrollModel->saveContract($data)) {
                 header('Location: ' . PROJECT_ROOT . '/nominas/contratos');
-                exit();
+                $this->exitApp();
             }
         } else {
             $data = [
@@ -141,7 +141,7 @@ class PayrollController extends Controller
 
             if ($payrollModel->saveContract($data)) {
                 header('Location: ' . PROJECT_ROOT . '/nominas/contratos');
-                exit();
+                $this->exitApp();
             }
         } else {
             $contract = $payrollModel->getContract($id);
@@ -202,7 +202,7 @@ class PayrollController extends Controller
             
             if ($payrollModel->createPayroll($data)) {
                 header('Location: ' . PROJECT_ROOT . '/nominas?mes=' . $mes . '&anio=' . $anio);
-                exit();
+                $this->exitApp();
             }
         } else {
             $data = [

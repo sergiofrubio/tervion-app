@@ -19,7 +19,12 @@ class Controller
     {
         if (!isset($_SESSION['usuario_id'])) {
             header('Location: ' . PROJECT_ROOT . '/login');
-            exit();
+            $this->exitApp();
         }
+    }
+
+    protected function exitApp()
+    {
+        exit();
     }
 }

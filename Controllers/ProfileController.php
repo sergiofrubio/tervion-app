@@ -18,7 +18,7 @@ class ProfileController extends Controller
         
         if (!$usuario) {
             header('Location: ' . PROJECT_ROOT . '/logout');
-            exit();
+            $this->exitApp();
         }
 
         $metodosPago = $metodoPagoModel->getByUsuario($_SESSION['usuario_id']);
@@ -68,7 +68,7 @@ class ProfileController extends Controller
                 // Update session info if needed
                 $_SESSION['nombre'] = $data['nombre'];
                 header('Location: ' . PROJECT_ROOT . '/vista-pacientes/perfil?success=1');
-                exit();
+                $this->exitApp();
             } else {
                 $data['error'] = "Error al actualizar el perfil.";
                 $data['usuario'] = $userModel->getByusuario_id($usuario_id);
@@ -112,7 +112,7 @@ class ProfileController extends Controller
             } else {
                 header('Location: ' . PROJECT_ROOT . '/vista-pacientes/perfil?error=pm_failed');
             }
-            exit();
+            $this->exitApp();
         }
     }
 
@@ -131,7 +131,7 @@ class ProfileController extends Controller
         } else {
             header('Location: ' . PROJECT_ROOT . '/vista-pacientes/perfil?error=pm_delete_failed');
         }
-        exit();
+        $this->exitApp();
     }
 
     /**
@@ -149,6 +149,6 @@ class ProfileController extends Controller
         } else {
             header('Location: ' . PROJECT_ROOT . '/vista-pacientes/perfil?error=pm_primary_failed');
         }
-        exit();
+        $this->exitApp();
     }
 }

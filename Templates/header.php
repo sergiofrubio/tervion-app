@@ -90,22 +90,22 @@
 
             <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Paciente') : ?>
                 <!-- Menú para Pacientes -->
-                <a href="<?= PROJECT_ROOT ?>/vista-pacientes/citas"
+                <a href="<?= PROJECT_ROOT ?>/paciente/citas"
                     class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/paciente/citas') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
                     <i class="bi bi-calendar3 text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/paciente/citas') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
                     Mis Citas
                 </a>
-                <a href="<?= PROJECT_ROOT ?>/vista-pacientes/facturas"
+                <a href="<?= PROJECT_ROOT ?>/paciente/facturas"
                     class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/paciente/facturas') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
                     <i class="bi bi-receipt text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/paciente/facturas') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
                     Mis Facturas
                 </a>
-                <a href="<?= PROJECT_ROOT ?>/vista-pacientes/tienda"
-                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/tienda') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
+                <a href="<?= PROJECT_ROOT ?>/paciente/tienda"
+                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/paciente/tienda') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
                     <i class="bi bi-bag text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/tienda') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
                     Tienda
                 </a>
-                <a href="<?= PROJECT_ROOT ?>/vista-pacientes/perfil"
+                <a href="<?= PROJECT_ROOT ?>/paciente/perfil"
                     class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/paciente/perfil') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
                     <i class="bi bi-person text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/paciente/perfil') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
                     Mi Perfil

@@ -14,7 +14,7 @@ class Dashboard
 
     public function getTotalPatients()
     {
-        $query = "SELECT COUNT(*) as total FROM pacientes";
+        $query = "SELECT COUNT(*) as total FROM usuarios WHERE rol = 'Paciente'";
         $stmt = $this->db->query($query);
         return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     }
@@ -55,10 +55,10 @@ class Dashboard
 
     public function getRecentPatients($limit = 3)
     {
-        $query = "SELECT u.* 
-                  FROM usuarios u 
-                  JOIN pacientes p ON u.usuario_id = p.usuario_id 
-                  ORDER BY u.fecha_creacion DESC 
+        $query = "SELECT * 
+                  FROM usuarios 
+                  WHERE rol = 'Paciente'
+                  ORDER BY fecha_creacion DESC 
                   LIMIT :limit";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);

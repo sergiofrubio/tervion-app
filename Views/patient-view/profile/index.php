@@ -121,7 +121,7 @@ $success = $_GET['success'] ?? null;
                     </div>
 
                     <!-- Edit Mode -->
-                    <form x-show="editMode" x-transition action="<?= PROJECT_ROOT ?>/vista-pacientes/perfil/edit" method="POST" class="space-y-6">
+                    <form x-show="editMode" x-transition action="<?= PROJECT_ROOT ?>/paciente/perfil/edit" method="POST" class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label for="nombre" class="text-sm font-bold text-gray-700">Nombre</label>
@@ -197,117 +197,6 @@ $success = $_GET['success'] ?? null;
                             <button type="submit" class="px-8 py-3 rounded-2xl bg-primary-600 text-white font-bold text-sm shadow-lg shadow-primary-200 hover:scale-105 active:scale-95 transition-all">Guardar Cambios</button>
                         </div>
                     </form>
-                </div>
-            </div>
-
-            <!-- Payment Methods Card -->
-            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden" x-data="{ addMethod: false }">
-                <div class="px-8 py-6 border-b border-gray-50 flex justify-between items-center">
-                    <h2 class="text-lg font-bold text-gray-900">Métodos de Pago</h2>
-                    <button @click="addMethod = !addMethod" class="text-primary-600 hover:text-primary-700 font-bold text-sm flex items-center gap-1 transition-colors">
-                        <i :class="addMethod ? 'bi bi-x-lg' : 'bi bi-plus-lg'"></i>
-                        <span x-text="addMethod ? 'Cancelar' : 'Añadir Método'"></span>
-                    </button>
-                </div>
-
-                <div class="p-8">
-                    <!-- Add Method Form -->
-                    <div x-show="addMethod" x-transition class="mb-8 p-6 bg-gray-50 rounded-2xl border border-gray-100">
-                        <form action="<?= PROJECT_ROOT ?>/vista-pacientes/perfil/add-payment-method" method="POST" class="space-y-4">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="space-y-1">
-                                    <label class="text-xs font-bold text-gray-400 uppercase tracking-tighter">Número de Tarjeta</label>
-                                    <input type="text" name="card_number" placeholder="0000 0000 0000 0000" required
-                                           class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary-500 outline-none text-sm">
-                                </div>
-                                <div class="space-y-1">
-                                    <label class="text-xs font-bold text-gray-400 uppercase tracking-tighter">Fecha Expiración (MM/AA)</label>
-                                    <input type="text" name="expiry" placeholder="MM/AA" required
-                                           class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary-500 outline-none text-sm">
-                                </div>
-                                <div class="space-y-1">
-                                    <label class="text-xs font-bold text-gray-400 uppercase tracking-tighter">Proveedor</label>
-                                    <select name="proveedor" class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary-500 outline-none text-sm bg-white">
-                                        <option value="Visa">Visa</option>
-                                        <option value="MasterCard">MasterCard</option>
-                                        <option value="American Express">American Express</option>
-                                    </select>
-                                </div>
-                                <div class="flex items-center gap-2 pt-5">
-                                    <input type="checkbox" name="es_predeterminado" id="es_predeterminado" value="1" class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
-                                    <label for="es_predeterminado" class="text-sm text-gray-600">Marcar como predeterminado</label>
-                                </div>
-                            </div>
-                            <button type="submit" class="w-full py-3 bg-primary-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-primary-200 hover:scale-[1.01] transition-all">
-                                Guardar Tarjeta
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- List of Methods -->
-                    <div class="space-y-4">
-                        <?php if (empty($metodosPago)): ?>
-                            <div class="text-center py-8">
-                                <div class="w-16 h-16 bg-gray-50 text-gray-300 rounded-full flex items-center justify-center mx-auto mb-3">
-                                    <i class="bi bi-credit-card text-2xl"></i>
-                                </div>
-                                <p class="text-gray-500 text-sm italic">No tienes métodos de pago guardados.</p>
-                            </div>
-                        <?php else: ?>
-                            <?php foreach ($metodosPago as $metodo): ?>
-                                <div class="flex items-center justify-between p-5 rounded-2xl border border-gray-100 hover:border-primary-100 transition-all bg-white group">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400 group-hover:text-primary-600 group-hover:bg-primary-50 transition-colors">
-                                            <?php if ($metodo['proveedor'] == 'Visa'): ?>
-                                                <i class="bi bi-credit-card-2-front text-xl"></i>
-                                            <?php else: ?>
-                                                <i class="bi bi-credit-card text-xl"></i>
-                                            <?php endif; ?>
-                                        </div>
-                                        <div>
-                                            <p class="font-bold text-gray-900 flex items-center gap-2">
-                                                <?= htmlspecialchars($metodo['proveedor']) ?> •••• <?= htmlspecialchars($metodo['last4']) ?>
-                                                <?php if ($metodo['es_predeterminado']): ?>
-                                                    <span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-black uppercase rounded-full">Predeterminado</span>
-                                                <?php endif; ?>
-                                            </p>
-                                            <p class="text-xs text-gray-400">Expira en <?= htmlspecialchars($metodo['fecha_expiracion']) ?></p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-center gap-2">
-                                        <?php if (!$metodo['es_predeterminado']): ?>
-                                            <a href="<?= PROJECT_ROOT ?>/vista-pacientes/perfil/set-primary-payment?id=<?= $metodo['metodo_id'] ?>" 
-                                               title="Hacer predeterminado" class="p-2 text-gray-400 hover:text-primary-600 transition-colors">
-                                                <i class="bi bi-star"></i>
-                                            </a>
-                                        <?php endif; ?>
-                                        <a href="<?= PROJECT_ROOT ?>/vista-pacientes/perfil/delete-payment-method?id=<?= $metodo['metodo_id'] ?>" 
-                                           onclick="return confirm('¿Estás seguro de que deseas eliminar este método de pago?')"
-                                           class="p-2 text-gray-400 hover:text-red-500 transition-colors">
-                                            <i class="bi bi-trash3"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Security & Preferences Tip -->
-            <div class="bg-indigo-900 rounded-3xl p-8 text-white overflow-hidden relative">
-                <div class="relative z-10 space-y-3">
-                    <h3 class="text-lg font-bold flex items-center gap-2">
-                        <i class="bi bi-shield-lock-fill text-indigo-400"></i>
-                        Tu privacidad es lo primero
-                    </h3>
-                    <p class="text-indigo-200 text-sm leading-relaxed max-w-lg">
-                        En Velion utilizamos encriptación de grado médico para proteger todos tus datos personales y de salud. Puedes solicitar un reporte completo de tus datos en cualquier momento contactando con nosotros.
-                    </p>
-                </div>
-                <div class="absolute right-0 bottom-0 opacity-10 pointer-events-none">
-                    <i class="bi bi-shield-check text-[120px] -mr-4 -mb-4"></i>
                 </div>
             </div>
         </div>

@@ -26,7 +26,7 @@ if (!empty($appointments)) {
             <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Mis Citas</h1>
             <p class="text-gray-500">Gestiona tus sesiones programadas y consulta tu historial de visitas.</p>
         </div>
-        <a href="<?= PROJECT_ROOT ?>/vista-pacientes/citas/nueva" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary-200/50 hover:bg-primary-700 hover:scale-105 transition-all active:scale-95 group">
+        <a href="<?= PROJECT_ROOT ?>/paciente/citas/nueva" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary-200/50 hover:bg-primary-700 hover:scale-105 transition-all active:scale-95 group">
             <i class="bi bi-calendar-plus transition-transform group-hover:rotate-12"></i>
             Nueva Cita
         </a>
@@ -86,7 +86,7 @@ if (!empty($appointments)) {
                             </div>
 
                             <div class="mt-8">
-                                <form action="<?= PROJECT_ROOT ?>/vista-pacientes/citas/delete" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas cancelar esta cita?');">
+                                <form action="<?= PROJECT_ROOT ?>/paciente/citas/delete" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas cancelar esta cita?');">
                                     <input type="hidden" name="id" value="<?= $cita['cita_id'] ?>">
                                     <button type="submit" class="w-full py-3 px-4 rounded-xl border border-gray-100 text-gray-400 text-[11px] font-black uppercase tracking-widest hover:bg-red-50 hover:text-red-600 hover:border-red-100 transition-all flex items-center justify-center gap-2">
                                         <i class="bi bi-x-circle"></i>
@@ -105,7 +105,7 @@ if (!empty($appointments)) {
                 </div>
                 <h3 class="text-xl font-bold text-gray-900">Sin citas pendientes</h3>
                 <p class="text-gray-500 mt-2 max-w-xs mx-auto text-sm leading-relaxed">No tienes ninguna sesión programada por ahora. ¡Es un buen momento para tu revisión!</p>
-                <a href="<?= PROJECT_ROOT ?>/vista-pacientes/citas/nueva" class="inline-flex mt-8 px-8 py-3 bg-gray-900 text-white rounded-2xl font-bold text-sm hover:bg-primary-600 transition-all hover:scale-105 active:scale-95 shadow-lg">Reservar ahora</a>
+                <a href="<?= PROJECT_ROOT ?>/paciente/citas/nueva" class="inline-flex mt-8 px-8 py-3 bg-gray-900 text-white rounded-2xl font-bold text-sm hover:bg-primary-600 transition-all hover:scale-105 active:scale-95 shadow-lg">Reservar ahora</a>
             </div>
         <?php endif; ?>
     </section>
@@ -123,7 +123,6 @@ if (!empty($appointments)) {
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-50">
                             <th class="px-8 py-5 text-[11px] font-bold text-gray-400 uppercase tracking-widest">Fecha y Hora</th>
-                            <th class="px-8 py-5 text-[11px] font-bold text-gray-400 uppercase tracking-widest">Servicio</th>
                             <th class="px-8 py-5 text-[11px] font-bold text-gray-400 uppercase tracking-widest">Profesional</th>
                             <th class="px-8 py-5 text-[11px] font-bold text-gray-400 uppercase tracking-widest text-right">Estado</th>
                         </tr>
@@ -135,9 +134,6 @@ if (!empty($appointments)) {
                                     <td class="px-8 py-5">
                                         <p class="text-sm font-bold text-gray-900 group-hover:text-primary-700"><?= date('d/m/Y', strtotime($cita['fecha_hora'])) ?></p>
                                         <p class="text-xs text-gray-400 font-medium"><?= date('H:i', strtotime($cita['fecha_hora'])) ?>h</p>
-                                    </td>
-                                    <td class="px-8 py-5">
-                                        <span class="text-sm text-gray-600 font-bold group-hover:text-gray-900"><?= $cita['descripcion'] ?></span>
                                     </td>
                                     <td class="px-8 py-5">
                                         <div class="flex items-center gap-3">

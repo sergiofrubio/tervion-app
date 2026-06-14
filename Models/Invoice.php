@@ -141,9 +141,9 @@ class Invoice
 
     public function getPacientes()
     {
-        $query = "SELECT u.usuario_id, u.nombre, u.apellidos 
-                  FROM usuarios u 
-                  JOIN pacientes p ON u.usuario_id = p.usuario_id";
+        $query = "SELECT usuario_id, nombre, apellidos 
+                  FROM usuarios
+                  WHERE rol = 'Paciente'";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -92,7 +92,7 @@ include TEMPLATE_DIR . 'header.php';
                             </div>
 
                             <div class="pt-6 border-t border-gray-50 mt-auto">
-                                <a href="<?= PROJECT_ROOT ?>/vista-pacientes/tienda/pago?id=<?= $bono['bono_id'] ?? 0 ?>" 
+                                <a href="<?= PROJECT_ROOT ?>/paciente/tienda/pago?id=<?= $bono['bono_id'] ?? 0 ?>" 
                                    class="w-full inline-flex items-center justify-center gap-2 bg-gray-900 text-white px-8 py-4 rounded-2xl font-bold transition-all hover:bg-primary-600 hover:scale-[1.02] active:scale-95 shadow-lg shadow-gray-200">
                                     Comprar Ahora
                                     <i class="bi bi-arrow-right"></i>

@@ -10,7 +10,7 @@ include TEMPLATE_DIR . 'header.php';
             <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Modificar Cita</h1>
             <p class="mt-1 text-gray-500">Cambia la fecha o el profesional de tu sesión programada.</p>
         </div>
-        <a href="<?= PROJECT_ROOT ?>/vista-pacientes/citas" class="inline-flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-primary-600 transition-colors group">
+        <a href="<?= PROJECT_ROOT ?>/paciente/citas" class="inline-flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-primary-600 transition-colors group">
             <i class="bi bi-arrow-left transition-transform group-hover:-translate-x-1"></i>
             Volver
         </a>
@@ -18,7 +18,7 @@ include TEMPLATE_DIR . 'header.php';
 
     <!-- Form Card -->
     <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
-        <form action="<?= PROJECT_ROOT ?>/vista-pacientes/citas/edit" method="POST" class="p-8 md:p-12">
+        <form action="<?= PROJECT_ROOT ?>/paciente/citas/edit" method="POST" class="p-8 md:p-12">
             <input type="hidden" name="cita_id" value="<?= $appointment['cita_id'] ?>">
             <input type="hidden" name="estado" value="<?= $appointment['estado'] ?>"> <!-- Mantenemos el estado actual -->
             
@@ -92,7 +92,7 @@ include TEMPLATE_DIR . 'header.php';
                 </div>
 
                 <div class="pt-6 flex items-center justify-end gap-6">
-                    <a href="<?= PROJECT_ROOT ?>/vista-pacientes/citas" class="text-sm font-bold text-gray-400 hover:text-gray-600 transition-colors">
+                    <a href="<?= PROJECT_ROOT ?>/paciente/citas" class="text-sm font-bold text-gray-400 hover:text-gray-600 transition-colors">
                         Descartar cambios
                     </a>
                     <button type="submit" class="inline-flex justify-center items-center gap-2 rounded-2xl bg-primary-600 px-10 py-4 text-sm font-bold text-white shadow-xl shadow-primary-200/50 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all hover:scale-105 active:scale-95">

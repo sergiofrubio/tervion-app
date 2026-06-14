@@ -30,11 +30,11 @@ $recientes = $recientes ?? [
                 <p class="text-primary-100 text-lg max-w-xl">Nos alegra verte. Tu bienestar es nuestra prioridad. ¿En qué podemos ayudarte hoy?</p>
             </div>
             <div class="flex flex-wrap gap-3">
-                <a href="<?= PROJECT_ROOT ?>/vista-pacientes/citas/nueva" class="inline-flex items-center gap-2 bg-white text-primary-700 px-6 py-3 rounded-2xl font-bold text-sm transition-all hover:bg-primary-50 hover:scale-105 active:scale-95 shadow-lg">
+                <a href="<?= PROJECT_ROOT ?>/paciente/citas/nueva" class="inline-flex items-center gap-2 bg-white text-primary-700 px-6 py-3 rounded-2xl font-bold text-sm transition-all hover:bg-primary-50 hover:scale-105 active:scale-95 shadow-lg">
                     <i class="bi bi-calendar-plus-fill"></i>
                     Reservar Cita
                 </a>
-                <a href="<?= PROJECT_ROOT ?>/vista-pacientes/tienda" class="inline-flex items-center gap-2 bg-primary-500/20 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-2xl font-bold text-sm transition-all hover:bg-white/20">
+                <a href="<?= PROJECT_ROOT ?>/paciente/tienda" class="inline-flex items-center gap-2 bg-primary-500/20 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-2xl font-bold text-sm transition-all hover:bg-white/20">
                     <i class="bi bi-cart-fill"></i>
                     Ir a la Tienda
                 </a>
@@ -64,7 +64,7 @@ $recientes = $recientes ?? [
                 <p class="text-sm font-medium text-gray-600"><?= $proximaCita['hora'] ?> • <?= $proximaCita['fisioterapeuta'] ?></p>
             </div>
             <div class="mt-4 pt-4 border-t border-gray-50">
-                <a href="<?= PROJECT_ROOT ?>/vista-pacientes/citas" class="text-primary-600 text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all">
+                <a href="<?= PROJECT_ROOT ?>/paciente/citas" class="text-primary-600 text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all">
                     Gestionar mis citas <i class="bi bi-arrow-right"></i>
                 </a>
             </div>

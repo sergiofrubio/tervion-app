@@ -104,24 +104,20 @@ $router->add('POST', '/contabilidad/banco/importar', 'AccountingController@impor
 $router->add('GET', '/contabilidad/cron/trimestral', 'AccountingController@runQuarterlyCron', true, ['Administrador']);
 
 // Rutas para Pacientes
-$router->add('GET', '/vista-pacientes/citas', 'AppointmentController@list', true, ['Paciente']);
-$router->add('GET', '/vista-pacientes/citas/nueva', 'AppointmentController@create', true, ['Paciente']);
-$router->add('POST', '/vista-pacientes/citas/nueva', 'AppointmentController@create', true, ['Paciente']);
-$router->add('GET', '/vista-pacientes/citas/edit', 'AppointmentController@edit', true, ['Paciente']);
-$router->add('POST', '/vista-pacientes/citas/edit', 'AppointmentController@edit', true, ['Paciente']);
-$router->add('POST', '/vista-pacientes/citas/delete', 'AppointmentController@delete', true, ['Paciente']);
+$router->add('GET', '/paciente/citas', 'AppointmentController@list', true, ['Paciente']);
+$router->add('GET', '/paciente/citas/nueva', 'AppointmentController@create', true, ['Paciente']);
+$router->add('POST', '/paciente/citas/nueva', 'AppointmentController@create', true, ['Paciente']);
+$router->add('GET', '/paciente/citas/edit', 'AppointmentController@edit', true, ['Paciente']);
+$router->add('POST', '/paciente/citas/edit', 'AppointmentController@edit', true, ['Paciente']);
+$router->add('POST', '/paciente/citas/delete', 'AppointmentController@delete', true, ['Paciente']);
 
-$router->add('GET', '/vista-pacientes/perfil', 'ProfileController@index', true, ['Paciente']);
-$router->add('GET', '/vista-pacientes/perfil/edit', 'ProfileController@edit', true, ['Paciente']);
-$router->add('POST', '/vista-pacientes/perfil/edit', 'ProfileController@edit', true, ['Paciente']);
-$router->add('POST', '/vista-pacientes/perfil/add-payment-method', 'ProfileController@addPaymentMethod', true, ['Paciente']);
-$router->add('GET', '/vista-pacientes/perfil/delete-payment-method', 'ProfileController@deletePaymentMethod', true, ['Paciente']);
-$router->add('GET', '/vista-pacientes/perfil/set-primary-payment', 'ProfileController@setPrimaryPaymentMethod', true, ['Paciente']);
+$router->add('GET', '/paciente/perfil', 'ProfileController@index', true, ['Paciente']);
+$router->add('GET', '/paciente/perfil/edit', 'ProfileController@edit', true, ['Paciente']);
+$router->add('POST', '/paciente/perfil/edit', 'ProfileController@edit', true, ['Paciente']);
 
-$router->add('GET', '/vista-pacientes/tienda', 'ShopController@list', true, ['Paciente']);
-$router->add('GET', '/vista-pacientes/tienda/pago', 'ShopController@pago', true, ['Paciente']);
-$router->add('POST', '/vista-pacientes/tienda/procesar-pago', 'ShopController@procesarPago', true, ['Paciente']);
+$router->add('GET', '/paciente/tienda', 'ShopController@list', true, ['Paciente']);
+$router->add('POST', '/paciente/tienda/procesar-pago', 'ShopController@procesarPago', true, ['Paciente']);
 
-$router->add('GET', '/vista-pacientes/facturas', 'InvoiceController@list', true, ['Paciente']);
+$router->add('GET', '/paciente/facturas', 'InvoiceController@list', true, ['Paciente']);
 
 $router->handleRequest();

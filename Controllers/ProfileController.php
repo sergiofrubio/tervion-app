@@ -12,7 +12,6 @@ class ProfileController extends Controller
     public function index()
     {
         $userModel = $this->model('User');
-        $metodoPagoModel = $this->model('PaymentMethod');
         
         $usuario = $userModel->getByusuario_id($_SESSION['usuario_id']);
         
@@ -21,11 +20,8 @@ class ProfileController extends Controller
             $this->exitApp();
         }
 
-        $metodosPago = $metodoPagoModel->getByUsuario($_SESSION['usuario_id']);
-
         $data = [
             'usuario' => $usuario,
-            'metodosPago' => $metodosPago,
             'pageTitle' => 'Mi Perfil - Velion'
         ];
 
@@ -67,88 +63,15 @@ class ProfileController extends Controller
             if ($userModel->update($usuario_id, $data)) {
                 // Update session info if needed
                 $_SESSION['nombre'] = $data['nombre'];
-                header('Location: ' . PROJECT_ROOT . '/vista-pacientes/perfil?success=1');
+                header('Location: ' . PROJECT_ROOT . '/paciente/perfil?success=1');
                 $this->exitApp();
             } else {
                 $data['error'] = "Error al actualizar el perfil.";
                 $data['usuario'] = $userModel->getByusuario_id($usuario_id);
-                $metodoPagoModel = $this->model('PaymentMethod');
-                $data['metodosPago'] = $metodoPagoModel->getByUsuario($usuario_id);
                 $this->view('patient-view/profile/index', $data);
             }
         } else {
-            header('Location: ' . PROJECT_ROOT . '/vista-pacientes/perfil');
+            header('Location: ' . PROJECT_ROOT . '/paciente/perfil');
         }
-    }
-
-    /**
-     * Añade un nuevo método de pago (tarjeta) a la cuenta del paciente.
-     *
-     * @return void
-     */
-    public function addPaymentMethod()
-    {       
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $metodoPagoModel = $this->model('PaymentMethod');
-            
-            $numeroTarjeta = $_POST['card_number'] ?? '';
-            $last4 = substr($numeroTarjeta, -4);
-            $tipo = $_POST['tipo'] ?? 'Tarjeta';
-            $proveedor = $_POST['proveedor'] ?? 'Visa';
-            $fechaExp = $_POST['expiry'] ?? '';
-            
-            $data = [
-                'usuario_id' => $_SESSION['usuario_id'],
-                'tipo' => $tipo,
-                'proveedor' => $proveedor,
-                'last4' => $last4,
-                'fecha_expiracion' => $fechaExp,
-                'token_externo' => bin2hex(random_bytes(16)), // Simulating a token
-                'es_predeterminado' => isset($_POST['es_predeterminado']) ? 1 : 0
-            ];
-
-            if ($metodoPagoModel->save($data)) {
-                header('Location: ' . PROJECT_ROOT . '/vista-pacientes/perfil?success=pm_added');
-            } else {
-                header('Location: ' . PROJECT_ROOT . '/vista-pacientes/perfil?error=pm_failed');
-            }
-            $this->exitApp();
-        }
-    }
-
-    /**
-     * Elimina un método de pago del paciente.
-     *
-     * @return void
-     */
-    public function deletePaymentMethod()
-    {
-        $metodo_id = $_GET['id'] ?? 0;
-        
-        $metodoPagoModel = $this->model('PaymentMethod');
-        if ($metodoPagoModel->delete($metodo_id, $_SESSION['usuario_id'])) {
-            header('Location: ' . PROJECT_ROOT . '/vista-pacientes/perfil?success=pm_deleted');
-        } else {
-            header('Location: ' . PROJECT_ROOT . '/vista-pacientes/perfil?error=pm_delete_failed');
-        }
-        $this->exitApp();
-    }
-
-    /**
-     * Establece un método de pago como el predeterminado para el paciente.
-     *
-     * @return void
-     */
-    public function setPrimaryPaymentMethod()
-    {
-        $metodo_id = $_GET['id'] ?? 0;
-        
-        $metodoPagoModel = $this->model('PaymentMethod');
-        if ($metodoPagoModel->setPredeterminado($metodo_id, $_SESSION['usuario_id'])) {
-            header('Location: ' . PROJECT_ROOT . '/vista-pacientes/perfil?success=pm_primary');
-        } else {
-            header('Location: ' . PROJECT_ROOT . '/vista-pacientes/perfil?error=pm_primary_failed');
-        }
-        $this->exitApp();
     }
 }

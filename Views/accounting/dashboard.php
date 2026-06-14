@@ -37,8 +37,7 @@ include TEMPLATE_DIR . 'header.php';
     <?php endif; ?>
 
     <!-- Automatización Contable en 1 Clic (Sin Intervención Manual) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-        <!-- Lector Inteligente (OCR/IA) -->
+    <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
         <div class="p-6 bg-gray-50/50 rounded-2xl border border-gray-100 flex flex-col justify-between space-y-4">
             <div>
                 <div class="flex items-center gap-2 text-indigo-700">
@@ -59,7 +58,6 @@ include TEMPLATE_DIR . 'header.php';
             </form>
         </div>
 
-        <!-- Sincronizador de Extractos Bancarios -->
         <div class="p-6 bg-gray-50/50 rounded-2xl border border-gray-100 flex flex-col justify-between space-y-4">
             <div>
                 <div class="flex items-center gap-2 text-emerald-700">
@@ -77,7 +75,7 @@ include TEMPLATE_DIR . 'header.php';
                 </button>
             </form>
         </div>
-    </div>
+    </div> -->
 
     <!-- Filters & Actions -->
     <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">

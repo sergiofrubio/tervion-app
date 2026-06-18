@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 12-06-2026 a las 20:09:46
+-- Tiempo de generación: 18-06-2026 a las 08:18:04
 -- Versión del servidor: 8.0.44
 -- Versión de PHP: 8.3.26
 
@@ -118,7 +118,9 @@ INSERT INTO `citas` (`cita_id`, `paciente_id`, `fisioterapeuta_id`, `fecha_hora`
 (10, '123456789', '234567890', '2026-05-12 08:45:00', 'Programada', NULL, NULL, '2026-05-10 08:45:47', NULL, NULL),
 (11, '123456789', '234567890', '2026-05-12 08:47:00', 'Programada', NULL, NULL, '2026-05-10 08:47:34', NULL, NULL),
 (12, '123456789', '234567890', '2026-05-12 08:49:00', 'Programada', NULL, NULL, '2026-05-10 08:49:44', NULL, NULL),
-(13, '123456789', '234567890', '2026-05-12 08:50:00', 'Programada', NULL, NULL, '2026-05-10 08:50:29', NULL, NULL);
+(13, '123456789', '234567890', '2026-05-12 08:50:00', 'Programada', NULL, NULL, '2026-05-10 08:50:29', NULL, NULL),
+(14, '123456789', '234567890', '2026-06-15 09:00:00', 'Programada', NULL, NULL, '2026-06-14 18:41:50', NULL, NULL),
+(15, '123456789', '234567890', '2026-06-15 10:00:00', 'Programada', NULL, NULL, '2026-06-14 18:41:57', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -355,7 +357,9 @@ CREATE TABLE `horarios_terapeutas` (
 --
 
 INSERT INTO `horarios_terapeutas` (`horario_id`, `fisioterapeuta_id`, `dia_semana`, `hora_inicio`, `hora_fin`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
-(1, '234567890', 'Lunes', '09:00:00', '18:30:00', NULL, '2026-05-10 16:33:30', NULL, NULL);
+(1, '234567890', 'Lunes', '09:00:00', '18:30:00', NULL, '2026-05-10 16:33:30', NULL, NULL),
+(2, '234567890', 'Martes', '09:00:00', '21:00:00', NULL, '2026-06-14 17:26:12', NULL, NULL),
+(3, '234567890', 'Miércoles', '09:00:00', '21:00:00', NULL, '2026-06-14 17:26:28', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -642,7 +646,7 @@ ALTER TABLE `bonos_pacientes`
 -- AUTO_INCREMENT de la tabla `citas`
 --
 ALTER TABLE `citas`
-  MODIFY `cita_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `cita_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `clinicas`
@@ -684,7 +688,7 @@ ALTER TABLE `historiales_medicos`
 -- AUTO_INCREMENT de la tabla `horarios_terapeutas`
 --
 ALTER TABLE `horarios_terapeutas`
-  MODIFY `horario_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `horario_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `metodos_pago`

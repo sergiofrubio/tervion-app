@@ -199,4 +199,51 @@ class Appointment
         ];
         return $dias_semana[date('l', strtotime($fecha))] ?? '';
     }
+
+    public function getUpcomingAppointmentsWithoutReminder($days = 1)
+    {
+        $query = "SELECT c.*, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.email as paciente_email, p.telefono as paciente_telefono,
+                         f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos 
+                  FROM citas c 
+                  LEFT JOIN usuarios p ON c.paciente_id = p.usuario_id 
+                  LEFT JOIN usuarios f ON c.fisioterapeuta_id = f.usuario_id 
+                  WHERE c.estado = 'Programada' 
+                    AND DATE(c.fecha_hora) = DATE_ADD(CURDATE(), INTERVAL :days DAY)
+                    AND c.token_confirmacion IS NULL";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':days', $days, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function setConfirmationToken($cita_id, $token)
+    {
+        $query = "UPDATE citas SET token_confirmacion = :token WHERE cita_id = :cita_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+        $stmt->bindParam(':cita_id', $cita_id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function getByConfirmationToken($token)
+    {
+        $query = "SELECT c.*, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.email as paciente_email, p.telefono as paciente_telefono,
+                         f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos 
+                  FROM citas c 
+                  LEFT JOIN usuarios p ON c.paciente_id = p.usuario_id 
+                  LEFT JOIN usuarios f ON c.fisioterapeuta_id = f.usuario_id 
+                  WHERE c.token_confirmacion = :token";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function confirmAppointment($cita_id)
+    {
+        $query = "UPDATE citas SET estado = 'Confirmada' WHERE cita_id = :cita_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':cita_id', $cita_id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }

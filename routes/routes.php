@@ -15,6 +15,10 @@ $router->add('GET', '/registro', 'RegisterController@index', false);
 $router->add('POST', '/registro', 'RegisterController@register', false);
 $router->add('GET', '/logout', 'LoginController@finishSesion', false);
 
+// Rutas de Citas Públicas (Confirmación y Cron)
+$router->add('GET', '/citas/confirmar', 'AppointmentController@confirmarAsistencia', false);
+$router->add('GET', '/citas/cron/recordatorios', 'AppointmentController@enviarRecordatorios', false);
+
 // Rutas Generales (Requieren autenticación, accesibles por todos los roles)
 $router->add('GET', '/inicio', 'HomeController@index', true, ['Administrador', 'Fisioterapeuta', 'Paciente']);
 

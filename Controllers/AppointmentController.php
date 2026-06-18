@@ -221,4 +221,89 @@ class AppointmentController extends Controller
         echo json_encode($days);
         $this->exitApp();
     }
+
+    public function enviarRecordatorios()
+    {
+        $appointmentModel = $this->model('Appointment');
+        $upcoming = $appointmentModel->getUpcomingAppointmentsWithoutReminder(1); // Mañana
+        $emailController = new EmailController();
+
+        $enviadosEmail = 0;
+
+        foreach ($upcoming as $cita) {
+            if (empty($cita['paciente_email'])) {
+                continue;
+            }
+
+            $token = bin2hex(random_bytes(32));
+            if ($appointmentModel->setConfirmationToken($cita['cita_id'], $token)) {
+                $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+                $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+                $confirmLink = $scheme . '://' . $host . PROJECT_ROOT . '/citas/confirmar?token=' . $token;
+
+                $fecha_formateada = date('d/m/Y H:i', strtotime($cita['fecha_hora']));
+                $subject = "Recordatorio de cita - Velion";
+                $body = "
+                    <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: #ffffff;'>
+                        <h2 style='color: #0f172a;'>Recordatorio de tu cita</h2>
+                        <p>Hola, <strong>" . htmlspecialchars($cita['paciente_nombre']) . " " . htmlspecialchars($cita['paciente_apellidos']) . "</strong>,</p>
+                        <p>Te recordamos que tienes una cita programada en Velion:</p>
+                        <div style='background-color: #f8fafc; padding: 15px; border-radius: 6px; margin: 20px 0;'>
+                            <p style='margin: 5px 0;'><strong>Fecha y Hora:</strong> " . $fecha_formateada . "</p>
+                            <p style='margin: 5px 0;'><strong>Fisioterapeuta:</strong> " . htmlspecialchars($cita['fisioterapeuta_nombre']) . " " . htmlspecialchars($cita['fisioterapeuta_apellidos']) . "</p>
+                        </div>
+                        <p>Por favor, confirma tu asistencia haciendo clic en el siguiente botón:</p>
+                        <p style='text-align: center; margin: 30px 0;'>
+                            <a href='{$confirmLink}' style='background-color: #2563eb; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;'>Confirmar Asistencia</a>
+                        </p>
+                        <p style='font-size: 0.875rem; color: #64748b; line-height: 1.5;'>Si no puedes asistir, por favor ponte en contacto con la clínica lo antes posible.</p>
+                    </div>
+                ";
+
+                if ($emailController->sendEmail($cita['paciente_email'], $subject, $body)) {
+                    $enviadosEmail++;
+                }
+            }
+        }
+
+        if (defined('STDIN') || (php_sapi_name() === 'cli')) {
+            echo "Recordatorios enviados - Email: $enviadosEmail\n";
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'enviados_email' => $enviadosEmail
+            ]);
+            $this->exitApp();
+        }
+    }
+
+    public function confirmarAsistencia()
+    {
+        $token = $_GET['token'] ?? null;
+        if (!$token) {
+            $this->view('appointment/confirmar', ['success' => false, 'message' => 'Token no proporcionado.']);
+            return;
+        }
+
+        $appointmentModel = $this->model('Appointment');
+        $cita = $appointmentModel->getByConfirmationToken($token);
+
+        if (!$cita) {
+            $this->view('appointment/confirmar', ['success' => false, 'message' => 'El enlace no es válido o ha expirado.']);
+            return;
+        }
+
+        if ($cita['estado'] === 'Confirmada') {
+            $this->view('appointment/confirmar', ['success' => true, 'already' => true, 'appointment' => $cita]);
+            return;
+        }
+
+        if ($appointmentModel->confirmAppointment($cita['cita_id'])) {
+            $cita['estado'] = 'Confirmada';
+            $this->view('appointment/confirmar', ['success' => true, 'already' => false, 'appointment' => $cita]);
+        } else {
+            $this->view('appointment/confirmar', ['success' => false, 'message' => 'Hubo un error al confirmar tu asistencia. Por favor, inténtalo de nuevo.']);
+        }
+    }
 }

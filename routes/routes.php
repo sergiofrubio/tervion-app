@@ -85,11 +85,11 @@ $router->add('POST', '/facturas/delete', 'InvoiceController@delete', true, $staf
 $router->add('GET', '/facturas/pdf', 'InvoiceController@pdf', true, $staffRoles);
 
 $router->add('GET', '/nominas', 'PayrollController@list', true, ['Administrador']);
-$router->add('GET', '/nominas/contratos', 'PayrollController@listContracts', true, ['Administrador']);
-$router->add('GET', '/nominas/contratos/create', 'PayrollController@createContract', true, ['Administrador']);
-$router->add('POST', '/nominas/contratos/create', 'PayrollController@createContract', true, ['Administrador']);
-$router->add('GET', '/nominas/contratos/edit', 'PayrollController@editContract', true, ['Administrador']);
-$router->add('POST', '/nominas/contratos/edit', 'PayrollController@editContract', true, ['Administrador']);
+$router->add('GET', '/nominas/contratos', 'ContractController@list', true, ['Administrador']);
+$router->add('GET', '/nominas/contratos/create', 'ContractController@create', true, ['Administrador']);
+$router->add('POST', '/nominas/contratos/create', 'ContractController@create', true, ['Administrador']);
+$router->add('GET', '/nominas/contratos/edit', 'ContractController@edit', true, ['Administrador']);
+$router->add('POST', '/nominas/contratos/edit', 'ContractController@edit', true, ['Administrador']);
 $router->add('GET', '/nominas/generate', 'PayrollController@generate', true, ['Administrador']);
 $router->add('POST', '/nominas/generate', 'PayrollController@generate', true, ['Administrador']);
 $router->add('GET', '/nominas/detail', 'PayrollController@detail', true, ['Administrador']);

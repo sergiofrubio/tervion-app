@@ -23,16 +23,16 @@
                     },
                     colors: {
                         brand: {
-                            50: '#f5f3ff',
-                            100: '#ede9fe',
-                            200: '#ddd6fe',
-                            300: '#c4b5fd',
-                            400: '#a78bfa',
-                            500: '#8b5cf6',
-                            600: '#7c3aed',
-                            700: '#6d28d9',
-                            800: '#5b21b6',
-                            900: '#4c1d95',
+                            50: '#f0fdfa',   // Teal 50
+                            100: '#ccfbf1',  // Teal 100
+                            200: '#99f6e4',  // Teal 200
+                            300: '#5eead4',  // Teal 300
+                            400: '#2dd4bf',  // Teal 400
+                            500: '#14b8a6',  // Teal 500
+                            600: '#0d9488',  // Teal 600
+                            700: '#0f766e',  // Teal 700
+                            800: '#115e59',  // Teal 800
+                            900: '#134e4a',  // Teal 900
                         }
                     },
                     animation: {
@@ -71,25 +71,25 @@
         }
         
         .hero-gradient {
-            background: radial-gradient(circle at top right, rgba(124, 58, 237, 0.15), transparent),
-                        radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.1), transparent);
+            background: radial-gradient(circle at top right, rgba(13, 148, 136, 0.15), transparent),
+                        radial-gradient(circle at bottom left, rgba(6, 182, 212, 0.1), transparent);
         }
 
         .text-gradient {
-            background: linear-gradient(135deg, #fff 0%, #a78bfa 100%);
+            background: linear-gradient(135deg, #fff 0%, #2dd4bf 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .btn-glow:hover {
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 0 20px rgba(13, 148, 136, 0.4);
         }
 
         .blob {
             position: absolute;
             width: 500px;
             height: 500px;
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+            background: linear-gradient(135deg, rgba(13, 148, 136, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
             filter: blur(80px);
             border-radius: 50%;
             z-index: -1;

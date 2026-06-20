@@ -23,11 +23,37 @@
                     },
                     colors: {
                         primary: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
+                            50: '#f0fdfa',   // Teal 50
+                            100: '#ccfbf1',  // Teal 100
+                            500: '#0d9488',  // Teal 600
+                            600: '#0f766e',  // Teal 700
+                            700: '#115e59',  // Teal 800
+                        },
+                        indigo: {
+                            50: '#ecfeff',   // Cyan 50
+                            100: '#cffafe',  // Cyan 100
+                            200: '#a5f3fc',  // Cyan 200
+                            300: '#67e8f9',  // Cyan 300
+                            400: '#22d3ee',  // Cyan 400
+                            500: '#06b6d4',  // Cyan 500
+                            600: '#0891b2',  // Cyan 600
+                            700: '#0e7490',  // Cyan 700
+                            800: '#155e75',  // Cyan 800
+                            900: '#164e63',  // Cyan 900
+                            950: '#083344',  // Cyan 950
+                        },
+                        purple: {
+                            50: '#f0fdf4',   // Emerald 50
+                            100: '#dcfce7',  // Emerald 100
+                            200: '#bbf7d0',  // Emerald 200
+                            300: '#86efac',  // Emerald 300
+                            400: '#4ade80',  // Emerald 400
+                            500: '#10b981',  // Emerald 500
+                            600: '#059669',  // Emerald 600
+                            700: '#047857',  // Emerald 700
+                            800: '#065f46',  // Emerald 800
+                            900: '#064e3b',  // Emerald 900
+                            950: '#022c22',  // Emerald 950
                         }
                     }
                 }

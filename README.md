@@ -1,6 +1,4 @@
-# Velion — Sistema de Gestión de Clínicas 🏥
-
-**Velion** es una solución integral de gestión diseñada específicamente para la administración eficiente de centros médicos. El proyecto destaca por su arquitectura modular basada en el patrón **MVC (Modelo-Vista-Controlador)**, garantizando un código limpio, escalable y fácil de mantener, y por su conexión directa con el sistema **Verifactu** de la AEAT y **Contrat@** de la Tesorería General de la Seguridad Social, ahorrando tiempo y dinero en trámites burocráticos.
+# Velion — Sistema de Gestión de Clínicas
 
 ---
 
@@ -19,8 +17,9 @@
 Este proyecto nace con el objetivo de digitalizar la operativa diaria de una clínica médica. No se trata solo de una agenda de citas, sino de una plataforma robusta que permite la gestión centralizada de:
 - **Pacientes y Sanitarios**: Perfiles detallados con historial vinculado.
 - **Citas Médicas**: Sistema de programación inteligente con estados.
-- **Historial Clínico**: Registro seguro de la evolución del paciente.
+- **Reportes médicos**: Registro seguro de la evolución del paciente.
 - **Facturación**: Gestión de facturas con normativa Verifactu.
+- **Recordatorios**: Y confirmación de citas por correo electrónico.
 - **Informes**: Generación automatizada de documentos PDF.
 
 ---

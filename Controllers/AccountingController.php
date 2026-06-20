@@ -7,9 +7,6 @@ class AccountingController extends Controller
 {
     public function __construct()
     {
-        // Asegurar autenticación general
-        $this->checkAuth();
-        
         // Solo administradores pueden ver la contabilidad
         $rol = $_SESSION['rol'] ?? '';
         if ($rol !== 'Administrador') {

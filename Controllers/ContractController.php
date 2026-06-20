@@ -6,9 +6,6 @@ class ContractController extends Controller
 {
     public function __construct()
     {
-        // Asegurar autenticación general
-        $this->checkAuth();
-        
         // Solo administradores pueden gestionar contratos
         $rol = $_SESSION['rol'] ?? '';
         if ($rol !== 'Administrador') {

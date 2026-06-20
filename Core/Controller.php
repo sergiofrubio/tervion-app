@@ -15,14 +15,6 @@ class Controller
         return new $modelClass();
     }
 
-    public function checkAuth()
-    {
-        if (!isset($_SESSION['usuario_id'])) {
-            header('Location: ' . PROJECT_ROOT . '/login');
-            $this->exitApp();
-        }
-    }
-
     protected function exitApp()
     {
         exit();

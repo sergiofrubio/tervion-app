@@ -148,28 +148,28 @@
                     <i class="bi bi-calendar3 text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/citas') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
                     Citas
                 </a>
-                <!-- <a href="<?= PROJECT_ROOT ?>/facturas"
-                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/facturas') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
-                    <i class="bi bi-receipt text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/facturas') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
-                    Facturas
-                </a>
-                <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Administrador') : ?>
                 <a href="<?= PROJECT_ROOT ?>/nominas"
                     class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/nominas') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
                     <i class="bi bi-cash-coin text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/nominas') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
                     Nóminas
                 </a>
-                <a href="<?= PROJECT_ROOT ?>/contabilidad"
-                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/contabilidad') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
-                    <i class="bi bi-calculator text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/contabilidad') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
-                    Contabilidad
-                </a> -->
+                <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Administrador') : ?>
+                    <a href="<?= PROJECT_ROOT ?>/facturas"
+                        class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/facturas') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
+                        <i class="bi bi-receipt text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/facturas') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
+                        Facturas
+                    </a>
+                    <a href="<?= PROJECT_ROOT ?>/contabilidad"
+                        class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/contabilidad') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
+                        <i class="bi bi-calculator text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/contabilidad') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
+                        Contabilidad
+                    </a>
+                    <a href="<?= PROJECT_ROOT ?>/configuracion"
+                        class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/configuracion') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
+                        <i class="bi bi-gear text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/configuracion') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
+                        Configuración
+                    </a>
                 <?php endif; ?>
-                <a href="<?= PROJECT_ROOT ?>/configuracion"
-                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/configuracion') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
-                    <i class="bi bi-gear text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/configuracion') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
-                    Configuración
-                </a>
             <?php endif; ?>
         </nav>
 

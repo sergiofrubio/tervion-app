@@ -49,6 +49,19 @@ class Payroll
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getActiveContracts()
+    {
+        $query = "SELECT c.*, u.nombre, u.apellidos, u.email, u.usuario_id as dni, u.direccion, u.cp, u.municipio, u.provincia,
+                         e.nss, e.iban, e.grupo_cotizacion
+                  FROM contratos c
+                  JOIN usuarios u ON c.usuario_id = u.usuario_id
+                  LEFT JOIN empleados e ON u.usuario_id = e.usuario_id
+                  WHERE c.activo = 1";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getContract($contrato_id)
     {
         $query = "SELECT c.*, u.nombre, u.apellidos FROM contratos c 
@@ -121,9 +134,9 @@ class Payroll
 
     public function getPayroll($nomina_id)
     {
-        $query = "SELECT n.*, u.nombre, u.apellidos, u.usuario_id as dni, u.direccion, u.cp, u.municipio, u.provincia,
+        $query = "SELECT n.*, u.nombre, u.apellidos, u.email, u.usuario_id as dni, u.direccion, u.cp, u.municipio, u.provincia,
                          e.nss, e.iban, e.grupo_cotizacion,
-                         c.tipo_contrato, c.salario_base_mensual, c.complementos_mensuales
+                         c.tipo_contrato, c.salario_base_mensual, c.complementos_mensuales, c.irpf_porcentaje
                   FROM nominas n 
                   JOIN contratos c ON n.contrato_id = c.contrato_id 
                   JOIN usuarios u ON c.usuario_id = u.usuario_id 

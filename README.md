@@ -42,7 +42,8 @@ El proyecto sigue una estructura organizada que separa las responsabilidades de 
 ├── Templates/      # Componentes reutilizables de UI (Layouts, Modales).
 ├── Core/           # Motor del framework (Base de Datos, Configuración).
 ├── public/         # Punto de entrada (index.php) y recursos estáticos.
-├── routes/         # Definición de rutas y lógica del Router.
+├── Router/         # Definición de rutas y lógica del Router.
+├── Scripts/        # Scripts para automatizar tareas con cron jobs.
 ├── vendor/         # Dependencias de terceros (Composer).
 └── compose.yml     # Orquestación de infraestructura.
 ```

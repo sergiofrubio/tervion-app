@@ -104,9 +104,4 @@ El proyecto ya incluye **PHPUnit** como dependencia de desarrollo. Para ejecutar
 docker exec -it velion-php-apache-1 ./vendor/bin/phpunit
 ```
 
-### Estrategia de Testing Planificada:
-1.  **Unit Testing**: Validación de la lógica de negocio en los Controladores y Modelos.
-2.  **Integration Testing**: Verificación de la correcta comunicación con la base de datos MySQL.
-3.  **End-to-End (E2E)**: Pruebas de flujo completo de reserva de citas.
-
 ---

@@ -6,7 +6,8 @@
     "autoload": {
         "psr-4": {
             "App\\": "",
-            "App\\Routes\\": "routes/"
+            "App\\Routes\\": "routes/",
+            "Redsys\\": "vendor/redsys-lib/src/"
         }
     },
     "autoload-dev": {

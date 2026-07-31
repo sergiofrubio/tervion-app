@@ -135,8 +135,12 @@ class InvoiceController extends Controller
     public function pdf()
     {
         $id = $_GET['id'] ?? null;
+        $usuario_id = $_SESSION['usuario_id'] ?? null;
+        $rol = $_SESSION['rol'] ?? 'Administrador';
+
         if (!$id) {
-            header('Location: ' . PROJECT_ROOT . '/facturas');
+            $redirectUrl = ($rol === 'Paciente') ? '/paciente/facturas' : '/facturas';
+            header('Location: ' . PROJECT_ROOT . $redirectUrl);
             $this->exitApp();
         }
 
@@ -146,6 +150,12 @@ class InvoiceController extends Controller
 
         if (!$factura) {
             echo "Factura no encontrada.";
+            return;
+        }
+
+        // Seguridad: Los pacientes solo pueden acceder a sus propias facturas (previene IDOR)
+        if ($rol === 'Paciente' && $factura['paciente_id'] !== $usuario_id) {
+            echo "Acceso denegado. No tienes permisos para visualizar esta factura.";
             return;
         }
 

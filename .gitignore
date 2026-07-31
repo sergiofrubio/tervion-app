@@ -4,6 +4,5 @@
 .buildpath
 .project
 .idea/
-/vendor/
 .phpunit.result.cache
 coverage/

@@ -1,5 +1,5 @@
 <?php
-use App\Routes\Router;
+use App\Router\Router;
 
 $router = new Router();
 
@@ -120,8 +120,13 @@ $router->add('GET', '/paciente/perfil/edit', 'ProfileController@edit', true, ['P
 $router->add('POST', '/paciente/perfil/edit', 'ProfileController@edit', true, ['Paciente']);
 
 $router->add('GET', '/paciente/tienda', 'ShopController@list', true, ['Paciente']);
+$router->add('GET', '/paciente/tienda/pago', 'ShopController@pago', true, ['Paciente']);
 $router->add('POST', '/paciente/tienda/procesar-pago', 'ShopController@procesarPago', true, ['Paciente']);
+$router->add('POST', '/paciente/tienda/notificacion', 'ShopController@notificacion', false);
+$router->add('GET', '/paciente/tienda/confirmacion', 'ShopController@confirmacion', true, ['Paciente']);
+$router->add('GET', '/paciente/tienda/error', 'ShopController@errorPago', true, ['Paciente']);
 
 $router->add('GET', '/paciente/facturas', 'InvoiceController@list', true, ['Paciente']);
+$router->add('GET', '/paciente/facturas/pdf', 'InvoiceController@pdf', true, ['Paciente']);
 
 $router->handleRequest();

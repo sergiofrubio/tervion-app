@@ -6,4 +6,4 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once '../Routes/routes.php';
+require_once '../Router/routes.php';

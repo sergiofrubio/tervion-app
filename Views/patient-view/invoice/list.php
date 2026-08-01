@@ -94,7 +94,7 @@ include TEMPLATE_DIR . 'header.php';
                                     <span class="text-sm font-black text-gray-900"><?= number_format($f['total'], 2, ',', '.') ?> €</span>
                                 </td>
                                 <td class="px-6 py-5 text-center">
-                                    <a href="<?= PROJECT_ROOT ?>/facturas/pdf?id=<?= $f['factura_id'] ?>" 
+                                    <a href="<?= PROJECT_ROOT ?>/paciente/facturas/pdf?id=<?= $f['factura_id'] ?>" 
                                        target="_blank"
                                        class="inline-flex items-center gap-2 bg-gray-50 text-gray-600 px-4 py-2 rounded-xl font-bold text-xs transition-all hover:bg-primary-600 hover:text-white hover:scale-105 active:scale-95 shadow-sm">
                                         <i class="bi bi-file-earmark-pdf"></i>

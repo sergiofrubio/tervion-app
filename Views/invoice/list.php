@@ -119,14 +119,15 @@ include TEMPLATE_DIR . 'header.php';
                         <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Paciente</th>
                         <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Fecha</th>
                         <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Total</th>
-                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Estado</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Estado Pago</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Verifactu (AEAT)</th>
                         <th class="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 bg-white">
                     <?php if (empty($facturas)) : ?>
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-sm text-gray-500 italic">
+                            <td colspan="7" class="px-6 py-12 text-center text-sm text-gray-500 italic">
                                 <i class="bi bi-inbox text-4xl block mb-2 opacity-20"></i>
                                 No hay facturas registradas.
                             </td>
@@ -135,14 +136,14 @@ include TEMPLATE_DIR . 'header.php';
                         <?php foreach ($facturas as $factura) : ?>
                             <tr class="hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    #<?= str_pad($factura['factura_id'], 5, '0', STR_PAD_LEFT) ?>
+                                    <?= htmlspecialchars($factura['serie'] ?? 'A') ?>-<?= str_pad($factura['numero'], 5, '0', STR_PAD_LEFT) ?>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                     <div class="flex items-center gap-3">
                                         <div class="h-8 w-8 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center font-bold text-xs">
                                             <?= substr($factura['nombre'], 0, 1) . substr($factura['apellidos'], 0, 1) ?>
                                         </div>
-                                        <?= $factura['nombre'] . ' ' . $factura['apellidos'] ?>
+                                        <?= htmlspecialchars($factura['nombre'] . ' ' . $factura['apellidos']) ?>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
@@ -160,22 +161,36 @@ include TEMPLATE_DIR . 'header.php';
                                         <span class="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20">
                                             <i class="bi bi-clock-history mr-1"></i> Pendiente
                                         </span>
-                                    <?php     endif; ?>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <?php 
+                                    $vfState = $factura['estado_verifactu'] ?? 'Pendiente';
+                                    if ($vfState === 'Aceptado' || $vfState === 'AceptadoConErrores') : ?>
+                                        <span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-800 ring-1 ring-inset ring-emerald-600/20" title="CSV: <?= htmlspecialchars($factura['csv_verifactu'] ?? 'Generado') ?>">
+                                            <i class="bi bi-shield-check mr-1 text-emerald-600"></i> Remitida
+                                        </span>
+                                    <?php elseif ($vfState === 'Rechazado') : ?>
+                                        <span class="inline-flex items-center rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-semibold text-red-700 ring-1 ring-inset ring-red-600/20" title="<?= htmlspecialchars($factura['mensaje_verifactu'] ?? 'Error AEAT') ?>">
+                                            <i class="bi bi-exclamation-triangle mr-1"></i> Rechazada
+                                        </span>
+                                    <?php else : ?>
+                                        <span class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-700 ring-1 ring-inset ring-blue-600/20">
+                                            <i class="bi bi-arrow-repeat mr-1 animate-spin"></i> Pendiente AEAT
+                                        </span>
+                                    <?php endif; ?>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
                                     <div class="flex justify-end gap-2">
+                                        <a href="<?= PROJECT_ROOT ?>/facturas/reenviar?id=<?= $factura['factura_id'] ?>" class="p-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all" title="Enviar / Reintentar Verifactu AEAT">
+                                            <i class="bi bi-send-fill"></i>
+                                        </a>
                                         <a href="<?= PROJECT_ROOT ?>/facturas/pdf?id=<?= $factura['factura_id'] ?>" target="_blank" class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all" title="Imprimir PDF">
                                             <i class="bi bi-file-earmark-pdf"></i>
                                         </a>
                                         <a href="<?= PROJECT_ROOT ?>/facturas/edit?id=<?= $factura['factura_id'] ?>" class="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all" title="Editar">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <form action="<?= PROJECT_ROOT ?>/facturas/delete" method="POST" class="inline" onsubmit="return confirm('¿Estás seguro de eliminar esta factura?');">
-                                            <input type="hidden" name="factura_id" value="<?= $factura['factura_id'] ?>">
-                                            <button type="submit" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all" title="Eliminar">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
                                     </div>
                                 </td>
                             </tr>

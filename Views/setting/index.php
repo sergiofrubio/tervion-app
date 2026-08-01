@@ -71,7 +71,7 @@ include TEMPLATE_DIR . 'header.php';
                     <h4 class="text-base font-bold text-gray-900">Datos de la Clínica</h4>
                 </div>
 
-                <form action="<?= PROJECT_ROOT ?>/configuracion/clinica/update" method="POST" class="max-w-4xl">
+                <form action="<?= PROJECT_ROOT ?>/configuracion/clinica/update" method="POST" enctype="multipart/form-data" class="max-w-4xl">
                     <?php if ($clinica) : ?>
                         <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
                     <?php endif; ?>
@@ -139,11 +139,67 @@ include TEMPLATE_DIR . 'header.php';
                                 placeholder="contacto@clinica.com">
                         </div>
 
+                        <div class="space-y-1">
+                            <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">NIF / CIF Emisor</label>
+                            <input type="text" name="nif_cif" value="<?= $clinica['nif_cif'] ?? 'B12345678' ?>" required
+                                class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all"
+                                placeholder="Ej: B12345678">
+                        </div>
+
                         <div class="space-y-1 md:col-span-2">
                             <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Sitio Web</label>
                             <input type="url" name="sitio_web" value="<?= $clinica['sitio_web'] ?? '' ?>"
                                 class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all"
                                 placeholder="https://www.clinica.com">
+                        </div>
+                    </div>
+
+                    <!-- Configuración Verifactu -->
+                    <div class="mt-8 border-t border-gray-100 pt-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                                <i class="bi bi-shield-lock-fill"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-sm font-bold text-gray-900">Configuración Verifactu (AEAT)</h5>
+                                <p class="text-xs text-gray-500">Ajustes para la remisión de registros de facturación con la Agencia Tributaria.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-1">
+                                <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Entorno de Trabajo</label>
+                                <select name="verifactu_env" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all">
+                                    <option value="pruebas" <?= ($clinica['verifactu_env'] ?? 'pruebas') === 'pruebas' ? 'selected' : '' ?>>Pruebas / Sandbox (prewww1.aeat.es)</option>
+                                    <option value="produccion" <?= ($clinica['verifactu_env'] ?? '') === 'produccion' ? 'selected' : '' ?>>Producción (www1.agenciatributaria.gob.es)</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-1">
+                                <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Certificado Digital (.p12 / .pfx / .pem)</label>
+                                <input type="file" name="verifactu_cert_file" accept=".p12,.pfx,.pem"
+                                    class="w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 transition-all border border-gray-200 rounded-xl bg-white">
+                                <?php if (!empty($clinica['verifactu_cert_path'])) : ?>
+                                    <p class="text-xs text-emerald-600 font-medium mt-1.5 flex items-center gap-1">
+                                        <i class="bi bi-file-earmark-check-fill text-sm"></i> Certificado activo: <span class="font-mono bg-emerald-50 px-2 py-0.5 rounded text-emerald-800"><?= htmlspecialchars(basename($clinica['verifactu_cert_path'])) ?></span>
+                                    </p>
+                                <?php endif; ?>
+                            </div>
+
+                            <div class="space-y-1">
+                                <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Contraseña Certificado</label>
+                                <input type="password" name="verifactu_cert_password" value="<?= htmlspecialchars($clinica['verifactu_cert_password'] ?? '') ?>"
+                                    class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all"
+                                    placeholder="••••••••">
+                            </div>
+
+                            <div class="space-y-1 flex items-center pt-5">
+                                <label class="inline-flex items-center cursor-pointer gap-3">
+                                    <input type="checkbox" name="verifactu_activo" value="1" <?= (!isset($clinica['verifactu_activo']) || $clinica['verifactu_activo']) ? 'checked' : '' ?> class="sr-only peer">
+                                    <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
+                                    <span class="text-sm font-medium text-gray-900">Activar comunicación automática con AEAT</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
 

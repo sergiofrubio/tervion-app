@@ -239,4 +239,63 @@ class SettingController extends Controller
             $this->view('setting/bonos_form', $data);
         }
     }
+
+    /**
+     * Guarda o actualiza los datos fiscales de la clínica y la configuración de Verifactu.
+     *
+     * @return void
+     */
+    public function saveClinica()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $settingModel = $this->model('Setting');
+            $clinicaActual = $settingModel->getClinica();
+            $certPath = $clinicaActual['verifactu_cert_path'] ?? null;
+
+            // Procesar la subida del certificado digital si se ha adjuntado un archivo
+            if (isset($_FILES['verifactu_cert_file']) && $_FILES['verifactu_cert_file']['error'] === UPLOAD_ERR_OK) {
+                $fileTmp = $_FILES['verifactu_cert_file']['tmp_name'];
+                $fileName = $_FILES['verifactu_cert_file']['name'];
+                $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+                if (in_array($fileExt, ['p12', 'pfx', 'pem'])) {
+                    $storageDir = dirname(__DIR__) . '/storage/certificates';
+                    if (!is_dir($storageDir)) {
+                        mkdir($storageDir, 0755, true);
+                        file_put_contents($storageDir . '/.htaccess', "Require all denied\n");
+                    }
+
+                    $safeFileName = 'cert_verifactu_' . time() . '.' . $fileExt;
+                    $targetPath = $storageDir . '/' . $safeFileName;
+
+                    if (move_uploaded_file($fileTmp, $targetPath)) {
+                        $certPath = $targetPath;
+                    }
+                }
+            }
+
+            $data = [
+                'id_clinica' => $_POST['id_clinica'] ?? null,
+                'nombre_comercial' => htmlspecialchars($_POST['nombre_comercial'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'razon_social' => htmlspecialchars($_POST['razon_social'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'nif_cif' => htmlspecialchars($_POST['nif_cif'] ?? 'B12345678', ENT_QUOTES, 'UTF-8'),
+                'direccion_calle' => htmlspecialchars($_POST['direccion_calle'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'ciudad' => htmlspecialchars($_POST['ciudad'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'provincia_estado' => htmlspecialchars($_POST['provincia_estado'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'codigo_postal' => htmlspecialchars($_POST['codigo_postal'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'pais' => htmlspecialchars($_POST['pais'] ?? 'España', ENT_QUOTES, 'UTF-8'),
+                'telefono_contacto' => htmlspecialchars($_POST['telefono_contacto'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'email_contacto' => htmlspecialchars($_POST['email_contacto'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'sitio_web' => htmlspecialchars($_POST['sitio_web'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'verifactu_env' => $_POST['verifactu_env'] ?? 'pruebas',
+                'verifactu_cert_path' => $certPath,
+                'verifactu_cert_password' => $_POST['verifactu_cert_password'] ?? '',
+                'verifactu_activo' => isset($_POST['verifactu_activo']) ? 1 : 0
+            ];
+
+            $settingModel->saveClinica($data);
+        }
+        header('Location: ' . PROJECT_ROOT . '/configuracion');
+        $this->exitApp();
+    }
 }

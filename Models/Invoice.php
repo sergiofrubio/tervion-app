@@ -2,6 +2,9 @@
 namespace App\Models;
 
 use App\Core\DataBase;
+use App\Services\Verifactu\VerifactuConfig;
+use App\Services\Verifactu\VerifactuHashGenerator;
+use App\Services\Verifactu\VerifactuQRGenerator;
 use PDO;
 
 class Invoice
@@ -32,8 +35,13 @@ class Invoice
             $params[':estado'] = $filters['estado'];
         }
 
+        if (!empty($filters['estado_verifactu'])) {
+            $where[] = "f.estado_verifactu = :estado_verifactu";
+            $params[':estado_verifactu'] = $filters['estado_verifactu'];
+        }
+
         if (!empty($filters['q'])) {
-            $where[] = "(u.nombre LIKE :q OR u.apellidos LIKE :q OR f.factura_id LIKE :q)";
+            $where[] = "(u.nombre LIKE :q OR u.apellidos LIKE :q OR f.factura_id LIKE :q OR f.numero LIKE :q)";
             $params[':q'] = "%" . $filters['q'] . "%";
         }
 
@@ -78,31 +86,112 @@ class Invoice
 
     public function save($data)
     {
+        $clinica = $this->getClinica() ?: [];
+        $config = new VerifactuConfig($clinica);
+
         // 1. Obtener datos de encadenamiento Verifactu
-        $ultima = $this->getUltimaFactura($data['serie']);
+        $ultima = $this->getUltimaFactura($data['serie'] ?? 'A');
         $data['huella_anterior'] = $ultima ? $ultima['huella'] : null;
         $data['numero'] = $ultima ? ($ultima['numero'] + 1) : 1;
         $data['fecha_hora_emision'] = date('Y-m-d H:i:s');
+        $data['fecha_hora_huso'] = date('c', strtotime($data['fecha_hora_emision']));
+        $data['nif_emisor'] = $config->nifEmisor;
         
         // 2. Cálculos económicos
-        $data['cuota_iva'] = $data['precio'] * ($data['impuesto'] / 100);
-        $data['total'] = $data['precio'] + $data['cuota_iva'];
+        $data['cuota_iva'] = round((float)$data['precio'] * ((float)$data['impuesto'] / 100), 2);
+        $data['total'] = round((float)$data['precio'] + $data['cuota_iva'], 2);
 
-        // 3. Generación de Huella Verifactu
-        // Se concatena: NIF Emisor (fijo por ahora), Serie, Número, Fecha ISO, Total y Huella Anterior
-        $nif_emisor = "B12345678"; // Debería venir de la tabla clinicas
-        $string_to_hash = $nif_emisor . "|" . $data['serie'] . "|" . $data['numero'] . "|" . 
-                          $data['fecha_hora_emision'] . "|" . number_format($data['total'], 2, '.', '') . "|" . 
-                          ($data['huella_anterior'] ?? '');
-        $data['huella'] = hash('sha256', $string_to_hash);
+        // 3. Generación de Huella y QR Verifactu
+        $fechaExpedicionDate = date('d-m-Y', strtotime($data['fecha_emision']));
+        $numSerie = ($data['serie'] ?? 'A') . '-' . $data['numero'];
 
-        $query = "INSERT INTO facturas (paciente_id, serie, numero, tipo_factura, fecha_emision, fecha_hora_emision, 
-                    estado, descripcion, precio, impuesto, cuota_iva, total, huella, huella_anterior, creado_por) 
-                  VALUES (:paciente_id, :serie, :numero, :tipo_factura, :fecha_emision, :fecha_hora_emision, 
-                    :estado, :descripcion, :precio, :impuesto, :cuota_iva, :total, :huella, :huella_anterior, :creado_por)";
+        $data['huella'] = VerifactuHashGenerator::generateHash(
+            $config->nifEmisor,
+            $numSerie,
+            $fechaExpedicionDate,
+            $data['tipo_factura'] ?? 'F1',
+            $data['cuota_iva'],
+            $data['total'],
+            $data['huella_anterior'],
+            $data['fecha_hora_huso']
+        );
+
+        $data['qr_url'] = VerifactuQRGenerator::generateUrl(
+            $config,
+            $numSerie,
+            $fechaExpedicionDate,
+            $data['total']
+        );
+
+        $data['estado_verifactu'] = 'Pendiente';
+
+        $query = "INSERT INTO facturas (
+                    paciente_id, serie, numero, tipo_factura, nif_emisor, fecha_emision, 
+                    fecha_hora_emision, fecha_hora_huso, estado, descripcion, precio, impuesto, 
+                    cuota_iva, total, huella, huella_anterior, qr_url, estado_verifactu, creado_por
+                  ) VALUES (
+                    :paciente_id, :serie, :numero, :tipo_factura, :nif_emisor, :fecha_emision, 
+                    :fecha_hora_emision, :fecha_hora_huso, :estado, :descripcion, :precio, :impuesto, 
+                    :cuota_iva, :total, :huella, :huella_anterior, :qr_url, :estado_verifactu, :creado_por
+                  )";
         
         $stmt = $this->db->prepare($query);
-        return $stmt->execute($data);
+        $res = $stmt->execute([
+            ':paciente_id' => $data['paciente_id'],
+            ':serie' => $data['serie'] ?? 'A',
+            ':numero' => $data['numero'],
+            ':tipo_factura' => $data['tipo_factura'] ?? 'F1',
+            ':nif_emisor' => $data['nif_emisor'],
+            ':fecha_emision' => $data['fecha_emision'],
+            ':fecha_hora_emision' => $data['fecha_hora_emision'],
+            ':fecha_hora_huso' => $data['fecha_hora_huso'],
+            ':estado' => $data['estado'] ?? 'Pendiente',
+            ':descripcion' => $data['descripcion'],
+            ':precio' => $data['precio'],
+            ':impuesto' => $data['impuesto'],
+            ':cuota_iva' => $data['cuota_iva'],
+            ':total' => $data['total'],
+            ':huella' => $data['huella'],
+            ':huella_anterior' => $data['huella_anterior'],
+            ':qr_url' => $data['qr_url'],
+            ':estado_verifactu' => $data['estado_verifactu'],
+            ':creado_por' => $data['creado_por'] ?? null
+        ]);
+
+        return $res ? (int)$this->db->lastInsertId() : false;
+    }
+
+    public function updateVerifactuData($data)
+    {
+        $query = "UPDATE facturas SET 
+                    nif_emisor = :nif_emisor,
+                    fecha_hora_huso = :fecha_hora_huso,
+                    huella = :huella,
+                    qr_url = :qr_url,
+                    estado_verifactu = :estado_verifactu,
+                    csv_verifactu = :csv_verifactu,
+                    codigo_error_verifactu = :codigo_error_verifactu,
+                    mensaje_verifactu = :mensaje_verifactu,
+                    fecha_envio_verifactu = :fecha_envio_verifactu,
+                    xml_peticion = :xml_peticion,
+                    xml_respuesta = :xml_respuesta
+                  WHERE factura_id = :factura_id";
+        
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute([
+            ':nif_emisor' => $data['nif_emisor'],
+            ':fecha_hora_huso' => $data['fecha_hora_huso'],
+            ':huella' => $data['huella'],
+            ':qr_url' => $data['qr_url'],
+            ':estado_verifactu' => $data['estado_verifactu'],
+            ':csv_verifactu' => $data['csv_verifactu'],
+            ':codigo_error_verifactu' => $data['codigo_error_verifactu'],
+            ':mensaje_verifactu' => $data['mensaje_verifactu'],
+            ':fecha_envio_verifactu' => $data['fecha_envio_verifactu'],
+            ':xml_peticion' => $data['xml_peticion'],
+            ':xml_respuesta' => $data['xml_respuesta'],
+            ':factura_id' => $data['factura_id']
+        ]);
     }
 
     public function updateStatus($id, $estado, $modificado_por)
@@ -115,16 +204,6 @@ class Invoice
             ':id' => $id
         ]);
     }
-
-    // public function delete($id)
-    // {
-    //     // En Verifactu real no se borran, pero dejamos la función para desarrollo
-    //     // Idealmente solo permitir borrar la última si no hay encadenamiento posterior
-    //     $query = "DELETE FROM facturas WHERE factura_id = :id";
-    //     $stmt = $this->db->prepare($query);
-    //     $stmt->bindParam(':id', $id);
-    //     return $stmt->execute();
-    // }
 
     public function getByPaciente($paciente_id)
     {

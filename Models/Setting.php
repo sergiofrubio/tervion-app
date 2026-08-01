@@ -152,6 +152,7 @@ class Setting
             $query = "UPDATE clinicas SET 
                         nombre_comercial = :nombre_comercial,
                         razon_social = :razon_social,
+                        nif_cif = :nif_cif,
                         direccion_calle = :direccion_calle,
                         ciudad = :ciudad,
                         provincia_estado = :provincia_estado,
@@ -159,21 +160,44 @@ class Setting
                         pais = :pais,
                         telefono_contacto = :telefono_contacto,
                         email_contacto = :email_contacto,
-                        sitio_web = :sitio_web
+                        sitio_web = :sitio_web,
+                        verifactu_env = :verifactu_env,
+                        verifactu_cert_path = :verifactu_cert_path,
+                        verifactu_cert_password = :verifactu_cert_password,
+                        verifactu_activo = :verifactu_activo
                       WHERE id_clinica = :id_clinica";
         } else {
             unset($data['id_clinica']);
             $query = "INSERT INTO clinicas (
-                        nombre_comercial, razon_social, direccion_calle, ciudad, 
+                        nombre_comercial, razon_social, nif_cif, direccion_calle, ciudad, 
                         provincia_estado, codigo_postal, pais, telefono_contacto, 
-                        email_contacto, sitio_web
+                        email_contacto, sitio_web, verifactu_env, verifactu_cert_path, 
+                        verifactu_cert_password, verifactu_activo
                       ) VALUES (
-                        :nombre_comercial, :razon_social, :direccion_calle, :ciudad, 
+                        :nombre_comercial, :razon_social, :nif_cif, :direccion_calle, :ciudad, 
                         :provincia_estado, :codigo_postal, :pais, :telefono_contacto, 
-                        :email_contacto, :sitio_web
+                        :email_contacto, :sitio_web, :verifactu_env, :verifactu_cert_path, 
+                        :verifactu_cert_password, :verifactu_activo
                       )";
         }
         $stmt = $this->db->prepare($query);
-        return $stmt->execute($data);
+        return $stmt->execute([
+            ':nombre_comercial' => $data['nombre_comercial'],
+            ':razon_social' => $data['razon_social'] ?? null,
+            ':nif_cif' => $data['nif_cif'] ?? 'B12345678',
+            ':direccion_calle' => $data['direccion_calle'],
+            ':ciudad' => $data['ciudad'],
+            ':provincia_estado' => $data['provincia_estado'] ?? null,
+            ':codigo_postal' => $data['codigo_postal'] ?? null,
+            ':pais' => $data['pais'] ?? 'España',
+            ':telefono_contacto' => $data['telefono_contacto'],
+            ':email_contacto' => $data['email_contacto'] ?? null,
+            ':sitio_web' => $data['sitio_web'] ?? null,
+            ':verifactu_env' => $data['verifactu_env'] ?? 'pruebas',
+            ':verifactu_cert_path' => $data['verifactu_cert_path'] ?? null,
+            ':verifactu_cert_password' => $data['verifactu_cert_password'] ?? null,
+            ':verifactu_activo' => isset($data['verifactu_activo']) ? (int)$data['verifactu_activo'] : 1,
+            ':id_clinica' => $data['id_clinica'] ?? null
+        ]);
     }
 }

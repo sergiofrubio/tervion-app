@@ -69,7 +69,8 @@ $router->add('POST', '/configuracion/bonos/create', 'SettingController@createBon
 $router->add('GET', '/configuracion/bonos/edit', 'SettingController@editBono', true, ['Administrador']);
 $router->add('POST', '/configuracion/bonos/edit', 'SettingController@editBono', true, ['Administrador']);
 
-$router->add('POST', '/configuracion/clinica/update', 'SettingController@updateClinica', true, ['Administrador']);
+$router->add('POST', '/configuracion/clinica/update', 'SettingController@saveClinica', true, ['Administrador']);
+$router->add('POST', '/configuracion/clinica/save', 'SettingController@saveClinica', true, ['Administrador']);
 
 $router->add('GET', '/historial/create', 'MedicalReportController@create', true, $staffRoles);
 $router->add('POST', '/historial/create', 'MedicalReportController@create', true, $staffRoles);
@@ -83,6 +84,8 @@ $router->add('GET', '/facturas/edit', 'InvoiceController@edit', true, $staffRole
 $router->add('POST', '/facturas/edit', 'InvoiceController@edit', true, $staffRoles);
 $router->add('POST', '/facturas/delete', 'InvoiceController@delete', true, $staffRoles);
 $router->add('GET', '/facturas/pdf', 'InvoiceController@pdf', true, $staffRoles);
+$router->add('GET', '/facturas/reenviar', 'InvoiceController@reenviarVerifactu', true, $staffRoles);
+$router->add('POST', '/facturas/reenviar', 'InvoiceController@reenviarVerifactu', true, $staffRoles);
 
 $router->add('GET', '/nominas', 'PayrollController@list', true, ['Administrador']);
 $router->add('GET', '/nominas/contratos', 'ContractController@list', true, ['Administrador']);

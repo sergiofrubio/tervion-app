@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Services\Verifactu\VerifactuService;
 use Fpdf\Fpdf;
 
 class InvoiceController extends Controller
@@ -30,6 +31,7 @@ class InvoiceController extends Controller
             $filters = [
                 'paciente_id' => $_GET['paciente_id'] ?? null,
                 'estado' => $_GET['estado'] ?? null,
+                'estado_verifactu' => $_GET['estado_verifactu'] ?? null,
                 'q' => $_GET['q'] ?? null
             ];
 
@@ -46,7 +48,8 @@ class InvoiceController extends Controller
     /**
      * Crea una nueva factura reglada (sistema Verifactu).
      *
-     * Si la petición es POST, guarda la factura en la base de datos tras sanitizar y calcular impuestos.
+     * Si la petición es POST, guarda la factura en la base de datos tras sanitizar y calcular impuestos,
+     * e invoca inmediatamente la remisión automática a la AEAT vía VerifactuService.
      * Si es GET, muestra el formulario de creación de factura.
      *
      * @return void
@@ -67,7 +70,17 @@ class InvoiceController extends Controller
                 'creado_por'    => $_SESSION['usuario_id'] ?? null
             ];
             
-            if ($facturaModel->save($data)) {
+            $facturaId = $facturaModel->save($data);
+            if ($facturaId) {
+                // Envío automático a Verifactu (AEAT)
+                try {
+                    $verifactuService = new VerifactuService($facturaModel);
+                    $verifactuService->procesarFactura($facturaId);
+                } catch (\Throwable $e) {
+                    // Log del error sin interrumpir el flujo principal de facturación
+                    error_log('Verifactu error al emitir factura ' . $facturaId . ': ' . $e->getMessage());
+                }
+
                 header('Location: ' . PROJECT_ROOT . '/facturas');
                 $this->exitApp();
             }
@@ -77,6 +90,28 @@ class InvoiceController extends Controller
             ];
             $this->view('invoice/create', $data);
         }
+    }
+
+    /**
+     * Reenvía manualmente una factura a Verifactu (AEAT).
+     *
+     * @return void
+     */
+    public function reenviarVerifactu()
+    {
+        $id = $_GET['id'] ?? $_POST['factura_id'] ?? null;
+        if ($id) {
+            try {
+                $facturaModel = $this->model('Invoice');
+                $verifactuService = new VerifactuService($facturaModel);
+                $verifactuService->procesarFactura((int)$id);
+            } catch (\Throwable $e) {
+                error_log('Verifactu retry error: ' . $e->getMessage());
+            }
+        }
+
+        header('Location: ' . PROJECT_ROOT . '/facturas');
+        $this->exitApp();
     }
 
     /**
@@ -113,19 +148,6 @@ class InvoiceController extends Controller
             $this->view('invoice/edit', $data);
         }
     }
-
-    // public function delete()
-    // {
-    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //         $id = $_POST['factura_id'] ?? null;
-    //         if ($id) {
-    //             $facturaModel = $this->model('Invoice');
-    //             $facturaModel->delete($id);
-    //         }
-    //     }
-    //     header('Location: ' . PROJECT_ROOT . '/facturas');
-    //     exit();
-    // }
 
     /**
      * Genera y descarga el documento PDF de la factura (con código QR y datos Verifactu) usando FPDF.
@@ -168,13 +190,10 @@ class InvoiceController extends Controller
         $pdf->SetTextColor(51, 122, 183);
         $pdf->Cell(120, 10, iconv('UTF-8', 'windows-1252', $clinica['nombre_comercial'] ?? 'VELION CLINIC'), 0, 0, 'L');
         
-        // QR Code generation (using api.qrserver.com for simplicity)
-        $nif_emisor = "B12345678"; // Debería ser dinámico
-        $fecha_qr = date('d-m-Y', strtotime($factura['fecha_emision']));
-        $total_qr = number_format($factura['total'], 2, '.', '');
-        $url_aeat = "https://www2.agenciatributaria.gob.es/wlpl/TIKE-CONT/v1/qr/?nif=$nif_emisor&serie={$factura['serie']}&numero={$factura['numero']}&fecha=$fecha_qr&importe=$total_qr";
-        $qr_url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . urlencode($url_aeat);
-        $pdf->Image($qr_url, 165, 10, 35, 35, 'PNG');
+        // QR Code generation (using api.qrserver.com for rendering in PDF)
+        $qr_url_data = $factura['qr_url'] ?: "https://prewww1.aeat.es/vl/factura/qr?nif=" . ($clinica['nif_cif'] ?? 'B12345678') . "&serie=" . $factura['serie'] . '-' . $factura['numero'] . "&fecha=" . date('d-m-Y', strtotime($factura['fecha_emision'])) . "&importe=" . number_format($factura['total'], 2, '.', '');
+        $qr_image_url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . urlencode($qr_url_data);
+        $pdf->Image($qr_image_url, 165, 10, 35, 35, 'PNG');
 
         $pdf->SetY(45);
         $pdf->SetFont('Arial', 'B', 12);
@@ -214,7 +233,11 @@ class InvoiceController extends Controller
         $pdf->SetX(105);
         $pdf->Cell(95, 5, iconv('UTF-8', 'windows-1252', 'Tipo: ' . $factura['tipo_factura']), 0, 1, 'R');
         $pdf->SetX(105);
-        $pdf->Cell(95, 5, iconv('UTF-8', 'windows-1252', 'Estado: ' . $factura['estado']), 0, 1, 'R');
+        $pdf->Cell(95, 5, iconv('UTF-8', 'windows-1252', 'Estado Pago: ' . $factura['estado']), 0, 1, 'R');
+        if (!empty($factura['csv_verifactu'])) {
+            $pdf->SetX(105);
+            $pdf->Cell(95, 5, iconv('UTF-8', 'windows-1252', 'CSV AEAT: ' . $factura['csv_verifactu']), 0, 1, 'R');
+        }
 
         $pdf->Ln(15);
 
@@ -257,16 +280,15 @@ class InvoiceController extends Controller
         $pdf->Cell(0, 5, iconv('UTF-8', 'windows-1252', 'INFORMACIÓN DE REGISTRO (VERIFACTU):'), 0, 1, 'L');
         $pdf->SetFont('Courier', '', 6);
         $pdf->SetTextColor(100, 100, 100);
-        $pdf->MultiCell(0, 3, iconv('UTF-8', 'windows-1252', 'HUELLA: ' . $factura['huella']), 0, 'L');
+        $pdf->MultiCell(0, 3, iconv('UTF-8', 'windows-1252', 'HUELLA SHA-256: ' . $factura['huella']), 0, 'L');
         if ($factura['huella_anterior']) {
             $pdf->MultiCell(0, 3, iconv('UTF-8', 'windows-1252', 'HUELLA ANTERIOR: ' . $factura['huella_anterior']), 0, 'L');
         }
 
         $pdf->SetY(-20);
         $pdf->SetFont('Arial', 'I', 8);
-        $pdf->Cell(0, 5, iconv('UTF-8', 'windows-1252', 'Esta factura ha sido emitida mediante un sistema informático Verificable.'), 0, 1, 'C');
+        $pdf->Cell(0, 5, iconv('UTF-8', 'windows-1252', 'Esta factura ha sido emitida mediante un sistema informático Verificable (AEAT).'), 0, 1, 'C');
 
         $pdf->Output('I', 'Factura_' . $factura['serie'] . '-' . str_pad($factura['numero'], 6, '0', STR_PAD_LEFT) . '.pdf');
     }
-
 }

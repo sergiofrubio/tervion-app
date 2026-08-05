@@ -9,3 +9,5 @@ coverage/
 docs/redsys/
 docs/verifactu/
 storage/
+node_modules/
+.env

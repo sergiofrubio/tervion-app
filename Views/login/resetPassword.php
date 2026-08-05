@@ -5,92 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Establecer Nueva Contraseña - Velion</title>
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" type="image/jpeg">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana.jpeg" type="image/jpeg">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Compiled CSS (Tailwind + SCSS) -->
+    <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/custom/css/app.css">
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        primary: {
-                            50: '#f0f5ff',
-                            100: '#d9e6ff',
-                            200: '#bacfff',
-                            300: '#91b1ff',
-                            400: '#5e88ff',
-                            500: '#0052d9', // Royal Blue (from logo)
-                            600: '#0040b3',
-                            700: '#00308c',
-                            800: '#002266',
-                            900: '#001640',
-                        },
-                        indigo: {
-                            50: '#ecf9ff',
-                            100: '#d9f1ff',
-                            200: '#bde7ff',
-                            300: '#8fd7ff',
-                            400: '#4cbaff',
-                            500: '#009eff', // Cyan/Light Blue (from logo)
-                            600: '#007ee6',
-                            700: '#0063b8',
-                            800: '#004f99',
-                            900: '#004280',
-                        },
-                        purple: {
-                            50: '#f0fdf4',   // Emerald 50
-                            100: '#dcfce7',  // Emerald 100
-                            200: '#bbf7d0',  // Emerald 200
-                            300: '#86efac',  // Emerald 300
-                            400: '#4ade80',  // Emerald 400
-                            500: '#10b981',  // Emerald 500
-                            600: '#059669',  // Emerald 600
-                            700: '#047857',  // Emerald 700
-                            800: '#065f46',  // Emerald 800
-                            900: '#064e3b',  // Emerald 900
-                            950: '#022c22',  // Emerald 950
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-    </style>
 </head>
 
-<body class="bg-gray-100 font-sans antialiased min-h-screen flex items-center justify-center relative">
-
-    <!-- Background Image with Overlay -->
-    <div class="absolute inset-0 z-0">
-        <img src="<?= PROJECT_ROOT ?>/public/custom/img/fondo.jpg" alt="Background"
-            class="w-full h-full object-cover" />
-        <div class="absolute inset-0 bg-gray-900/40 mix-blend-multiply"></div>
-    </div>
+<body class="bg-gray-50 font-sans antialiased min-h-screen flex items-center justify-center relative">
 
     <!-- Container -->
     <div class="relative z-10 w-full max-w-md px-6">
-        <div
-            class="glass-panel rounded-3xl shadow-2xl overflow-hidden border border-white/20 p-8 sm:p-10 transition-all">
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 p-8 sm:p-10 transition-all">
 
             <div class="text-center mb-8">
                 <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" alt="Velion Logo"

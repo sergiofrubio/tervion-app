@@ -5,81 +5,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Registro de Cliente - Velion</title>
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" type="image/jpeg">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana.jpeg" type="image/jpeg">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Compiled CSS (Tailwind + SCSS) -->
+    <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/custom/css/app.css">
     
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        primary: {
-                            50: '#f0f5ff',
-                            100: '#d9e6ff',
-                            200: '#bacfff',
-                            300: '#91b1ff',
-                            400: '#5e88ff',
-                            500: '#0052d9', // Royal Blue (from logo)
-                            600: '#0040b3',
-                            700: '#00308c',
-                            800: '#002266',
-                            900: '#001640',
-                        },
-                        indigo: {
-                            50: '#ecf9ff',
-                            100: '#d9f1ff',
-                            200: '#bde7ff',
-                            300: '#8fd7ff',
-                            400: '#4cbaff',
-                            500: '#009eff', // Cyan/Light Blue (from logo)
-                            600: '#007ee6',
-                            700: '#0063b8',
-                            800: '#004f99',
-                            900: '#004280',
-                        },
-                        purple: {
-                            50: '#f0fdf4',   // Emerald 50
-                            100: '#dcfce7',  // Emerald 100
-                            200: '#bbf7d0',  // Emerald 200
-                            300: '#86efac',  // Emerald 300
-                            400: '#4ade80',  // Emerald 400
-                            500: '#10b981',  // Emerald 500
-                            600: '#059669',  // Emerald 600
-                            700: '#047857',  // Emerald 700
-                            800: '#065f46',  // Emerald 800
-                            900: '#064e3b',  // Emerald 900
-                            950: '#022c22',  // Emerald 950
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <style>
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-        }
-        [x-cloak] { display: none !important; }
-    </style>
 </head>
 
 <body class="bg-slate-50 font-sans antialiased min-h-screen flex flex-col justify-between" 

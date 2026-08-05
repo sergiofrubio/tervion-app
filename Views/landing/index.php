@@ -25,52 +25,15 @@
     <meta name="twitter:description" content="Software de gestión ERP y facturación Verifactu para clínicas de fisioterapia y salud.">
     <meta name="twitter:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg">
 
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" type="image/jpeg">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana.jpeg" type="image/jpeg">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        primary: {
-                            50: '#f0f5ff',
-                            100: '#d9e6ff',
-                            200: '#bacfff',
-                            300: '#91b1ff',
-                            400: '#5e88ff',
-                            500: '#0052d9', // Azul Real (del logo)
-                            600: '#0040b3',
-                            700: '#00308c',
-                            800: '#002266',
-                            900: '#001640',
-                        },
-                        secondary: {
-                            50: '#ecf9ff',
-                            100: '#d9f1ff',
-                            200: '#bde7ff',
-                            300: '#8fd7ff',
-                            400: '#4cbaff',
-                            500: '#009eff', // Cyan (del logo)
-                            600: '#007ee6',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Compiled CSS (Tailwind + SCSS) -->
+    <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/custom/css/app.css">
 </head>
 
 <body class="font-sans antialiased text-gray-900 bg-white">

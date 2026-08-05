@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Establecer Nueva Contraseña - Velion</title>
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/VELION Logo Rounded.png" type="image/png">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" type="image/jpeg">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,24 +27,28 @@
                     },
                     colors: {
                         primary: {
-                            50: '#f0fdfa',   // Teal 50
-                            100: '#ccfbf1',  // Teal 100
-                            500: '#0d9488',  // Teal 600
-                            600: '#0f766e',  // Teal 700
-                            700: '#115e59',  // Teal 800
+                            50: '#f0f5ff',
+                            100: '#d9e6ff',
+                            200: '#bacfff',
+                            300: '#91b1ff',
+                            400: '#5e88ff',
+                            500: '#0052d9', // Royal Blue (from logo)
+                            600: '#0040b3',
+                            700: '#00308c',
+                            800: '#002266',
+                            900: '#001640',
                         },
                         indigo: {
-                            50: '#ecfeff',   // Cyan 50
-                            100: '#cffafe',  // Cyan 100
-                            200: '#a5f3fc',  // Cyan 200
-                            300: '#67e8f9',  // Cyan 300
-                            400: '#22d3ee',  // Cyan 400
-                            500: '#06b6d4',  // Cyan 500
-                            600: '#0891b2',  // Cyan 600
-                            700: '#0e7490',  // Cyan 700
-                            800: '#155e75',  // Cyan 800
-                            900: '#164e63',  // Cyan 900
-                            950: '#083344',  // Cyan 950
+                            50: '#ecf9ff',
+                            100: '#d9f1ff',
+                            200: '#bde7ff',
+                            300: '#8fd7ff',
+                            400: '#4cbaff',
+                            500: '#009eff', // Cyan/Light Blue (from logo)
+                            600: '#007ee6',
+                            700: '#0063b8',
+                            800: '#004f99',
+                            900: '#004280',
                         },
                         purple: {
                             50: '#f0fdf4',   // Emerald 50
@@ -89,8 +93,8 @@
             class="glass-panel rounded-3xl shadow-2xl overflow-hidden border border-white/20 p-8 sm:p-10 transition-all">
 
             <div class="text-center mb-8">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/VELION Logo Rounded.png" alt="Velion Logo"
-                    class="w-16 h-16 mx-auto rounded-2xl shadow-sm mb-4">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" alt="Velion Logo"
+                    class="w-24 mx-auto rounded-2xl shadow-sm mb-4">
                 <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Nueva Contraseña</h2>
                 <p class="text-sm text-gray-500 mt-1">Establece tu nueva contraseña de acceso</p>
             </div>

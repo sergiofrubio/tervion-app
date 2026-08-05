@@ -4,8 +4,7 @@ use App\Router\Router;
 $router = new Router();
 
 // Rutas Públicas (Sin autenticación)
-$router->add('GET', '/landing', 'LandingController@index', false);
-$router->add('GET', '/', 'LoginController@index', false);
+$router->add('GET', '/', 'LandingController@index', false);
 $router->add('GET', '/login', 'LoginController@index', false);
 $router->add('POST', '/login', 'LoginController@iniciarSesion', false);
 $router->add('POST', '/login/reset-password', 'LoginController@generatePasswordResetToken', false);

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Error 404 - Página no encontrada</title>
-  <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/VELION Logo Rounded.png" type="image/png">
+  <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" type="image/jpeg">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,11 +23,16 @@
                 },
                 colors: {
                     primary: {
-                        50: '#eff6ff',
-                        100: '#dbeafe',
-                        500: '#3b82f6',
-                        600: '#2563eb',
-                        700: '#1d4ed8',
+                        50: '#f0f5ff',
+                        100: '#d9e6ff',
+                        200: '#bacfff',
+                        300: '#91b1ff',
+                        400: '#5e88ff',
+                        500: '#0052d9', // Royal Blue
+                        600: '#0040b3',
+                        700: '#00308c',
+                        800: '#002266',
+                        900: '#001640',
                     }
                 }
             }

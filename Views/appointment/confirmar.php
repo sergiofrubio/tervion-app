@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Confirmación de Asistencia - Velion</title>
-  <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/VELION Logo Rounded.png" type="image/png">
+  <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" type="image/jpeg">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,11 +23,16 @@
                 },
                 colors: {
                     primary: {
-                        50: '#f0fdf4',
-                        100: '#dcfce7',
-                        500: '#22c55e',
-                        600: '#16a34a',
-                        700: '#15803d',
+                        50: '#f0f5ff',
+                        100: '#d9e6ff',
+                        200: '#bacfff',
+                        300: '#91b1ff',
+                        400: '#5e88ff',
+                        500: '#0052d9', // Royal Blue
+                        600: '#0040b3',
+                        700: '#00308c',
+                        800: '#002266',
+                        900: '#001640',
                     }
                 }
             }

@@ -185,10 +185,15 @@ class InvoiceController extends Controller
         $pdf->AddPage();
         $pdf->SetAutoPageBreak(true, 15);
 
-        // Header - Clinic Info & Verifactu Badge
-        $pdf->SetFont('Arial', 'B', 20);
-        $pdf->SetTextColor(51, 122, 183);
-        $pdf->Cell(120, 10, iconv('UTF-8', 'windows-1252', $clinica['nombre_comercial'] ?? 'VELION CLINIC'), 0, 0, 'L');
+        // Header - Logo & QR Code
+        $logoPath = __DIR__ . '/../public/custom/img/logo-velion.jpeg';
+        if (file_exists($logoPath)) {
+            $pdf->Image($logoPath, 10, 10, 45); // width 45mm, height auto
+        } else {
+            $pdf->SetFont('Arial', 'B', 20);
+            $pdf->SetTextColor(0, 82, 217); // Royal Blue
+            $pdf->Cell(120, 10, iconv('UTF-8', 'windows-1252', $clinica['nombre_comercial'] ?? 'VELION CLINIC'), 0, 0, 'L');
+        }
         
         // QR Code generation (using api.qrserver.com for rendering in PDF)
         $qr_url_data = $factura['qr_url'] ?: "https://prewww1.aeat.es/vl/factura/qr?nif=" . ($clinica['nif_cif'] ?? 'B12345678') . "&serie=" . $factura['serie'] . '-' . $factura['numero'] . "&fecha=" . date('d-m-Y', strtotime($factura['fecha_emision'])) . "&importe=" . number_format($factura['total'], 2, '.', '');
@@ -196,82 +201,94 @@ class InvoiceController extends Controller
         $pdf->Image($qr_image_url, 165, 10, 35, 35, 'PNG');
 
         $pdf->SetY(45);
-        $pdf->SetFont('Arial', 'B', 12);
-        $pdf->SetTextColor(0, 102, 204);
+        $pdf->SetFont('Arial', 'B', 11);
+        $pdf->SetTextColor(0, 158, 255); // Cyan from logo
         $pdf->Cell(0, 8, 'VERIFACTU', 0, 1, 'R');
         $pdf->SetFont('Arial', '', 7);
+        $pdf->SetTextColor(100, 100, 100);
         $pdf->Cell(0, 4, iconv('UTF-8', 'windows-1252', 'Factura verificable en la sede electrónica de la AEAT'), 0, 1, 'R');
 
-        $pdf->SetY(20);
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->SetTextColor(100, 100, 100);
-        $pdf->Cell(0, 5, iconv('UTF-8', 'windows-1252', $clinica['razon_social'] ?? ''), 0, 1, 'L');
-        $pdf->Cell(0, 5, iconv('UTF-8', 'windows-1252', $clinica['direccion_calle'] ?? ''), 0, 1, 'L');
-        $pdf->Cell(0, 5, iconv('UTF-8', 'windows-1252', ($clinica['codigo_postal'] ?? '') . ' ' . ($clinica['ciudad'] ?? '')), 0, 1, 'L');
-        $pdf->Cell(0, 5, iconv('UTF-8', 'windows-1252', 'Tel: ' . ($clinica['telefono_contacto'] ?? '')), 0, 1, 'L');
+        $pdf->SetY(24);
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->SetTextColor(110, 110, 110);
+        $pdf->Cell(120, 4.5, iconv('UTF-8', 'windows-1252', $clinica['razon_social'] ?? ''), 0, 1, 'L');
+        $pdf->Cell(120, 4.5, iconv('UTF-8', 'windows-1252', $clinica['direccion_calle'] ?? ''), 0, 1, 'L');
+        $pdf->Cell(120, 4.5, iconv('UTF-8', 'windows-1252', ($clinica['codigo_postal'] ?? '') . ' ' . ($clinica['ciudad'] ?? '')), 0, 1, 'L');
+        $pdf->Cell(120, 4.5, iconv('UTF-8', 'windows-1252', 'Tel: ' . ($clinica['telefono_contacto'] ?? '')), 0, 1, 'L');
 
-        $pdf->Line(10, 65, 200, 65);
-        $pdf->Ln(25);
+        // Draw a clean, thin, modern light grey line
+        $pdf->SetDrawColor(226, 232, 240); // e2e8f0
+        $pdf->Line(10, 58, 200, 58);
+        $pdf->Ln(22);
 
         // Invoice Info & Patient Info
-        $pdf->SetFont('Arial', 'B', 12);
-        $pdf->SetTextColor(0, 0, 0);
-        $pdf->Cell(95, 10, iconv('UTF-8', 'windows-1252', 'DATOS DEL PACIENTE'), 0, 0, 'L');
-        $pdf->Cell(95, 10, iconv('UTF-8', 'windows-1252', 'FACTURA'), 0, 1, 'R');
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetTextColor(0, 82, 217); // Royal Blue
+        $pdf->Cell(95, 7, iconv('UTF-8', 'windows-1252', 'DATOS DEL PACIENTE'), 0, 0, 'L');
+        $pdf->Cell(95, 7, iconv('UTF-8', 'windows-1252', 'INFORMACIÓN DE FACTURA'), 0, 1, 'R');
 
-        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->SetTextColor(71, 85, 105); // Slate
         $y = $pdf->GetY();
-        $pdf->Cell(95, 5, iconv('UTF-8', 'windows-1252', $factura['nombre'] . ' ' . $factura['apellidos']), 0, 1, 'L');
-        $pdf->Cell(95, 5, iconv('UTF-8', 'windows-1252', 'DNI/NIE: ' . $factura['paciente_id']), 0, 1, 'L');
-        $pdf->Cell(95, 5, iconv('UTF-8', 'windows-1252', $factura['direccion']), 0, 1, 'L');
-        $pdf->Cell(95, 5, iconv('UTF-8', 'windows-1252', $factura['cp'] . ' ' . $factura['municipio']), 0, 1, 'L');
+        $pdf->Cell(95, 5.5, iconv('UTF-8', 'windows-1252', $factura['nombre'] . ' ' . $factura['apellidos']), 0, 1, 'L');
+        $pdf->Cell(95, 5.5, iconv('UTF-8', 'windows-1252', 'DNI/NIE: ' . $factura['paciente_id']), 0, 1, 'L');
+        $pdf->Cell(95, 5.5, iconv('UTF-8', 'windows-1252', $factura['direccion']), 0, 1, 'L');
+        $pdf->Cell(95, 5.5, iconv('UTF-8', 'windows-1252', ($factura['cp'] ?? '') . ' ' . ($factura['municipio'] ?? '')), 0, 1, 'L');
 
         $pdf->SetY($y);
-        $pdf->Cell(190, 5, iconv('UTF-8', 'windows-1252', 'Nº Factura: ' . $factura['serie'] . '-' . str_pad($factura['numero'], 6, '0', STR_PAD_LEFT)), 0, 1, 'R');
+        $pdf->Cell(190, 5.5, iconv('UTF-8', 'windows-1252', 'Nº Factura: ' . $factura['serie'] . '-' . str_pad($factura['numero'], 6, '0', STR_PAD_LEFT)), 0, 1, 'R');
         $pdf->SetX(105);
-        $pdf->Cell(95, 5, iconv('UTF-8', 'windows-1252', 'Fecha: ' . date('d/m/Y', strtotime($factura['fecha_emision']))), 0, 1, 'R');
+        $pdf->Cell(95, 5.5, iconv('UTF-8', 'windows-1252', 'Fecha: ' . date('d/m/Y', strtotime($factura['fecha_emision']))), 0, 1, 'R');
         $pdf->SetX(105);
-        $pdf->Cell(95, 5, iconv('UTF-8', 'windows-1252', 'Tipo: ' . $factura['tipo_factura']), 0, 1, 'R');
+        $pdf->Cell(95, 5.5, iconv('UTF-8', 'windows-1252', 'Tipo: ' . $factura['tipo_factura']), 0, 1, 'R');
         $pdf->SetX(105);
-        $pdf->Cell(95, 5, iconv('UTF-8', 'windows-1252', 'Estado Pago: ' . $factura['estado']), 0, 1, 'R');
+        $pdf->Cell(95, 5.5, iconv('UTF-8', 'windows-1252', 'Estado Pago: ' . $factura['estado']), 0, 1, 'R');
         if (!empty($factura['csv_verifactu'])) {
             $pdf->SetX(105);
-            $pdf->Cell(95, 5, iconv('UTF-8', 'windows-1252', 'CSV AEAT: ' . $factura['csv_verifactu']), 0, 1, 'R');
+            $pdf->Cell(95, 5.5, iconv('UTF-8', 'windows-1252', 'CSV AEAT: ' . $factura['csv_verifactu']), 0, 1, 'R');
         }
 
         $pdf->Ln(15);
 
         // Table Header
-        $pdf->SetFillColor(51, 122, 183);
-        $pdf->SetTextColor(255, 255, 255);
-        $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Cell(110, 10, iconv('UTF-8', 'windows-1252', 'DESCRIPCIÓN'), 1, 0, 'L', true);
-        $pdf->Cell(25, 10, iconv('UTF-8', 'windows-1252', 'BASE'), 1, 0, 'C', true);
-        $pdf->Cell(25, 10, iconv('UTF-8', 'windows-1252', 'IVA %'), 1, 0, 'C', true);
-        $pdf->Cell(30, 10, iconv('UTF-8', 'windows-1252', 'TOTAL'), 1, 1, 'C', true);
+        $pdf->SetFillColor(248, 250, 252); // f8fafc - very light slate
+        $pdf->SetTextColor(71, 85, 105); // Slate Text
+        $pdf->SetDrawColor(226, 232, 240); // e2e8f0
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->Cell(110, 8, iconv('UTF-8', 'windows-1252', ' DESCRIPCIÓN'), 1, 0, 'L', true);
+        $pdf->Cell(25, 8, iconv('UTF-8', 'windows-1252', 'BASE'), 1, 0, 'C', true);
+        $pdf->Cell(25, 8, iconv('UTF-8', 'windows-1252', 'IVA %'), 1, 0, 'C', true);
+        $pdf->Cell(30, 8, iconv('UTF-8', 'windows-1252', 'TOTAL'), 1, 1, 'C', true);
 
         // Table Body
-        $pdf->SetTextColor(0, 0, 0);
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(110, 10, iconv('UTF-8', 'windows-1252', $factura['descripcion']), 1, 0, 'L');
-        $pdf->Cell(25, 10, number_format($factura['precio'], 2, ',', '.') . iconv('UTF-8', 'windows-1252', ' €'), 1, 0, 'C');
-        $pdf->Cell(25, 10, number_format($factura['impuesto'], 0) . '%', 1, 0, 'C');
-        $pdf->Cell(30, 10, number_format($factura['total'], 2, ',', '.') . iconv('UTF-8', 'windows-1252', ' €'), 1, 1, 'C');
+        $pdf->SetTextColor(30, 41, 59); // Darker slate
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->Cell(110, 9, iconv('UTF-8', 'windows-1252', ' ' . $factura['descripcion']), 1, 0, 'L');
+        $pdf->Cell(25, 9, number_format($factura['precio'], 2, ',', '.') . iconv('UTF-8', 'windows-1252', ' €'), 1, 0, 'C');
+        $pdf->Cell(25, 9, number_format($factura['impuesto'], 0) . '%', 1, 0, 'C');
+        $pdf->Cell(30, 9, number_format($factura['total'], 2, ',', '.') . iconv('UTF-8', 'windows-1252', ' €'), 1, 1, 'C');
 
         // Totals
-        $pdf->Ln(10);
-        $pdf->SetFont('Arial', 'B', 11);
+        $pdf->Ln(6);
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->SetTextColor(71, 85, 105);
         $pdf->SetX(130);
-        $pdf->Cell(40, 8, iconv('UTF-8', 'windows-1252', 'Total Base:'), 0, 0, 'R');
-        $pdf->Cell(30, 8, number_format($factura['precio'], 2, ',', '.') . iconv('UTF-8', 'windows-1252', ' €'), 0, 1, 'R');
+        $pdf->Cell(40, 6, iconv('UTF-8', 'windows-1252', 'Total Base:'), 0, 0, 'R');
+        $pdf->Cell(30, 6, number_format($factura['precio'], 2, ',', '.') . iconv('UTF-8', 'windows-1252', ' €'), 0, 1, 'R');
+        
         $pdf->SetX(130);
-        $pdf->Cell(40, 8, iconv('UTF-8', 'windows-1252', 'Total IVA:'), 0, 0, 'R');
-        $pdf->Cell(30, 8, number_format($factura['cuota_iva'], 2, ',', '.') . iconv('UTF-8', 'windows-1252', ' €'), 0, 1, 'R');
+        $pdf->Cell(40, 6, iconv('UTF-8', 'windows-1252', 'Total IVA:'), 0, 0, 'R');
+        $pdf->Cell(30, 6, number_format($factura['cuota_iva'], 2, ',', '.') . iconv('UTF-8', 'windows-1252', ' €'), 0, 1, 'R');
+        
         $pdf->SetX(130);
-        $pdf->SetFont('Arial', 'B', 14);
-        $pdf->SetTextColor(51, 122, 183);
-        $pdf->Cell(40, 12, iconv('UTF-8', 'windows-1252', 'TOTAL:'), 0, 0, 'R');
-        $pdf->Cell(30, 12, number_format($factura['total'], 2, ',', '.') . iconv('UTF-8', 'windows-1252', ' €'), 0, 1, 'R');
+        $pdf->Cell(70, 2, '', 'B', 1); // thin line under sub-totals
+        $pdf->Ln(2);
+        
+        $pdf->SetX(130);
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetTextColor(0, 82, 217); // Royal Blue
+        $pdf->Cell(40, 10, iconv('UTF-8', 'windows-1252', 'TOTAL:'), 0, 0, 'R');
+        $pdf->Cell(30, 10, number_format($factura['total'], 2, ',', '.') . iconv('UTF-8', 'windows-1252', ' €'), 0, 1, 'R');
 
         // Footer - Verifactu Hash Chaining
         $pdf->SetY(-45);

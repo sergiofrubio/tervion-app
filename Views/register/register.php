@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Registro de Cliente - Velion</title>
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/VELION Logo Rounded.png" type="image/png">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" type="image/jpeg">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,24 +30,28 @@
                     },
                     colors: {
                         primary: {
-                            50: '#f0fdfa',   // Teal 50
-                            100: '#ccfbf1',  // Teal 100
-                            500: '#0d9488',  // Teal 600
-                            600: '#0f766e',  // Teal 700
-                            700: '#115e59',  // Teal 800
+                            50: '#f0f5ff',
+                            100: '#d9e6ff',
+                            200: '#bacfff',
+                            300: '#91b1ff',
+                            400: '#5e88ff',
+                            500: '#0052d9', // Royal Blue (from logo)
+                            600: '#0040b3',
+                            700: '#00308c',
+                            800: '#002266',
+                            900: '#001640',
                         },
                         indigo: {
-                            50: '#ecfeff',   // Cyan 50
-                            100: '#cffafe',  // Cyan 100
-                            200: '#a5f3fc',  // Cyan 200
-                            300: '#67e8f9',  // Cyan 300
-                            400: '#22d3ee',  // Cyan 400
-                            500: '#06b6d4',  // Cyan 500
-                            600: '#0891b2',  // Cyan 600
-                            700: '#0e7490',  // Cyan 700
-                            800: '#155e75',  // Cyan 800
-                            900: '#164e63',  // Cyan 900
-                            950: '#083344',  // Cyan 950
+                            50: '#ecf9ff',
+                            100: '#d9f1ff',
+                            200: '#bde7ff',
+                            300: '#8fd7ff',
+                            400: '#4cbaff',
+                            500: '#009eff', // Cyan/Light Blue (from logo)
+                            600: '#007ee6',
+                            700: '#0063b8',
+                            800: '#004f99',
+                            900: '#004280',
                         },
                         purple: {
                             50: '#f0fdf4',   // Emerald 50
@@ -85,10 +89,9 @@
     <!-- Top Navigation / Header -->
     <header class="border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/VELION Logo Rounded.png" alt="Velion Logo" class="w-10 h-10 rounded-xl shadow-sm">
-                <span class="font-bold text-xl text-gray-900 tracking-tight">Velion</span>
-            </div>
+            <a href="<?= PROJECT_ROOT ?>/landing" class="flex items-center">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" alt="Velion Logo" class="h-9 object-contain">
+            </a>
             <div>
                 <a href="<?= PROJECT_ROOT ?>/login" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
                     ¿Ya tienes cuenta? Iniciar Sesión
@@ -130,7 +133,7 @@
                                         class="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                                         :class="{
                                             'bg-gray-950 text-white shadow-lg shadow-gray-950/20 ring-4 ring-gray-950/10': currentStep === index + 1,
-                                            'bg-emerald-500 text-white': currentStep > index + 1,
+                                            'bg-indigo-500 text-white': currentStep > index + 1,
                                             'bg-white text-gray-400 border border-gray-200 hover:border-gray-400': currentStep < index + 1 && index + 1 <= maxStepReached,
                                             'bg-gray-100 text-gray-300 border border-gray-200 cursor-not-allowed': index + 1 > maxStepReached
                                         }">
@@ -143,7 +146,7 @@
                             </div>
                             <div x-show="index < steps.length - 1" 
                                  class="h-1 flex-1 mx-2 rounded-full transition-all duration-300"
-                                 :class="currentStep > index + 1 ? 'bg-emerald-500' : 'bg-gray-200'"></div>
+                                 :class="currentStep > index + 1 ? 'bg-indigo-500' : 'bg-gray-200'"></div>
                         </div>
                     </template>
                 </div>
@@ -588,7 +591,7 @@
                         
                         <button type="submit" 
                                 x-show="currentStep === steps.length" 
-                                class="inline-flex justify-center items-center py-2.5 px-6 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors">
+                                class="inline-flex justify-center items-center py-2.5 px-6 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                             Finalizar Registro <i class="bi bi-check-circle ml-2"></i>
                         </button>
                     </div>

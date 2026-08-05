@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Panel de gestión</title>
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/VELION Logo Rounded.png" type="image/png">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" type="image/jpeg">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,24 +23,28 @@
                     },
                     colors: {
                         primary: {
-                            50: '#f0fdfa',   // Teal 50
-                            100: '#ccfbf1',  // Teal 100
-                            500: '#0d9488',  // Teal 600
-                            600: '#0f766e',  // Teal 700
-                            700: '#115e59',  // Teal 800
+                            50: '#f0f5ff',
+                            100: '#d9e6ff',
+                            200: '#bacfff',
+                            300: '#91b1ff',
+                            400: '#5e88ff',
+                            500: '#0052d9', // Royal Blue (from logo)
+                            600: '#0040b3',
+                            700: '#00308c',
+                            800: '#002266',
+                            900: '#001640',
                         },
                         indigo: {
-                            50: '#ecfeff',   // Cyan 50
-                            100: '#cffafe',  // Cyan 100
-                            200: '#a5f3fc',  // Cyan 200
-                            300: '#67e8f9',  // Cyan 300
-                            400: '#22d3ee',  // Cyan 400
-                            500: '#06b6d4',  // Cyan 500
-                            600: '#0891b2',  // Cyan 600
-                            700: '#0e7490',  // Cyan 700
-                            800: '#155e75',  // Cyan 800
-                            900: '#164e63',  // Cyan 900
-                            950: '#083344',  // Cyan 950
+                            50: '#ecf9ff',
+                            100: '#d9f1ff',
+                            200: '#bde7ff',
+                            300: '#8fd7ff',
+                            400: '#4cbaff',
+                            500: '#009eff', // Cyan/Light Blue (from logo)
+                            600: '#007ee6',
+                            700: '#0063b8',
+                            800: '#004f99',
+                            900: '#004280',
                         },
                         purple: {
                             50: '#f0fdf4',   // Emerald 50
@@ -95,11 +99,8 @@
         
         <!-- Sidebar Header -->
         <div class="flex items-center justify-between h-16 px-6 border-b border-gray-100">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center text-white font-bold text-lg shadow-sm">
-                    V
-                </div>
-                <span class="text-xl font-bold tracking-tight text-gray-800">Velion</span>
+            <div class="flex items-center">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" alt="Velion Logo" class="h-8 object-contain">
             </div>
             <button @click="sidebarOpen = false" class="lg:hidden text-gray-400 hover:text-gray-600 focus:outline-none">
                 <i class="bi bi-x-lg text-xl"></i>

@@ -5,19 +5,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Inicio de sesión - Velion</title>
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/VELION Logo Rounded.png" type="image/png">
-    
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" type="image/jpeg">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
@@ -30,24 +30,28 @@
                     },
                     colors: {
                         primary: {
-                            50: '#f0fdfa',   // Teal 50
-                            100: '#ccfbf1',  // Teal 100
-                            500: '#0d9488',  // Teal 600
-                            600: '#0f766e',  // Teal 700
-                            700: '#115e59',  // Teal 800
+                            50: '#f0f5ff',
+                            100: '#d9e6ff',
+                            200: '#bacfff',
+                            300: '#91b1ff',
+                            400: '#5e88ff',
+                            500: '#0052d9', // Royal Blue (from logo)
+                            600: '#0040b3',
+                            700: '#00308c',
+                            800: '#002266',
+                            900: '#001640',
                         },
                         indigo: {
-                            50: '#ecfeff',   // Cyan 50
-                            100: '#cffafe',  // Cyan 100
-                            200: '#a5f3fc',  // Cyan 200
-                            300: '#67e8f9',  // Cyan 300
-                            400: '#22d3ee',  // Cyan 400
-                            500: '#06b6d4',  // Cyan 500
-                            600: '#0891b2',  // Cyan 600
-                            700: '#0e7490',  // Cyan 700
-                            800: '#155e75',  // Cyan 800
-                            900: '#164e63',  // Cyan 900
-                            950: '#083344',  // Cyan 950
+                            50: '#ecf9ff',
+                            100: '#d9f1ff',
+                            200: '#bde7ff',
+                            300: '#8fd7ff',
+                            400: '#4cbaff',
+                            500: '#009eff', // Cyan/Light Blue (from logo)
+                            600: '#007ee6',
+                            700: '#0063b8',
+                            800: '#004f99',
+                            900: '#004280',
                         },
                         purple: {
                             50: '#f0fdf4',   // Emerald 50
@@ -67,30 +71,20 @@
             }
         }
     </script>
-    
-    <style>
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-    </style>
+
 </head>
 
-<body class="bg-gray-100 font-sans antialiased min-h-screen flex items-center justify-center relative" x-data="{ showModal: false }" x-cloak>
-
-    <!-- Background Image with Overlay -->
-    <div class="absolute inset-0 z-0">
-        <img src="<?= PROJECT_ROOT ?>/public/custom/img/fondo.jpg" alt="Background" class="w-full h-full object-cover" />
-        <div class="absolute inset-0 bg-gray-900/40 mix-blend-multiply"></div>
-    </div>
+<body class="bg-gray-50 font-sans antialiased min-h-screen flex items-center justify-center relative" x-data="{ showModal: false }" x-cloak>
 
     <!-- Login Container -->
     <div class="relative z-10 w-full max-w-md px-6">
-        <div class="glass-panel rounded-3xl shadow-2xl overflow-hidden border border-white/20 p-8 sm:p-10 transition-all">
-            
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 p-8 sm:p-10 transition-all">
+
             <div class="text-center mb-8">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/VELION Logo Rounded.png" alt="Velion Logo" class="w-16 h-16 mx-auto rounded-2xl shadow-sm mb-4">
+                <!-- <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" alt="Velion Logo" class="w-24 mx-auto rounded-2xl shadow-sm mb-4"> -->
+                 <a href="<?= PROJECT_ROOT ?>/landing" class="w-24 mx-auto flex items-center mb-4">
+                    <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" alt="Velion Logo" class="h-9 object-contain">
+                 </a>
                 <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Bienvenido de nuevo</h2>
                 <p class="text-sm text-gray-500 mt-1">Inicia sesión en tu cuenta</p>
             </div>
@@ -98,10 +92,10 @@
             <?php
             // Verificar si hay una alerta de usuario
             if (isset($_GET['alert']) && isset($_GET['message'])) {
-                $alert_type = $_GET['alert'] === 'danger' ? 'bg-red-50 text-red-800 border-red-200' : 
-                              ($_GET['alert'] === 'success' ? 'bg-green-50 text-green-800 border-green-200' : 
+                $alert_type = $_GET['alert'] === 'danger' ? 'bg-red-50 text-red-800 border-red-200' :
+                              ($_GET['alert'] === 'success' ? 'bg-green-50 text-green-800 border-green-200' :
                               'bg-blue-50 text-blue-800 border-blue-200');
-                
+
                 echo '<div class="rounded-xl border p-4 mb-6 ' . $alert_type . '" role="alert" x-data="{ show: true }" x-show="show">
                     <div class="flex justify-between items-start">
                         <div class="text-sm font-medium">' . htmlspecialchars($_GET['message']) . '</div>
@@ -112,10 +106,10 @@
                 </div>';
             }
             ?>
-            
+
             <form action="<?= PROJECT_ROOT . '/login' ?>" method="post" class="space-y-5">
                 <input type="hidden" id="actionType" name="action" value="iniciar_sesion">
-                
+
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
                     <div class="relative">
@@ -123,11 +117,11 @@
                             <i class="bi bi-envelope text-gray-400"></i>
                         </div>
                         <input type="email" name="email" id="email" required
-                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white/50 focus:bg-white text-sm transition-colors shadow-sm" 
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white/50 focus:bg-white text-sm transition-colors shadow-sm"
                             placeholder="tu@email.com">
                     </div>
                 </div>
-                
+
                 <div>
                     <div class="flex items-center justify-between mb-1">
                         <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
@@ -140,11 +134,11 @@
                             <i class="bi bi-lock text-gray-400"></i>
                         </div>
                         <input type="password" name="pass" id="pass" required
-                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white/50 focus:bg-white text-sm transition-colors shadow-sm" 
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white/50 focus:bg-white text-sm transition-colors shadow-sm"
                             placeholder="••••••••">
                     </div>
                 </div>
-                
+
                 <div class="pt-2">
                     <button type="submit" id="loginButton" class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors">
                         <!-- Spinner (hidden by default) -->
@@ -164,28 +158,28 @@
 
     <!-- Modal Recuperar Contraseña (Alpine.js) -->
     <div x-show="showModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true" style="display: none;">
-        
-        <div x-show="showModal" 
-             x-transition:enter="ease-out duration-300" 
-             x-transition:enter-start="opacity-0" 
-             x-transition:enter-end="opacity-100" 
-             x-transition:leave="ease-in duration-200" 
-             x-transition:leave-start="opacity-100" 
-             x-transition:leave-end="opacity-0" 
+
+        <div x-show="showModal"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
              class="fixed inset-0 bg-gray-900/75 backdrop-blur-sm transition-opacity"></div>
 
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                <div x-show="showModal" 
+                <div x-show="showModal"
                      @click.away="showModal = false"
-                     x-transition:enter="ease-out duration-300" 
-                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
-                     x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
-                     x-transition:leave="ease-in duration-200" 
-                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
-                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+                     x-transition:enter="ease-out duration-300"
+                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                     x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                     x-transition:leave="ease-in duration-200"
+                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                      class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                    
+
                     <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 border-b border-gray-100">
                         <div class="sm:flex sm:items-start">
                             <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary-50 sm:mx-0 sm:h-10 sm:w-10">
@@ -199,14 +193,14 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <form action="<?= PROJECT_ROOT . '/login/reset-password' ?>" method="post">
                         <div class="px-4 py-5 sm:p-6">
                             <label for="resetEmail" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
-                            <input type="email" id="resetEmail" name="resetEmail" required 
+                            <input type="email" id="resetEmail" name="resetEmail" required
                                 class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-2.5">
                         </div>
-                        
+
                         <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                             <input type="hidden" name="action" value="solicitar_nueva_contraseña">
                             <button type="submit" class="inline-flex w-full justify-center rounded-xl bg-gray-900 px-3 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 sm:ml-3 sm:w-auto transition-colors">

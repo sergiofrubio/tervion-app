@@ -28,9 +28,9 @@
 
             <div class="text-center mb-8">
                 <!-- <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" alt="Velion Logo" class="w-24 mx-auto rounded-2xl shadow-sm mb-4"> -->
-                 <a href="<?= PROJECT_ROOT ?>/landing" class="w-24 mx-auto flex items-center mb-4">
+                <a href="<?= PROJECT_ROOT ?>/" class="w-24 mx-auto flex items-center mb-4">
                     <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" alt="Velion Logo" class="h-9 object-contain">
-                 </a>
+                </a>
                 <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Bienvenido de nuevo</h2>
                 <p class="text-sm text-gray-500 mt-1">Inicia sesión en tu cuenta</p>
             </div>
@@ -38,9 +38,8 @@
             <?php
             // Verificar si hay una alerta de usuario
             if (isset($_GET['alert']) && isset($_GET['message'])) {
-                $alert_type = $_GET['alert'] === 'danger' ? 'bg-red-50 text-red-800 border-red-200' :
-                              ($_GET['alert'] === 'success' ? 'bg-green-50 text-green-800 border-green-200' :
-                              'bg-blue-50 text-blue-800 border-blue-200');
+                $alert_type = $_GET['alert'] === 'danger' ? 'bg-red-50 text-red-800 border-red-200' : ($_GET['alert'] === 'success' ? 'bg-green-50 text-green-800 border-green-200' :
+                        'bg-blue-50 text-blue-800 border-blue-200');
 
                 echo '<div class="rounded-xl border p-4 mb-6 ' . $alert_type . '" role="alert" x-data="{ show: true }" x-show="show">
                     <div class="flex justify-between items-start">
@@ -106,25 +105,25 @@
     <div x-show="showModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true" style="display: none;">
 
         <div x-show="showModal"
-             x-transition:enter="ease-out duration-300"
-             x-transition:enter-start="opacity-0"
-             x-transition:enter-end="opacity-100"
-             x-transition:leave="ease-in duration-200"
-             x-transition:leave-start="opacity-100"
-             x-transition:leave-end="opacity-0"
-             class="fixed inset-0 bg-gray-900/75 backdrop-blur-sm transition-opacity"></div>
+            x-transition:enter="ease-out duration-300"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="ease-in duration-200"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="fixed inset-0 bg-gray-900/75 backdrop-blur-sm transition-opacity"></div>
 
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div x-show="showModal"
-                     @click.away="showModal = false"
-                     x-transition:enter="ease-out duration-300"
-                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                     x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                     x-transition:leave="ease-in duration-200"
-                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                     class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                    @click.away="showModal = false"
+                    x-transition:enter="ease-out duration-300"
+                    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                    x-transition:leave="ease-in duration-200"
+                    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
 
                     <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 border-b border-gray-100">
                         <div class="sm:flex sm:items-start">
@@ -162,10 +161,11 @@
         </div>
     </div>
 </body>
+
 </html>
 
 <script>
-    (function(){
+    (function() {
         var form = document.querySelector('form[action="<?= PROJECT_ROOT . '\/login' ?>"]');
         if (!form) form = document.querySelector('form');
         var btn = document.getElementById('loginButton');
@@ -173,7 +173,7 @@
         var btnText = document.getElementById('loginButtonText');
 
         if (form && btn && spinner) {
-            form.addEventListener('submit', function(e){
+            form.addEventListener('submit', function(e) {
                 // Mostrar spinner, deshabilitar botón y conservar envío
                 spinner.classList.remove('hidden');
                 btn.classList.add('opacity-80');

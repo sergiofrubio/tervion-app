@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <!-- SEO Meta Tags -->
     <title>Velion — Tu clínica, tu gestión, tu libertad</title>
     <meta name="description" content="Velion es el ERP y software de gestión en la nube para clínicas de fisioterapia y centros de salud. Automatiza tus citas, cobros con Redsys y cumple con la normativa Verifactu de la AEAT.">
@@ -17,7 +17,7 @@
     <meta property="og:title" content="Velion — Tu clínica, tu gestión, tu libertad">
     <meta property="og:description" content="El software de gestión definitivo para clínicas. Controla tus citas, automatiza la facturación con Verifactu y recibe cobros online de forma segura.">
     <meta property="og:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg">
-    <meta property="og:url" content="https://velion-app.com/landing">
+    <meta property="og:url" content="https://velion-app.com/">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
@@ -42,7 +42,7 @@
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
             <!-- Logo -->
-            <a href="<?= PROJECT_ROOT ?>/landing" class="flex items-center">
+            <a href="<?= PROJECT_ROOT ?>/" class="flex items-center">
                 <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" alt="Velion Logo" class="h-9 object-contain">
             </a>
 
@@ -69,7 +69,7 @@
     <!-- Hero Section -->
     <section class="relative pt-12 pb-20 overflow-hidden">
         <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            
+
             <!-- Hero Left -->
             <div class="space-y-8 max-w-xl">
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-light text-primary-500 leading-tight tracking-tight">
@@ -127,7 +127,7 @@
     <section id="caracteristicas" class="py-20 bg-gray-50 border-t border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                
+
                 <!-- Feature 1 -->
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
                     <div class="space-y-4">
@@ -241,7 +241,7 @@
     <section id="como-funciona" class="py-20 bg-gray-50 border-t border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <h2 class="text-3xl font-light text-primary-500 text-center mb-16">Cómo funciona</h2>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Step 1 -->
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between h-80 relative overflow-hidden group">
@@ -315,7 +315,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                
+
                 <!-- Plan 1 -->
                 <div class="bg-white p-10 rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between space-y-8">
                     <div class="space-y-6">
@@ -401,8 +401,8 @@
                         "La integración con Verifactu nos quitó un gran peso de encima. Ahora facturamos a pacientes con total tranquilidad legal."
                     </p>
                     <div>
-                        <h5 class="text-sm font-bold text-gray-900">Mercedes Gil Hernández</h5>
-                        <p class="text-xs text-gray-400">Directora de Montessori British, España</p>
+                        <h5 class="text-sm font-bold text-gray-900">Laura</h5>
+                        <p class="text-xs text-gray-400">Directora de Fisioterapia Aquiles, España</p>
                     </div>
                 </div>
                 <!-- Quote 2 -->
@@ -411,18 +411,18 @@
                         "El sistema de reservas online ha reducido las inasistencias en un 35%. Los recordatorios automáticos por correo son clave."
                     </p>
                     <div>
-                        <h5 class="text-sm font-bold text-gray-900">Christelle Sidoine</h5>
-                        <p class="text-xs text-gray-400">Fisioterapeuta, Easy Assistant, Sudáfrica</p>
+                        <h5 class="text-sm font-bold text-gray-900">Antonio</h5>
+                        <p class="text-xs text-gray-400">Fisioterapeuta, Fisioterapia Ciudad Jardín, España</p>
                     </div>
                 </div>
                 <!-- Quote 3 -->
                 <div class="space-y-4 border-t lg:border-t-0 lg:border-l border-gray-100 pt-8 lg:pt-0 lg:pl-8">
                     <p class="text-lg text-primary-600 font-light leading-relaxed italic">
-                        "Gestionar las nóminas de mis sanitarios el día 25 y los gastos con importaciones del banco nunca había sido tan ágil."
+                        "Gestionar las nóminas de mis sanitarios el día 25 nunca había sido tan ágil."
                     </p>
                     <div>
-                        <h5 class="text-sm font-bold text-gray-900">Georg Klausner</h5>
-                        <p class="text-xs text-gray-400">Gerente de Clínicas Mansiontech, Austria</p>
+                        <h5 class="text-sm font-bold text-gray-900">Carlos</h5>
+                        <p class="text-xs text-gray-400">Gerente de Clínica CPT, España</p>
                     </div>
                 </div>
             </div>
@@ -432,7 +432,7 @@
     <!-- Newsletter Subscription Section (Inspirado en la de Estonia) -->
     <section class="border-t border-gray-100 bg-gray-50 overflow-hidden">
         <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2">
-            
+
             <!-- Left Banner (Azul real con grilla) -->
             <div class="bg-primary-500 p-12 sm:p-16 lg:p-20 text-white flex flex-col justify-center relative overflow-hidden">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(0,158,255,0.25),transparent)]"></div>
@@ -453,8 +453,8 @@
                 <form class="space-y-5" onsubmit="event.preventDefault(); alert('¡Gracias por suscribirte!');">
                     <div>
                         <label for="email" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Correo electrónico</label>
-                        <input type="email" id="email" required placeholder="tuemail@ejemplo.com" 
-                               class="w-full border-b border-gray-300 focus:border-primary-500 py-2.5 outline-none text-sm transition-colors bg-transparent">
+                        <input type="email" id="email" required placeholder="tuemail@ejemplo.com"
+                            class="w-full border-b border-gray-300 focus:border-primary-500 py-2.5 outline-none text-sm transition-colors bg-transparent">
                     </div>
                     <div>
                         <label for="perfil" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Perfil profesional</label>
@@ -484,7 +484,7 @@
         <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-4">
             <p class="w-full sm:w-1/3 text-center sm:text-left text-sm">© 2026 Velion Ibérica SL</p>
 
-            <a href="<?= PROJECT_ROOT ?>/landing" class="w-full sm:w-1/3 flex items-center justify-center">
+            <a href="<?= PROJECT_ROOT ?>/" class="w-full sm:w-1/3 flex items-center justify-center">
                 <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana-oscuro.jpeg" alt="Velion Logo" class="h-8 object-contain rounded-md p-1 shadow-sm">
             </a>
 

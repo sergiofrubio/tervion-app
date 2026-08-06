@@ -6,27 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Registro de Cliente - Velion</title>
     <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana.jpeg" type="image/jpeg">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Compiled CSS (Tailwind + SCSS) -->
     <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/custom/css/app.css">
-    
+
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="bg-slate-50 font-sans antialiased min-h-screen flex flex-col justify-between" 
-      x-data="registrationForm()" 
-      x-cloak>
+<body class="bg-slate-50 font-sans antialiased min-h-screen flex flex-col justify-between"
+    x-data="registrationForm()"
+    x-cloak>
 
     <!-- Top Navigation / Header -->
     <header class="border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="<?= PROJECT_ROOT ?>/landing" class="flex items-center">
+            <a href="<?= PROJECT_ROOT ?>/" class="flex items-center">
                 <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" alt="Velion Logo" class="h-9 object-contain">
             </a>
             <div>
@@ -40,7 +40,7 @@
     <!-- Main Registration Section -->
     <main class="flex-grow flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8 relative">
         <div class="w-full max-w-4xl">
-            
+
             <!-- Alert message if controller returns error -->
             <?php if (!empty($error)) : ?>
                 <div class="rounded-2xl border border-red-200 bg-red-50 p-4 mb-6 shadow-sm animate-pulse">
@@ -64,11 +64,11 @@
                     <template x-for="(stepInfo, index) in steps" :key="index">
                         <div class="flex items-center flex-1 last:flex-none">
                             <div class="flex flex-col items-center relative">
-                                <button type="button" 
-                                        @click="goToStep(index + 1)"
-                                        :disabled="index + 1 > maxStepReached"
-                                        class="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-                                        :class="{
+                                <button type="button"
+                                    @click="goToStep(index + 1)"
+                                    :disabled="index + 1 > maxStepReached"
+                                    class="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                                    :class="{
                                             'bg-gray-950 text-white shadow-lg shadow-gray-950/20 ring-4 ring-gray-950/10': currentStep === index + 1,
                                             'bg-indigo-500 text-white': currentStep > index + 1,
                                             'bg-white text-gray-400 border border-gray-200 hover:border-gray-400': currentStep < index + 1 && index + 1 <= maxStepReached,
@@ -78,12 +78,12 @@
                                     <i x-show="currentStep > index + 1" class="bi bi-check-lg text-base"></i>
                                 </button>
                                 <span class="absolute top-12 text-[11px] font-medium text-gray-500 hidden md:block whitespace-nowrap"
-                                      :class="{'text-gray-950 font-bold': currentStep === index + 1}"
-                                      x-text="stepInfo.name"></span>
+                                    :class="{'text-gray-950 font-bold': currentStep === index + 1}"
+                                    x-text="stepInfo.name"></span>
                             </div>
-                            <div x-show="index < steps.length - 1" 
-                                 class="h-1 flex-1 mx-2 rounded-full transition-all duration-300"
-                                 :class="currentStep > index + 1 ? 'bg-indigo-500' : 'bg-gray-200'"></div>
+                            <div x-show="index < steps.length - 1"
+                                class="h-1 flex-1 mx-2 rounded-full transition-all duration-300"
+                                :class="currentStep > index + 1 ? 'bg-indigo-500' : 'bg-gray-200'"></div>
                         </div>
                     </template>
                 </div>
@@ -96,7 +96,7 @@
 
             <!-- Form Container -->
             <form action="<?= PROJECT_ROOT ?>/registro" method="POST" @submit="submitForm" class="glass-panel rounded-3xl border border-white shadow-xl overflow-hidden p-8 sm:p-10 transition-all">
-                
+
                 <!-- Step 1: Credenciales -->
                 <div x-show="currentStep === 1" x-transition class="space-y-6">
                     <div>
@@ -511,24 +511,24 @@
                 <!-- Step actions footer -->
                 <div class="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between">
                     <div>
-                        <button type="button" 
-                                x-show="currentStep > 1" 
-                                @click="prevStep()" 
-                                class="inline-flex justify-center items-center py-2.5 px-5 border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+                        <button type="button"
+                            x-show="currentStep > 1"
+                            @click="prevStep()"
+                            class="inline-flex justify-center items-center py-2.5 px-5 border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                             <i class="bi bi-arrow-left mr-2"></i> Anterior
                         </button>
                     </div>
                     <div>
-                        <button type="button" 
-                                x-show="currentStep < steps.length" 
-                                @click="nextStep()" 
-                                class="inline-flex justify-center items-center py-2.5 px-6 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-950 transition-colors">
+                        <button type="button"
+                            x-show="currentStep < steps.length"
+                            @click="nextStep()"
+                            class="inline-flex justify-center items-center py-2.5 px-6 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-950 transition-colors">
                             Siguiente <i class="bi bi-arrow-right ml-2"></i>
                         </button>
-                        
-                        <button type="submit" 
-                                x-show="currentStep === steps.length" 
-                                class="inline-flex justify-center items-center py-2.5 px-6 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+
+                        <button type="submit"
+                            x-show="currentStep === steps.length"
+                            class="inline-flex justify-center items-center py-2.5 px-6 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                             Finalizar Registro <i class="bi bi-check-circle ml-2"></i>
                         </button>
                     </div>
@@ -542,7 +542,7 @@
         <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-4">
             <p class="w-full sm:w-1/3 text-center sm:text-left text-sm">© 2026 Velion Ibérica SL</p>
 
-            <a href="<?= PROJECT_ROOT ?>/landing" class="w-full sm:w-1/3 flex items-center justify-center">
+            <a href="<?= PROJECT_ROOT ?>/" class="w-full sm:w-1/3 flex items-center justify-center">
                 <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana-oscuro.jpeg" alt="Velion Logo" class="h-8 object-contain rounded-md p-1 shadow-sm">
             </a>
 
@@ -571,14 +571,27 @@
             return {
                 currentStep: 1,
                 maxStepReached: 1,
-                steps: [
-                    { name: 'Credenciales' },
-                    { name: 'Autónomo - Personales' },
-                    { name: 'Autónomo - Dirección' },
-                    { name: 'Datos Profesionales' },
-                    { name: 'Clínica - Generales' },
-                    { name: 'Clínica - Ubicación' },
-                    { name: 'Resumen' }
+                steps: [{
+                        name: 'Credenciales'
+                    },
+                    {
+                        name: 'Autónomo - Personales'
+                    },
+                    {
+                        name: 'Autónomo - Dirección'
+                    },
+                    {
+                        name: 'Datos Profesionales'
+                    },
+                    {
+                        name: 'Clínica - Generales'
+                    },
+                    {
+                        name: 'Clínica - Ubicación'
+                    },
+                    {
+                        name: 'Resumen'
+                    }
                 ],
                 formData: {
                     email: '<?= htmlspecialchars($data['email'] ?? '') ?>',
@@ -615,7 +628,7 @@
                 },
                 validateStep(step) {
                     this.errors = {};
-                    
+
                     if (step === 1) {
                         if (!this.formData.email || !this.formData.email.includes('@')) {
                             this.errors.email = 'Introduce un email de administrador válido.';
@@ -627,7 +640,7 @@
                             this.errors.confirm_pass = 'Las contraseñas no coinciden.';
                         }
                     }
-                    
+
                     if (step === 2) {
                         if (!this.formData.usuario_id || this.formData.usuario_id.trim().length !== 9) {
                             this.errors.usuario_id = 'El DNI / NIF debe tener exactamente 9 caracteres.';
@@ -642,7 +655,7 @@
                             this.errors.fecha_nacimiento = 'La fecha de nacimiento es obligatoria.';
                         }
                     }
-                    
+
                     if (step === 5) {
                         if (!this.formData.nombre_comercial || this.formData.nombre_comercial.trim() === '') {
                             this.errors.nombre_comercial = 'El nombre comercial de la clínica es obligatorio.';
@@ -651,7 +664,7 @@
                             this.errors.telefono_contacto = 'El teléfono de contacto de la clínica es obligatorio.';
                         }
                     }
-                    
+
                     if (step === 6) {
                         if (!this.formData.direccion_calle || this.formData.direccion_calle.trim() === '') {
                             this.errors.direccion_calle = 'La dirección de la clínica es obligatoria.';

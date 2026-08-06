@@ -1,0 +1,38 @@
+name: CI - Integration Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-tests:
+    name: Run PHPUnit Tests
+    # Run only if the pull request source branch is develop (as requested)
+    if: github.event.pull_request.head.ref == 'develop'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: mbstring, xml, ctype, iconv, mysql, gd
+          coverage: none
+
+      - name: Cache Composer Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.composer/cache/files
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Run tests
+        run: vendor/bin/phpunit

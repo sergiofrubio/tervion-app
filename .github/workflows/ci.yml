@@ -8,9 +8,19 @@ on:
 jobs:
   run-tests:
     name: Run PHPUnit Tests
-    # Run only if the pull request source branch is develop (as requested)
     if: github.event.pull_request.head.ref == 'develop'
     runs-on: ubuntu-latest
+
+    # Definir el servicio de MySQL para el workflow
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: velion
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout Code
@@ -20,7 +30,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.5'
-          extensions: mbstring, xml, ctype, iconv, mysql, gd
+          extensions: mbstring, xml, ctype, iconv, mysql, pdo_mysql, gd
           coverage: none
 
       - name: Cache Composer Dependencies
@@ -34,5 +44,15 @@ jobs:
       - name: Install Dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
+      # Inicializar el esquema de la base de datos
+      - name: Initialize Database Schema
+        run: mysql -h 127.0.0.1 -u root -proot velion < ./data/velion.sql
+
+      # Ejecutar tests pasando las variables de entorno para la conexión
       - name: Run tests
+        env:
+          DB_HOST: 127.0.0.1
+          DB_USER: root
+          DB_PASS: root
+          DB_NAME: velion
         run: vendor/bin/phpunit

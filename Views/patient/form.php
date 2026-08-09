@@ -135,7 +135,7 @@ include TEMPLATE_DIR . 'header.php';
                     </div>
                 </div>
 
-                <!-- Seguridad Section -->
+                <!-- Seguridad Section
                 <div class="space-y-6 md:col-span-2 pt-4 pb-4 border-b border-gray-50">
                     <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
                         <i class="bi bi-shield-lock text-primary-600"></i>
@@ -149,8 +149,8 @@ include TEMPLATE_DIR . 'header.php';
                         class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-3 transition-all"
                         placeholder="<?= $isEdit ? 'Nueva contraseña' : 'Mínimo 6 caracteres' ?>">
                     <p class="text-xs text-gray-500"><?= $isEdit ? "Dejar en blanco para mantener la contraseña actual." : "Si se deja vacío, será '123456' por defecto." ?></p>
-                </div>
-            </div> 
+                </div> -->
+            </div>  
 
             <div class="mt-10 pt-6 border-t border-gray-50 flex items-center justify-end gap-3">
                 <a href="<?= PROJECT_ROOT ?>/pacientes" class="px-6 py-3 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">

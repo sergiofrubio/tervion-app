@@ -34,7 +34,7 @@ class PatientController extends Controller
                 'municipio' => htmlspecialchars($_POST['municipio'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'cp' => htmlspecialchars($_POST['cp'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'email' => htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'),
-                'pass' => password_hash($_POST['pass'] ?? '123456', PASSWORD_DEFAULT),
+                'pass' => password_hash($_POST['usuario_id'], PASSWORD_DEFAULT),
                 'rol' => 'Paciente',
                 'genero' => $_POST['genero'] ?? 'Otro'
             ];

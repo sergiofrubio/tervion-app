@@ -3,7 +3,7 @@ $pageTitle = "Configuración";
 include TEMPLATE_DIR . 'header.php';
 ?>
 
-<div class="space-y-6 animate-fade-in-up" x-data="{ activeTab: 'clinica' }">
+<div class="space-y-6 animate-fade-in-up" x-data="{ activeTab: localStorage.getItem('settings_active_tab') || 'clinica' }" x-init="$watch('activeTab', value => localStorage.setItem('settings_active_tab', value))">
     <!-- Header -->
     <div class="sm:flex sm:items-center sm:justify-between">
         <div>

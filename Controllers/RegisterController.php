@@ -162,6 +162,37 @@ class RegisterController extends Controller
                 ':sitio_web' => $sitio_web ?: null
             ]);
 
+            // 4. Insertar cuenta de cliente con plan de suscripción
+            $slug = strtolower(str_replace(' ', '-', $nombre_comercial));
+            $stmtCuenta = $db->prepare("INSERT INTO cuentas_clientes (nombre_empresa, nif_cif, slug, plan_suscripcion, email_admin, estado_cuenta) 
+                                        VALUES (:nombre_empresa, :nif_cif, :slug, :plan_suscripcion, :email_admin, 'Activo')");
+            $stmtCuenta->execute([
+                ':nombre_empresa' => $nombre_comercial,
+                ':nif_cif' => $usuario_id,
+                ':slug' => $slug,
+                ':plan_suscripcion' => $_POST['plan_suscripcion'] ?? 'Basico',
+                ':email_admin' => $email
+            ]);
+
+            // 5. Guardar la tarjeta en metodos_pago
+            $card_holder = trim($_POST['card_holder'] ?? '');
+            $card_number = trim($_POST['card_number'] ?? '');
+            $card_expiry = trim($_POST['card_expiry'] ?? '');
+            $card_cvv = trim($_POST['card_cvv'] ?? '');
+            $last4 = substr(str_replace(' ', '', $card_number), -4);
+
+            $stmtMP = $db->prepare("INSERT INTO metodos_pago (usuario_id, tipo, proveedor, last4, fecha_expiracion, token_externo, es_predeterminado, nombre_titular, numero_completo, cvv, creado_por) 
+                                    VALUES (:usuario_id, 'Tarjeta', 'Visa', :last4, :fecha_expiracion, :token_externo, 1, :nombre_titular, :numero_completo, :cvv, :usuario_id)");
+            $stmtMP->execute([
+                ':usuario_id' => $usuario_id,
+                ':last4' => $last4,
+                ':fecha_expiracion' => $card_expiry,
+                ':token_externo' => 'tok_' . bin2hex(random_bytes(8)),
+                ':nombre_titular' => $card_holder,
+                ':numero_completo' => $card_number,
+                ':cvv' => $card_cvv
+            ]);
+
             $db->commit();
 
             // Redirigir al login con mensaje de éxito

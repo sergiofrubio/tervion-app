@@ -59,6 +59,13 @@ include TEMPLATE_DIR . 'header.php';
                     <i class="bi bi-ticket-perforated"></i>
                     Bonos
                 </button>
+                <button 
+                    @click="activeTab = 'suscripcion'"
+                    :class="activeTab === 'suscripcion' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                    class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all flex items-center gap-2">
+                    <i class="bi bi-credit-card"></i>
+                    Suscripción y Pago
+                </button>
             </nav>
         </div>
 
@@ -351,6 +358,108 @@ include TEMPLATE_DIR . 'header.php';
                             <?php endif; ?>
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Suscripción y Pago Tab -->
+            <div x-show="activeTab === 'suscripcion'" x-cloak x-transition>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left: Current Subscription Details -->
+                    <div class="lg:col-span-1 bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-6">
+                        <div>
+                            <h4 class="text-base font-bold text-gray-900 mb-1">Tu Suscripción</h4>
+                            <p class="text-xs text-gray-500">Detalles del plan mensual contratado en Velion.</p>
+                        </div>
+                        
+                        <div class="p-4 bg-white rounded-xl border border-gray-200/50 space-y-4">
+                            <form action="<?= PROJECT_ROOT ?>/configuracion/suscripcion/update-plan" method="POST" class="space-y-2">
+                                <label class="text-xs font-bold text-gray-400 uppercase tracking-widest block">Plan Contratado</label>
+                                <select name="plan_suscripcion" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all">
+                                    <option value="Basico" <?= ($cuenta['plan_suscripcion'] ?? '') === 'Basico' ? 'selected' : '' ?>>Básico (29,99€/mes)</option>
+                                    <option value="Profesional" <?= ($cuenta['plan_suscripcion'] ?? '') === 'Profesional' ? 'selected' : '' ?>>Profesional (59,99€/mes)</option>
+                                    <option value="Premium" <?= ($cuenta['plan_suscripcion'] ?? '') === 'Premium' ? 'selected' : '' ?>>Premium (99,99€/mes)</option>
+                                </select>
+                                <button type="submit" class="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-indigo-600 text-white px-4 py-2.5 text-xs font-semibold hover:bg-indigo-700 transition-all shadow-sm">
+                                    Actualizar Plan
+                                </button>
+                            </form>
+                            
+                            <div class="pt-2 border-t border-gray-100 flex justify-between text-sm text-gray-600">
+                                <span>Mensualidad:</span>
+                                <span class="font-bold text-gray-900">
+                                    <?php
+                                    $plan = $cuenta['plan_suscripcion'] ?? 'Basico';
+                                    if ($plan === 'Basico') echo '29,99€';
+                                    elseif ($plan === 'Profesional') echo '59,99€';
+                                    elseif ($plan === 'Premium') echo '99,99€';
+                                    ?>
+                                </span>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-600">
+                                <span>Estado:</span>
+                                <span class="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                                    <?= htmlspecialchars($cuenta['estado_cuenta'] ?? 'Activo') ?>
+                                </span>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-600">
+                                <span>F. de Alta:</span>
+                                <span><?= isset($cuenta['fecha_alta']) ? date('d/m/Y', strtotime($cuenta['fecha_alta'])) : date('d/m/Y') ?></span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-2 bg-indigo-50 p-4 rounded-xl text-xs text-indigo-800 leading-relaxed border border-indigo-100">
+                            <i class="bi bi-info-circle-fill text-sm"></i>
+                            <p>Los cargos se realizan de forma automática cada mes a la tarjeta de crédito/débito guardada.</p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Edit Card details -->
+                    <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 p-6 space-y-6">
+                        <div>
+                            <h4 class="text-base font-bold text-gray-900 mb-1">Método de Pago Guardado</h4>
+                            <p class="text-xs text-gray-500">Actualiza los datos de la tarjeta de crédito para la facturación mensual.</p>
+                        </div>
+
+                        <form action="<?= PROJECT_ROOT ?>/configuracion/tarjeta/update" method="POST" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="sm:col-span-2">
+                                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Titular de la Tarjeta *</label>
+                                    <input type="text" name="card_holder" required value="<?= htmlspecialchars($tarjeta['nombre_titular'] ?? '') ?>"
+                                        class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all"
+                                        placeholder="JUAN PEREZ GONZALEZ">
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Número de Tarjeta *</label>
+                                    <input type="text" name="card_number" required value="<?= htmlspecialchars($tarjeta['numero_completo'] ?? '') ?>" maxlength="19"
+                                        class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all"
+                                        placeholder="4000 1234 5678 9010">
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Vence (MM/YYYY) *</label>
+                                        <input type="text" name="card_expiry" required value="<?= htmlspecialchars($tarjeta['fecha_expiracion'] ?? '') ?>" maxlength="7"
+                                            class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all"
+                                            placeholder="12/2028">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">CVV *</label>
+                                        <input type="text" name="card_cvv" required value="<?= htmlspecialchars($tarjeta['cvv'] ?? '') ?>" maxlength="4"
+                                            class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all"
+                                            placeholder="123">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-100 flex justify-end">
+                                <button type="submit" class="inline-flex items-center gap-1.5 rounded-xl bg-gray-900 text-white px-5 py-3 text-sm font-semibold hover:bg-gray-800 transition-all shadow-sm">
+                                    <i class="bi bi-shield-check"></i>
+                                    Guardar Cambios de Tarjeta
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
 

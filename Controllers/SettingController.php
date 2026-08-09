@@ -13,12 +13,16 @@ class SettingController extends Controller
     public function index()
     {
         $settingModel = $this->model('Setting');
+        $usuario_id = $_SESSION['usuario_id'];
+        $email_admin = $_SESSION['email'] ?? '';
         
         $data = [
             'horarios' => $settingModel->getHorariosFisios(),
             'ausencias' => $settingModel->getAusenciasFisios(),
             'bonos' => $settingModel->getBonos(),
-            'clinica' => $settingModel->getClinica()
+            'clinica' => $settingModel->getClinica(),
+            'tarjeta' => $settingModel->getMetodoPagoByUsuario($usuario_id),
+            'cuenta' => $settingModel->getCuentaClienteByEmail($email_admin)
         ];
         
         $this->view('setting/index', $data);
@@ -138,6 +142,62 @@ class SettingController extends Controller
             } else {
                 $_SESSION['error_message'] = "Error al guardar los datos de la clínica.";
             }
+            header('Location: ' . PROJECT_ROOT . '/configuracion');
+            $this->exitApp();
+        }
+    }
+
+    /**
+     * Actualiza los datos de la tarjeta de pago de la suscripción del autónomo.
+     *
+     * @return void
+     */
+    public function updateTarjeta()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $settingModel = $this->model('Setting');
+            $usuario_id = $_SESSION['usuario_id'];
+            
+            $data = [
+                'nombre_titular' => htmlspecialchars($_POST['card_holder'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'numero_completo' => htmlspecialchars($_POST['card_number'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'fecha_expiracion' => htmlspecialchars($_POST['card_expiry'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'cvv' => htmlspecialchars($_POST['card_cvv'] ?? '', ENT_QUOTES, 'UTF-8')
+            ];
+
+            if (empty($data['nombre_titular']) || empty($data['numero_completo']) || empty($data['fecha_expiracion']) || empty($data['cvv'])) {
+                $_SESSION['error_message'] = "Todos los campos de la tarjeta son obligatorios.";
+            } else {
+                if ($settingModel->updateMetodoPago($usuario_id, $data)) {
+                    $_SESSION['success_message'] = "Datos de la tarjeta de pago actualizados correctamente.";
+                } else {
+                    $_SESSION['error_message'] = "Error al actualizar los datos de la tarjeta.";
+                }
+            }
+            
+            header('Location: ' . PROJECT_ROOT . '/configuracion');
+            $this->exitApp();
+        }
+    }
+
+    /**
+     * Actualiza el plan de suscripción contratado de la clínica.
+     *
+     * @return void
+     */
+    public function updatePlan()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $settingModel = $this->model('Setting');
+            $email_admin = $_SESSION['email'] ?? '';
+            $plan = $_POST['plan_suscripcion'] ?? 'Basico';
+
+            if ($settingModel->updatePlanSuscripcion($email_admin, $plan)) {
+                $_SESSION['success_message'] = "Plan de suscripción actualizado correctamente a " . htmlspecialchars($plan) . ".";
+            } else {
+                $_SESSION['error_message'] = "Error al actualizar el plan de suscripción.";
+            }
+            
             header('Location: ' . PROJECT_ROOT . '/configuracion');
             $this->exitApp();
         }

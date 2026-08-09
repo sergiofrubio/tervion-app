@@ -200,4 +200,70 @@ class Setting
             ':id_clinica' => $data['id_clinica'] ?? null
         ]);
     }
+
+    public function getMetodoPagoByUsuario($usuario_id)
+    {
+        $query = "SELECT * FROM metodos_pago WHERE usuario_id = :usuario_id AND tipo = 'Tarjeta' ORDER BY es_predeterminado DESC LIMIT 1";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([':usuario_id' => $usuario_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateMetodoPago($usuario_id, $data)
+    {
+        $card = $this->getMetodoPagoByUsuario($usuario_id);
+        $last4 = substr(str_replace(' ', '', $data['numero_completo']), -4);
+        
+        if ($card) {
+            $query = "UPDATE metodos_pago SET 
+                        nombre_titular = :nombre_titular, 
+                        numero_completo = :numero_completo, 
+                        last4 = :last4, 
+                        fecha_expiracion = :fecha_expiracion, 
+                        cvv = :cvv,
+                        modificado_por = :usuario_id
+                      WHERE metodo_id = :metodo_id";
+            $stmt = $this->db->prepare($query);
+            return $stmt->execute([
+                ':nombre_titular' => $data['nombre_titular'],
+                ':numero_completo' => $data['numero_completo'],
+                ':last4' => $last4,
+                ':fecha_expiracion' => $data['fecha_expiracion'],
+                ':cvv' => $data['cvv'],
+                ':usuario_id' => $usuario_id,
+                ':metodo_id' => $card['metodo_id']
+            ]);
+        } else {
+            $query = "INSERT INTO metodos_pago (usuario_id, tipo, proveedor, last4, fecha_expiracion, token_externo, es_predeterminado, nombre_titular, numero_completo, cvv, creado_por) 
+                      VALUES (:usuario_id, 'Tarjeta', 'Visa', :last4, :fecha_expiracion, :token_externo, 1, :nombre_titular, :numero_completo, :cvv, :usuario_id)";
+            $stmt = $this->db->prepare($query);
+            return $stmt->execute([
+                ':usuario_id' => $usuario_id,
+                ':last4' => $last4,
+                ':fecha_expiracion' => $data['fecha_expiracion'],
+                ':token_externo' => 'tok_' . bin2hex(random_bytes(8)),
+                ':nombre_titular' => $data['nombre_titular'],
+                ':numero_completo' => $data['numero_completo'],
+                ':cvv' => $data['cvv']
+            ]);
+        }
+    }
+
+    public function getCuentaClienteByEmail($email)
+    {
+        $query = "SELECT * FROM cuentas_clientes WHERE email_admin = :email LIMIT 1";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([':email' => $email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updatePlanSuscripcion($email_admin, $plan)
+    {
+        $query = "UPDATE cuentas_clientes SET plan_suscripcion = :plan WHERE email_admin = :email";
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute([
+            ':plan' => $plan,
+            ':email' => $email_admin
+        ]);
+    }
 }

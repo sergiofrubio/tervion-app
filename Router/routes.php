@@ -70,6 +70,8 @@ $router->add('POST', '/configuracion/bonos/edit', 'SettingController@editBono', 
 
 $router->add('POST', '/configuracion/clinica/update', 'SettingController@saveClinica', true, ['Administrador']);
 $router->add('POST', '/configuracion/clinica/save', 'SettingController@saveClinica', true, ['Administrador']);
+$router->add('POST', '/configuracion/tarjeta/update', 'SettingController@updateTarjeta', true, ['Administrador']);
+$router->add('POST', '/configuracion/suscripcion/update-plan', 'SettingController@updatePlan', true, ['Administrador']);
 
 $router->add('GET', '/historial/create', 'MedicalReportController@create', true, $staffRoles);
 $router->add('POST', '/historial/create', 'MedicalReportController@create', true, $staffRoles);

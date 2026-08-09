@@ -391,8 +391,88 @@
                     </div>
                 </div>
 
-                <!-- Step 7: Resumen -->
+                <!-- Step 7: Suscripción y Pago -->
                 <div x-show="currentStep === 7" x-transition class="space-y-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">Plan de Suscripción y Pago</h2>
+                        <p class="text-sm text-gray-500 mt-1">Selecciona tu plan de suscripción e introduce tus datos de pago.</p>
+                    </div>
+
+                    <!-- Plan Selection Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <!-- Plan Basico -->
+                        <label class="relative flex flex-col p-5 bg-white border rounded-2xl cursor-pointer hover:border-indigo-500 transition-all"
+                            :class="formData.plan_suscripcion === 'Basico' ? 'border-indigo-500 ring-2 ring-indigo-500/20' : 'border-gray-200'">
+                            <input type="radio" name="plan_radio" value="Basico" x-model="formData.plan_suscripcion" class="sr-only">
+                            <span class="text-sm font-bold text-gray-900">Básico</span>
+                            <span class="text-2xl font-black text-indigo-600 mt-2">29,99€<span class="text-xs text-gray-400 font-normal">/mes</span></span>
+                            <span class="text-xs text-gray-500 mt-3">Para profesionales individuales o clínicas pequeñas. Hasta 2 fisios.</span>
+                        </label>
+                        <!-- Plan Profesional -->
+                        <label class="relative flex flex-col p-5 bg-white border rounded-2xl cursor-pointer hover:border-indigo-500 transition-all"
+                            :class="formData.plan_suscripcion === 'Profesional' ? 'border-indigo-500 ring-2 ring-indigo-500/20' : 'border-gray-200'">
+                            <input type="radio" name="plan_radio" value="Profesional" x-model="formData.plan_suscripcion" class="sr-only">
+                            <span class="text-sm font-bold text-gray-900">Profesional</span>
+                            <span class="text-2xl font-black text-indigo-600 mt-2">59,99€<span class="text-xs text-gray-400 font-normal">/mes</span></span>
+                            <span class="text-xs text-gray-500 mt-3">Para clínicas medianas. Hasta 10 fisios, facturación avanzada.</span>
+                        </label>
+                        <!-- Plan Premium -->
+                        <label class="relative flex flex-col p-5 bg-white border rounded-2xl cursor-pointer hover:border-indigo-500 transition-all"
+                            :class="formData.plan_suscripcion === 'Premium' ? 'border-indigo-500 ring-2 ring-indigo-500/20' : 'border-gray-200'">
+                            <input type="radio" name="plan_radio" value="Premium" x-model="formData.plan_suscripcion" class="sr-only">
+                            <span class="text-sm font-bold text-gray-900">Premium</span>
+                            <span class="text-2xl font-black text-indigo-600 mt-2">99,99€<span class="text-xs text-gray-400 font-normal">/mes</span></span>
+                            <span class="text-xs text-gray-500 mt-3">Para grandes clínicas. Fisios ilimitados y soporte prioritario.</span>
+                        </label>
+                    </div>
+
+                    <!-- Card Details Form -->
+                    <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-4">
+                        <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+                            <i class="bi bi-credit-card-2-front text-indigo-600"></i>
+                            Datos de la Tarjeta
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nombre del Titular *</label>
+                                <input type="text" x-model="formData.card_holder"
+                                    class="block w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 text-sm transition-all"
+                                    placeholder="JUAN PEREZ GONZALEZ">
+                                <span class="text-xs text-red-500 mt-1 block" x-show="errors.card_holder" x-text="errors.card_holder"></span>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Número de Tarjeta *</label>
+                                <input type="text" x-model="formData.card_number" maxlength="19"
+                                    @input="formData.card_number = formData.card_number.replace(/\s?/g, '').replace(/(\d{4})/g, '$1 ').trim()"
+                                    class="block w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 text-sm transition-all"
+                                    placeholder="4000 1234 5678 9010">
+                                <span class="text-xs text-red-500 mt-1 block" x-show="errors.card_number" x-text="errors.card_number"></span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Vence (MM/YYYY) *</label>
+                                    <input type="text" x-model="formData.card_expiry" maxlength="7"
+                                        class="block w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 text-sm transition-all"
+                                        placeholder="12/2028">
+                                    <span class="text-xs text-red-500 mt-1 block" x-show="errors.card_expiry" x-text="errors.card_expiry"></span>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">CVV *</label>
+                                    <input type="text" x-model="formData.card_cvv" maxlength="4"
+                                        class="block w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 text-sm transition-all"
+                                        placeholder="123">
+                                    <span class="text-xs text-red-500 mt-1 block" x-show="errors.card_cvv" x-text="errors.card_cvv"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 8: Resumen -->
+                <div x-show="currentStep === 8" x-transition class="space-y-6">
                     <div>
                         <h2 class="text-xl font-bold text-gray-900">Verifica la información</h2>
                         <p class="text-sm text-gray-500 mt-1">Repasa los datos introducidos antes de confirmar el registro de alta.</p>
@@ -476,6 +556,27 @@
                                 </div>
                             </dl>
                         </div>
+
+                        <!-- Subscription Summary Card -->
+                        <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 md:col-span-2">
+                            <h3 class="font-bold text-gray-900 border-b border-gray-200 pb-2 mb-4">
+                                <i class="bi bi-credit-card-fill text-primary-600 mr-2"></i>Suscripción y Pago
+                            </h3>
+                            <dl class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+                                <div>
+                                    <dt class="text-gray-500 font-medium">Plan Seleccionado:</dt>
+                                    <dd class="font-bold text-indigo-600 text-base" x-text="formData.plan_suscripcion"></dd>
+                                </div>
+                                <div>
+                                    <dt class="text-gray-500 font-medium">Titular de Tarjeta:</dt>
+                                    <dd class="font-medium text-gray-900" x-text="formData.card_holder"></dd>
+                                </div>
+                                <div>
+                                    <dt class="text-gray-500 font-medium">Tarjeta Guardada:</dt>
+                                    <dd class="font-medium text-gray-900" x-text="'ending in ' + formData.card_number.slice(-4)"></dd>
+                                </div>
+                            </dl>
+                        </div>
                     </div>
 
                     <!-- Hidden inputs so the server actually receives the data in the form submission -->
@@ -505,6 +606,11 @@
                         <input type="hidden" name="provincia_estado" :value="formData.provincia_estado">
                         <input type="hidden" name="codigo_postal" :value="formData.codigo_postal">
                         <input type="hidden" name="pais" :value="formData.pais">
+                        <input type="hidden" name="plan_suscripcion" :value="formData.plan_suscripcion">
+                        <input type="hidden" name="card_holder" :value="formData.card_holder">
+                        <input type="hidden" name="card_number" :value="formData.card_number">
+                        <input type="hidden" name="card_expiry" :value="formData.card_expiry">
+                        <input type="hidden" name="card_cvv" :value="formData.card_cvv">
                     </div>
                 </div>
 
@@ -590,6 +696,9 @@
                         name: 'Clínica - Ubicación'
                     },
                     {
+                        name: 'Suscripción y Pago'
+                    },
+                    {
                         name: 'Resumen'
                     }
                 ],
@@ -618,7 +727,12 @@
                     ciudad: '<?= htmlspecialchars($data['ciudad'] ?? '') ?>',
                     provincia_estado: '<?= htmlspecialchars($data['provincia_estado'] ?? '') ?>',
                     codigo_postal: '<?= htmlspecialchars($data['codigo_postal'] ?? '') ?>',
-                    pais: '<?= htmlspecialchars($data['pais'] ?? 'España') ?>'
+                    pais: '<?= htmlspecialchars($data['pais'] ?? 'España') ?>',
+                    plan_suscripcion: 'Basico',
+                    card_holder: '',
+                    card_number: '',
+                    card_expiry: '',
+                    card_cvv: ''
                 },
                 errors: {},
                 goToStep(step) {
@@ -674,6 +788,21 @@
                         }
                     }
 
+                    if (step === 7) {
+                        if (!this.formData.card_holder || this.formData.card_holder.trim() === '') {
+                            this.errors.card_holder = 'El nombre del titular es obligatorio.';
+                        }
+                        if (!this.formData.card_number || this.formData.card_number.replace(/\s/g, '').length < 16) {
+                            this.errors.card_number = 'Introduce un número de tarjeta válido.';
+                        }
+                        if (!this.formData.card_expiry || !/^(0[1-9]|1[0-2])\/\d{4}$/.test(this.formData.card_expiry)) {
+                            this.errors.card_expiry = 'Formato de expiración incorrecto (MM/YYYY).';
+                        }
+                        if (!this.formData.card_cvv || this.formData.card_cvv.trim().length < 3) {
+                            this.errors.card_cvv = 'El código CVV es obligatorio.';
+                        }
+                    }
+
                     return Object.keys(this.errors).length === 0;
                 },
                 nextStep() {
@@ -691,7 +820,7 @@
                 },
                 submitForm(e) {
                     // Validar paso final antes de enviar
-                    if (!this.validateStep(1) || !this.validateStep(2) || !this.validateStep(5) || !this.validateStep(6)) {
+                    if (!this.validateStep(1) || !this.validateStep(2) || !this.validateStep(5) || !this.validateStep(6) || !this.validateStep(7)) {
                         e.preventDefault();
                         alert('Por favor, compruebe que todos los campos obligatorios están rellenos correctamente.');
                     }

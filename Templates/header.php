@@ -100,11 +100,11 @@
                         <i class="bi bi-receipt text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/facturas') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
                         Facturas
                     </a>
-                    <a href="<?= PROJECT_ROOT ?>/contabilidad"
+                    <!-- <a href="<?= PROJECT_ROOT ?>/contabilidad"
                         class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/contabilidad') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
                         <i class="bi bi-calculator text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/contabilidad') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
                         Contabilidad
-                    </a>
+                    </a> -->
                     <a href="<?= PROJECT_ROOT ?>/configuracion"
                         class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/configuracion') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
                         <i class="bi bi-gear text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/configuracion') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>

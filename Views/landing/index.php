@@ -314,79 +314,92 @@
                 <p class="text-sm text-gray-500 mt-3 leading-relaxed font-light">Elige el plan ideal para automatizar y proteger fiscalmente la operativa de tu centro de salud.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-
-                <!-- Plan 1 -->
-                <div class="bg-white p-10 rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between space-y-8">
-                    <div class="space-y-6">
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-900">Plan Profesional</h3>
-                            <p class="text-xs text-gray-400 font-light mt-1">Ideal para profesionales sanitarios independientes</p>
-                        </div>
-                        <div class="flex items-baseline">
-                            <span class="text-4xl font-extrabold text-gray-900">39€</span>
-                            <span class="text-sm text-gray-500 ml-1">/ mes</span>
-                        </div>
-                        <ul class="space-y-3.5 text-sm text-gray-600 font-light">
-                            <li class="flex items-center gap-2">
-                                <i class="bi bi-check2 text-primary-500"></i> Agenda médica completa
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="bi bi-check2 text-primary-500"></i> Historiales médicos ilimitados
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="bi bi-check2 text-primary-500"></i> Integración Verifactu (AEAT)
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="bi bi-check2 text-primary-500"></i> Notificaciones automáticas por email
-                            </li>
-                            <li class="flex items-center gap-2 text-gray-300">
-                                <i class="bi bi-x-lg text-[10px]"></i> Soporte multi-profesional y nóminas
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="<?= PROJECT_ROOT ?>/registro" class="block w-full text-center rounded-full bg-gray-100 hover:bg-gray-200 py-3 text-sm font-semibold text-gray-800 transition-all">
-                        Empezar ahora
-                    </a>
-                </div>
-
-                <!-- Plan 2 -->
-                <div class="bg-white p-10 rounded-3xl shadow-md border-2 border-primary-500 flex flex-col justify-between space-y-8 relative">
-                    <div class="absolute top-0 right-8 -translate-y-1/2 bg-primary-500 text-white text-[10px] uppercase font-bold tracking-wider px-3.5 py-1.5 rounded-full">
-                        Recomendado
-                    </div>
-                    <div class="space-y-6">
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-900">Plan Premium</h3>
-                            <p class="text-xs text-gray-400 font-light mt-1">Diseñado para clínicas y centros de especialidades</p>
-                        </div>
-                        <div class="flex items-baseline">
-                            <span class="text-4xl font-extrabold text-gray-900">69€</span>
-                            <span class="text-sm text-gray-500 ml-1">/ mes</span>
-                        </div>
-                        <ul class="space-y-3.5 text-sm text-gray-600 font-light">
-                            <li class="flex items-center gap-2">
-                                <i class="bi bi-check2 text-primary-500"></i> Todo lo incluido en el Plan Profesional
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="bi bi-check2 text-primary-500"></i> Roles múltiples (Sanitarios y Secretarios)
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="bi bi-check2 text-primary-500"></i> Módulo de Nóminas mensual automático
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="bi bi-check2 text-primary-500"></i> Pasarela de pagos online con Redsys
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="bi bi-check2 text-primary-500"></i> Importación de movimientos bancarios
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="<?= PROJECT_ROOT ?>/registro" class="block w-full text-center rounded-full bg-primary-500 hover:bg-primary-600 py-3 text-sm font-semibold text-white shadow-md transition-all">
-                        Solicitar ahora
-                    </a>
-                </div>
-
+            <!-- Table Container -->
+            <div class="max-w-5xl mx-auto overflow-x-auto bg-white rounded-3xl shadow-sm border border-gray-100">
+                <table class="w-full min-w-[650px] border-collapse text-left">
+                    <thead>
+                        <tr class="border-b border-gray-100">
+                            <th class="p-6 text-sm font-semibold text-gray-900 w-2/5"></th>
+                            <th class="p-6 text-center w-1/5">
+                                <div class="space-y-2">
+                                    <div class="text-base font-bold text-gray-900">Básico</div>
+                                    <div class="text-2xl font-extrabold text-gray-900">17,99€<span class="text-xs font-normal text-gray-500">/mes</span></div>
+                                    <a href="<?= PROJECT_ROOT ?>/registro" class="inline-block w-full text-center rounded-full bg-gray-50 hover:bg-gray-100 py-2 text-xs font-semibold text-gray-800 transition-all border border-gray-200">
+                                        Empezar
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="p-6 text-center w-1/5 bg-primary-50/20">
+                                <div class="space-y-2">
+                                    <div class="text-base font-bold text-primary-500">Profesional</div>
+                                    <div class="text-2xl font-extrabold text-gray-900">29,99€<span class="text-xs font-normal text-gray-500">/mes</span></div>
+                                    <a href="<?= PROJECT_ROOT ?>/registro" class="inline-block w-full text-center rounded-full bg-gray-50 hover:bg-gray-100 py-2 text-xs font-semibold text-gray-800 transition-all border border-gray-200">
+                                        Empezar
+                                    </a>
+                                </div>
+                            </th>
+                            <th class="p-6 text-center w-1/5 bg-primary-50/20">
+                                <div class="space-y-2">
+                                    <div class="text-base font-bold text-gray-900">Premium</div>
+                                    <div class="text-2xl font-extrabold text-gray-900">79,99€<span class="text-xs font-normal text-gray-500">/mes</span></div>
+                                    <a href="<?= PROJECT_ROOT ?>/registro" class="inline-block w-full text-center rounded-full bg-primary-500 hover:bg-primary-600 py-2 text-xs font-semibold text-white transition-all shadow-sm">
+                                        Solicitar
+                                    </a>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr class="hover:bg-gray-50/50 transition-colors">
+                            <td class="p-6 text-sm text-gray-700 font-medium">Agenda médica completa</td>
+                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50/50 transition-colors">
+                            <td class="p-6 text-sm text-gray-700 font-medium">Historiales médicos ilimitados</td>
+                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50/50 transition-colors">
+                            <td class="p-6 text-sm text-gray-700 font-medium">Integración Verifactu (AEAT)</td>
+                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50/50 transition-colors">
+                            <td class="p-6 text-sm text-gray-700 font-medium">Notificaciones automáticas por email</td>
+                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50/50 transition-colors">
+                            <td class="p-6 text-sm text-gray-700 font-medium">Roles múltiples (Sanitarios y Secretarios)</td>
+                            <td class="p-6 text-center"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
+                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
+                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50/50 transition-colors">
+                            <td class="p-6 text-sm text-gray-700 font-medium">Módulo de Nóminas mensual automático</td>
+                            <td class="p-6 text-center"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
+                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
+                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50/50 transition-colors">
+                            <td class="p-6 text-sm text-gray-700 font-medium">Pasarela de pagos online con Redsys</td>
+                            <td class="p-6 text-center"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
+                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
+                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50/50 transition-colors">
+                            <td class="p-6 text-sm text-gray-700 font-medium">Importación de movimientos bancarios</td>
+                            <td class="p-6 text-center"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
+                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
+                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </section>

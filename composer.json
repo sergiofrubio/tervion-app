@@ -1,6 +1,6 @@
 {
-    "name": "sergiofrubio/velion-php",
-    "description": "PHP VELION ERP",
+    "name": "sergiofrubio/velion-app",
+    "description": "VELION APP",
     "license": "MIT",
     "type": "library",
     "autoload": {

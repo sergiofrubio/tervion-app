@@ -1,7 +1,13 @@
 # Etapa base: Instalación de extensiones comunes
 FROM php:apache AS base
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+RUN apt-get update && apt-get install -y \
+    libzip-dev \
+    unzip \
+    && docker-php-ext-install mysqli pdo pdo_mysql zip \
+    && rm -rf /var/lib/apt/lists/*
 RUN a2enmod rewrite
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+ENV COMPOSER_ALLOW_SUPERUSER=1
 WORKDIR /var/www/html
 
 # Etapa de desarrollo: Incluye Xdebug
@@ -21,6 +27,9 @@ RUN echo "xdebug.mode=coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdeb
     && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
+# Instala dependencias PHP al iniciar en desarrollo (útil con volumen bind mount)
+CMD ["sh", "-c", "if [ -f /var/www/html/composer.json ]; then composer install --no-interaction --prefer-dist; fi && apache2-foreground"]
+
 # Etapa de producción: Copia código y limpia
 FROM base AS production
 
@@ -28,6 +37,7 @@ FROM base AS production
 RUN apt-get update && apt-get install -y cron && rm -rf /var/lib/apt/lists/*
 
 COPY . /var/www/html/
+RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 RUN chown -R www-data:www-data /var/www/html/
 
 # Configurar tareas programadas (cron jobs)

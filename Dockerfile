@@ -10,8 +10,13 @@ COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 WORKDIR /var/www/html
 
-# Etapa de desarrollo: Incluye Xdebug
+# Etapa de desarrollo: Incluye Xdebug y Node.js/npm
 FROM base AS development
+
+# Copiar Node.js y npm desde la imagen oficial de Node
+COPY --from=node:20-slim /usr/local/bin /usr/local/bin
+COPY --from=node:20-slim /usr/local/lib/node_modules /usr/local/lib/node_modules
+
 RUN apt-get update && apt-get install -y \
     autoconf \
     g++ \

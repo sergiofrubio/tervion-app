@@ -150,6 +150,13 @@ CREATE TABLE `clinicas` (
   `activo` tinyint(1) DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Volcado de datos para la tabla `clinicas`
+--
+
+INSERT INTO `clinicas` (`id_clinica`, `nombre_comercial`, `razon_social`, `nif_cif`, `direccion_calle`, `ciudad`, `provincia_estado`, `codigo_postal`, `pais`, `telefono_contacto`, `email_contacto`, `sitio_web`, `verifactu_env`, `verifactu_cert_path`, `verifactu_cert_password`, `verifactu_activo`, `fecha_registro`, `activo`) VALUES
+(1, 'Clínica Velion', 'Velion S.L.', 'B87654321', 'Paseo de la Castellana 120', 'Madrid', 'Madrid', '28046', 'España', '910123456', 'contacto@velion.es', 'https://www.velion.es', 'pruebas', NULL, NULL, 1, '2026-05-01 08:00:00', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -200,8 +207,8 @@ CREATE TABLE `cuentas_clientes` (
 -- Volcado de datos para la tabla `cuentas_clientes`
 --
 
-INSERT INTO `cuentas_clientes` (`cuenta_id`, `nombre_empresa`, `nif_cif`, `slug`, `plan_suscripcion`, `estado_cuenta`, `email_admin`, `fecha_alta`, `fecha_renovacion`, `configuracion_json`) VALUES
-(1, 'Fisioterapia Avanzada S.L.', 'B12345678', 'fisio-avanzada', 'Profesional', 'Activo', 'contacto@fisioavanzada.com', '2026-05-09 20:56:55', NULL, NULL);
+INSERT INTO `cuentas_clientes` (`cuenta_id`, `nombre_empresa`, `nif_cif`, `slug`, `plan_suscripcion`, `plan_proximo`, `estado_cuenta`, `email_admin`, `fecha_alta`, `fecha_renovacion`, `configuracion_json`) VALUES
+(1, 'Velion S.L.', 'B87654321', 'velion-sl', 'Profesional', NULL, 'Activo', 'admin@example.com', '2026-05-01 08:00:00', '2026-09-01', NULL);
 
 -- --------------------------------------------------------
 
@@ -394,11 +401,21 @@ CREATE TABLE `metodos_pago` (
   `fecha_expiracion` varchar(7) DEFAULT NULL COMMENT 'Formato MM/YYYY',
   `token_externo` varchar(255) DEFAULT NULL COMMENT 'ID o Token de la pasarela de pago (Stripe/PayPal)',
   `es_predeterminado` tinyint(1) DEFAULT '0',
+  `nombre_titular` varchar(150) DEFAULT NULL,
+  `numero_completo` varchar(25) DEFAULT NULL,
+  `cvv` varchar(4) DEFAULT NULL,
   `creado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `modificado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `metodos_pago`
+--
+
+INSERT INTO `metodos_pago` (`metodo_id`, `usuario_id`, `tipo`, `proveedor`, `last4`, `fecha_expiracion`, `token_externo`, `es_predeterminado`, `nombre_titular`, `numero_completo`, `cvv`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
+(1, '345678901', 'Tarjeta', 'Visa', '4242', '12/2028', 'tok_velion_test_card', 1, 'PEDRO GOMEZ', '4548 1234 5678 4242', '123', '345678901', '2026-05-01 08:00:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -670,7 +687,7 @@ ALTER TABLE `citas`
 -- AUTO_INCREMENT de la tabla `clinicas`
 --
 ALTER TABLE `clinicas`
-  MODIFY `id_clinica` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_clinica` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `contratos`
@@ -712,7 +729,7 @@ ALTER TABLE `horarios_terapeutas`
 -- AUTO_INCREMENT de la tabla `metodos_pago`
 --
 ALTER TABLE `metodos_pago`
-  MODIFY `metodo_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `metodo_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `nominas`

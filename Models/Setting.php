@@ -259,10 +259,37 @@ class Setting
 
     public function updatePlanSuscripcion($email_admin, $plan)
     {
-        $query = "UPDATE cuentas_clientes SET plan_suscripcion = :plan WHERE email_admin = :email";
+        // En Upgrade o cambio directo, limpiamos cualquier downgrade pendiente
+        $query = "UPDATE cuentas_clientes 
+                  SET plan_suscripcion = :plan, 
+                      plan_proximo = NULL 
+                  WHERE email_admin = :email";
         $stmt = $this->db->prepare($query);
         return $stmt->execute([
             ':plan' => $plan,
+            ':email' => $email_admin
+        ]);
+    }
+
+    public function scheduleDowngrade($email_admin, $plan_proximo)
+    {
+        $query = "UPDATE cuentas_clientes 
+                  SET plan_proximo = :plan_proximo 
+                  WHERE email_admin = :email";
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute([
+            ':plan_proximo' => $plan_proximo,
+            ':email' => $email_admin
+        ]);
+    }
+
+    public function cancelDowngrade($email_admin)
+    {
+        $query = "UPDATE cuentas_clientes 
+                  SET plan_proximo = NULL 
+                  WHERE email_admin = :email";
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute([
             ':email' => $email_admin
         ]);
     }

@@ -182,6 +182,8 @@ class SettingController extends Controller
 
     /**
      * Actualiza el plan de suscripción contratado de la clínica.
+     * Si es un Upgrade (subir de plan), se aplica inmediatamente.
+     * Si es un Downgrade (bajar de plan), se programa para entrar en vigor al finalizar el ciclo de facturación actual.
      *
      * @return void
      */
@@ -190,14 +192,70 @@ class SettingController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $settingModel = $this->model('Setting');
             $email_admin = $_SESSION['email'] ?? '';
-            $plan = $_POST['plan_suscripcion'] ?? 'Basico';
+            $nuevo_plan = $_POST['plan_suscripcion'] ?? 'Basico';
 
-            if ($settingModel->updatePlanSuscripcion($email_admin, $plan)) {
-                $_SESSION['success_message'] = "Plan de suscripción actualizado correctamente a " . htmlspecialchars($plan) . ".";
+            // Jerarquía y precios de planes
+            $planRanks = ['Basico' => 1, 'Profesional' => 2, 'Premium' => 3];
+
+            if (!isset($planRanks[$nuevo_plan])) {
+                $_SESSION['error_message'] = "Plan seleccionado no válido.";
+                header('Location: ' . PROJECT_ROOT . '/configuracion');
+                $this->exitApp();
+            }
+
+            $cuenta = $settingModel->getCuentaClienteByEmail($email_admin);
+            $planActual = $cuenta['plan_suscripcion'] ?? 'Basico';
+
+            $rankActual = $planRanks[$planActual] ?? 1;
+            $rankNuevo = $planRanks[$nuevo_plan] ?? 1;
+
+            if ($rankNuevo > $rankActual) {
+                // UPGRADE: Aplicación inmediata
+                if ($settingModel->updatePlanSuscripcion($email_admin, $nuevo_plan)) {
+                    $_SESSION['success_message'] = "¡Upgrade realizado con éxito! Tu suscripción ahora es " . htmlspecialchars($nuevo_plan) . ".";
+                } else {
+                    $_SESSION['error_message'] = "Error al aplicar el upgrade de suscripción.";
+                }
+            } elseif ($rankNuevo < $rankActual) {
+                // DOWNGRADE: Programado para el siguiente ciclo
+                if ($settingModel->scheduleDowngrade($email_admin, $nuevo_plan)) {
+                    $fechaRenovacion = !empty($cuenta['fecha_renovacion']) ? date('d/m/Y', strtotime($cuenta['fecha_renovacion'])) : 'tu próxima fecha de facturación';
+                    $_SESSION['success_message'] = "Cambio programado: tu plan pasará a " . htmlspecialchars($nuevo_plan) . " el " . $fechaRenovacion . " al terminar el ciclo pagado.";
+                } else {
+                    $_SESSION['error_message'] = "Error al programar el cambio de plan.";
+                }
             } else {
-                $_SESSION['error_message'] = "Error al actualizar el plan de suscripción.";
+                // Mismo plan: Si tenía un downgrade pendiente y vuelve a seleccionar el actual, se cancela
+                if (!empty($cuenta['plan_proximo'])) {
+                    $settingModel->cancelDowngrade($email_admin);
+                    $_SESSION['success_message'] = "Se ha cancelado el cambio diferido. Continuarás con el plan " . htmlspecialchars($planActual) . ".";
+                } else {
+                    $_SESSION['success_message'] = "Ya tienes contratado el plan " . htmlspecialchars($planActual) . ".";
+                }
             }
             
+            header('Location: ' . PROJECT_ROOT . '/configuracion');
+            $this->exitApp();
+        }
+    }
+
+    /**
+     * Cancela una solicitud de cambio de plan pendiente (downgrade programado).
+     *
+     * @return void
+     */
+    public function cancelPlanDowngrade()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $settingModel = $this->model('Setting');
+            $email_admin = $_SESSION['email'] ?? '';
+
+            if ($settingModel->cancelDowngrade($email_admin)) {
+                $_SESSION['success_message'] = "El cambio de plan pendiente ha sido cancelado con éxito.";
+            } else {
+                $_SESSION['error_message'] = "No se pudo cancelar el cambio de plan.";
+            }
+
             header('Location: ' . PROJECT_ROOT . '/configuracion');
             $this->exitApp();
         }

@@ -188,6 +188,7 @@ CREATE TABLE `cuentas_clientes` (
   `nif_cif` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `slug` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Identificador corto para URL o subdominio',
   `plan_suscripcion` enum('Basico','Profesional','Premium') DEFAULT 'Basico',
+  `plan_proximo` enum('Basico','Profesional','Premium') DEFAULT NULL COMMENT 'Downgrade programado a fin de ciclo',
   `estado_cuenta` enum('Activo','Suspendido','Cancelado') DEFAULT 'Activo',
   `email_admin` varchar(150) NOT NULL,
   `fecha_alta` timestamp NULL DEFAULT CURRENT_TIMESTAMP,

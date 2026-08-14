@@ -120,6 +120,25 @@ try {
             } else {
                 echo " [ADVERTENCIA] Cobro realizado pero no se pudo guardar el registro de gasto.\n";
             }
+
+            // 6. Aplicar downgrade diferido si existía un plan próximo programado y avanzar fecha_renovacion
+            $nuevoPlanEfectivo = !empty($cuenta['plan_proximo']) ? $cuenta['plan_proximo'] : $cuenta['plan_suscripcion'];
+            $proximaRenovacion = date('Y-m-d', strtotime('+1 month'));
+
+            $updateCuentaStmt = $db->prepare("UPDATE cuentas_clientes 
+                                              SET plan_suscripcion = :plan, 
+                                                  plan_proximo = NULL, 
+                                                  fecha_renovacion = :fecha_renovacion 
+                                              WHERE cuenta_id = :cuenta_id");
+            $updateCuentaStmt->execute([
+                ':plan' => $nuevoPlanEfectivo,
+                ':fecha_renovacion' => $proximaRenovacion,
+                ':cuenta_id' => $cuenta['cuenta_id']
+            ]);
+
+            if (!empty($cuenta['plan_proximo'])) {
+                echo " [PLAN ACTUALIZADO] Se aplicó el cambio diferido al plan {$nuevoPlanEfectivo} para el nuevo ciclo.\n";
+            }
         }
         echo "\n";
     }

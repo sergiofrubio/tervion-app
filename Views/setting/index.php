@@ -370,22 +370,73 @@ include TEMPLATE_DIR . 'header.php';
                             <h4 class="text-base font-bold text-gray-900 mb-1">Tu Suscripción</h4>
                             <p class="text-xs text-gray-500">Detalles del plan mensual contratado en Velion.</p>
                         </div>
+
+                        <?php if (!empty($cuenta['plan_proximo'])) : ?>
+                            <!-- Alerta de Downgrade / Cambio Programado -->
+                            <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 space-y-2">
+                                <div class="flex items-start gap-2.5">
+                                    <i class="bi bi-clock-history text-amber-600 text-base mt-0.5"></i>
+                                    <div>
+                                        <h5 class="text-xs font-bold uppercase tracking-wider text-amber-800">Cambio de plan programado</h5>
+                                        <p class="text-xs text-amber-700 mt-1">
+                                            Tu suscripción cambiará al plan <span class="font-bold text-amber-900"><?= htmlspecialchars($cuenta['plan_proximo']) ?></span> al finalizar tu ciclo actual
+                                            <?php if (!empty($cuenta['fecha_renovacion'])) : ?>
+                                                el <strong><?= date('d/m/Y', strtotime($cuenta['fecha_renovacion'])) ?></strong>.
+                                            <?php else : ?>
+                                                en tu próxima fecha de cobro.
+                                            <?php endif; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <form action="<?= PROJECT_ROOT ?>/configuracion/suscripcion/cancel-downgrade" method="POST" class="pt-1">
+                                    <button type="submit" class="w-full inline-flex items-center justify-center gap-1.5 rounded-lg bg-white border border-amber-300 text-amber-800 px-3 py-1.5 text-xs font-semibold hover:bg-amber-100/60 transition-all shadow-2xs">
+                                        <i class="bi bi-x-circle"></i>
+                                        Cancelar cambio diferido
+                                    </button>
+                                </form>
+                            </div>
+                        <?php endif; ?>
                         
-                        <div class="p-4 bg-white rounded-xl border border-gray-200/50 space-y-4">
-                            <form action="<?= PROJECT_ROOT ?>/configuracion/suscripcion/update-plan" method="POST" class="space-y-2">
-                                <label class="text-xs font-bold text-gray-400 uppercase tracking-widest block">Plan Contratado</label>
-                                <select name="plan_suscripcion" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all">
-                                    <option value="Basico" <?= ($cuenta['plan_suscripcion'] ?? '') === 'Basico' ? 'selected' : '' ?>>Básico (29,99€/mes)</option>
-                                    <option value="Profesional" <?= ($cuenta['plan_suscripcion'] ?? '') === 'Profesional' ? 'selected' : '' ?>>Profesional (59,99€/mes)</option>
-                                    <option value="Premium" <?= ($cuenta['plan_suscripcion'] ?? '') === 'Premium' ? 'selected' : '' ?>>Premium (99,99€/mes)</option>
-                                </select>
-                                <button type="submit" class="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-indigo-600 text-white px-4 py-2.5 text-xs font-semibold hover:bg-indigo-700 transition-all shadow-sm">
-                                    Actualizar Plan
+                        <div class="p-4 bg-white rounded-xl border border-gray-200/50 space-y-4"
+                             x-data="{ 
+                                currentPlan: '<?= $cuenta['plan_suscripcion'] ?? 'Basico' ?>', 
+                                selectedPlan: '<?= $cuenta['plan_proximo'] ?? ($cuenta['plan_suscripcion'] ?? 'Basico') ?>',
+                                planOrder: { 'Basico': 1, 'Profesional': 2, 'Premium': 3 }
+                             }">
+                            <form action="<?= PROJECT_ROOT ?>/configuracion/suscripcion/update-plan" method="POST" class="space-y-3">
+                                <div>
+                                    <label class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1.5">Plan Contratado</label>
+                                    <select name="plan_suscripcion" x-model="selectedPlan" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all">
+                                        <option value="Basico" <?= ($cuenta['plan_suscripcion'] ?? '') === 'Basico' ? 'selected' : '' ?>>Básico (29,99€/mes)</option>
+                                        <option value="Profesional" <?= ($cuenta['plan_suscripcion'] ?? '') === 'Profesional' ? 'selected' : '' ?>>Profesional (59,99€/mes)</option>
+                                        <option value="Premium" <?= ($cuenta['plan_suscripcion'] ?? '') === 'Premium' ? 'selected' : '' ?>>Premium (99,99€/mes)</option>
+                                    </select>
+                                </div>
+
+                                <!-- Dynamic notification about change type -->
+                                <template x-if="planOrder[selectedPlan] > planOrder[currentPlan]">
+                                    <div class="text-[11px] bg-emerald-50 text-emerald-800 border border-emerald-100 rounded-lg p-2.5 flex items-center gap-1.5">
+                                        <i class="bi bi-lightning-charge-fill text-emerald-600"></i>
+                                        <span><strong>Upgrade Inmediato:</strong> Se aplicará al instante.</span>
+                                    </div>
+                                </template>
+                                
+                                <template x-if="planOrder[selectedPlan] < planOrder[currentPlan]">
+                                    <div class="text-[11px] bg-blue-50 text-blue-800 border border-blue-100 rounded-lg p-2.5 flex items-center gap-1.5">
+                                        <i class="bi bi-calendar-check text-blue-600"></i>
+                                        <span><strong>Downgrade Seguro:</strong> Entrará en vigor al renovar tu ciclo. Mantienes tus ventajas hasta entonces.</span>
+                                    </div>
+                                </template>
+
+                                <button type="submit" 
+                                        :disabled="selectedPlan === currentPlan && '<?= !empty($cuenta['plan_proximo']) ? 'true' : 'false' ?>' !== 'true'"
+                                        class="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-indigo-600 text-white px-4 py-2.5 text-xs font-semibold hover:bg-indigo-700 transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <span x-text="planOrder[selectedPlan] > planOrder[currentPlan] ? 'Subir de Plan (Inmediato)' : (planOrder[selectedPlan] < planOrder[currentPlan] ? 'Programar Cambio a Fin de Ciclo' : 'Guardar Plan')"></span>
                                 </button>
                             </form>
                             
                             <div class="pt-2 border-t border-gray-100 flex justify-between text-sm text-gray-600">
-                                <span>Mensualidad:</span>
+                                <span>Mensualidad actual:</span>
                                 <span class="font-bold text-gray-900">
                                     <?php
                                     $plan = $cuenta['plan_suscripcion'] ?? 'Basico';
@@ -402,14 +453,16 @@ include TEMPLATE_DIR . 'header.php';
                                 </span>
                             </div>
                             <div class="flex justify-between text-sm text-gray-600">
-                                <span>F. de Alta:</span>
-                                <span><?= isset($cuenta['fecha_alta']) ? date('d/m/Y', strtotime($cuenta['fecha_alta'])) : date('d/m/Y') ?></span>
+                                <span>F. de Renovación:</span>
+                                <span class="font-medium text-gray-800">
+                                    <?= !empty($cuenta['fecha_renovacion']) ? date('d/m/Y', strtotime($cuenta['fecha_renovacion'])) : date('d/m/Y', strtotime('+1 month', strtotime($cuenta['fecha_alta'] ?? 'now'))) ?>
+                                </span>
                             </div>
                         </div>
                         
                         <div class="flex items-start gap-2 bg-indigo-50 p-4 rounded-xl text-xs text-indigo-800 leading-relaxed border border-indigo-100">
                             <i class="bi bi-info-circle-fill text-sm"></i>
-                            <p>Los cargos se realizan de forma automática cada mes a la tarjeta de crédito/débito guardada.</p>
+                            <p>Los cargos se realizan de forma automática cada mes a la tarjeta guardada. Las reducciones de plan se aplican al terminar el ciclo ya pagado.</p>
                         </div>
                     </div>
 

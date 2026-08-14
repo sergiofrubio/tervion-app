@@ -19,9 +19,16 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="bg-slate-50 font-sans antialiased min-h-screen flex flex-col justify-between"
+<?php
+$systemAlertMessage = trim((string)($systemAlertMessage ?? ($GLOBALS['systemAlertMessage'] ?? '')));
+$hasSystemAlert = $systemAlertMessage !== '';
+?>
+
+<body class="bg-slate-50 font-sans antialiased min-h-screen flex flex-col justify-between <?= $hasSystemAlert ? 'pt-7' : '' ?>"
     x-data="registrationForm()"
     x-cloak>
+
+    <?php include TEMPLATE_DIR . 'system-alert.php'; ?>
 
     <!-- Top Navigation / Header -->
     <header class="border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-30">

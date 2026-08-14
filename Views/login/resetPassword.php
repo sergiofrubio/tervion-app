@@ -17,7 +17,14 @@
 
 </head>
 
-<body class="bg-gray-50 font-sans antialiased min-h-screen flex items-center justify-center relative">
+<?php
+$systemAlertMessage = trim((string)($systemAlertMessage ?? ($GLOBALS['systemAlertMessage'] ?? '')));
+$hasSystemAlert = $systemAlertMessage !== '';
+?>
+
+<body class="bg-gray-50 font-sans antialiased min-h-screen flex items-center justify-center relative <?= $hasSystemAlert ? 'pt-7' : '' ?>">
+
+    <?php include TEMPLATE_DIR . 'system-alert.php'; ?>
 
     <!-- Container -->
     <div class="relative z-10 w-full max-w-md px-6">

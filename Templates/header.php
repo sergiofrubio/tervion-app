@@ -24,7 +24,14 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="h-full flex overflow-hidden font-sans antialiased text-gray-900" x-data="{ sidebarOpen: false }">
+<?php
+$systemAlertMessage = trim((string)($systemAlertMessage ?? ($GLOBALS['systemAlertMessage'] ?? '')));
+$hasSystemAlert = $systemAlertMessage !== '';
+?>
+
+<body class="h-full flex overflow-hidden font-sans antialiased text-gray-900 <?= $hasSystemAlert ? 'pt-7' : '' ?>" x-data="{ sidebarOpen: false }">
+
+    <?php include TEMPLATE_DIR . 'system-alert.php'; ?>
 
     <!-- Mobile sidebar backdrop -->
     <div x-show="sidebarOpen" x-cloak class="fixed inset-0 z-40 bg-gray-800 bg-opacity-50 backdrop-blur-sm transition-opacity lg:hidden"

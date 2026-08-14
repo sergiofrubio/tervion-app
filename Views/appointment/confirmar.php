@@ -16,7 +16,14 @@
   <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/custom/css/app.css">
 </head>
 
-<body class="h-full font-sans antialiased text-gray-900 flex items-center justify-center bg-cover bg-center bg-no-repeat" style="background-image: url('<?= PROJECT_ROOT ?>/public/custom/img/fondo.jpg');">
+<?php
+$systemAlertMessage = trim((string)($systemAlertMessage ?? ($GLOBALS['systemAlertMessage'] ?? '')));
+$hasSystemAlert = $systemAlertMessage !== '';
+?>
+
+<body class="h-full font-sans antialiased text-gray-900 flex items-center justify-center bg-cover bg-center bg-no-repeat <?= $hasSystemAlert ? 'pt-7' : '' ?>" style="background-image: url('<?= PROJECT_ROOT ?>/public/custom/img/fondo.jpg');">
+
+  <?php include TEMPLATE_DIR . 'system-alert.php'; ?>
 
   <div class="w-full max-w-md p-8 mx-4 bg-white/85 backdrop-blur-md rounded-3xl shadow-xl border border-white/20 text-center animate-fade-in-up">
     

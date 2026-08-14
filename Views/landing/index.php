@@ -36,7 +36,14 @@
     <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/custom/css/app.css">
 </head>
 
-<body class="font-sans antialiased text-gray-900 bg-white">
+<?php
+$systemAlertMessage = trim((string)($systemAlertMessage ?? ($GLOBALS['systemAlertMessage'] ?? '')));
+$hasSystemAlert = $systemAlertMessage !== '';
+?>
+
+<body class="font-sans antialiased text-gray-900 bg-white <?= $hasSystemAlert ? 'pt-7' : '' ?>">
+
+    <?php include TEMPLATE_DIR . 'system-alert.php'; ?>
 
     <!-- Header / Navbar -->
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">

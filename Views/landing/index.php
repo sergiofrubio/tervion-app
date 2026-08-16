@@ -6,23 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- SEO Meta Tags -->
-    <title>Velion — Tu clínica, tu gestión, tu libertad</title>
-    <meta name="description" content="Velion es el ERP y software de gestión en la nube para clínicas de fisioterapia y centros de salud. Automatiza tus citas, cobros con Redsys y cumple con la normativa Verifactu de la AEAT.">
-    <meta name="keywords" content="ERP clinicas, software fisioterapia, gestion de citas medicas, Verifactu AEAT, pasarela Redsys, clinica medica, historiales medicos, nominas fisioterapeutas">
+    <title>Velion — Automatización y Gestión Integral para Clínicas y Profesionales Sanitarios</title>
+    <meta name="description" content="Velion es la plataforma SaaS que automatiza la gestión empresarial de clínicas y profesionales sanitarios: citas, WhatsApp, historial clínico, facturación Verifactu, nóminas y Contrat@ desde un único lugar.">
+    <meta name="keywords" content="software clinicas, gestion clinica fisioterapia, automatizacion clinicas medicas, Verifactu AEAT, gestion laboral clinicas, citas whatsapp pacientes, historias clinicas, facturacion sanitaria">
     <meta name="robots" content="index, follow">
-    <meta name="author" content="Velion ERP">
+    <meta name="author" content="Velion">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Velion — Tu clínica, tu gestión, tu libertad">
-    <meta property="og:description" content="El software de gestión definitivo para clínicas. Controla tus citas, automatiza la facturación con Verifactu y recibe cobros online de forma segura.">
+    <meta property="og:title" content="Velion — Automatización y Gestión Integral de Clínicas">
+    <meta property="og:description" content="Menos administración, más tiempo para tus pacientes. Centraliza y conecta todos los procesos de tu clínica en un único lugar.">
     <meta property="og:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg">
     <meta property="og:url" content="https://velion-app.com/">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Velion — Tu clínica, tu gestión, tu libertad">
-    <meta name="twitter:description" content="Software de gestión ERP y facturación Verifactu para clínicas de fisioterapia y salud.">
+    <meta name="twitter:description" content="La plataforma SaaS que automatiza la gestión empresarial de clínicas y profesionales sanitarios.">
     <meta name="twitter:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg">
 
     <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana.jpeg" type="image/jpeg">
@@ -56,7 +56,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
             <!-- Nav Links -->
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
                 <a href="#como-funciona" class="hover:text-primary-500 transition-colors">Cómo funciona</a>
-                <a href="#caracteristicas" class="hover:text-primary-500 transition-colors">Características</a>
+                <a href="#caracteristicas" class="hover:text-primary-500 transition-colors">Solución</a>
                 <a href="#precios" class="hover:text-primary-500 transition-colors">Precios</a>
                 <a href="#soporte" class="hover:text-primary-500 transition-colors">Soporte</a>
             </nav>
@@ -79,49 +79,96 @@ $hasSystemAlert = $systemAlertMessage !== '';
 
             <!-- Hero Left -->
             <div class="space-y-8 max-w-xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-50 text-primary-600 text-xs font-semibold tracking-wide">
+                    <span class="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></span>
+                    Automatización integral para clínicas y profesionales
+                </div>
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-light text-primary-500 leading-tight tracking-tight">
-                    tu gestión digital,<br>
-                    tu clínica,<br>
-                    <span class="font-normal text-primary-600">tu libertad</span>
+                    Menos administración,<br>
+                    más tiempo para<br>
+                    <span class="font-normal text-primary-600">tus pacientes</span>
                 </h1>
                 <p class="text-lg sm:text-xl text-gray-600 leading-relaxed font-light">
-                    Crea, gestiona y desarrolla tu clínica médica o de fisioterapia en la nube de manera fácil y segura. Automatiza citas, nóminas y remisión directa de facturas a la AEAT.
+                    Gestionar una clínica no debería significar pasar horas entre citas, facturas, nóminas y tareas administrativas. Centraliza y automatiza toda la operativa de tu negocio desde un único lugar.
                 </p>
                 <div class="flex flex-wrap gap-4">
                     <a href="#como-funciona" class="rounded-full bg-gray-100 hover:bg-gray-200 px-8 py-3.5 text-sm font-semibold text-gray-800 transition-all">
-                        Cómo funciona
+                        Descubrir plataforma
                     </a>
                     <a href="<?= PROJECT_ROOT ?>/registro" class="rounded-full bg-primary-500 hover:bg-primary-600 px-8 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:scale-105">
-                        Empezar gratis
+                        Empezar ahora
                     </a>
                 </div>
-                <div class="pt-4 text-xs text-gray-400 font-medium tracking-wide uppercase">
-                    🔒 Conforme con la normativa Verifactu de la AEAT
+                <div class="pt-4 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-gray-500 font-medium tracking-wide">
+                    <span>🔒 Cumplimiento VERI*FACTU</span>
+                    <span>📑 Comunicaciones Contrat@</span>
+                    <span>⚡ 100% en la Nube</span>
                 </div>
             </div>
 
-            <!-- Hero Right (Inspirado en la imagen de Estonia) -->
+            <!-- Hero Right -->
             <div class="relative flex justify-center lg:justify-end">
-                <div class="relative w-full max-w-lg aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-tr from-primary-900 to-indigo-900 flex items-center justify-center p-8 border border-gray-100">
-                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,158,255,0.15),transparent)]"></div>
-                    <!-- Mockup de Tarjeta o Dashboard -->
-                    <div class="relative w-full bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg text-white space-y-4">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs uppercase tracking-widest opacity-60 font-semibold">Velion Health Card</span>
-                            <i class="bi bi-cpu text-2xl text-secondary-300"></i>
+                <div class="relative w-full max-w-lg aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-tr from-primary-900 via-primary-800 to-indigo-900 flex items-center justify-center p-6 sm:p-8 border border-gray-100">
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,158,255,0.2),transparent)]"></div>
+                    <!-- Dashboard Mockup -->
+                    <div class="relative w-full bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg text-white space-y-5">
+                        <div class="flex justify-between items-center pb-2 border-b border-white/10">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-green-400"></span>
+                                <span class="text-xs uppercase tracking-widest opacity-80 font-semibold">Tranquilidad Administrativa</span>
+                            </div>
+                            <span class="text-[11px] bg-white/20 px-2.5 py-0.5 rounded-full">En tiempo real</span>
                         </div>
-                        <div class="py-4">
-                            <div class="text-2xl font-bold tracking-wider">1024 8872 9012 3345</div>
-                            <div class="text-xs opacity-60 mt-1">Clínica de Fisioterapia Autorizada</div>
+                        
+                        <div class="space-y-3">
+                            <div class="bg-white/10 rounded-xl p-3 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-green-500/20 text-green-300 flex items-center justify-center text-sm font-bold">
+                                        <i class="bi bi-whatsapp"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-semibold">Recordatorios automáticos</div>
+                                        <div class="text-[11px] opacity-70">WhatsApp & Email enviados</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-semibold text-green-300">0% ausencias</span>
+                            </div>
+
+                            <div class="bg-white/10 rounded-xl p-3 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-300 flex items-center justify-center text-sm font-bold">
+                                        <i class="bi bi-shield-check"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-semibold">VERI*FACTU & Fiscalidad</div>
+                                        <div class="text-[11px] opacity-70">Facturas encadenadas y remitidas</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-semibold text-blue-300">Automático</span>
+                            </div>
+
+                            <div class="bg-white/10 rounded-xl p-3 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-300 flex items-center justify-center text-sm font-bold">
+                                        <i class="bi bi-briefcase"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-semibold">Gestión Laboral & Nóminas</div>
+                                        <div class="text-[11px] opacity-70">Profesionales y Contrat@ sincronizados</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-semibold text-purple-300">Al día</span>
+                            </div>
                         </div>
-                        <div class="flex justify-between items-center text-xs">
+
+                        <div class="flex justify-between items-center text-xs pt-1">
                             <div>
-                                <div class="opacity-50 text-[10px] uppercase">Titular</div>
-                                <div class="font-medium text-sm">Dr. Alejandro Ruiz</div>
+                                <div class="opacity-60 text-[10px] uppercase">Control del negocio</div>
+                                <div class="font-medium text-sm">Sin tareas manuales</div>
                             </div>
                             <div class="text-right">
-                                <div class="opacity-50 text-[10px] uppercase">Estado</div>
-                                <div class="font-medium text-sm text-green-400">● Conectado AEAT</div>
+                                <div class="opacity-60 text-[10px] uppercase">Sincronización</div>
+                                <div class="font-medium text-sm text-green-400">● Todo conectado</div>
                             </div>
                         </div>
                     </div>
@@ -130,112 +177,199 @@ $hasSystemAlert = $systemAlertMessage !== '';
         </div>
     </section>
 
-    <!-- Features Grid Section -->
+    <!-- Value Pillars / Automation Grid Section -->
     <section id="caracteristicas" class="py-20 bg-gray-50 border-t border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                <span class="text-xs uppercase tracking-widest text-primary-600 font-bold">Todo lo que tu negocio necesita</span>
+                <h2 class="text-3xl font-light text-primary-500">Centraliza y conecta los procesos de tu clínica</h2>
+                <p class="text-sm text-gray-500 leading-relaxed font-light">
+                    Diseñado para que sepas qué ocurre en tu centro sin perseguir datos, sin tareas repetitivas y sin depender de múltiples aplicaciones desconectadas.
+                </p>
+            </div>
 
-                <!-- Feature 1 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Feature 1: Citas y Agenda -->
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
                     <div class="space-y-4">
                         <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center text-xl">
-                            <i class="bi bi-calendar3"></i>
+                            <i class="bi bi-calendar-check"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900">Agenda Inteligente</h3>
+                        <h3 class="text-lg font-bold text-gray-900">Citas y Agenda Inteligente</h3>
                         <p class="text-sm text-gray-500 leading-relaxed font-light">
-                            Programa citas fácilmente, gestiona los horarios del personal y envía confirmaciones automáticas por correo electrónico a tus pacientes.
+                            Organiza la actividad de tu centro, reduce el trabajo manual de recepción y optimiza la disponibilidad de cada profesional sanitario en tiempo real.
                         </p>
                     </div>
-                    <a href="#como-funciona" class="inline-flex items-center text-xs font-semibold text-primary-500 hover:text-primary-600 mt-6 group-hover:translate-x-1 transition-transform">
-                        Descubre cómo funciona <i class="bi bi-chevron-right ml-1 text-[10px]"></i>
-                    </a>
+                    <div class="mt-6 pt-4 border-t border-gray-50 flex items-center text-xs font-semibold text-primary-500">
+                        <span>Menos fricción operativa</span>
+                    </div>
                 </div>
 
-                <!-- Feature 2 -->
+                <!-- Feature 2: Recordatorios Automáticos -->
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
                     <div class="space-y-4">
                         <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center text-xl">
-                            <i class="bi bi-shield-check"></i>
+                            <i class="bi bi-chat-dots"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900">Plena Seguridad Fiscal</h3>
+                        <h3 class="text-lg font-bold text-gray-900">Recordatorios WhatsApp & Email</h3>
                         <p class="text-sm text-gray-500 leading-relaxed font-light">
-                            Generación de facturas con firma digital y encadenamiento criptográfico SHA-256 acorde a la normativa Verifactu de la AEAT.
+                            Mantén informados a tus pacientes de manera 100% desatendida. Minimiza los olvidos y reduce radicalmente las ausencias en consulta.
                         </p>
                     </div>
-                    <a href="#como-funciona" class="inline-flex items-center text-xs font-semibold text-primary-500 hover:text-primary-600 mt-6 group-hover:translate-x-1 transition-transform">
-                        Descubre el cumplimiento <i class="bi bi-chevron-right ml-1 text-[10px]"></i>
-                    </a>
+                    <div class="mt-6 pt-4 border-t border-gray-50 flex items-center text-xs font-semibold text-primary-500">
+                        <span>Comunicación sin esfuerzo</span>
+                    </div>
                 </div>
 
-                <!-- Feature 3 -->
+                <!-- Feature 3: Historia Clínica y Pacientes -->
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
                     <div class="space-y-4">
                         <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center text-xl">
-                            <i class="bi bi-credit-card"></i>
+                            <i class="bi bi-file-earmark-medical"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900">Pasarela Redsys</h3>
+                        <h3 class="text-lg font-bold text-gray-900">Historia Clínica y Pacientes</h3>
                         <p class="text-sm text-gray-500 leading-relaxed font-light">
-                            Cobros directos con tarjeta desde el panel de pacientes de forma automatizada mediante pasarelas del TPV seguro de Redsys.
+                            Toda la información médica y de contacto centralizada, organizada y accesible al instante desde cualquier lugar con total privacidad.
                         </p>
                     </div>
-                    <a href="#como-funciona" class="inline-flex items-center text-xs font-semibold text-primary-500 hover:text-primary-600 mt-6 group-hover:translate-x-1 transition-transform">
-                        Ver pasarela de pagos <i class="bi bi-chevron-right ml-1 text-[10px]"></i>
-                    </a>
+                    <div class="mt-6 pt-4 border-t border-gray-50 flex items-center text-xs font-semibold text-primary-500">
+                        <span>Información siempre a mano</span>
+                    </div>
                 </div>
 
-                <!-- Feature 4 -->
+                <!-- Feature 4: Facturación y Cobros -->
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
                     <div class="space-y-4">
                         <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center text-xl">
-                            <i class="bi bi-file-spreadsheet"></i>
+                            <i class="bi bi-credit-card-2-front"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900">Nóminas y Gastos</h3>
+                        <h3 class="text-lg font-bold text-gray-900">Facturación y Cobros</h3>
                         <p class="text-sm text-gray-500 leading-relaxed font-light">
-                            Generación mensual automática de nóminas los días 25, control de costes de ausencias y carga rápida de gastos trimestrales.
+                            Mantén bajo control la actividad económica de tu clínica con cobros online mediante tarjeta y emisión instantánea de facturas vinculadas a citas y bonos.
                         </p>
                     </div>
-                    <a href="#como-funciona" class="inline-flex items-center text-xs font-semibold text-primary-500 hover:text-primary-600 mt-6 group-hover:translate-x-1 transition-transform">
-                        Ver contabilidad <i class="bi bi-chevron-right ml-1 text-[10px]"></i>
-                    </a>
+                    <div class="mt-6 pt-4 border-t border-gray-50 flex items-center text-xs font-semibold text-primary-500">
+                        <span>Control financiero continuo</span>
+                    </div>
+                </div>
+
+                <!-- Feature 5: Gestión Laboral -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center text-xl">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900">Gestión Laboral de Equipo</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed font-light">
+                            Facilita y agiliza los procesos vinculados a tus profesionales: turnos, ausencias, cálculo automatizado de nóminas y comunicaciones laborales.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-50 flex items-center text-xs font-semibold text-primary-500">
+                        <span>Cero líos con tu personal</span>
+                    </div>
+                </div>
+
+                <!-- Feature 6: Cumplimiento Normativo -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center text-xl">
+                            <i class="bi bi-shield-lock"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900">Cumplimiento Normativo</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed font-light">
+                            Incorpora las obligaciones legales que afectan a tu negocio: normativa fiscal VERI*FACTU de la AEAT y comunicaciones laborales mediante Contrat@.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-50 flex items-center text-xs font-semibold text-primary-500">
+                        <span>Tranquilidad jurídica absoluta</span>
+                    </div>
                 </div>
 
             </div>
         </div>
     </section>
 
-    <!-- Detailed Explanation Section -->
+    <!-- Vision & Beyond: El Centro de Gestión Empresarial -->
     <section class="py-20">
         <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div class="space-y-6">
-                <h2 class="text-3xl font-light text-primary-500">¿Qué es el ecosistema Velion?</h2>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 text-primary-600 text-xs font-semibold">
+                    Visión Integral
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-light text-primary-500 leading-tight">
+                    Una clínica es mucho más que pacientes y citas.
+                </h2>
                 <div class="text-gray-600 space-y-4 font-light leading-relaxed">
                     <p>
-                        Velion es más que una simple agenda médica. Es una solución ERP empresarial diseñada específicamente para clínicas de salud y bienestar de cualquier tamaño que buscan digitalizar su operativa diaria sin lidiar con software obsoleto.
+                        Tu clínica también es facturación, gastos, trabajadores, impuestos, documentación y decisiones económicas clave.
                     </p>
                     <p>
-                        La plataforma centraliza la gestión de historiales de pacientes, citas y recordatorios inteligentes, facturación instantánea con remisión a Hacienda de forma transparente, y administración de contabilidad con conciliación de cuentas.
+                        Por eso, en Velion no nos conformamos con ofrecer una simple agenda médica. Estamos construyendo la plataforma definitiva para convertirnos progresivamente en el <strong>centro de gestión empresarial</strong> de los profesionales sanitarios.
                     </p>
                     <p>
-                        Conecta a fisioterapeutas, médicos, secretarios y pacientes bajo un mismo ecosistema accesible desde cualquier dispositivo, garantizando rapidez en tu día a día y total cumplimiento fiscal.
+                        Te ayudamos a saber con exactitud qué está pasando en tu negocio sin tener que perseguir datos, completar tareas manualmente o saltar entre múltiples aplicaciones incompatibles.
                     </p>
                 </div>
+                
+                <div class="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-medium text-gray-700">
+                    <div class="flex items-center gap-2">
+                        <i class="bi bi-check-circle-fill text-primary-500"></i>
+                        <span>Cero tareas manuales repetitivas</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="bi bi-check-circle-fill text-primary-500"></i>
+                        <span>Toma de decisiones con datos reales</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="bi bi-check-circle-fill text-primary-500"></i>
+                        <span>Todos tus procesos sincronizados</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="bi bi-check-circle-fill text-primary-500"></i>
+                        <span>Enfoque total en tus pacientes</span>
+                    </div>
+                </div>
             </div>
+
             <div class="flex justify-center">
-                <div class="w-full max-w-md bg-slate-50 p-8 rounded-3xl border border-gray-100 space-y-6">
-                    <h4 class="text-sm font-semibold uppercase tracking-wider text-primary-500">Cumplimiento Legal Destacado</h4>
-                    <div class="space-y-4">
-                        <div class="flex gap-4">
-                            <i class="bi bi-qr-code text-3xl text-primary-500"></i>
+                <div class="w-full max-w-md bg-gradient-to-br from-slate-50 to-primary-50/40 p-8 rounded-3xl border border-gray-200/80 shadow-sm space-y-6">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-primary-600">Próximamente en Velion</h4>
+                        <span class="text-[10px] bg-primary-100 text-primary-700 px-2 py-0.5 rounded-full font-semibold">En evolución</span>
+                    </div>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        Incorporamos continuamente nuevas herramientas de gestión financiera, contabilidad y fiscalidad para centralizar cada vez más procesos de autónomos y sociedades.
+                    </p>
+                    
+                    <div class="space-y-4 pt-2">
+                        <div class="flex gap-4 p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
+                            <div class="w-10 h-10 rounded-lg bg-primary-50 text-primary-500 flex items-center justify-center shrink-0">
+                                <i class="bi bi-graph-up-arrow text-lg"></i>
+                            </div>
                             <div>
-                                <h5 class="text-sm font-bold text-gray-900">Códigos QR AEAT</h5>
-                                <p class="text-xs text-gray-500 mt-1">Cada factura generada contiene un código QR y una URL de remisión que permite verificar de inmediato su validez ante Hacienda.</p>
+                                <h5 class="text-sm font-bold text-gray-900">Control Financiero y Tesorería</h5>
+                                <p class="text-xs text-gray-500 mt-0.5">Visión global de ingresos, gastos previsibles y márgenes reales del negocio.</p>
                             </div>
                         </div>
-                        <div class="flex gap-4">
-                            <i class="bi bi-link-45deg text-3xl text-primary-500"></i>
+
+                        <div class="flex gap-4 p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
+                            <div class="w-10 h-10 rounded-lg bg-primary-50 text-primary-500 flex items-center justify-center shrink-0">
+                                <i class="bi bi-journal-check text-lg"></i>
+                            </div>
                             <div>
-                                <h5 class="text-sm font-bold text-gray-900">Encadenamiento Inmutable</h5>
-                                <p class="text-xs text-gray-500 mt-1">Los registros se entrelazan mediante algoritmos criptográficos inalterables que impiden manipulaciones o borrados ilegales.</p>
+                                <h5 class="text-sm font-bold text-gray-900">Fiscalidad y Contabilidad</h5>
+                                <p class="text-xs text-gray-500 mt-0.5">Facilidad en el cumplimiento de obligaciones fiscales periódicas para autónomos y SLs.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4 p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
+                            <div class="w-10 h-10 rounded-lg bg-primary-50 text-primary-500 flex items-center justify-center shrink-0">
+                                <i class="bi bi-cpu text-lg"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-sm font-bold text-gray-900">Automatización de Procesos</h5>
+                                <p class="text-xs text-gray-500 mt-0.5">Conexión con agentes externos y flujos inteligentes que trabajan por ti.</p>
                             </div>
                         </div>
                     </div>
@@ -244,52 +378,64 @@ $hasSystemAlert = $systemAlertMessage !== '';
         </div>
     </section>
 
-    <!-- Cómo Funciona Section (Pasos) -->
+    <!-- Cómo Funciona Section (Pasos hacia la tranquilidad) -->
     <section id="como-funciona" class="py-20 bg-gray-50 border-t border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <h2 class="text-3xl font-light text-primary-500 text-center mb-16">Cómo funciona</h2>
+            <div class="text-center max-w-xl mx-auto mb-16 space-y-2">
+                <span class="text-xs uppercase tracking-widest text-primary-600 font-bold">Simplicidad en 3 pasos</span>
+                <h2 class="text-3xl font-light text-primary-500">Cómo empezar a automatizar tu clínica</h2>
+                <p class="text-sm text-gray-500 leading-relaxed font-light">
+                    Una transición fluida diseñada para que ahorres horas de trabajo desde el primer día.
+                </p>
+            </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Step 1 -->
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between h-80 relative overflow-hidden group">
                     <div>
                         <span class="inline-block bg-primary-100 text-primary-700 text-xs font-bold px-3 py-1 rounded-full mb-6">
-                            Paso 1: Setup inicial
+                            Paso 1: Conecta tu actividad
                         </span>
-                        <h3 class="text-xl font-bold text-gray-900">Configura tu clínica</h3>
+                        <h3 class="text-xl font-bold text-gray-900">Configura tu centro</h3>
                         <p class="text-sm text-gray-500 mt-3 leading-relaxed font-light">
-                            Introduce los datos de tu clínica, define los profesionales sanitarios, asigna sus horarios laborales y da de alta los bonos de sesiones activos.
+                            Da de alta tus especialidades, equipo de profesionales, tarifas y horarios de forma ágil y guiada.
                         </p>
                     </div>
-                    <i class="bi bi-arrow-right text-gray-400 group-hover:text-primary-500 transition-colors text-xl"></i>
+                    <div class="text-xs text-primary-500 font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        <span>Puesta en marcha rápida</span> <i class="bi bi-arrow-right"></i>
+                    </div>
                 </div>
 
                 <!-- Step 2 -->
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between h-80 relative overflow-hidden group">
                     <div>
                         <span class="inline-block bg-primary-100 text-primary-700 text-xs font-bold px-3 py-1 rounded-full mb-6">
-                            Paso 2: Operación diaria
+                            Paso 2: Automatiza el día a día
                         </span>
-                        <h3 class="text-xl font-bold text-gray-900">Agenda, asiste y cobra</h3>
+                        <h3 class="text-xl font-bold text-gray-900">Deja que Velion trabaje</h3>
                         <p class="text-sm text-gray-500 mt-3 leading-relaxed font-light">
-                            Los pacientes agendan citas desde su portal. Reciben recordatorios por email de forma automatizada y compran bonos pagando mediante tarjeta en Redsys.
+                            Tus pacientes reciben recordatorios por WhatsApp/email, los cobros y facturas se generan solos y la agenda se actualiza al instante.
                         </p>
                     </div>
-                    <i class="bi bi-arrow-right text-gray-400 group-hover:text-primary-500 transition-colors text-xl"></i>
+                    <div class="text-xs text-primary-500 font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        <span>Operativa sin fricción</span> <i class="bi bi-arrow-right"></i>
+                    </div>
                 </div>
 
                 <!-- Step 3 -->
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between h-80 relative overflow-hidden group">
                     <div>
                         <span class="inline-block bg-primary-100 text-primary-700 text-xs font-bold px-3 py-1 rounded-full mb-6">
-                            Paso 3: Automatización legal
+                            Paso 3: Tranquilidad absoluta
                         </span>
-                        <h3 class="text-xl font-bold text-gray-900">Cumplimiento transparente</h3>
+                        <h3 class="text-xl font-bold text-gray-900">Control y cumplimiento</h3>
                         <p class="text-sm text-gray-500 mt-3 leading-relaxed font-light">
-                            Las facturas se envían automáticamente a la AEAT a través de Verifactu. Los días 25 de cada mes se generan las nóminas del personal médico sin retrasos.
+                            Cumple automáticamente con VERI*FACTU y las obligaciones laborales mientras tienes visión global y clara de tu negocio.
                         </p>
                     </div>
-                    <i class="bi bi-arrow-right text-gray-400 group-hover:text-primary-500 transition-colors text-xl"></i>
+                    <div class="text-xs text-primary-500 font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        <span>Cero preocupaciones</span> <i class="bi bi-arrow-right"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -299,16 +445,16 @@ $hasSystemAlert = $systemAlertMessage !== '';
     <section class="py-16">
         <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
-                <div class="text-5xl font-extralight text-primary-500">142,300+</div>
-                <p class="text-xs uppercase tracking-wider text-gray-400 font-bold mt-2">Citas Programadas</p>
+                <div class="text-5xl font-extralight text-primary-500">100%</div>
+                <p class="text-xs uppercase tracking-wider text-gray-400 font-bold mt-2">Tranquilidad Administrativa</p>
             </div>
             <div>
-                <div class="text-5xl font-extralight text-primary-500">43,000+</div>
-                <p class="text-xs uppercase tracking-wider text-gray-400 font-bold mt-2">Facturas Verificadas AEAT</p>
+                <div class="text-5xl font-extralight text-primary-500">+10h</div>
+                <p class="text-xs uppercase tracking-wider text-gray-400 font-bold mt-2">Ahorradas a la semana en gestión</p>
             </div>
             <div>
-                <div class="text-5xl font-extralight text-primary-500">99.98%</div>
-                <p class="text-xs uppercase tracking-wider text-gray-400 font-bold mt-2">Disponibilidad del Servidor</p>
+                <div class="text-5xl font-extralight text-primary-500">0</div>
+                <p class="text-xs uppercase tracking-wider text-gray-400 font-bold mt-2">Tareas duplicadas o manuales</p>
             </div>
         </div>
     </section>
@@ -317,8 +463,9 @@ $hasSystemAlert = $systemAlertMessage !== '';
     <section id="precios" class="py-20 bg-gray-50 border-t border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="text-center max-w-xl mx-auto mb-16">
-                <h2 class="text-3xl font-light text-primary-500">Planes a tu medida</h2>
-                <p class="text-sm text-gray-500 mt-3 leading-relaxed font-light">Elige el plan ideal para automatizar y proteger fiscalmente la operativa de tu centro de salud.</p>
+                <span class="text-xs uppercase tracking-widest text-primary-600 font-bold">Inversión transparente</span>
+                <h2 class="text-3xl font-light text-primary-500 mt-1">Planes a la medida de tu clínica</h2>
+                <p class="text-sm text-gray-500 mt-3 leading-relaxed font-light">Elige el plan ideal para automatizar tu negocio y ganar tranquilidad en tu día a día.</p>
             </div>
 
             <!-- Table Container -->
@@ -358,49 +505,49 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Agenda médica completa</td>
+                            <td class="p-6 text-sm text-gray-700 font-medium">Agenda y gestión integral de citas</td>
                             <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
                             <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
                             <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
                         </tr>
                         <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Historiales médicos ilimitados</td>
+                            <td class="p-6 text-sm text-gray-700 font-medium">Historia clínica y gestión de pacientes</td>
                             <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
                             <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
                             <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
                         </tr>
                         <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Integración Verifactu (AEAT)</td>
+                            <td class="p-6 text-sm text-gray-700 font-medium">Cumplimiento normativo VERI*FACTU (AEAT)</td>
                             <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
                             <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
                             <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
                         </tr>
                         <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Notificaciones automáticas por email</td>
+                            <td class="p-6 text-sm text-gray-700 font-medium">Recordatorios automáticos por WhatsApp y Email</td>
                             <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
                             <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
                             <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
                         </tr>
                         <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Roles múltiples (Sanitarios y Secretarios)</td>
+                            <td class="p-6 text-sm text-gray-700 font-medium">Multi-usuario (Sanitarios y Recepción/Administración)</td>
                             <td class="p-6 text-center"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
                             <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
                             <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
                         </tr>
                         <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Módulo de Nóminas mensual automático</td>
+                            <td class="p-6 text-sm text-gray-700 font-medium">Gestión laboral y cálculo de nóminas automatizado</td>
                             <td class="p-6 text-center"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
                             <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
                             <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
                         </tr>
                         <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Pasarela de pagos online con Redsys</td>
+                            <td class="p-6 text-sm text-gray-700 font-medium">Pasarela de cobros online Redsys & TPV</td>
                             <td class="p-6 text-center"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
                             <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
                             <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
                         </tr>
                         <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Importación de movimientos bancarios</td>
+                            <td class="p-6 text-sm text-gray-700 font-medium">Control financiero y conciliación de movimientos</td>
                             <td class="p-6 text-center"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
                             <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
                             <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
@@ -418,52 +565,51 @@ $hasSystemAlert = $systemAlertMessage !== '';
                 <!-- Quote 1 -->
                 <div class="space-y-4">
                     <p class="text-lg text-primary-600 font-light leading-relaxed italic">
-                        "La integración con Verifactu nos quitó un gran peso de encima. Ahora facturamos a pacientes con total tranquilidad legal."
+                        "Antes pasaba horas cuadrando facturas y enviando citas a mano. Velion nos ha devuelto la tranquilidad y el tiempo para atender a nuestros pacientes."
                     </p>
                     <div>
-                        <h5 class="text-sm font-bold text-gray-900">Laura</h5>
-                        <p class="text-xs text-gray-400">Directora de Fisioterapia Aquiles, España</p>
+                        <h5 class="text-sm font-bold text-gray-900">Dra. Laura Morales</h5>
+                        <p class="text-xs text-gray-400">Directora de Clínica Aquiles</p>
                     </div>
                 </div>
                 <!-- Quote 2 -->
                 <div class="space-y-4 border-t lg:border-t-0 lg:border-l border-gray-100 pt-8 lg:pt-0 lg:pl-8">
                     <p class="text-lg text-primary-600 font-light leading-relaxed italic">
-                        "El sistema de reservas online ha reducido las inasistencias en un 35%. Los recordatorios automáticos por correo son clave."
+                        "Los recordatorios automáticos por WhatsApp redujeron las ausencias de golpe. Y saber que VERI*FACTU está resuelto nos da paz absoluta."
                     </p>
                     <div>
-                        <h5 class="text-sm font-bold text-gray-900">Antonio</h5>
-                        <p class="text-xs text-gray-400">Fisioterapeuta, Fisioterapia Ciudad Jardín, España</p>
+                        <h5 class="text-sm font-bold text-gray-900">Antonio G.</h5>
+                        <p class="text-xs text-gray-400">Fisioterapeuta y Gerente de Centro Jardín</p>
                     </div>
                 </div>
                 <!-- Quote 3 -->
                 <div class="space-y-4 border-t lg:border-t-0 lg:border-l border-gray-100 pt-8 lg:pt-0 lg:pl-8">
                     <p class="text-lg text-primary-600 font-light leading-relaxed italic">
-                        "Gestionar las nóminas de mis sanitarios el día 25 nunca había sido tan ágil."
+                        "Centralizar la parte laboral, el cobro y las citas en un solo lugar nos ha permitido crecer sin ahogarnos en papeleo ni datos dispersos."
                     </p>
                     <div>
-                        <h5 class="text-sm font-bold text-gray-900">Carlos</h5>
-                        <p class="text-xs text-gray-400">Gerente de Clínica CPT, España</p>
+                        <h5 class="text-sm font-bold text-gray-900">Carlos R.</h5>
+                        <p class="text-xs text-gray-400">Gestor de Clínica Sanitaria CPT</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Newsletter Subscription Section (Inspirado en la de Estonia) -->
+    <!-- Newsletter Subscription Section -->
     <section class="border-t border-gray-100 bg-gray-50 overflow-hidden">
         <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2">
 
-            <!-- Left Banner (Azul real con grilla) -->
+            <!-- Left Banner -->
             <div class="bg-primary-500 p-12 sm:p-16 lg:p-20 text-white flex flex-col justify-center relative overflow-hidden">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(0,158,255,0.25),transparent)]"></div>
                 <div class="relative space-y-4">
+                    <span class="text-xs uppercase tracking-widest opacity-75 font-semibold">Comunidad Velion</span>
                     <h2 class="text-3xl sm:text-4xl font-light leading-tight">
-                        Suscríbete a la<br>
-                        newsletter de<br>
-                        Velion ERP
+                        Gestión empresarial y automatización sanitaria
                     </h2>
                     <p class="text-sm opacity-80 leading-relaxed font-light max-w-xs">
-                        Recibe consejos sobre optimización de clínicas de fisioterapia, novedades sobre la normativa fiscal Verifactu y guías prácticas de software.
+                        Recibe consejos prácticos sobre optimización y automatización de clínicas, novedades normativas (VERI*FACTU, Contrat@) y claves para hacer crecer tu negocio.
                     </p>
                 </div>
             </div>
@@ -479,10 +625,10 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     <div>
                         <label for="perfil" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Perfil profesional</label>
                         <select id="perfil" class="w-full border-b border-gray-300 focus:border-primary-500 py-2.5 outline-none text-sm transition-colors bg-transparent text-gray-600">
-                            <option>Fisioterapeuta independiente</option>
-                            <option>Director de clínica médica</option>
-                            <option>Secretario / Administración</option>
-                            <option>Estudiante / Otro</option>
+                            <option>Profesional sanitario independiente / Fisioterapeuta</option>
+                            <option>Director / Propietario de clínica médica</option>
+                            <option>Responsable de administración y gestión</option>
+                            <option>Otro perfil profesional</option>
                         </select>
                     </div>
                     <div class="pt-4">
@@ -492,7 +638,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     </div>
                 </form>
                 <p class="text-xs text-gray-400 leading-normal">
-                    Puedes darte de baja en cualquier momento de forma gratuita. Cumplimos estrictamente con la RGPD. Lee nuestra <a href="#" class="underline hover:text-primary-500">Política de privacidad</a>.
+                    Puedes darte de baja en cualquier momento. Cumplimos estrictamente con la RGPD. Lee nuestra <a href="#" class="underline hover:text-primary-500">Política de privacidad</a>.
                 </p>
             </div>
 

@@ -100,6 +100,12 @@ $router->add('POST', '/nominas/generate', 'PayrollController@generate', true, ['
 $router->add('GET', '/nominas/detail', 'PayrollController@detail', true, ['Administrador']);
 $router->add('GET', '/nominas/pdf', 'PayrollController@pdf', true, ['Administrador']);
 
+// Rutas de Control Horario
+$router->add('GET', '/control-horario', 'TimeRecordController@index', true, $staffRoles);
+$router->add('POST', '/control-horario/fichar', 'TimeRecordController@fichar', true, $staffRoles);
+$router->add('GET', '/control-horario/admin', 'TimeRecordController@adminIndex', true, ['Administrador']);
+$router->add('POST', '/control-horario/admin/guardar', 'TimeRecordController@guardar', true, ['Administrador']);
+
 // Rutas de Contabilidad y Obligaciones Fiscales
 $router->add('GET', '/contabilidad', 'AccountingController@dashboard', true, ['Administrador']);
 $router->add('GET', '/contabilidad/gastos', 'AccountingController@expenses', true, ['Administrador']);

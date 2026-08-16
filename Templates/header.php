@@ -101,6 +101,11 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     <i class="bi bi-cash-coin text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/nominas') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
                     Nóminas
                 </a>
+                <a href="<?= PROJECT_ROOT ?>/control-horario"
+                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/control-horario') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">
+                    <i class="bi bi-clock text-lg mr-3 transition-colors <?= strpos($_SERVER['REQUEST_URI'], '/control-horario') !== false ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500' ?>"></i>
+                    Control Horario
+                </a>
                 <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Administrador') : ?>
                     <a href="<?= PROJECT_ROOT ?>/facturas"
                         class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all group <?= strpos($_SERVER['REQUEST_URI'], '/facturas') !== false ? 'bg-primary-50 text-primary-700' : '' ?>">

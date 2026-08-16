@@ -853,6 +853,29 @@ ALTER TABLE `pagos`
 ALTER TABLE `usuarios`
   ADD CONSTRAINT `fk_usuarios_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_usuarios_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Estructura de tabla para la tabla `registro_horario`
+--
+CREATE TABLE `registro_horario` (
+  `registro_id` int NOT NULL AUTO_INCREMENT,
+  `usuario_id` varchar(9) NOT NULL,
+  `fecha` date NOT NULL,
+  `entrada` datetime NOT NULL,
+  `salida` datetime DEFAULT NULL,
+  `notas` varchar(255) DEFAULT NULL,
+  `creado_por` varchar(9) DEFAULT NULL,
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `modificado_por` varchar(9) DEFAULT NULL,
+  `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`registro_id`),
+  KEY `idx_registro_usuario` (`usuario_id`),
+  KEY `idx_registro_fecha` (`fecha`),
+  CONSTRAINT `fk_registro_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_registro_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `fk_registro_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

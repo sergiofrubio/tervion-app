@@ -22,6 +22,9 @@
 
     <!-- Alpine.js for interactive UI -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Dynamic SPA Navigation without full page reloads -->
+    <script src="<?= PROJECT_ROOT ?>/public/custom/js/dynamic-nav.js" defer></script>
 </head>
 
 <?php
@@ -212,7 +215,7 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
                 <div class="hidden sm:flex items-center gap-2 text-xs font-medium text-gray-400">
                     <span>Plataforma</span>
                     <i class="bi bi-chevron-right text-[10px]"></i>
-                    <span class="text-gray-700 font-semibold"><?= isset($pageTitle) ? htmlspecialchars($pageTitle) : 'Panel de Control' ?></span>
+                    <span id="header-breadcrumb" class="text-gray-700 font-semibold"><?= isset($pageTitle) ? htmlspecialchars($pageTitle) : 'Panel de Control' ?></span>
                 </div>
             </div>
 

@@ -16,16 +16,16 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Velion — Automatización y Gestión Integral de Clínicas">
     <meta property="og:description" content="Menos administración, más tiempo para tus pacientes. Centraliza y conecta todos los procesos de tu clínica en un único lugar.">
-    <meta property="og:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg">
+    <meta property="og:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpg">
     <meta property="og:url" content="https://velion-app.com/">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Velion — Tu clínica, tu gestión, tu libertad">
     <meta name="twitter:description" content="La plataforma SaaS que automatiza la gestión empresarial de clínicas y profesionales sanitarios.">
-    <meta name="twitter:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg">
+    <meta name="twitter:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpg">
 
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana.jpeg" type="image/jpeg">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana.jpg" type="image/jpeg">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,7 +50,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
         <div class="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
             <!-- Logo -->
             <a href="<?= PROJECT_ROOT ?>/" class="flex items-center">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpeg" alt="Velion Logo" class="h-9 object-contain">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpg" alt="Velion Logo" class="h-9 object-contain">
             </a>
 
             <!-- Nav Links -->
@@ -651,7 +651,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
             <p class="w-full sm:w-1/3 text-center sm:text-left text-sm">© 2026 Velion Ibérica SLU</p>
 
             <a href="<?= PROJECT_ROOT ?>/" class="w-full sm:w-1/3 flex items-center justify-center">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana-oscuro.jpeg" alt="Velion Logo" class="h-8 object-contain rounded-md p-1 shadow-sm">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana-oscuro.jpg" alt="Velion Logo" class="h-8 object-contain rounded-md p-1 shadow-sm">
             </a>
 
             <div class="w-full sm:w-1/3 flex items-center justify-center sm:justify-end gap-6 text-gray-400">

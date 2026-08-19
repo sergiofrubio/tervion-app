@@ -37,7 +37,15 @@ $userName = $_SESSION['nombre'] ?? (explode('@', $userEmail)[0] ?? 'Usuario');
 $userRole = $_SESSION['rol'] ?? 'Usuario';
 ?>
 
-<body class="h-full flex overflow-hidden font-sans antialiased text-slate-900 bg-slate-50 <?= $hasSystemAlert ? 'pt-7' : '' ?>" x-data="{ sidebarOpen: false }">
+<body class="h-full flex overflow-hidden font-sans antialiased text-slate-900 bg-slate-50 <?= $hasSystemAlert ? 'pt-7' : '' ?>"
+    x-data="{ 
+          sidebarOpen: false, 
+          sidebarCollapsed: localStorage.getItem('velion_sidebar_collapsed') === 'true',
+          toggleCollapse() {
+              this.sidebarCollapsed = !this.sidebarCollapsed;
+              localStorage.setItem('velion_sidebar_collapsed', this.sidebarCollapsed);
+          }
+      }">
 
     <?php include TEMPLATE_DIR . 'system-alert.php'; ?>
 
@@ -49,37 +57,49 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
         x-transition:leave-end="opacity-0"></div>
 
     <!-- Sidebar (Color secundario bg-gray-900) -->
-    <aside :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}"
-        class="fixed inset-y-0 left-0 z-50 w-72 bg-gray-900 border-r border-gray-800 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col shadow-2xl lg:shadow-none text-white">
+    <aside :class="sidebarCollapsed ? 'w-20' : 'w-72'"
+        class="fixed inset-y-0 left-0 z-50 bg-gray-900 border-r border-gray-800 transition-[width] duration-300 ease-in-out lg:static lg:inset-0 flex flex-col shadow-2xl lg:shadow-none text-white select-none shrink-0 overflow-x-hidden"
+        :style="window.innerWidth < 1024 ? (sidebarOpen ? 'transform: translateX(0);' : 'transform: translateX(-100%);') : ''">
 
         <!-- Sidebar Brand Header -->
-        <div class="flex items-center justify-between h-20 px-6 border-b border-gray-800 bg-gray-900">
-            <a href="<?= PROJECT_ROOT ?>/inicio" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-gray-800 border border-gray-700 p-1.5 flex items-center justify-center shadow-inner group-hover:border-primary-500 transition-colors">
+        <div class="flex items-center justify-between h-20 border-b border-gray-800 bg-gray-900 transition-all duration-300 relative px-4"
+            :class="sidebarCollapsed ? 'justify-center px-2' : 'px-5'">
+            <a href="<?= PROJECT_ROOT ?>/inicio" class="flex items-center gap-3 group overflow-hidden shrink-0" :title="sidebarCollapsed ? 'Velion — Gestión Clínica' : ''">
+                <div class="w-10 h-10 rounded-xl bg-gray-800 border border-gray-700 p-1.5 flex items-center justify-center shadow-inner group-hover:border-primary-500 transition-colors shrink-0">
                     <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana-oscuro.jpg" alt="Velion Emblem" class="w-full h-full object-contain rounded-md">
                 </div>
-                <div class="flex flex-col">
-                    <span class="text-xl font-bold tracking-tight text-white group-hover:text-primary-400 transition-colors leading-none">Velion</span>
-                    <span class="text-[10px] uppercase font-semibold tracking-widest text-gray-400 mt-1">Gestión Clínica</span>
+                <div class="flex flex-col transition-all duration-300 overflow-hidden whitespace-nowrap"
+                    :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">
+                    <span class="text-xl font-bold tracking-tight text-white group-hover:text-primary-400 transition-colors leading-none whitespace-nowrap">Velion</span>
+                    <span class="text-[10px] uppercase font-semibold tracking-widest text-gray-400 mt-1 whitespace-nowrap">Gestión Clínica</span>
                 </div>
             </a>
+
+            <!-- Botón cerrar móvil -->
             <button @click="sidebarOpen = false" class="lg:hidden text-gray-400 hover:text-white focus:outline-none p-1.5 rounded-lg hover:bg-gray-800 transition-colors">
                 <i class="bi bi-x-lg text-lg"></i>
             </button>
         </div>
 
         <!-- Sidebar Navigation Links -->
-        <nav class="flex-1 px-4 py-6 space-y-6 overflow-y-auto">
+        <nav class="flex-1 px-3 py-6 overflow-y-auto overflow-x-hidden transition-all duration-300"
+             :class="sidebarCollapsed ? 'space-y-1' : 'space-y-6'">
 
             <!-- Grupo: Principal -->
             <div>
-                <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400">Principal</div>
+                <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 transition-all duration-300 overflow-hidden whitespace-nowrap"
+                    :class="sidebarCollapsed ? 'opacity-0 h-0 mb-0 py-0 pointer-events-none' : 'opacity-100 h-auto'">
+                    Principal
+                </div>
                 <div class="space-y-1">
                     <?php $isHomeActive = (strpos($currentUri, '/inicio') !== false || $currentUri === PROJECT_ROOT . '/' || $currentUri === PROJECT_ROOT); ?>
                     <a href="<?= PROJECT_ROOT ?>/inicio"
-                        class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl transition-all <?= $isHomeActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
-                        <i class="bi bi-grid-1x2 text-base <?= $isHomeActive ? 'text-white' : 'text-gray-400' ?>"></i>
-                        <span>Panel de Control</span>
+                        :title="sidebarCollapsed ? 'Panel de Control' : ''"
+                        :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                        class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isHomeActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                        <i class="bi bi-grid-1x2 text-base shrink-0 <?= $isHomeActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                        <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                            :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Panel de Control</span>
                     </a>
                 </div>
             </div>
@@ -87,34 +107,49 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
             <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Paciente') : ?>
                 <!-- Menú para Pacientes -->
                 <div>
-                    <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400">Mi Área Personal</div>
+                    <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 transition-all duration-300 overflow-hidden whitespace-nowrap"
+                        :class="sidebarCollapsed ? 'opacity-0 h-0 mb-0 py-0 pointer-events-none' : 'opacity-100 h-auto'">
+                        Mi Área Personal
+                    </div>
                     <div class="space-y-1">
                         <?php $isAppointmentsActive = strpos($currentUri, '/paciente/citas') !== false; ?>
                         <a href="<?= PROJECT_ROOT ?>/paciente/citas"
-                            class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl transition-all <?= $isAppointmentsActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
-                            <i class="bi bi-calendar-week text-base <?= $isAppointmentsActive ? 'text-white' : 'text-gray-400' ?>"></i>
-                            <span>Mis Citas</span>
+                            :title="sidebarCollapsed ? 'Mis Citas' : ''"
+                            :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                            class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isAppointmentsActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-calendar-week text-base shrink-0 <?= $isAppointmentsActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Mis Citas</span>
                         </a>
 
                         <?php $isInvoicesActive = strpos($currentUri, '/paciente/facturas') !== false; ?>
                         <a href="<?= PROJECT_ROOT ?>/paciente/facturas"
-                            class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl transition-all <?= $isInvoicesActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
-                            <i class="bi bi-receipt text-base <?= $isInvoicesActive ? 'text-white' : 'text-gray-400' ?>"></i>
-                            <span>Mis Facturas</span>
+                            :title="sidebarCollapsed ? 'Mis Facturas' : ''"
+                            :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                            class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isInvoicesActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-receipt text-base shrink-0 <?= $isInvoicesActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Mis Facturas</span>
                         </a>
 
                         <?php $isShopActive = strpos($currentUri, '/paciente/tienda') !== false; ?>
                         <a href="<?= PROJECT_ROOT ?>/paciente/tienda"
-                            class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl transition-all <?= $isShopActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
-                            <i class="bi bi-bag text-base <?= $isShopActive ? 'text-white' : 'text-gray-400' ?>"></i>
-                            <span>Tienda & Bonos</span>
+                            :title="sidebarCollapsed ? 'Tienda & Bonos' : ''"
+                            :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                            class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isShopActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-bag text-base shrink-0 <?= $isShopActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Tienda & Bonos</span>
                         </a>
 
                         <?php $isProfileActive = strpos($currentUri, '/paciente/perfil') !== false; ?>
                         <a href="<?= PROJECT_ROOT ?>/paciente/perfil"
-                            class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl transition-all <?= $isProfileActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
-                            <i class="bi bi-person-badge text-base <?= $isProfileActive ? 'text-white' : 'text-gray-400' ?>"></i>
-                            <span>Mi Perfil</span>
+                            :title="sidebarCollapsed ? 'Mi Perfil' : ''"
+                            :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                            class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isProfileActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-person-badge text-base shrink-0 <?= $isProfileActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Mi Perfil</span>
                         </a>
                     </div>
                 </div>
@@ -122,59 +157,76 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
             <?php else : ?>
                 <!-- Menú para Personal Sanitario / Administración -->
                 <div>
-                    <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400">Atención y Citas</div>
+                    <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 transition-all duration-300 overflow-hidden whitespace-nowrap"
+                        :class="sidebarCollapsed ? 'opacity-0 h-0 mb-0 py-0 pointer-events-none' : 'opacity-100 h-auto'">
+                        Atención y Citas
+                    </div>
                     <div class="space-y-1">
                         <?php $isPatientsActive = strpos($currentUri, '/pacientes') !== false; ?>
                         <a href="<?= PROJECT_ROOT ?>/pacientes"
-                            class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl transition-all <?= $isPatientsActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
-                            <i class="bi bi-people text-base <?= $isPatientsActive ? 'text-white' : 'text-gray-400' ?>"></i>
-                            <span>Pacientes</span>
+                            :title="sidebarCollapsed ? 'Pacientes' : ''"
+                            :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                            class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isPatientsActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-people text-base shrink-0 <?= $isPatientsActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Pacientes</span>
                         </a>
 
                         <?php $isAppointmentsActive = strpos($currentUri, '/citas') !== false; ?>
                         <a href="<?= PROJECT_ROOT ?>/citas"
-                            class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl transition-all <?= $isAppointmentsActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
-                            <i class="bi bi-calendar3 text-base <?= $isAppointmentsActive ? 'text-white' : 'text-gray-400' ?>"></i>
-                            <span>Agenda y Citas</span>
+                            :title="sidebarCollapsed ? 'Agenda y Citas' : ''"
+                            :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                            class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isAppointmentsActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-calendar3 text-base shrink-0 <?= $isAppointmentsActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Agenda y Citas</span>
                         </a>
                     </div>
                 </div>
 
                 <div>
-                    <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400">Equipo y Horarios</div>
+                    <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 transition-all duration-300 overflow-hidden whitespace-nowrap"
+                        :class="sidebarCollapsed ? 'opacity-0 h-0 mb-0 py-0 pointer-events-none' : 'opacity-100 h-auto'">
+                        Equipo y Horarios
+                    </div>
                     <div class="space-y-1">
-                        <?php $isPayrollActive = strpos($currentUri, '/nominas') !== false; ?>
-                        <a href="<?= PROJECT_ROOT ?>/nominas"
-                            class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl transition-all <?= $isPayrollActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
-                            <i class="bi bi-cash-stack text-base <?= $isPayrollActive ? 'text-white' : 'text-gray-400' ?>"></i>
-                            <span>Nóminas</span>
-                        </a>
-
                         <?php $isTimeActive = strpos($currentUri, '/control-horario') !== false; ?>
                         <a href="<?= PROJECT_ROOT ?>/control-horario"
-                            class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl transition-all <?= $isTimeActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
-                            <i class="bi bi-clock-history text-base <?= $isTimeActive ? 'text-white' : 'text-gray-400' ?>"></i>
-                            <span>Control Horario</span>
+                            :title="sidebarCollapsed ? 'Control Horario' : ''"
+                            :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                            class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isTimeActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-clock-history text-base shrink-0 <?= $isTimeActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Control Horario</span>
                         </a>
                     </div>
                 </div>
 
                 <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Administrador') : ?>
                     <div>
-                        <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400">Administración</div>
+                        <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 transition-all duration-300 overflow-hidden whitespace-nowrap"
+                            :class="sidebarCollapsed ? 'opacity-0 h-0 mb-0 py-0 pointer-events-none' : 'opacity-100 h-auto'">
+                            Administración
+                        </div>
                         <div class="space-y-1">
                             <?php $isInvoicesActive = strpos($currentUri, '/facturas') !== false; ?>
                             <a href="<?= PROJECT_ROOT ?>/facturas"
-                                class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl transition-all <?= $isInvoicesActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
-                                <i class="bi bi-receipt-cutoff text-base <?= $isInvoicesActive ? 'text-white' : 'text-gray-400' ?>"></i>
-                                <span>Facturas & AEAT</span>
+                                :title="sidebarCollapsed ? 'Facturas' : ''"
+                                :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                                class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isInvoicesActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                                <i class="bi bi-receipt-cutoff text-base shrink-0 <?= $isInvoicesActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                                <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                    :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Facturas</span>
                             </a>
 
                             <?php $isConfigActive = strpos($currentUri, '/configuracion') !== false; ?>
                             <a href="<?= PROJECT_ROOT ?>/configuracion"
-                                class="flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl transition-all <?= $isConfigActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
-                                <i class="bi bi-sliders text-base <?= $isConfigActive ? 'text-white' : 'text-gray-400' ?>"></i>
-                                <span>Configuración</span>
+                                :title="sidebarCollapsed ? 'Configuración' : ''"
+                                :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                                class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isConfigActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                                <i class="bi bi-sliders text-base shrink-0 <?= $isConfigActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                                <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                    :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Configuración</span>
                             </a>
                         </div>
                     </div>
@@ -184,19 +236,22 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
         </nav>
 
         <!-- Sidebar User Card & Footer -->
-        <div class="p-4 border-t border-gray-800 bg-gray-950">
-            <div class="flex items-center justify-between gap-3 p-2 rounded-2xl bg-gray-900 border border-gray-800">
-                <div class="flex items-center gap-3 min-w-0">
+        <div class="p-3 border-t border-gray-800 bg-gray-950">
+            <div class="flex items-center justify-between gap-3 p-2 rounded-2xl bg-gray-900 border border-gray-800 transition-all duration-300 overflow-hidden"
+                :class="sidebarCollapsed ? 'p-1 justify-center' : 'p-2'">
+                <div class="flex items-center gap-3 min-w-0 overflow-hidden" :title="sidebarCollapsed ? '<?= htmlspecialchars($userName) ?> (<?= htmlspecialchars($userRole) ?>)' : ''">
                     <div class="w-9 h-9 rounded-xl bg-primary-600/20 text-primary-400 border border-primary-500/30 flex items-center justify-center font-bold text-xs shrink-0">
                         <?= strtoupper(substr($userName, 0, 1)) ?>
                     </div>
-                    <div class="min-w-0 flex-1">
+                    <div class="min-w-0 flex-1 transition-all duration-300 overflow-hidden whitespace-nowrap"
+                        :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">
                         <p class="text-xs font-semibold text-white truncate"><?= htmlspecialchars($userName) ?></p>
-                        <span class="inline-block text-[10px] text-gray-400 font-medium"><?= htmlspecialchars($userRole) ?></span>
+                        <span class="inline-block text-[10px] text-gray-400 font-medium truncate max-w-full"><?= htmlspecialchars($userRole) ?></span>
                     </div>
                 </div>
                 <a href="<?= PROJECT_ROOT ?>/logout" title="Cerrar sesión"
-                    class="p-2 rounded-xl text-gray-400 hover:text-rose-400 hover:bg-gray-800 transition-colors">
+                    class="p-2 rounded-xl text-gray-400 hover:text-rose-400 hover:bg-gray-800 transition-all duration-300 shrink-0"
+                    :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none hidden' : 'opacity-100'">
                     <i class="bi bi-box-arrow-right text-base"></i>
                 </a>
             </div>
@@ -209,8 +264,15 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
         <!-- Top header for Mobile and Desktop context -->
         <header class="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200 shadow-sm z-10">
             <div class="flex items-center gap-4">
+                <!-- Mobile toggle button -->
                 <button @click="sidebarOpen = true" class="lg:hidden text-gray-600 hover:text-gray-900 focus:outline-none p-2 rounded-xl hover:bg-gray-100 transition-colors">
                     <i class="bi bi-list text-2xl"></i>
+                </button>
+                <!-- Desktop collapse/expand button -->
+                <button @click="toggleCollapse()"
+                    class="hidden lg:flex items-center justify-center w-9 h-9 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-colors focus:outline-none cursor-pointer"
+                    :title="sidebarCollapsed ? 'Expandir menú lateral' : 'Contraer menú lateral'">
+                    <i class="bi text-lg transition-transform duration-200" :class="sidebarCollapsed ? 'bi-layout-sidebar-inset' : 'bi-layout-sidebar-inset-reverse'"></i>
                 </button>
                 <div class="hidden sm:flex items-center gap-2 text-xs font-medium text-gray-400">
                     <span>Plataforma</span>
@@ -221,10 +283,10 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
 
             <!-- Header Quick Actions & Status -->
             <div class="flex items-center gap-3">
-                <!-- <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-medium">
+                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-medium">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span>Sistema Conectado</span>
-                </div> -->
+                </div>
                 <!-- <div class="text-xs font-medium text-gray-500 hidden sm:block">
                     <?= date('d M Y') ?>
                 </div> -->

@@ -46,14 +46,14 @@ $hasSystemAlert = $systemAlertMessage !== '';
     <?php include TEMPLATE_DIR . 'system-alert.php'; ?>
 
     <!-- Header / Navbar -->
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
             <!-- Logo -->
             <a href="<?= PROJECT_ROOT ?>/" class="flex items-center">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpg" alt="Velion Logo" class="h-9 object-contain">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpg" alt="Velion Logo" class="h-8 sm:h-9 object-contain">
             </a>
 
-            <!-- Nav Links -->
+            <!-- Nav Links (Desktop) -->
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
                 <a href="#como-funciona" class="hover:text-primary-500 transition-colors">Cómo funciona</a>
                 <a href="#caracteristicas" class="hover:text-primary-500 transition-colors">Solución</a>
@@ -61,12 +61,46 @@ $hasSystemAlert = $systemAlertMessage !== '';
                 <a href="#soporte" class="hover:text-primary-500 transition-colors">Soporte</a>
             </nav>
 
-            <!-- Actions -->
-            <div class="flex items-center gap-4">
+            <!-- Actions (Desktop) -->
+            <div class="hidden sm:flex items-center gap-3 md:gap-4">
                 <a href="<?= PROJECT_ROOT ?>/login" class="text-sm font-semibold text-gray-700 hover:text-primary-500 transition-colors px-3 py-2">
                     Iniciar sesión
                 </a>
-                <a href="<?= PROJECT_ROOT ?>/registro" class="rounded-full bg-primary-500 hover:bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:scale-105">
+                <a href="<?= PROJECT_ROOT ?>/registro" class="rounded-full bg-primary-500 hover:bg-primary-600 px-5 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm transition-all hover:scale-105">
+                    Solicitar ahora
+                </a>
+            </div>
+
+            <!-- Hamburger Button (Mobile) -->
+            <div class="flex items-center md:hidden">
+                <button type="button" 
+                        @click="mobileMenuOpen = !mobileMenuOpen" 
+                        onclick="const menu = document.getElementById('mobile-menu'); if(menu) menu.classList.toggle('hidden')" 
+                        class="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500" 
+                        aria-controls="mobile-menu" 
+                        aria-expanded="false">
+                    <span class="sr-only">Abrir menú principal</span>
+                    <!-- Icon Hamburger -->
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden border-b border-gray-200 bg-white px-4 pt-2 pb-6 space-y-4 shadow-lg transition-all" id="mobile-menu">
+            <nav class="flex flex-col space-y-3 font-medium text-gray-600 pt-2">
+                <a href="#como-funciona" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="px-3 py-2 rounded-md hover:bg-gray-50 hover:text-primary-500 transition-colors">Cómo funciona</a>
+                <a href="#caracteristicas" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="px-3 py-2 rounded-md hover:bg-gray-50 hover:text-primary-500 transition-colors">Solución</a>
+                <a href="#precios" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="px-3 py-2 rounded-md hover:bg-gray-50 hover:text-primary-500 transition-colors">Precios</a>
+                <a href="#soporte" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="px-3 py-2 rounded-md hover:bg-gray-50 hover:text-primary-500 transition-colors">Soporte</a>
+            </nav>
+            <div class="pt-4 border-t border-gray-100 flex flex-col space-y-2">
+                <a href="<?= PROJECT_ROOT ?>/login" class="w-full text-center px-4 py-2.5 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition-colors border border-gray-200 text-sm">
+                    Iniciar sesión
+                </a>
+                <a href="<?= PROJECT_ROOT ?>/registro" class="w-full text-center px-4 py-2.5 rounded-full font-semibold text-white bg-primary-500 hover:bg-primary-600 transition-colors text-sm shadow-sm">
                     Solicitar ahora
                 </a>
             </div>

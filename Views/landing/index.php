@@ -119,7 +119,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                             </div>
                             <span class="text-[11px] bg-white/20 px-2.5 py-0.5 rounded-full">En tiempo real</span>
                         </div>
-                        
+
                         <div class="space-y-3">
                             <div class="bg-white/10 rounded-xl p-3 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
@@ -311,7 +311,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                         Te ayudamos a saber con exactitud qué está pasando en tu negocio sin tener que perseguir datos, completar tareas manualmente o saltar entre múltiples aplicaciones incompatibles.
                     </p>
                 </div>
-                
+
                 <div class="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-medium text-gray-700">
                     <div class="flex items-center gap-2">
                         <i class="bi bi-check-circle-fill text-primary-500"></i>
@@ -341,7 +341,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     <p class="text-xs text-gray-500 leading-relaxed">
                         Incorporamos continuamente nuevas herramientas de gestión financiera, contabilidad y fiscalidad para centralizar cada vez más procesos de autónomos y sociedades.
                     </p>
-                    
+
                     <div class="space-y-4 pt-2">
                         <div class="flex gap-4 p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
                             <div class="w-10 h-10 rounded-lg bg-primary-50 text-primary-500 flex items-center justify-center shrink-0">
@@ -609,7 +609,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                         Gestión empresarial y automatización sanitaria
                     </h2>
                     <p class="text-sm opacity-80 leading-relaxed font-light max-w-xs">
-                        Recibe consejos prácticos sobre optimización y automatización de clínicas, novedades normativas (VERI*FACTU, Contrat@) y claves para hacer crecer tu negocio.
+                        Recibe consejos prácticos sobre optimización y automatización de clínicas, novedades normativas y claves para hacer crecer tu negocio.
                     </p>
                 </div>
             </div>

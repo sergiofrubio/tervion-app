@@ -15,11 +15,10 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: velion
+      MYSQL_DATABASE: app
     volumes:
       - db_data:/var/lib/mysql
-      - ./data/velion.sql:/docker-entrypoint-initdb.d/init.sql
-
+      - ./data/app.sql:/docker-entrypoint-initdb.d/init.sql
   # redis:
   #   image: redis:alpine
   #   ports:
@@ -28,5 +27,4 @@ services:
   #     - redis_data:/data
 
 volumes:
-  db_data:
-  # redis_data:
+  db_data: # redis_data:

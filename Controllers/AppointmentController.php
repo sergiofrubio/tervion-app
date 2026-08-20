@@ -21,7 +21,11 @@ class AppointmentController extends Controller
             $data = ['appointments' => $appointment->getByPatient($_SESSION['usuario_id'])];
             $this->view('patient-view/appointment/list', $data);
         } else {
-            $data = ['appointments' => $appointment->getAll()];
+            $userModel = $this->model('User');
+            $data = [
+                'appointments' => $appointment->getAll(),
+                'fisioterapeutas' => $userModel->getByRol('Fisioterapeuta')
+            ];
             $this->view('appointment/list', $data);
         }
     }

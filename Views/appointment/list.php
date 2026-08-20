@@ -2,8 +2,24 @@
 $pageTitle = "Citas";
 include TEMPLATE_DIR . 'header.php';
 
-$filtro_fecha_hora = isset($_POST['fecha_hora']) ? $_POST['fecha_hora'] : '';
-$filtro_estado = isset($_POST['estado']) ? $_POST['estado'] : '';
+$filtro_fecha_hora = isset($_REQUEST['fecha_hora']) ? $_REQUEST['fecha_hora'] : '';
+$filtro_estado = isset($_REQUEST['estado']) ? $_REQUEST['estado'] : '';
+$filtro_fisioterapeuta = isset($_REQUEST['fisioterapeuta_id']) ? $_REQUEST['fisioterapeuta_id'] : '';
+
+if (empty($fisioterapeutas) && !empty($appointments)) {
+    $fisioterapeutas = [];
+    $seen = [];
+    foreach ($appointments as $cita) {
+        if (!empty($cita['fisioterapeuta_id']) && !isset($seen[$cita['fisioterapeuta_id']])) {
+            $seen[$cita['fisioterapeuta_id']] = true;
+            $fisioterapeutas[] = [
+                'usuario_id' => $cita['fisioterapeuta_id'],
+                'nombre' => $cita['fisioterapeuta_nombre'] ?? '',
+                'apellidos' => $cita['fisioterapeuta_apellidos'] ?? ''
+            ];
+        }
+    }
+}
 
 $citas_filtradas = [];
 if (!empty($appointments)) {
@@ -13,6 +29,9 @@ if (!empty($appointments)) {
             $match = false;
         }
         if ($filtro_estado !== '' && isset($cita['estado']) && $cita['estado'] !== $filtro_estado) {
+            $match = false;
+        }
+        if ($filtro_fisioterapeuta !== '' && isset($cita['fisioterapeuta_id']) && (string)$cita['fisioterapeuta_id'] !== (string)$filtro_fisioterapeuta) {
             $match = false;
         }
         if ($match) {
@@ -35,6 +54,10 @@ if ($pagina > $n_botones_paginacion && $n_botones_paginacion > 0) {
 
 $iniciar = ($pagina - 1) * $articulos_x_pagina;
 $citasPaginadas = array_slice($citas_filtradas, $iniciar, $articulos_x_pagina);
+
+$params = $_GET;
+unset($params['pagina']);
+$queryString = !empty($params) ? '&' . http_build_query($params) : '';
 ?>
 
 <div class="space-y-6 animate-fade-in-up">
@@ -81,10 +104,23 @@ $citasPaginadas = array_slice($citas_filtradas, $iniciar, $articulos_x_pagina);
 
     <!-- Filters -->
     <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-gray-100">
-        <form method="post" action="" class="flex flex-col lg:flex-row gap-4 items-end">
+        <form action="<?= PROJECT_ROOT ?>/citas" method="GET" class="flex flex-col lg:flex-row gap-4 items-end">
             <div class="w-full lg:w-auto flex-1">
                 <label for="fecha_hora" class="block text-sm font-medium text-gray-700 mb-1.5">Fecha</label>
                 <input type="date" id="fecha_hora" name="fecha_hora" value="<?= htmlspecialchars($filtro_fecha_hora) ?>" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-2.5 transition-colors">
+            </div>
+            <div class="w-full lg:w-auto flex-1">
+                <label for="fisioterapeuta_id" class="block text-sm font-medium text-gray-700 mb-1.5">Agenda (Fisioterapeuta)</label>
+                <select id="fisioterapeuta_id" name="fisioterapeuta_id" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-2.5 bg-white transition-colors">
+                    <option value="" <?= $filtro_fisioterapeuta === '' ? 'selected' : '' ?>>Todos los fisioterapeutas</option>
+                    <?php if (!empty($fisioterapeutas)): ?>
+                        <?php foreach ($fisioterapeutas as $fisio): ?>
+                            <option value="<?= htmlspecialchars($fisio['usuario_id']) ?>" <?= (string)$filtro_fisioterapeuta === (string)$fisio['usuario_id'] ? 'selected' : '' ?>>
+                                <?= htmlspecialchars(($fisio['nombre'] ?? '') . ' ' . ($fisio['apellidos'] ?? '')) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </select>
             </div>
             <div class="w-full lg:w-auto flex-1">
                 <label for="estado" class="block text-sm font-medium text-gray-700 mb-1.5">Estado</label>
@@ -224,16 +260,16 @@ $citasPaginadas = array_slice($citas_filtradas, $iniciar, $articulos_x_pagina);
                 </div>
                 <div>
                     <nav class="relative z-0 inline-flex rounded-lg shadow-sm -space-x-px" aria-label="Pagination">
-                        <a href="?pagina=<?= max(1, $pagina - 1) ?>" class="relative inline-flex items-center px-3 py-2 rounded-l-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina <= 1 ? 'pointer-events-none opacity-50' : '' ?>">
+                        <a href="?pagina=<?= max(1, $pagina - 1) . $queryString ?>" class="relative inline-flex items-center px-3 py-2 rounded-l-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina <= 1 ? 'pointer-events-none opacity-50' : '' ?>">
                             <span class="sr-only">Anterior</span>
                             <i class="bi bi-chevron-left text-xs"></i>
                         </a>
                         <?php for ($i = 0; $i < $n_botones_paginacion; $i++) : ?>
-                            <a href="?pagina=<?= $i + 1 ?>" aria-current="<?= $pagina == $i + 1 ? 'page' : 'false' ?>" class="relative inline-flex items-center px-4 py-2 border text-sm font-medium transition-colors <?= $pagina == $i + 1 ? 'z-10 bg-primary-50 border-primary-500 text-primary-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' ?>">
+                            <a href="?pagina=<?= ($i + 1) . $queryString ?>" aria-current="<?= $pagina == $i + 1 ? 'page' : 'false' ?>" class="relative inline-flex items-center px-4 py-2 border text-sm font-medium transition-colors <?= $pagina == $i + 1 ? 'z-10 bg-primary-50 border-primary-500 text-primary-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' ?>">
                                 <?= $i + 1 ?>
                             </a>
                         <?php endfor; ?>
-                        <a href="?pagina=<?= min($n_botones_paginacion, $pagina + 1) ?>" class="relative inline-flex items-center px-3 py-2 rounded-r-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina >= $n_botones_paginacion ? 'pointer-events-none opacity-50' : '' ?>">
+                        <a href="?pagina=<?= min($n_botones_paginacion, $pagina + 1) . $queryString ?>" class="relative inline-flex items-center px-3 py-2 rounded-r-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina >= $n_botones_paginacion ? 'pointer-events-none opacity-50' : '' ?>">
                             <span class="sr-only">Siguiente</span>
                             <i class="bi bi-chevron-right text-xs"></i>
                         </a>

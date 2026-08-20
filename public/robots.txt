@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /registro
+
+# Desestimar/bloquear rutas privadas y de aplicación interna
+Disallow: /inicio
+Disallow: /pacientes
+Disallow: /citas
+Disallow: /configuracion
+Disallow: /trabajadores
+
+Sitemap: https://velion.es/sitemap.xml

@@ -124,27 +124,27 @@ $citasPaginadas = array_slice($citas_filtradas, $iniciar, $articulos_x_pagina);
                     <?php if (!empty($citasPaginadas)) : ?>
                         <?php foreach ($citasPaginadas as $cita) : ?>
                             <tr class="hover:bg-gray-50/50 transition-colors group">
-                                <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 font-medium">#<?= $cita['paciente_id'] ?></td>
+                                <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 font-medium">#<?= htmlspecialchars($cita['paciente_id'] ?? $cita['cita_id'] ?? '') ?></td>
                                 <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
                                     <div class="flex items-center gap-2">
                                         <i class="bi bi-calendar2 text-gray-400"></i>
-                                        <?= date('d/m/Y H:i', strtotime($cita['fecha_hora'])) ?>
+                                        <?= !empty($cita['fecha_hora']) ? date('d/m/Y H:i', strtotime($cita['fecha_hora'])) : '' ?>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-900">
-                                    <div class="font-medium text-gray-900"><?= $cita['paciente_nombre'] . " " . $cita['paciente_apellidos'] ?></div>
+                                    <div class="font-medium text-gray-900"><?= htmlspecialchars(trim(($cita['paciente_nombre'] ?? '') . " " . ($cita['paciente_apellidos'] ?? ''))) ?></div>
                                 </td>
                                 <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                                    <a href="tel:<?= $cita['paciente_telefono'] ?>" class="hover:text-primary-600 transition-colors">
-                                        <?= $cita['paciente_telefono'] ?>
+                                    <a href="tel:<?= htmlspecialchars($cita['paciente_telefono'] ?? '') ?>" class="hover:text-primary-600 transition-colors">
+                                        <?= htmlspecialchars($cita['paciente_telefono'] ?? '') ?>
                                     </a>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-600">
                                     <div class="flex items-center gap-2">
                                         <div class="w-6 h-6 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-xs font-bold">
-                                            <?= substr($cita['fisioterapeuta_nombre'], 0, 1) ?>
+                                            <?= htmlspecialchars(substr($cita['fisioterapeuta_nombre'] ?? '', 0, 1)) ?>
                                         </div>
-                                        <?= $cita['fisioterapeuta_nombre'] . " " . substr($cita['fisioterapeuta_apellidos'], 0, 1) . "." ?>
+                                        <?= htmlspecialchars(trim(($cita['fisioterapeuta_nombre'] ?? '') . " " . substr($cita['fisioterapeuta_apellidos'] ?? '', 0, 1) . ".")) ?>
                                     </div>
                                 </td>
                                 <td class="whitespace-nowrap px-6 py-4 text-sm">

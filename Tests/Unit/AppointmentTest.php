@@ -123,7 +123,7 @@ class AppointmentTest extends TestCase
             ->method('prepare')
             ->with($this->logicalAnd(
                 $this->stringContains('SELECT c.*'),
-                $this->stringContains('WHERE DATE(c.fecha_hora) = CURDATE()')
+                $this->stringContains('ORDER BY c.fecha_hora DESC')
             ))
             ->willReturn($this->stmtMock);
 

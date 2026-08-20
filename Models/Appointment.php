@@ -43,7 +43,6 @@ class Appointment
                   FROM citas c 
                   LEFT JOIN usuarios p ON c.paciente_id = p.usuario_id 
                   LEFT JOIN usuarios f ON c.fisioterapeuta_id = f.usuario_id 
-                  WHERE DATE(c.fecha_hora) = CURDATE()
                   ORDER BY c.fecha_hora DESC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();

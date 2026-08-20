@@ -9,9 +9,11 @@ $filtro_usuario_id = isset($_GET['usuario_id']) ? trim($_GET['usuario_id']) : ''
 $pacientes_filtrados = [];
 if ($filtro_usuario_id !== '') {
     foreach ($patients as $p) {
-        if (strpos((string)$p['usuario_id'], $filtro_usuario_id) !== false || 
+        if (
+            strpos((string)$p['usuario_id'], $filtro_usuario_id) !== false ||
             strpos(strtolower($p['nombre']), strtolower($filtro_usuario_id)) !== false ||
-            strpos(strtolower($p['apellidos']), strtolower($filtro_usuario_id)) !== false) {
+            strpos(strtolower($p['apellidos']), strtolower($filtro_usuario_id)) !== false
+        ) {
             $pacientes_filtrados[] = $p;
         }
     }
@@ -49,10 +51,10 @@ $pacientesPaginados = array_slice($pacientes_filtrados, $iniciar, $articulos_x_p
                 </button>
             </form>
             <?php if ($isAdminOrSecretary): ?>
-            <a href="<?= PROJECT_ROOT ?>/pacientes/create" class="inline-flex justify-center items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all">
-                <i class="bi bi-plus-lg"></i>
-                Nuevo Paciente
-            </a>
+                <a href="<?= PROJECT_ROOT ?>/pacientes/create" class="inline-flex justify-center items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all">
+                    <i class="bi bi-plus-lg"></i>
+                    Nuevo Paciente
+                </a>
             <?php endif; ?>
         </div>
     </div>
@@ -83,7 +85,7 @@ $pacientesPaginados = array_slice($pacientes_filtrados, $iniciar, $articulos_x_p
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50/50">
                     <tr>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">DNI/ID</th>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">DNI</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Nombre Completo</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Teléfono</th>
@@ -121,17 +123,17 @@ $pacientesPaginados = array_slice($pacientes_filtrados, $iniciar, $articulos_x_p
                                             <i class="bi bi-eye text-lg"></i>
                                         </a>
                                         <?php if ($isAdminOrSecretary): ?>
-                                        <a href="<?= PROJECT_ROOT ?>/pacientes/edit?id=<?= $paciente['usuario_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-2 rounded-lg transition-all duration-200" title="Editar">
-                                            <i class="bi bi-pencil-square text-lg"></i>
-                                        </a>
+                                            <a href="<?= PROJECT_ROOT ?>/pacientes/edit?id=<?= $paciente['usuario_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-2 rounded-lg transition-all duration-200" title="Editar">
+                                                <i class="bi bi-pencil-square text-lg"></i>
+                                            </a>
                                         <?php endif; ?>
                                         <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Administrador'): ?>
-                                        <form action="<?= PROJECT_ROOT ?>/pacientes/delete" method="POST" class="inline-block m-0" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este paciente?');">
-                                            <input type="hidden" name="id" value="<?= $paciente['usuario_id'] ?>">
-                                            <button type="submit" class="text-gray-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-lg transition-all duration-200" title="Eliminar">
-                                                <i class="bi bi-trash3 text-lg"></i>
-                                            </button>
-                                        </form>
+                                            <form action="<?= PROJECT_ROOT ?>/pacientes/delete" method="POST" class="inline-block m-0" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este paciente?');">
+                                                <input type="hidden" name="id" value="<?= $paciente['usuario_id'] ?>">
+                                                <button type="submit" class="text-gray-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-lg transition-all duration-200" title="Eliminar">
+                                                    <i class="bi bi-trash3 text-lg"></i>
+                                                </button>
+                                            </form>
                                         <?php endif; ?>
                                     </div>
                                 </td>
@@ -153,44 +155,52 @@ $pacientesPaginados = array_slice($pacientes_filtrados, $iniciar, $articulos_x_p
                 </tbody>
             </table>
         </div>
-        
+
         <!-- Pagination -->
         <?php if ($n_botones_paginacion > 1): ?>
-        <div class="bg-white px-4 py-3 border-t border-gray-100 sm:px-6 flex items-center justify-between">
-            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                <div>
-                    <p class="text-sm text-gray-700">
-                        Mostrando <span class="font-semibold text-gray-900"><?= min($iniciar + 1, $total_pacientes) ?></span> a <span class="font-semibold text-gray-900"><?= min($iniciar + $articulos_x_pagina, $total_pacientes) ?></span> de <span class="font-semibold text-gray-900"><?= $total_pacientes ?></span> pacientes
-                    </p>
-                </div>
-                <div>
-                    <nav class="relative z-0 inline-flex rounded-lg shadow-sm -space-x-px" aria-label="Pagination">
-                        <a href="?pagina=<?= max(1, $pagina - 1) ?><?= $filtro_usuario_id !== '' ? '&usuario_id=' . urlencode($filtro_usuario_id) : '' ?>" class="relative inline-flex items-center px-3 py-2 rounded-l-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina <= 1 ? 'pointer-events-none opacity-50' : '' ?>">
-                            <span class="sr-only">Anterior</span>
-                            <i class="bi bi-chevron-left text-xs"></i>
-                        </a>
-                        <?php for ($i = 0; $i < $n_botones_paginacion; $i++) : ?>
-                            <a href="?pagina=<?= $i + 1 ?><?= $filtro_usuario_id !== '' ? '&usuario_id=' . urlencode($filtro_usuario_id) : '' ?>" aria-current="<?= $pagina == $i + 1 ? 'page' : 'false' ?>" class="relative inline-flex items-center px-4 py-2 border text-sm font-medium transition-colors <?= $pagina == $i + 1 ? 'z-10 bg-primary-50 border-primary-500 text-primary-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' ?>">
-                                <?= $i + 1 ?>
+            <div class="bg-white px-4 py-3 border-t border-gray-100 sm:px-6 flex items-center justify-between">
+                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                    <div>
+                        <p class="text-sm text-gray-700">
+                            Mostrando <span class="font-semibold text-gray-900"><?= min($iniciar + 1, $total_pacientes) ?></span> a <span class="font-semibold text-gray-900"><?= min($iniciar + $articulos_x_pagina, $total_pacientes) ?></span> de <span class="font-semibold text-gray-900"><?= $total_pacientes ?></span> pacientes
+                        </p>
+                    </div>
+                    <div>
+                        <nav class="relative z-0 inline-flex rounded-lg shadow-sm -space-x-px" aria-label="Pagination">
+                            <a href="?pagina=<?= max(1, $pagina - 1) ?><?= $filtro_usuario_id !== '' ? '&usuario_id=' . urlencode($filtro_usuario_id) : '' ?>" class="relative inline-flex items-center px-3 py-2 rounded-l-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina <= 1 ? 'pointer-events-none opacity-50' : '' ?>">
+                                <span class="sr-only">Anterior</span>
+                                <i class="bi bi-chevron-left text-xs"></i>
                             </a>
-                        <?php endfor; ?>
-                        <a href="?pagina=<?= min($n_botones_paginacion, $pagina + 1) ?><?= $filtro_usuario_id !== '' ? '&usuario_id=' . urlencode($filtro_usuario_id) : '' ?>" class="relative inline-flex items-center px-3 py-2 rounded-r-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina >= $n_botones_paginacion ? 'pointer-events-none opacity-50' : '' ?>">
-                            <span class="sr-only">Siguiente</span>
-                            <i class="bi bi-chevron-right text-xs"></i>
-                        </a>
-                    </nav>
+                            <?php for ($i = 0; $i < $n_botones_paginacion; $i++) : ?>
+                                <a href="?pagina=<?= $i + 1 ?><?= $filtro_usuario_id !== '' ? '&usuario_id=' . urlencode($filtro_usuario_id) : '' ?>" aria-current="<?= $pagina == $i + 1 ? 'page' : 'false' ?>" class="relative inline-flex items-center px-4 py-2 border text-sm font-medium transition-colors <?= $pagina == $i + 1 ? 'z-10 bg-primary-50 border-primary-500 text-primary-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' ?>">
+                                    <?= $i + 1 ?>
+                                </a>
+                            <?php endfor; ?>
+                            <a href="?pagina=<?= min($n_botones_paginacion, $pagina + 1) ?><?= $filtro_usuario_id !== '' ? '&usuario_id=' . urlencode($filtro_usuario_id) : '' ?>" class="relative inline-flex items-center px-3 py-2 rounded-r-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina >= $n_botones_paginacion ? 'pointer-events-none opacity-50' : '' ?>">
+                                <span class="sr-only">Siguiente</span>
+                                <i class="bi bi-chevron-right text-xs"></i>
+                            </a>
+                        </nav>
+                    </div>
                 </div>
             </div>
-        </div>
         <?php endif; ?>
     </div>
 </div>
 
 <style>
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in-up {
         animation: fadeInUp 0.4s ease-out forwards;
     }

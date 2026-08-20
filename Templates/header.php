@@ -57,7 +57,7 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
         x-transition:leave-end="opacity-0"></div>
 
     <!-- Sidebar (Color secundario bg-gray-900) -->
-    <aside :class="sidebarCollapsed ? 'w-20' : 'w-72'"
+    <aside :class="sidebarCollapsed ? 'w-20' : 'w-60'"
         class="fixed inset-y-0 left-0 z-50 bg-gray-900 border-r border-gray-800 transition-[width] duration-300 ease-in-out lg:static lg:inset-0 flex flex-col shadow-2xl lg:shadow-none text-white select-none shrink-0 overflow-x-hidden"
         :style="window.innerWidth < 1024 ? (sidebarOpen ? 'transform: translateX(0);' : 'transform: translateX(-100%);') : ''">
 
@@ -83,7 +83,7 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
 
         <!-- Sidebar Navigation Links -->
         <nav class="flex-1 px-3 py-6 overflow-y-auto overflow-x-hidden transition-all duration-300"
-             :class="sidebarCollapsed ? 'space-y-1' : 'space-y-6'">
+            :class="sidebarCollapsed ? 'space-y-1' : 'space-y-6'">
 
             <!-- Grupo: Principal -->
             <div>

@@ -16,16 +16,16 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Velion — Automatización y Gestión Integral de Clínicas">
     <meta property="og:description" content="Menos administración, más tiempo para tus pacientes. Centraliza y conecta todos los procesos de tu clínica en un único lugar.">
-    <meta property="og:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpg">
+    <meta property="og:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion.jpg">
     <meta property="og:url" content="https://velion-app.com/">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Velion — Tu clínica, tu gestión, tu libertad">
     <meta name="twitter:description" content="La plataforma SaaS que automatiza la gestión empresarial de clínicas y profesionales sanitarios.">
-    <meta name="twitter:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpg">
+    <meta name="twitter:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion.jpg">
 
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana.jpg" type="image/jpeg">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion.jpg" type="image/jpeg">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,7 +50,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
             <!-- Logo -->
             <a href="<?= PROJECT_ROOT ?>/" class="flex items-center">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpg" alt="Velion Logo" class="h-8 sm:h-9 object-contain">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion.jpg" alt="Velion Logo" class="h-8 sm:h-9 object-contain">
             </a>
 
             <!-- Nav Links (Desktop) -->
@@ -148,7 +148,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
 
                     <!-- Application Window Mockup -->
                     <div class="relative bg-gray-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-800 overflow-hidden text-gray-800">
-                        
+
                         <!-- Top Window Title Bar -->
                         <div class="bg-gray-900/95 px-4 py-2.5 border-b border-gray-800 flex items-center justify-between">
                             <div class="flex items-center gap-2">
@@ -169,13 +169,13 @@ $hasSystemAlert = $systemAlertMessage !== '';
 
                         <!-- App Layout (Sidebar + Main View) -->
                         <div class="flex bg-slate-50 min-h-[380px] sm:min-h-[420px]">
-                            
+
                             <!-- Mini App Sidebar -->
                             <div class="w-14 sm:w-16 bg-gray-900 border-r border-gray-800 flex flex-col items-center py-4 justify-between shrink-0 select-none">
                                 <div class="space-y-4 flex flex-col items-center">
                                     <!-- Logo Icon -->
                                     <div class="w-8 h-8 rounded-xl bg-gray-800 border border-gray-700 p-1 flex items-center justify-center shadow-inner">
-                                        <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana-oscuro.jpg" alt="Velion" class="w-full h-full object-contain rounded-md">
+                                        <img src="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-oscuro.jpg" alt="Velion" class="w-full h-full object-contain rounded-md">
                                     </div>
 
                                     <!-- Nav Icons -->
@@ -206,7 +206,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
 
                             <!-- Main Dashboard Area -->
                             <div class="flex-1 p-3.5 sm:p-5 space-y-3 sm:space-y-4 overflow-hidden flex flex-col justify-between">
-                                
+
                                 <!-- Welcome / Header Banner -->
                                 <div class="bg-white rounded-2xl p-3 sm:p-4 border border-gray-200/80 shadow-sm flex items-center justify-between gap-2">
                                     <div>
@@ -807,7 +807,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
             <p class="w-full sm:w-1/3 text-center sm:text-left text-sm">© 2026 Velion Ibérica SLU</p>
 
             <a href="<?= PROJECT_ROOT ?>/" class="w-full sm:w-1/3 flex items-center justify-center">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana-oscuro.jpg" alt="Velion Logo" class="h-8 object-contain rounded-md p-1 shadow-sm">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-oscuro.jpg" alt="Velion Logo" class="h-8 object-contain rounded-md p-1 shadow-sm">
             </a>
 
             <div class="w-full sm:w-1/3 flex items-center justify-center sm:justify-end gap-6 text-gray-400">

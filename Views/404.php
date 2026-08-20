@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Error 404 - Página no encontrada</title>
-  <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana.jpg" type="image/jpeg">
+  <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion.jpg" type="image/jpeg">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,11 +53,19 @@ $hasSystemAlert = $systemAlertMessage !== '';
 
   <style>
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
+
     .animate-fade-in-up {
-        animation: fadeInUp 0.4s ease-out forwards;
+      animation: fadeInUp 0.4s ease-out forwards;
     }
   </style>
 

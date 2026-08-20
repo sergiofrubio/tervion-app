@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= isset($pageTitle) ? htmlspecialchars($pageTitle) . ' — Velion' : 'Panel de Gestión — Velion' ?></title>
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana.jpg" type="image/jpeg">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion.jpg" type="image/jpeg">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,7 +66,7 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
             :class="sidebarCollapsed ? 'justify-center px-2' : 'px-5'">
             <a href="<?= PROJECT_ROOT ?>/inicio" class="flex items-center gap-3 group overflow-hidden shrink-0" :title="sidebarCollapsed ? 'Velion — Gestión Clínica' : ''">
                 <div class="w-10 h-10 rounded-xl bg-gray-800 border border-gray-700 p-1.5 flex items-center justify-center shadow-inner group-hover:border-primary-500 transition-colors shrink-0">
-                    <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana-oscuro.jpg" alt="Velion Emblem" class="w-full h-full object-contain rounded-md">
+                    <img src="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-oscuro.jpg" alt="Velion Emblem" class="w-full h-full object-contain rounded-md">
                 </div>
                 <div class="flex flex-col transition-all duration-300 overflow-hidden whitespace-nowrap"
                     :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">

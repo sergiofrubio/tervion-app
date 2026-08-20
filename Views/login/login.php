@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Inicio de sesión - Velion</title>
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana.jpg" type="image/jpeg">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion.jpg" type="image/jpeg">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,9 +34,9 @@ $hasSystemAlert = $systemAlertMessage !== '';
         <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 p-8 sm:p-10 transition-all">
 
             <div class="text-center mb-8">
-                <!-- <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpg" alt="Velion Logo" class="w-24 mx-auto rounded-2xl shadow-sm mb-4"> -->
+                <!-- <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion.jpg" alt="Velion Logo" class="w-24 mx-auto rounded-2xl shadow-sm mb-4"> -->
                 <a href="<?= PROJECT_ROOT ?>/" class="w-24 mx-auto flex items-center mb-4">
-                    <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-velion.jpg" alt="Velion Logo" class="h-9 object-contain">
+                    <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion.jpg" alt="Velion Logo" class="h-9 object-contain">
                 </a>
                 <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Bienvenido de nuevo</h2>
                 <p class="text-sm text-gray-500 mt-1">Inicia sesión en tu cuenta</p>
@@ -46,7 +46,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
             // Verificar si hay una alerta de usuario
             if (isset($_GET['alert']) && isset($_GET['message'])) {
                 $alert_type = $_GET['alert'] === 'danger' ? 'bg-red-50 text-red-800 border-red-200' : ($_GET['alert'] === 'success' ? 'bg-green-50 text-green-800 border-green-200' :
-                        'bg-blue-50 text-blue-800 border-blue-200');
+                    'bg-blue-50 text-blue-800 border-blue-200');
 
                 echo '<div class="rounded-xl border p-4 mb-6 ' . $alert_type . '" role="alert" x-data="{ show: true }" x-show="show">
                     <div class="flex justify-between items-start">

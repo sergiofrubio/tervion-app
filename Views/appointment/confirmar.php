@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Confirmación de Asistencia - Velion</title>
-  <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana.jpg" type="image/jpeg">
+  <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion.jpg" type="image/jpeg">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,7 +26,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
   <?php include TEMPLATE_DIR . 'system-alert.php'; ?>
 
   <div class="w-full max-w-md p-8 mx-4 bg-white/85 backdrop-blur-md rounded-3xl shadow-xl border border-white/20 text-center animate-fade-in-up">
-    
+
     <?php if ($success): ?>
       <!-- Success Icon Area -->
       <div class="mx-auto w-16 h-16 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center mb-6 shadow-inner">
@@ -45,7 +45,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
         <!-- Appointment Summary Card -->
         <div class="mt-6 p-5 bg-slate-50/50 rounded-2xl border border-slate-100 text-left">
           <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Detalles de la cita</h3>
-          
+
           <div class="space-y-2 text-sm text-slate-700">
             <div class="flex justify-between">
               <span class="text-slate-400">Paciente:</span>
@@ -87,11 +87,19 @@ $hasSystemAlert = $systemAlertMessage !== '';
 
   <style>
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
+
     .animate-fade-in-up {
-        animation: fadeInUp 0.4s ease-out forwards;
+      animation: fadeInUp 0.4s ease-out forwards;
     }
   </style>
 

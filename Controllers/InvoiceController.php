@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Core\Controller;
@@ -69,7 +70,7 @@ class InvoiceController extends Controller
                 'impuesto'      => (float)$_POST['impuesto'],
                 'creado_por'    => $_SESSION['usuario_id'] ?? null
             ];
-            
+
             $facturaId = $facturaModel->save($data);
             if ($facturaId) {
                 // Envío automático a Verifactu (AEAT)
@@ -130,7 +131,7 @@ class InvoiceController extends Controller
             $id = $_POST['factura_id'];
             $estado = $_POST['estado'];
             $modificado_por = $_SESSION['usuario_id'] ?? null;
-            
+
             if ($facturaModel->updateStatus($id, $estado, $modificado_por)) {
                 header('Location: ' . PROJECT_ROOT . '/facturas');
                 $this->exitApp();
@@ -186,7 +187,7 @@ class InvoiceController extends Controller
         $pdf->SetAutoPageBreak(true, 15);
 
         // Header - Logo & QR Code
-        $logoPath = __DIR__ . '/../public/custom/img/logo-velion.jpg';
+        $logoPath = __DIR__ . '/../public/custom/img/logo-tervion.jpg';
         if (file_exists($logoPath)) {
             $pdf->Image($logoPath, 10, 10, 45); // width 45mm, height auto
         } else {
@@ -194,7 +195,7 @@ class InvoiceController extends Controller
             $pdf->SetTextColor(0, 82, 217); // Royal Blue
             $pdf->Cell(120, 10, iconv('UTF-8', 'windows-1252', $clinica['nombre_comercial'] ?? 'VELION CLINIC'), 0, 0, 'L');
         }
-        
+
         // QR Code generation (using api.qrserver.com for rendering in PDF)
         $qr_url_data = $factura['qr_url'] ?: "https://prewww1.aeat.es/vl/factura/qr?nif=" . ($clinica['nif_cif'] ?? 'B12345678') . "&serie=" . $factura['serie'] . '-' . $factura['numero'] . "&fecha=" . date('d-m-Y', strtotime($factura['fecha_emision'])) . "&importe=" . number_format($factura['total'], 2, '.', '');
         $qr_image_url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . urlencode($qr_url_data);
@@ -275,15 +276,15 @@ class InvoiceController extends Controller
         $pdf->SetX(130);
         $pdf->Cell(40, 6, iconv('UTF-8', 'windows-1252', 'Total Base:'), 0, 0, 'R');
         $pdf->Cell(30, 6, number_format($factura['precio'], 2, ',', '.') . iconv('UTF-8', 'windows-1252', ' €'), 0, 1, 'R');
-        
+
         $pdf->SetX(130);
         $pdf->Cell(40, 6, iconv('UTF-8', 'windows-1252', 'Total IVA:'), 0, 0, 'R');
         $pdf->Cell(30, 6, number_format($factura['cuota_iva'], 2, ',', '.') . iconv('UTF-8', 'windows-1252', ' €'), 0, 1, 'R');
-        
+
         $pdf->SetX(130);
         $pdf->Cell(70, 2, '', 'B', 1); // thin line under sub-totals
         $pdf->Ln(2);
-        
+
         $pdf->SetX(130);
         $pdf->SetFont('Arial', 'B', 12);
         $pdf->SetTextColor(0, 82, 217); // Royal Blue

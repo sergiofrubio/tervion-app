@@ -73,12 +73,12 @@ $hasSystemAlert = $systemAlertMessage !== '';
 
             <!-- Hamburger Button (Mobile) -->
             <div class="flex items-center md:hidden">
-                <button type="button" 
-                        @click="mobileMenuOpen = !mobileMenuOpen" 
-                        onclick="const menu = document.getElementById('mobile-menu'); if(menu) menu.classList.toggle('hidden')" 
-                        class="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500" 
-                        aria-controls="mobile-menu" 
-                        aria-expanded="false">
+                <button type="button"
+                    @click="mobileMenuOpen = !mobileMenuOpen"
+                    onclick="const menu = document.getElementById('mobile-menu'); if(menu) menu.classList.toggle('hidden')"
+                    class="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    aria-controls="mobile-menu"
+                    aria-expanded="false">
                     <span class="sr-only">Abrir menú principal</span>
                     <!-- Icon Hamburger -->
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -142,67 +142,189 @@ $hasSystemAlert = $systemAlertMessage !== '';
 
             <!-- Hero Right -->
             <div class="relative flex justify-center lg:justify-end">
-                <div class="relative w-full max-w-lg aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-tr from-primary-900 via-primary-800 to-indigo-900 flex items-center justify-center p-6 sm:p-8 border border-gray-100">
-                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,158,255,0.2),transparent)]"></div>
-                    <!-- Dashboard Mockup -->
-                    <div class="relative w-full bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg text-white space-y-5">
-                        <div class="flex justify-between items-center pb-2 border-b border-white/10">
+                <div class="relative w-full max-w-xl">
+                    <!-- Glow effect behind mockup -->
+                    <div class="absolute -inset-2 bg-gradient-to-tr from-primary-500/25 via-indigo-500/20 to-purple-500/15 rounded-3xl blur-2xl pointer-events-none"></div>
+
+                    <!-- Application Window Mockup -->
+                    <div class="relative bg-gray-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-800 overflow-hidden text-gray-800">
+                        
+                        <!-- Top Window Title Bar -->
+                        <div class="bg-gray-900/95 px-4 py-2.5 border-b border-gray-800 flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-green-400"></span>
-                                <span class="text-xs uppercase tracking-widest opacity-80 font-semibold">Tranquilidad Administrativa</span>
-                            </div>
-                            <span class="text-[11px] bg-white/20 px-2.5 py-0.5 rounded-full">En tiempo real</span>
-                        </div>
-
-                        <div class="space-y-3">
-                            <div class="bg-white/10 rounded-xl p-3 flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-green-500/20 text-green-300 flex items-center justify-center text-sm font-bold">
-                                        <i class="bi bi-whatsapp"></i>
-                                    </div>
-                                    <div>
-                                        <div class="text-xs font-semibold">Recordatorios automáticos</div>
-                                        <div class="text-[11px] opacity-70">WhatsApp & Email enviados</div>
-                                    </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block"></span>
                                 </div>
-                                <span class="text-xs font-semibold text-green-300">0% ausencias</span>
+                                <span class="text-[11px] font-medium text-gray-400 ml-2 hidden sm:inline-block">app.velion.es / panel</span>
                             </div>
-
-                            <div class="bg-white/10 rounded-xl p-3 flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-300 flex items-center justify-center text-sm font-bold">
-                                        <i class="bi bi-shield-check"></i>
-                                    </div>
-                                    <div>
-                                        <div class="text-xs font-semibold">VERI*FACTU & Fiscalidad</div>
-                                        <div class="text-[11px] opacity-70">Facturas encadenadas y remitidas</div>
-                                    </div>
-                                </div>
-                                <span class="text-xs font-semibold text-blue-300">Automático</span>
-                            </div>
-
-                            <div class="bg-white/10 rounded-xl p-3 flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-300 flex items-center justify-center text-sm font-bold">
-                                        <i class="bi bi-briefcase"></i>
-                                    </div>
-                                    <div>
-                                        <div class="text-xs font-semibold">Gestión Laboral & Nóminas</div>
-                                        <div class="text-[11px] opacity-70">Profesionales y Contrat@ sincronizados</div>
-                                    </div>
-                                </div>
-                                <span class="text-xs font-semibold text-purple-300">Al día</span>
+                            <div class="flex items-center gap-2">
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span>VERI*FACTU Activo</span>
+                                </span>
                             </div>
                         </div>
 
-                        <div class="flex justify-between items-center text-xs pt-1">
-                            <div>
-                                <div class="opacity-60 text-[10px] uppercase">Control del negocio</div>
-                                <div class="font-medium text-sm">Sin tareas manuales</div>
+                        <!-- App Layout (Sidebar + Main View) -->
+                        <div class="flex bg-slate-50 min-h-[380px] sm:min-h-[420px]">
+                            
+                            <!-- Mini App Sidebar -->
+                            <div class="w-14 sm:w-16 bg-gray-900 border-r border-gray-800 flex flex-col items-center py-4 justify-between shrink-0 select-none">
+                                <div class="space-y-4 flex flex-col items-center">
+                                    <!-- Logo Icon -->
+                                    <div class="w-8 h-8 rounded-xl bg-gray-800 border border-gray-700 p-1 flex items-center justify-center shadow-inner">
+                                        <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-ventana-oscuro.jpg" alt="Velion" class="w-full h-full object-contain rounded-md">
+                                    </div>
+
+                                    <!-- Nav Icons -->
+                                    <div class="space-y-2 pt-2 flex flex-col items-center">
+                                        <div class="w-9 h-9 rounded-xl bg-primary-600 text-white flex items-center justify-center text-sm shadow-md" title="Panel de Control">
+                                            <i class="bi bi-grid-1x2"></i>
+                                        </div>
+                                        <div class="w-9 h-9 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 flex items-center justify-center text-sm transition-colors" title="Agenda / Citas">
+                                            <i class="bi bi-calendar-week"></i>
+                                        </div>
+                                        <div class="w-9 h-9 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 flex items-center justify-center text-sm transition-colors" title="Pacientes">
+                                            <i class="bi bi-people"></i>
+                                        </div>
+                                        <div class="w-9 h-9 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 flex items-center justify-center text-sm transition-colors" title="Facturación">
+                                            <i class="bi bi-receipt"></i>
+                                        </div>
+                                        <div class="w-9 h-9 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 flex items-center justify-center text-sm transition-colors" title="Nóminas">
+                                            <i class="bi bi-briefcase"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- User Avatar in Sidebar -->
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-primary-600 to-indigo-500 text-white text-[11px] font-bold flex items-center justify-center shadow-sm">
+                                    SR
+                                </div>
                             </div>
-                            <div class="text-right">
-                                <div class="opacity-60 text-[10px] uppercase">Sincronización</div>
-                                <div class="font-medium text-sm text-green-400">● Todo conectado</div>
+
+                            <!-- Main Dashboard Area -->
+                            <div class="flex-1 p-3.5 sm:p-5 space-y-3 sm:space-y-4 overflow-hidden flex flex-col justify-between">
+                                
+                                <!-- Welcome / Header Banner -->
+                                <div class="bg-white rounded-2xl p-3 sm:p-4 border border-gray-200/80 shadow-sm flex items-center justify-between gap-2">
+                                    <div>
+                                        <div class="inline-flex items-center gap-1.5 text-[10px] font-semibold text-primary-600">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse"></span>
+                                            <span>Resumen del Centro</span>
+                                        </div>
+                                        <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-0.5">
+                                            Bienvenido, <span class="text-primary-600">Dr. Sergio Rubio</span>
+                                        </h3>
+                                    </div>
+                                    <span class="rounded-full bg-primary-600 px-3 py-1.5 text-[10px] sm:text-xs font-semibold text-white shadow-sm flex items-center gap-1 shrink-0">
+                                        <i class="bi bi-plus-lg text-[10px]"></i>
+                                        <span>Nueva Cita</span>
+                                    </span>
+                                </div>
+
+                                <!-- KPI Metric Cards -->
+                                <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                                    <!-- Card 1: Pacientes -->
+                                    <div class="bg-white rounded-xl sm:rounded-2xl p-2.5 sm:p-3 border border-gray-200/80 shadow-sm">
+                                        <div class="flex items-center justify-between text-gray-400 mb-1">
+                                            <span class="text-[9px] font-bold uppercase tracking-wider">Pacientes</span>
+                                            <i class="bi bi-people text-xs text-primary-500"></i>
+                                        </div>
+                                        <div class="text-sm sm:text-lg font-bold text-gray-900 leading-none">1.420</div>
+                                        <div class="text-[9px] text-emerald-600 font-semibold mt-1 flex items-center gap-0.5">
+                                            <i class="bi bi-arrow-up-short"></i> +12 este mes
+                                        </div>
+                                    </div>
+
+                                    <!-- Card 2: Facturación -->
+                                    <div class="bg-white rounded-xl sm:rounded-2xl p-2.5 sm:p-3 border border-gray-200/80 shadow-sm">
+                                        <div class="flex items-center justify-between text-gray-400 mb-1">
+                                            <span class="text-[9px] font-bold uppercase tracking-wider">Facturado</span>
+                                            <i class="bi bi-shield-check text-xs text-emerald-500"></i>
+                                        </div>
+                                        <div class="text-sm sm:text-lg font-bold text-gray-900 leading-none">18.450 €</div>
+                                        <div class="text-[9px] text-emerald-600 font-semibold mt-1 truncate">
+                                            ✓ AEAT OK
+                                        </div>
+                                    </div>
+
+                                    <!-- Card 3: Agenda Hoy -->
+                                    <div class="bg-white rounded-xl sm:rounded-2xl p-2.5 sm:p-3 border border-gray-200/80 shadow-sm">
+                                        <div class="flex items-center justify-between text-gray-400 mb-1">
+                                            <span class="text-[9px] font-bold uppercase tracking-wider">Agenda Hoy</span>
+                                            <i class="bi bi-calendar-check text-xs text-amber-500"></i>
+                                        </div>
+                                        <div class="text-sm sm:text-lg font-bold text-gray-900 leading-none">8 citas</div>
+                                        <div class="text-[9px] text-primary-600 font-semibold mt-1 truncate">
+                                            ● 2 pendientes
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Appointments List Preview -->
+                                <div class="bg-white rounded-xl sm:rounded-2xl border border-gray-200/80 shadow-sm overflow-hidden">
+                                    <div class="px-3 py-2 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                                        <span class="text-[10px] font-bold text-gray-700 uppercase tracking-wider">Próximas Citas</span>
+                                        <span class="text-[10px] font-semibold text-primary-600">Ver todas</span>
+                                    </div>
+                                    <div class="divide-y divide-gray-100 text-xs">
+                                        <!-- Cita 1 -->
+                                        <div class="p-2 sm:p-2.5 flex items-center justify-between gap-2 hover:bg-gray-50/70 transition-colors">
+                                            <div class="flex items-center gap-2 min-w-0">
+                                                <span class="text-[11px] font-bold text-gray-900 bg-gray-100 px-1.5 py-0.5 rounded-md shrink-0">09:30</span>
+                                                <div class="min-w-0">
+                                                    <div class="text-[11px] font-bold text-gray-900 truncate">Laura Sánchez</div>
+                                                    <div class="text-[9px] text-gray-500 truncate">Fisioterapia · Sesión 3</div>
+                                                </div>
+                                            </div>
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100 shrink-0">
+                                                Realizada
+                                            </span>
+                                        </div>
+
+                                        <!-- Cita 2 -->
+                                        <div class="p-2 sm:p-2.5 flex items-center justify-between gap-2 hover:bg-gray-50/70 transition-colors">
+                                            <div class="flex items-center gap-2 min-w-0">
+                                                <span class="text-[11px] font-bold text-primary-700 bg-primary-50 px-1.5 py-0.5 rounded-md shrink-0">11:00</span>
+                                                <div class="min-w-0">
+                                                    <div class="text-[11px] font-bold text-gray-900 truncate">Carlos Morales</div>
+                                                    <div class="text-[9px] text-gray-500 truncate">Revisión General</div>
+                                                </div>
+                                            </div>
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-semibold bg-blue-50 text-blue-700 border border-blue-100 shrink-0">
+                                                En consulta
+                                            </span>
+                                        </div>
+
+                                        <!-- Cita 3 -->
+                                        <div class="p-2 sm:p-2.5 flex items-center justify-between gap-2 hover:bg-gray-50/70 transition-colors">
+                                            <div class="flex items-center gap-2 min-w-0">
+                                                <span class="text-[11px] font-bold text-gray-900 bg-gray-100 px-1.5 py-0.5 rounded-md shrink-0">12:30</span>
+                                                <div class="min-w-0">
+                                                    <div class="text-[11px] font-bold text-gray-900 truncate">Dra. Carmen Vega</div>
+                                                    <div class="text-[9px] text-gray-500 truncate">Primera Visita</div>
+                                                </div>
+                                            </div>
+                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-green-50 text-green-700 border border-green-200 shrink-0">
+                                                <i class="bi bi-whatsapp text-[9px]"></i> Confirmada
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Floating Live Notification Toast -->
+                                <div class="bg-gray-900 text-white rounded-xl p-2 sm:p-2.5 shadow-lg flex items-center justify-between gap-2 border border-gray-800 text-[10px]">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <div class="w-5 h-5 rounded-lg bg-green-500/20 text-green-400 flex items-center justify-center text-xs shrink-0">
+                                            <i class="bi bi-whatsapp"></i>
+                                        </div>
+                                        <span class="truncate opacity-90">Recordatorio 12:30 confirmado por WhatsApp</span>
+                                    </div>
+                                    <span class="text-green-400 font-semibold shrink-0 text-[9px]">0% no-show</span>
+                                </div>
+
                             </div>
                         </div>
                     </div>

@@ -25,7 +25,7 @@
     <meta name="twitter:description" content="La plataforma SaaS que automatiza la gestión empresarial de clínicas y profesionales sanitarios.">
     <meta name="twitter:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png">
 
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion.jpg" type="image/jpeg">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" type="image/jpeg">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

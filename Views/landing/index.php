@@ -752,27 +752,100 @@ $hasSystemAlert = $systemAlertMessage !== '';
         </div>
     </section>
 
-    <!-- Newsletter Subscription Section -->
-    <section class="border-t border-gray-100 bg-gray-50 overflow-hidden">
+    <!-- Contact Section -->
+    <section id="contacto" class="border-t border-gray-100 bg-gray-50 overflow-hidden">
         <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2">
 
-            <!-- Left Banner -->
+            <!-- Left Contact Info -->
             <div class="bg-primary-500 p-12 sm:p-16 lg:p-20 text-white flex flex-col justify-center relative overflow-hidden">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(0,158,255,0.25),transparent)]"></div>
-                <div class="relative space-y-4">
-                    <span class="text-xs uppercase tracking-widest opacity-75 font-semibold">Comunidad Tervion</span>
-                    <h2 class="text-3xl sm:text-4xl font-light leading-tight">
-                        Gestión empresarial y automatización sanitaria
-                    </h2>
-                    <p class="text-sm opacity-80 leading-relaxed font-light max-w-xs">
-                        Recibe consejos prácticos sobre optimización y automatización de clínicas, novedades normativas y claves para hacer crecer tu negocio.
-                    </p>
+                <div class="relative space-y-8">
+                    <div class="space-y-3">
+                        <span class="text-xs uppercase tracking-widest opacity-75 font-semibold">Contacto Directo</span>
+                        <h2 class="text-3xl sm:text-4xl font-light leading-tight">
+                            ¿Hablamos sobre tu clínica?
+                        </h2>
+                        <p class="text-sm opacity-80 leading-relaxed font-light max-w-md">
+                            Nuestro equipo está a tu disposición para resolver cualquier duda, ofrecerte una demostración personalizada o asesorarte en la digitalización de tu centro sanitario.
+                        </p>
+                    </div>
+
+                    <div class="space-y-6 pt-2 text-sm font-light">
+                        <!-- Email -->
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 bg-white/10 rounded-xl backdrop-blur-sm shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-xs uppercase tracking-wider opacity-75 font-bold mb-1">Correo electrónico</h4>
+                                <a href="mailto:soporte@tervion-app.com" class="hover:underline opacity-95">soporte@tervion-app.com</a>
+                            </div>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 bg-white/10 rounded-xl backdrop-blur-sm shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.499-5.234-3.837-6.733-6.733l1.293-.97c.362-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-xs uppercase tracking-wider opacity-75 font-bold mb-1">Teléfono de atención</h4>
+                                <a href="tel:+34900000000" class="hover:underline opacity-95">+34 900 000 000</a>
+                            </div>
+                        </div>
+
+                        <!-- Location -->
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 bg-white/10 rounded-xl backdrop-blur-sm shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-xs uppercase tracking-wider opacity-75 font-bold mb-1">Oficinas centrales</h4>
+                                <p class="opacity-95">Tervion Ibérica SLU — España</p>
+                            </div>
+                        </div>
+
+                        <!-- Schedule -->
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 bg-white/10 rounded-xl backdrop-blur-sm shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-xs uppercase tracking-wider opacity-75 font-bold mb-1">Horario de atención</h4>
+                                <p class="opacity-95">Lunes a Viernes: 9:00 - 18:00 (CET)</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Right Form -->
+            <!-- Right Contact Form -->
             <div class="p-12 sm:p-16 lg:p-20 flex flex-col justify-center bg-white space-y-6">
-                <form class="space-y-5" onsubmit="event.preventDefault(); alert('¡Gracias por suscribirte!');">
+                <div class="space-y-2 mb-2">
+                    <h3 class="text-2xl font-bold text-gray-900">Envíanos un mensaje</h3>
+                    <p class="text-xs text-gray-500">Rellena el formulario y te responderemos en menos de 24 horas laborables.</p>
+                </div>
+                <form class="space-y-5" onsubmit="event.preventDefault(); alert('¡Gracias por contactarnos! Te responderemos muy pronto.');">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label for="nombre" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nombre completo</label>
+                            <input type="text" id="nombre" required placeholder="Tu nombre"
+                                class="w-full border-b border-gray-300 focus:border-primary-500 py-2.5 outline-none text-sm transition-colors bg-transparent">
+                        </div>
+                        <div>
+                            <label for="telefono" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Teléfono</label>
+                            <input type="tel" id="telefono" placeholder="+34 600 000 000"
+                                class="w-full border-b border-gray-300 focus:border-primary-500 py-2.5 outline-none text-sm transition-colors bg-transparent">
+                        </div>
+                    </div>
                     <div>
                         <label for="email" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Correo electrónico</label>
                         <input type="email" id="email" required placeholder="tuemail@ejemplo.com"
@@ -781,20 +854,26 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     <div>
                         <label for="perfil" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Perfil profesional</label>
                         <select id="perfil" class="w-full border-b border-gray-300 focus:border-primary-500 py-2.5 outline-none text-sm transition-colors bg-transparent text-gray-600">
+                            <option value="">Selecciona tu perfil (opcional)</option>
                             <option>Profesional sanitario independiente / Fisioterapeuta</option>
                             <option>Director / Propietario de clínica médica</option>
                             <option>Responsable de administración y gestión</option>
                             <option>Otro perfil profesional</option>
                         </select>
                     </div>
+                    <div>
+                        <label for="mensaje" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Mensaje</label>
+                        <textarea id="mensaje" rows="3" required placeholder="¿En qué podemos ayudarte?"
+                            class="w-full border-b border-gray-300 focus:border-primary-500 py-2.5 outline-none text-sm transition-colors bg-transparent resize-none"></textarea>
+                    </div>
                     <div class="pt-4">
                         <button type="submit" class="rounded-full bg-primary-500 hover:bg-primary-600 px-8 py-3 text-sm font-semibold text-white shadow-md transition-all hover:scale-105">
-                            Suscribirse
+                            Enviar mensaje
                         </button>
                     </div>
                 </form>
                 <p class="text-xs text-gray-400 leading-normal">
-                    Puedes darte de baja en cualquier momento. Cumplimos estrictamente con la RGPD. Lee nuestra <a href="#" class="underline hover:text-primary-500">Política de privacidad</a>.
+                    Cumplimos estrictamente con la RGPD. Lee nuestra <a href="#" class="underline hover:text-primary-500">Política de privacidad</a>.
                 </p>
             </div>
 

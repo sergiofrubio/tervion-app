@@ -133,11 +133,11 @@ $hasSystemAlert = $systemAlertMessage !== '';
                         Empezar ahora
                     </a>
                 </div>
-                <div class="pt-4 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-gray-500 font-medium tracking-wide">
+                <!-- <div class="pt-4 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-gray-500 font-medium tracking-wide">
                     <span>🔒 Cumplimiento VERI*FACTU</span>
                     <span>📑 Comunicaciones Contrat@</span>
                     <span>⚡ 100% en la Nube</span>
-                </div>
+                </div> -->
             </div>
 
             <!-- Hero Right -->
@@ -160,10 +160,10 @@ $hasSystemAlert = $systemAlertMessage !== '';
                                 <span class="text-[11px] font-medium text-gray-400 ml-2 hidden sm:inline-block">app.tervion.es / panel</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                <!-- <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                                     <span>VERI*FACTU Activo</span>
-                                </span>
+                                </span> -->
                             </div>
                         </div>
 

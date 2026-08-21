@@ -16,14 +16,14 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Velion — Automatización y Gestión Integral de Clínicas">
     <meta property="og:description" content="Menos administración, más tiempo para tus pacientes. Centraliza y conecta todos los procesos de tu clínica en un único lugar.">
-    <meta property="og:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion.jpg">
+    <meta property="og:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png">
     <meta property="og:url" content="https://velion-app.com/">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Velion — Tu clínica, tu gestión, tu libertad">
     <meta name="twitter:description" content="La plataforma SaaS que automatiza la gestión empresarial de clínicas y profesionales sanitarios.">
-    <meta name="twitter:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion.jpg">
+    <meta name="twitter:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png">
 
     <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion.jpg" type="image/jpeg">
 
@@ -50,7 +50,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
             <!-- Logo -->
             <a href="<?= PROJECT_ROOT ?>/" class="flex items-center">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion.jpg" alt="Velion Logo" class="h-8 sm:h-9 object-contain">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Velion Logo" class="h-8 sm:h-9 object-contain">
             </a>
 
             <!-- Nav Links (Desktop) -->

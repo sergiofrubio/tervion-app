@@ -34,7 +34,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
     <header class="border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <a href="<?= PROJECT_ROOT ?>/" class="flex items-center">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion.jpg" alt="Velion Logo" class="h-9 object-contain">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Velion Logo" class="h-9 object-contain">
             </a>
             <div>
                 <a href="<?= PROJECT_ROOT ?>/login" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">

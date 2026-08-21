@@ -36,9 +36,11 @@ $hasSystemAlert = $systemAlertMessage !== '';
             <a href="<?= PROJECT_ROOT ?>/" class="flex items-center">
                 <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-9 object-contain">
             </a>
-            <div>
-                <a href="<?= PROJECT_ROOT ?>/login" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-                    ¿Ya tienes cuenta? Iniciar Sesión
+            <div class="flex items-center gap-3">
+                <span class="text-xs sm:text-sm font-medium text-gray-500">¿Ya tienes cuenta?</span>
+                <a href="<?= PROJECT_ROOT ?>/login" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900 border border-gray-200/80 shadow-2xs transition-all">
+                    <span>Iniciar Sesión</span>
+                    <i class="bi bi-box-arrow-in-right text-sm text-gray-500"></i>
                 </a>
             </div>
         </div>
@@ -65,39 +67,22 @@ $hasSystemAlert = $systemAlertMessage !== '';
                 </div>
             <?php endif; ?>
 
-            <!-- Interactive Stepper Progress Indicator -->
-            <div class="mb-10 px-4">
-                <div class="flex items-center justify-between">
-                    <template x-for="(stepInfo, index) in steps" :key="index">
-                        <div class="flex items-center flex-1 last:flex-none">
-                            <div class="flex flex-col items-center relative">
-                                <button type="button"
-                                    @click="goToStep(index + 1)"
-                                    :disabled="index + 1 > maxStepReached"
-                                    class="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-                                    :class="{
-                                            'bg-gray-950 text-white shadow-lg shadow-gray-950/20 ring-4 ring-gray-950/10': currentStep === index + 1,
-                                            'bg-indigo-500 text-white': currentStep > index + 1,
-                                            'bg-white text-gray-400 border border-gray-200 hover:border-gray-400': currentStep < index + 1 && index + 1 <= maxStepReached,
-                                            'bg-gray-100 text-gray-300 border border-gray-200 cursor-not-allowed': index + 1 > maxStepReached
-                                        }">
-                                    <span x-show="currentStep <= index + 1" x-text="index + 1"></span>
-                                    <i x-show="currentStep > index + 1" class="bi bi-check-lg text-base"></i>
-                                </button>
-                                <span class="absolute top-12 text-[11px] font-medium text-gray-500 hidden md:block whitespace-nowrap"
-                                    :class="{'text-gray-950 font-bold': currentStep === index + 1}"
-                                    x-text="stepInfo.name"></span>
-                            </div>
-                            <div x-show="index < steps.length - 1"
-                                class="h-1 flex-1 mx-2 rounded-full transition-all duration-300"
-                                :class="currentStep > index + 1 ? 'bg-indigo-500' : 'bg-gray-200'"></div>
-                        </div>
-                    </template>
+            <!-- Sleek Minimal Progress Bar (Ultra-Compact UX) -->
+            <div class="mb-6 px-1 space-y-2">
+                <div class="flex items-center justify-between text-xs text-gray-500">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-bold text-[11px] uppercase tracking-wider" x-text="'Paso ' + currentStep + ' de ' + steps.length"></span>
+                        <span class="text-gray-300">•</span>
+                        <span class="font-semibold text-gray-900 text-sm" x-text="steps[currentStep - 1].name"></span>
+                    </div>
+                    <div class="flex items-center gap-1 font-semibold text-gray-700">
+                        <span class="text-indigo-600 font-bold text-xs" x-text="Math.round((currentStep / steps.length) * 100) + '%'"></span>
+                    </div>
                 </div>
-                <!-- Progress Bar Detail for mobile -->
-                <div class="mt-6 md:hidden text-center">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-primary-600" x-text="'Paso ' + currentStep + ' de ' + steps.length"></span>
-                    <h2 class="text-lg font-bold text-gray-900 mt-0.5" x-text="steps[currentStep - 1].name"></h2>
+                <!-- Micro Progress Bar Fill -->
+                <div class="w-full bg-gray-200/80 rounded-full h-1.5 overflow-hidden">
+                    <div class="bg-indigo-600 h-full rounded-full transition-all duration-500 ease-out"
+                        :style="'width: ' + Math.round((currentStep / steps.length) * 100) + '%'"></div>
                 </div>
             </div>
 

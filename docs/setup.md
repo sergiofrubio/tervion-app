@@ -1,6 +1,6 @@
 # Guía de Inicialización del Entorno de Desarrollo (Local Setup)
 
-Este documento detalla los pasos y especificaciones técnicas necesarias para levantar el entorno de desarrollo local de **Velion ERP** de forma totalmente aislada utilizando contenedores Docker.
+Este documento detalla los pasos y especificaciones técnicas necesarias para levantar el entorno de desarrollo local de **Tervion ERP** de forma totalmente aislada utilizando contenedores Docker.
 
 ---
 
@@ -21,8 +21,8 @@ Sigue estos 3 pasos para poner el sistema en funcionamiento:
 
 1. **Clonar e Ingresar al Proyecto:**
    ```bash
-   git clone https://github.com/sergiofrubio/velion-app.git
-   cd velion-app
+   git clone https://github.com/sergiofrubio/tervion-app.git
+   cd tervion-app
    ```
 
 2. **Levantar los Contenedores:**
@@ -62,19 +62,19 @@ El sistema carga fixtures por defecto al iniciar la base de datos:
 ### 2. Base de Datos (MySQL)
 Configuración de conexión interna en Docker:
 - **Host:** `db` (alias del servicio)
-- **Database:** `velion`
+- **Database:** `tervion`
 - **Usuario:** `root`
 - **Contraseña:** `root`
 - **Puerto:** `3306`
 
-*(Las variables de entorno son inyectadas en tiempo de ejecución o leídas con fallbacks en [DataBase.php](file:///c:/Users/sergi/Documents/velion-app/Core/DataBase.php))*
+*(Las variables de entorno son inyectadas en tiempo de ejecución o leídas con fallbacks en [DataBase.php](file:///c:/Users/sergi/Documents/tervion-app/Core/DataBase.php))*
 
 ---
 
 ## 🔄 Inicialización Automática de la Base de Datos
 
 El contenedor de base de datos (`db`) monta un volumen con el esquema SQL del proyecto:
-- **Archivo origen:** `data/velion.sql`
+- **Archivo origen:** `data/tervion.sql`
 - **Montaje en contenedor:** `/docker-entrypoint-initdb.d/init.sql`
 
 > [!IMPORTANT]

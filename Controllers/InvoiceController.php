@@ -25,7 +25,7 @@ class InvoiceController extends Controller
         if ($rol === 'Paciente') {
             $data = [
                 'facturas' => $facturaModel->getByPaciente($usuario_id),
-                'pageTitle' => 'Mis Facturas - Velion'
+                'pageTitle' => 'Mis Facturas - Tervion'
             ];
             $this->view('patient-view/invoice/list', $data);
         } else {
@@ -40,7 +40,7 @@ class InvoiceController extends Controller
                 'facturas' => $facturaModel->getAll($filters),
                 'pacientes' => $facturaModel->getPacientes(),
                 'filters' => $filters,
-                'pageTitle' => 'Gestión de Facturas - Velion'
+                'pageTitle' => 'Gestión de Facturas - Tervion'
             ];
             $this->view('invoice/list', $data);
         }
@@ -193,7 +193,7 @@ class InvoiceController extends Controller
         } else {
             $pdf->SetFont('Arial', 'B', 20);
             $pdf->SetTextColor(0, 82, 217); // Royal Blue
-            $pdf->Cell(120, 10, iconv('UTF-8', 'windows-1252', $clinica['nombre_comercial'] ?? 'VELION CLINIC'), 0, 0, 'L');
+            $pdf->Cell(120, 10, iconv('UTF-8', 'windows-1252', $clinica['nombre_comercial'] ?? 'tervion CLINIC'), 0, 0, 'L');
         }
 
         // QR Code generation (using api.qrserver.com for rendering in PDF)

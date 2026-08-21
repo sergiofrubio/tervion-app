@@ -6,22 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- SEO Meta Tags -->
-    <title>Velion — Automatización y Gestión Integral para Clínicas y Profesionales Sanitarios</title>
-    <meta name="description" content="Velion es la plataforma SaaS que automatiza la gestión empresarial de clínicas y profesionales sanitarios: citas, WhatsApp, historial clínico, facturación Verifactu, nóminas y Contrat@ desde un único lugar.">
+    <title>Tervion — Automatización y Gestión Integral para Clínicas y Profesionales Sanitarios</title>
+    <meta name="description" content="Tervion es la plataforma SaaS que automatiza la gestión empresarial de clínicas y profesionales sanitarios: citas, WhatsApp, historial clínico, facturación Verifactu, nóminas y Contrat@ desde un único lugar.">
     <meta name="keywords" content="software clinicas, gestion clinica fisioterapia, automatizacion clinicas medicas, Verifactu AEAT, gestion laboral clinicas, citas whatsapp pacientes, historias clinicas, facturacion sanitaria">
     <meta name="robots" content="index, follow">
-    <meta name="author" content="Velion">
+    <meta name="author" content="Tervion">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Velion — Automatización y Gestión Integral de Clínicas">
+    <meta property="og:title" content="Tervion — Automatización y Gestión Integral de Clínicas">
     <meta property="og:description" content="Menos administración, más tiempo para tus pacientes. Centraliza y conecta todos los procesos de tu clínica en un único lugar.">
     <meta property="og:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png">
-    <meta property="og:url" content="https://velion-app.com/">
+    <meta property="og:url" content="https://tervion-app.com/">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Velion — Tu clínica, tu gestión, tu libertad">
+    <meta name="twitter:title" content="Tervion — Tu clínica, tu gestión, tu libertad">
     <meta name="twitter:description" content="La plataforma SaaS que automatiza la gestión empresarial de clínicas y profesionales sanitarios.">
     <meta name="twitter:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png">
 
@@ -50,7 +50,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
             <!-- Logo -->
             <a href="<?= PROJECT_ROOT ?>/" class="flex items-center">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Velion Logo" class="h-8 sm:h-9 object-contain">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-8 sm:h-9 object-contain">
             </a>
 
             <!-- Nav Links (Desktop) -->
@@ -157,7 +157,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                                     <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block"></span>
                                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block"></span>
                                 </div>
-                                <span class="text-[11px] font-medium text-gray-400 ml-2 hidden sm:inline-block">app.velion.es / panel</span>
+                                <span class="text-[11px] font-medium text-gray-400 ml-2 hidden sm:inline-block">app.tervion.es / panel</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
@@ -175,7 +175,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                                 <div class="space-y-4 flex flex-col items-center">
                                     <!-- Logo Icon -->
                                     <div class="w-8 h-8 rounded-xl bg-gray-800 border border-gray-700 p-1 flex items-center justify-center shadow-inner">
-                                        <img src="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-oscuro.jpg" alt="Velion" class="w-full h-full object-contain rounded-md">
+                                        <img src="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" alt="Tervion" class="w-full h-full object-contain rounded-md">
                                     </div>
 
                                     <!-- Nav Icons -->
@@ -461,7 +461,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                         Tu clínica también es facturación, gastos, trabajadores, impuestos, documentación y decisiones económicas clave.
                     </p>
                     <p>
-                        Por eso, en Velion no nos conformamos con ofrecer una simple agenda médica. Estamos construyendo la plataforma definitiva para convertirnos progresivamente en el <strong>centro de gestión empresarial</strong> de los profesionales sanitarios.
+                        Por eso, en Tervion no nos conformamos con ofrecer una simple agenda médica. Estamos construyendo la plataforma definitiva para convertirnos progresivamente en el <strong>centro de gestión empresarial</strong> de los profesionales sanitarios.
                     </p>
                     <p>
                         Te ayudamos a saber con exactitud qué está pasando en tu negocio sin tener que perseguir datos, completar tareas manualmente o saltar entre múltiples aplicaciones incompatibles.
@@ -491,7 +491,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
             <div class="flex justify-center">
                 <div class="w-full max-w-md bg-gradient-to-br from-slate-50 to-primary-50/40 p-8 rounded-3xl border border-gray-200/80 shadow-sm space-y-6">
                     <div class="flex items-center justify-between">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-primary-600">Próximamente en Velion</h4>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-primary-600">Próximamente en Tervion</h4>
                         <span class="text-[10px] bg-primary-100 text-primary-700 px-2 py-0.5 rounded-full font-semibold">En evolución</span>
                     </div>
                     <p class="text-xs text-gray-500 leading-relaxed">
@@ -568,7 +568,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                         <span class="inline-block bg-primary-100 text-primary-700 text-xs font-bold px-3 py-1 rounded-full mb-6">
                             Paso 2: Automatiza el día a día
                         </span>
-                        <h3 class="text-xl font-bold text-gray-900">Deja que Velion trabaje</h3>
+                        <h3 class="text-xl font-bold text-gray-900">Deja que Tervion trabaje</h3>
                         <p class="text-sm text-gray-500 mt-3 leading-relaxed font-light">
                             Tus pacientes reciben recordatorios por WhatsApp/email, los cobros y facturas se generan solos y la agenda se actualiza al instante.
                         </p>
@@ -721,7 +721,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                 <!-- Quote 1 -->
                 <div class="space-y-4">
                     <p class="text-lg text-primary-600 font-light leading-relaxed italic">
-                        "Antes pasaba horas cuadrando facturas y enviando citas a mano. Velion nos ha devuelto la tranquilidad y el tiempo para atender a nuestros pacientes."
+                        "Antes pasaba horas cuadrando facturas y enviando citas a mano. Tervion nos ha devuelto la tranquilidad y el tiempo para atender a nuestros pacientes."
                     </p>
                     <div>
                         <h5 class="text-sm font-bold text-gray-900">Dra. Laura Morales</h5>
@@ -760,7 +760,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
             <div class="bg-primary-500 p-12 sm:p-16 lg:p-20 text-white flex flex-col justify-center relative overflow-hidden">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(0,158,255,0.25),transparent)]"></div>
                 <div class="relative space-y-4">
-                    <span class="text-xs uppercase tracking-widest opacity-75 font-semibold">Comunidad Velion</span>
+                    <span class="text-xs uppercase tracking-widest opacity-75 font-semibold">Comunidad Tervion</span>
                     <h2 class="text-3xl sm:text-4xl font-light leading-tight">
                         Gestión empresarial y automatización sanitaria
                     </h2>
@@ -804,10 +804,10 @@ $hasSystemAlert = $systemAlertMessage !== '';
     <!-- Footer -->
     <footer class="bg-gray-900 text-gray-400 py-8 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-4">
-            <p class="w-full sm:w-1/3 text-center sm:text-left text-sm">© 2026 Velion Ibérica SLU</p>
+            <p class="w-full sm:w-1/3 text-center sm:text-left text-sm">® 2026 Tervion Ibérica SLU</p>
 
             <a href="<?= PROJECT_ROOT ?>/" class="w-full sm:w-1/3 flex items-center justify-center">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-oscuro.jpg" alt="Velion Logo" class="h-8 object-contain rounded-md p-1 shadow-sm">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" alt="Tervion Logo" class="h-8 object-contain rounded-md p-1 shadow-sm">
             </a>
 
             <div class="w-full sm:w-1/3 flex items-center justify-center sm:justify-end gap-6 text-gray-400">

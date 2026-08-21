@@ -23,7 +23,7 @@ class InvoiceControllerTest extends ControllerTestCase
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('patient-view/invoice/list', ['facturas' => [], 'pageTitle' => 'Mis Facturas - Velion']);
+            ->with('patient-view/invoice/list', ['facturas' => [], 'pageTitle' => 'Mis Facturas - Tervion']);
 
         $controller->list();
     }
@@ -45,7 +45,7 @@ class InvoiceControllerTest extends ControllerTestCase
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('invoice/list', $this->callback(function($data) {
+            ->with('invoice/list', $this->callback(function ($data) {
                 return isset($data['facturas']) && is_array($data['facturas']);
             }));
 
@@ -212,8 +212,8 @@ class InvoiceControllerTest extends ControllerTestCase
             ->getMock();
         $invoiceMock->method('getById')->with(5)->willReturn($factura);
         $invoiceMock->method('getClinica')->willReturn([
-            'nombre_comercial' => 'VELION CLINIC',
-            'razon_social' => 'VELION S.L.',
+            'nombre_comercial' => 'tervion CLINIC',
+            'razon_social' => 'tervion S.L.',
             'direccion_calle' => 'Calle 1',
             'codigo_postal' => '28001',
             'ciudad' => 'Madrid',

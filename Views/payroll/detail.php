@@ -25,7 +25,7 @@ $meses = [1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril', 5 => 'Mayo',
             <div class="flex flex-col md:flex-row justify-between gap-8">
                 <div class="space-y-2">
                     <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Empresa</h2>
-                    <p class="text-lg font-bold text-gray-900">Velion Physiotherapy Clinic S.L.</p>
+                    <p class="text-lg font-bold text-gray-900">Tervion Physiotherapy Clinic S.L.</p>
                     <p class="text-sm text-gray-500">CIF: B12345678<br>Calle Falsa 123, 28001 Madrid</p>
                 </div>
                 <div class="space-y-2 text-right">

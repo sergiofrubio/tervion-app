@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Core\Controller;
 use Fpdf\Fpdf;
 
@@ -74,7 +76,7 @@ class PatientController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $userModel = $this->model('User');
             $id = $_POST['usuario_id'];
-            
+
             $data = [
                 'nombre' => htmlspecialchars($_POST['nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'apellidos' => htmlspecialchars($_POST['apellidos'] ?? '', ENT_QUOTES, 'UTF-8'),
@@ -158,8 +160,8 @@ class PatientController extends Controller
         $pdf = new Fpdf();
         $pdf->AddPage('L');
         $pdf->SetFont('Arial', 'B', 16);
-        
-        $pdf->Cell(0, 15, iconv('UTF-8', 'windows-1252', 'Reporte General de Pacientes - Velion'), 0, 1, 'C');
+
+        $pdf->Cell(0, 15, iconv('UTF-8', 'windows-1252', 'Reporte General de Pacientes - Tervion'), 0, 1, 'C');
         $pdf->Ln(5);
 
         $pdf->SetFont('Arial', 'B', 10);
@@ -181,7 +183,7 @@ class PatientController extends Controller
             $pdf->Cell(40, 8, date('d/m/Y', strtotime($p['fecha_nacimiento'])), 1, 1, 'C');
         }
 
-        $pdf->Output('D', 'Reporte_Pacientes_Velion.pdf');
+        $pdf->Output('D', 'Reporte_Pacientes_Tervion.pdf');
     }
 
     /**
@@ -192,7 +194,7 @@ class PatientController extends Controller
         $query = $_GET['q'] ?? '';
         $userModel = $this->model('User');
         $results = $userModel->searchByRol('Paciente', $query);
-        
+
         header('Content-Type: application/json');
         echo json_encode($results);
         $this->exitApp();
@@ -210,7 +212,7 @@ class PatientController extends Controller
             $userModel->searchByRol('Secretario', $query),
             $userModel->searchByRol('Administrador', $query)
         );
-        
+
         header('Content-Type: application/json');
         echo json_encode($results);
         $this->exitApp();

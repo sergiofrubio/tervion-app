@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Mis Citas - Velion";
+$pageTitle = "Mis Citas - Tervion";
 include TEMPLATE_DIR . 'header.php';
 
 // Separar citas próximas de pasadas
@@ -52,7 +52,7 @@ if (!empty($appointments)) {
                     <div class="group bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary-100 transition-all duration-300 relative overflow-hidden">
                         <!-- Background glow effect -->
                         <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary-50 rounded-full opacity-0 group-hover:opacity-100 group-hover:scale-150 transition-all duration-700"></div>
-                        
+
                         <div class="relative z-10">
                             <div class="flex items-start justify-between mb-6">
                                 <div class="p-3 bg-primary-50 text-primary-600 rounded-2xl group-hover:bg-primary-600 group-hover:text-white transition-colors duration-300">
@@ -172,9 +172,17 @@ if (!empty($appointments)) {
 
 <style>
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(15px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in {
         animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }

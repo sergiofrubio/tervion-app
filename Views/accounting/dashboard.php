@@ -26,13 +26,15 @@ include TEMPLATE_DIR . 'header.php';
     <?php if (isset($_SESSION['flash_success'])): ?>
         <div class="p-4 rounded-2xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-sm font-bold flex items-center gap-2 animate-fade-in-up">
             <i class="bi bi-check-circle-fill text-lg"></i>
-            <?= $_SESSION['flash_success']; unset($_SESSION['flash_success']); ?>
+            <?= $_SESSION['flash_success'];
+            unset($_SESSION['flash_success']); ?>
         </div>
     <?php endif; ?>
     <?php if (isset($_SESSION['flash_error'])): ?>
         <div class="p-4 rounded-2xl bg-rose-50 text-rose-800 border border-rose-200 text-sm font-bold flex items-center gap-2 animate-fade-in-up">
             <i class="bi bi-exclamation-triangle-fill text-lg"></i>
-            <?= $_SESSION['flash_error']; unset($_SESSION['flash_error']); ?>
+            <?= $_SESSION['flash_error'];
+            unset($_SESSION['flash_error']); ?>
         </div>
     <?php endif; ?>
 
@@ -65,7 +67,7 @@ include TEMPLATE_DIR . 'header.php';
                     <h3 class="font-bold text-gray-900">Conciliación Bancaria Automática</h3>
                 </div>
                 <p class="text-xs text-gray-500 mt-2 leading-relaxed">
-                    Velion se conecta a tus cuentas bancarias. Analiza los cargos y abonos del extracto, concilia los cobros de tus pacientes de forma automática y crea los gastos correspondientes aplicando reglas fiscales de deducibilidad.
+                    Tervion se conecta a tus cuentas bancarias. Analiza los cargos y abonos del extracto, concilia los cobros de tus pacientes de forma automática y crea los gastos correspondientes aplicando reglas fiscales de deducibilidad.
                 </p>
             </div>
             <form action="<?= PROJECT_ROOT ?>/contabilidad/banco/importar" method="POST">
@@ -251,7 +253,7 @@ include TEMPLATE_DIR . 'header.php';
                 <?php if ($report['total_gastos'] <= 0) : ?>
                     <p class="text-xs text-gray-500 italic text-center py-12">No hay gastos registrados para este año.</p>
                 <?php else : ?>
-                    <?php 
+                    <?php
                     $colors = [
                         'Personal' => 'bg-amber-500',
                         'Alquileres' => 'bg-blue-500',
@@ -260,7 +262,7 @@ include TEMPLATE_DIR . 'header.php';
                         'Bienes de inversión' => 'bg-rose-500',
                         'Otros' => 'bg-gray-400'
                     ];
-                    foreach ($report['gastos_detalle'] as $cat => $val) : 
+                    foreach ($report['gastos_detalle'] as $cat => $val) :
                         if ($val <= 0) continue;
                         $pct = ($val / $report['total_gastos']) * 100;
                         $color = $colors[$cat] ?? 'bg-gray-400';
@@ -277,11 +279,11 @@ include TEMPLATE_DIR . 'header.php';
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
-            
+
             <div class="bg-gradient-to-br from-indigo-900 to-indigo-950 rounded-3xl p-6 text-white shadow-md relative overflow-hidden">
                 <h4 class="font-bold mb-2">Información Contable</h4>
                 <p class="text-xs leading-relaxed opacity-85">
-                    Como S.L., estás obligado a depositar las <strong>Cuentas Anuales</strong> (Balance y P&L) en el Registro Mercantil. 
+                    Como S.L., estás obligado a depositar las <strong>Cuentas Anuales</strong> (Balance y P&L) en el Registro Mercantil.
                     Si eres Autónomo, debes registrar todas las operaciones en los <strong>Libros Registro Oficiales de la AEAT</strong> y declarar trimestralmente el pago fraccionado del IRPF (Modelo 130).
                 </p>
             </div>
@@ -291,9 +293,17 @@ include TEMPLATE_DIR . 'header.php';
 
 <style>
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in-up {
         animation: fadeInUp 0.4s ease-out forwards;
     }

@@ -50,7 +50,7 @@ class VerifactuXmlBuilder
         $idFactura->appendChild($dom->createElement('sf:IDEmisorFactura', htmlspecialchars($config->nifEmisor, ENT_XML1, 'UTF-8')));
         $numSerie = ($facturaData['serie'] ?? 'A') . '-' . ($facturaData['numero'] ?? '1');
         $idFactura->appendChild($dom->createElement('sf:NumSerieFactura', htmlspecialchars($numSerie, ENT_XML1, 'UTF-8')));
-        
+
         $fechaExpedicionDate = date('d-m-Y', strtotime($facturaData['fecha_emision']));
         $idFactura->appendChild($dom->createElement('sf:FechaExpedicionFactura', $fechaExpedicionDate));
         $regAlta->appendChild($idFactura);
@@ -106,7 +106,7 @@ class VerifactuXmlBuilder
         $sistema = $dom->createElement('sf:SistemaInformatico');
         $sistema->appendChild($dom->createElement('sf:NombreRazon', htmlspecialchars($config->nombreRazonEmisor, ENT_XML1, 'UTF-8')));
         $sistema->appendChild($dom->createElement('sf:NIF', htmlspecialchars($config->nifEmisor, ENT_XML1, 'UTF-8')));
-        $sistema->appendChild($dom->createElement('sf:NombreSistemaInformatico', 'VELION ERP'));
+        $sistema->appendChild($dom->createElement('sf:NombreSistemaInformatico', 'tervion ERP'));
         $sistema->appendChild($dom->createElement('sf:IdSistemaInformatico', '01'));
         $sistema->appendChild($dom->createElement('sf:Version', '1.0.0'));
         $sistema->appendChild($dom->createElement('sf:NumeroInstalacion', '01'));

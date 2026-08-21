@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= isset($pageTitle) ? htmlspecialchars($pageTitle) . ' — Velion' : 'Panel de Gestión — Velion' ?></title>
+    <title><?= isset($pageTitle) ? htmlspecialchars($pageTitle) . ' — Tervion' : 'Panel de Gestión — Tervion' ?></title>
     <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion.jpg" type="image/jpeg">
 
     <!-- Google Fonts -->
@@ -40,10 +40,10 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
 <body class="h-full flex overflow-hidden font-sans antialiased text-slate-900 bg-slate-50 <?= $hasSystemAlert ? 'pt-7' : '' ?>"
     x-data="{ 
           sidebarOpen: false, 
-          sidebarCollapsed: localStorage.getItem('velion_sidebar_collapsed') === 'true',
+          sidebarCollapsed: localStorage.getItem('tervion_sidebar_collapsed') === 'true',
           toggleCollapse() {
               this.sidebarCollapsed = !this.sidebarCollapsed;
-              localStorage.setItem('velion_sidebar_collapsed', this.sidebarCollapsed);
+              localStorage.setItem('tervion_sidebar_collapsed', this.sidebarCollapsed);
           }
       }">
 
@@ -64,13 +64,13 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
         <!-- Sidebar Brand Header -->
         <div class="flex items-center justify-between h-20 border-b border-gray-800 bg-gray-900 transition-all duration-300 relative px-4"
             :class="sidebarCollapsed ? 'justify-center px-2' : 'px-5'">
-            <a href="<?= PROJECT_ROOT ?>/inicio" class="flex items-center gap-3 group overflow-hidden shrink-0" :title="sidebarCollapsed ? 'Velion — Gestión Clínica' : ''">
+            <a href="<?= PROJECT_ROOT ?>/inicio" class="flex items-center gap-3 group overflow-hidden shrink-0" :title="sidebarCollapsed ? 'Tervion — Gestión Clínica' : ''">
                 <div class="w-10 h-10 rounded-xl bg-gray-800 border border-gray-700 p-1.5 flex items-center justify-center shadow-inner group-hover:border-primary-500 transition-colors shrink-0">
-                    <img src="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-oscuro.jpg" alt="Velion Emblem" class="w-full h-full object-contain rounded-md">
+                    <img src="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" alt="Tervion Emblem" class="w-full h-full object-contain rounded-md">
                 </div>
                 <div class="flex flex-col transition-all duration-300 overflow-hidden whitespace-nowrap"
                     :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">
-                    <span class="text-xl font-bold tracking-tight text-white group-hover:text-primary-400 transition-colors leading-none whitespace-nowrap">Velion</span>
+                    <span class="text-xl font-bold tracking-tight text-white group-hover:text-primary-400 transition-colors leading-none whitespace-nowrap">Tervion</span>
                     <span class="text-[10px] uppercase font-semibold tracking-widest text-gray-400 mt-1 whitespace-nowrap">Gestión Clínica</span>
                 </div>
             </a>

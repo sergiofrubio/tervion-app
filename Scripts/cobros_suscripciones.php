@@ -14,24 +14,24 @@ echo "Fecha y hora actual: " . date('Y-m-d H:i:s') . "\n\n";
 
 try {
     $db = (new DataBase())->connect();
-    
+
     // 1. Obtener todas las cuentas de clientes activas
     $queryCuentas = "SELECT * FROM cuentas_clientes WHERE estado_cuenta = 'Activo'";
     $stmtCuentas = $db->prepare($queryCuentas);
     $stmtCuentas->execute();
     $cuentas = $stmtCuentas->fetchAll(PDO::FETCH_ASSOC);
-    
+
     if (empty($cuentas)) {
         echo "No hay cuentas activas registradas.\n";
         exit(0);
     }
-    
+
     $gastoModel = new Gasto($db);
     $merchant = Merchant::initWithApiKey(REDSYS_API_KEY);
-    
+
     foreach ($cuentas as $cuenta) {
         echo "Procesando cuenta ID {$cuenta['cuenta_id']} ({$cuenta['nombre_empresa']})...\n";
-        
+
         // 2. Determinar el importe según el plan contratado
         $plan = $cuenta['plan_suscripcion'] ?? 'Basico';
         $precio = 29.99; // Básico por defecto
@@ -40,43 +40,43 @@ try {
         } elseif ($plan === 'Premium') {
             $precio = 99.99;
         }
-        
+
         // 3. Obtener el método de pago por tarjeta guardado para el administrador de la cuenta
         $queryUser = "SELECT usuario_id FROM usuarios WHERE email = :email LIMIT 1";
         $stmtUser = $db->prepare($queryUser);
         $stmtUser->execute([':email' => $cuenta['email_admin']]);
         $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
-        
+
         if (!$user) {
             echo " [ERROR] No se pudo encontrar el usuario administrador ({$cuenta['email_admin']}) para esta cuenta.\n";
             continue;
         }
-        
+
         $queryCard = "SELECT * FROM metodos_pago WHERE usuario_id = :usuario_id AND tipo = 'Tarjeta' ORDER BY es_predeterminado DESC LIMIT 1";
         $stmtCard = $db->prepare($queryCard);
         $stmtCard->execute([':usuario_id' => $user['usuario_id']]);
         $card = $stmtCard->fetch(PDO::FETCH_ASSOC);
-        
+
         if (!$card || empty($card['numero_completo'])) {
             echo " [ERROR] No hay ningún método de pago por tarjeta registrado para esta cuenta.\n";
             continue;
         }
-        
+
         // 4. Intentar realizar el cobro recurrente tokenizado con Redsys
         $orderNumber = date('ymdHis') . $cuenta['cuenta_id'];
         $orderNumber = substr($orderNumber, 0, 12); // Asegurar longitud requerida por Redsys (máx 12)
-        
+
         $params = new Parameters();
         $params->amount = intval(round($precio * 100)); // En céntimos
         $params->order = $orderNumber;
         $params->tokenizedCard = $card['token_externo'] ?? 'tok_simulated';
-        $params->merchantData = 'Suscripcion Mensual Velion - Plan ' . $plan;
-        
+        $params->merchantData = 'Suscripcion Mensual Tervion - Plan ' . $plan;
+
         $cobroExitoso = false;
         try {
             // Llamada oficial a la API REST de Redsys
             $response = Rest::authorisation($merchant, $params);
-            
+
             // Si devuelve respuesta satisfactoria del banco (0000 a 0099)
             if ($response && isset($response->data) && (int)$response->data->codResponse >= 0 && (int)$response->data->codResponse <= 99) {
                 $cobroExitoso = true;
@@ -98,23 +98,23 @@ try {
                 echo " [ERROR REDSYS] Fallo en la comunicación con Redsys: " . $e->getMessage() . "\n";
             }
         }
-        
+
         // 5. Si el cobro es exitoso, registrar el gasto de la suscripción en el sistema contable
         if ($cobroExitoso) {
             $baseImponible = $precio / 1.21;
             $iva = $precio - $baseImponible;
-            
+
             $gastoData = [
-                'nif_proveedor' => 'B99999999', // NIF de Velion
-                'nombre_proveedor' => 'Velion S.L.',
+                'nif_proveedor' => 'B99999999', // NIF de Tervion
+                'nombre_proveedor' => 'Tervion S.L.',
                 'numero_factura' => 'VELSUB-' . date('Ymd') . '-' . $cuenta['cuenta_id'],
                 'fecha_emision' => date('Y-m-d'),
-                'concepto' => 'Mensualidad suscripción Velion - Plan ' . $plan,
+                'concepto' => 'Mensualidad suscripción Tervion - Plan ' . $plan,
                 'base_imponible' => $baseImponible,
                 'tipo_iva' => 21.00,
                 'categoria' => 'Software'
             ];
-            
+
             if ($gastoModel->save($gastoData)) {
                 echo " [ÉXITO] Cobro de {$precio}€ realizado correctamente y registrado en gastos.\n";
             } else {
@@ -142,7 +142,6 @@ try {
         }
         echo "\n";
     }
-    
 } catch (\Exception $e) {
     echo "[ERROR GENERAL] Ocurrió un error en el cron de suscripciones: " . $e->getMessage() . "\n";
 }

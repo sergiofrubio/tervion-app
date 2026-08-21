@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Registro de Cliente - Velion</title>
+    <title>Registro de Cliente - Tervion</title>
     <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion.jpg" type="image/jpeg">
 
     <!-- Google Fonts -->
@@ -34,7 +34,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
     <header class="border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <a href="<?= PROJECT_ROOT ?>/" class="flex items-center">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Velion Logo" class="h-9 object-contain">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-9 object-contain">
             </a>
             <div>
                 <a href="<?= PROJECT_ROOT ?>/login" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
@@ -302,7 +302,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                                 </span>
                                 <input type="text" name="nombre_comercial" id="nombre_comercial" x-model="formData.nombre_comercial" required
                                     class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white/50 focus:bg-white text-sm transition-all"
-                                    placeholder="Clínica Velion Madrid">
+                                    placeholder="Clínica Tervion Madrid">
                             </div>
                             <span class="text-xs text-red-500 mt-1 block" x-show="errors.nombre_comercial" x-text="errors.nombre_comercial"></span>
                         </div>
@@ -310,7 +310,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                             <label for="razon_social" class="block text-sm font-medium text-gray-700 mb-1">Razón Social</label>
                             <input type="text" name="razon_social" id="razon_social" x-model="formData.razon_social"
                                 class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white/50 focus:bg-white text-sm transition-all"
-                                placeholder="Velion S.L. / Autónomo">
+                                placeholder="Tervion S.L. / Autónomo">
                         </div>
                         <div>
                             <label for="telefono_contacto" class="block text-sm font-medium text-gray-700 mb-1">Teléfono de Contacto Clínica *</label>
@@ -332,7 +332,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                                 </span>
                                 <input type="email" name="email_contacto" id="email_contacto" x-model="formData.email_contacto"
                                     class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white/50 focus:bg-white text-sm transition-all"
-                                    placeholder="contacto@clinicavelion.com">
+                                    placeholder="contacto@clinicatervion.com">
                             </div>
                         </div>
                         <div>
@@ -343,7 +343,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                                 </span>
                                 <input type="url" name="sitio_web" id="sitio_web" x-model="formData.sitio_web"
                                     class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white/50 focus:bg-white text-sm transition-all"
-                                    placeholder="https://www.clinicavelion.com">
+                                    placeholder="https://www.clinicatervion.com">
                             </div>
                         </div>
                     </div>
@@ -653,10 +653,10 @@ $hasSystemAlert = $systemAlertMessage !== '';
     <!-- Footer -->
     <footer class="bg-gray-900 text-gray-400 py-8 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-4">
-            <p class="w-full sm:w-1/3 text-center sm:text-left text-sm">© 2026 Velion Ibérica SLU</p>
+            <p class="w-full sm:w-1/3 text-center sm:text-left text-sm">© 2026 Tervion Ibérica SLU</p>
 
             <a href="<?= PROJECT_ROOT ?>/" class="w-full sm:w-1/3 flex items-center justify-center">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-oscuro.jpg" alt="Velion Logo" class="h-8 object-contain rounded-md p-1 shadow-sm">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" alt="Tervion Logo" class="h-8 object-contain rounded-md p-1 shadow-sm">
             </a>
 
             <div class="w-full sm:w-1/3 flex items-center justify-center sm:justify-end gap-6 text-gray-400">

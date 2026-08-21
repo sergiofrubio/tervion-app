@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "¡Compra Confirmada! - Velion";
+$pageTitle = "¡Compra Confirmada! - Tervion";
 include TEMPLATE_DIR . 'header.php';
 ?>
 
@@ -71,16 +71,16 @@ include TEMPLATE_DIR . 'header.php';
                             </p>
                         </div>
                     </div>
-                    
+
                     <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                        <a href="<?= PROJECT_ROOT ?>/paciente/facturas/pdf?id=<?= $factura['factura_id'] ?>" 
-                           target="_blank"
-                           class="flex-1 inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3.5 rounded-xl text-sm transition-all hover:scale-[1.01] shadow-lg shadow-blue-100">
+                        <a href="<?= PROJECT_ROOT ?>/paciente/facturas/pdf?id=<?= $factura['factura_id'] ?>"
+                            target="_blank"
+                            class="flex-1 inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3.5 rounded-xl text-sm transition-all hover:scale-[1.01] shadow-lg shadow-blue-100">
                             <i class="bi bi-file-earmark-pdf-fill"></i>
                             Descargar Factura PDF
                         </a>
-                        <a href="<?= PROJECT_ROOT ?>/paciente/citas" 
-                           class="flex-1 inline-flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-bold px-6 py-3.5 rounded-xl text-sm transition-all hover:scale-[1.01]">
+                        <a href="<?= PROJECT_ROOT ?>/paciente/citas"
+                            class="flex-1 inline-flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-bold px-6 py-3.5 rounded-xl text-sm transition-all hover:scale-[1.01]">
                             Reservar mi Primera Cita
                             <i class="bi bi-calendar3"></i>
                         </a>
@@ -109,16 +109,33 @@ include TEMPLATE_DIR . 'header.php';
 
 <style>
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     @keyframes scaleUp {
-        from { transform: scale(0.8); opacity: 0; }
-        to { transform: scale(1); opacity: 1; }
+        from {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
     }
+
     .animate-fade-in {
         animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
+
     .animate-scale-up {
         animation: scaleUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }

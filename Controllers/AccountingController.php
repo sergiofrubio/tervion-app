@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Core\Controller;
@@ -28,7 +29,7 @@ class AccountingController extends Controller
         $data = [
             'report' => $report,
             'year' => $year,
-            'pageTitle' => 'Cuadro de Mando Contable - Velion'
+            'pageTitle' => 'Cuadro de Mando Contable - Tervion'
         ];
 
         $this->view('accounting/dashboard', $data);
@@ -70,7 +71,7 @@ class AccountingController extends Controller
         $data = [
             'gastos' => $gastoModel->getAll($filters),
             'filters' => $filters,
-            'pageTitle' => 'Libro Registro de Gastos - Velion'
+            'pageTitle' => 'Libro Registro de Gastos - Tervion'
         ];
 
         $this->view('accounting/expenses_list', $data);
@@ -112,7 +113,7 @@ class AccountingController extends Controller
             'modelo303' => $modelo303,
             'modelo130' => $modelo130,
             'modelo111' => $modelo111,
-            'pageTitle' => 'Modelos Impositivos AEAT - Velion'
+            'pageTitle' => 'Modelos Impositivos AEAT - Tervion'
         ];
 
         $this->view('accounting/tax_models', $data);
@@ -125,11 +126,11 @@ class AccountingController extends Controller
     {
         $year = $_GET['anio'] ?? date('Y');
         $invoiceModel = $this->model('Invoice');
-        
+
         // Obtenemos todas las facturas del año
         $facturas = $invoiceModel->getAll();
         // Filtrar por año de emisión
-        $facturas = array_filter($facturas, function($f) use ($year) {
+        $facturas = array_filter($facturas, function ($f) use ($year) {
             return date('Y', strtotime($f['fecha_emision'])) == $year;
         });
 
@@ -138,17 +139,17 @@ class AccountingController extends Controller
 
         $output = fopen('php://output', 'w');
         // UTF-8 BOM para Excel
-        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
-        
+        fprintf($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
         // Cabecera oficial española
         fputcsv($output, [
-            'Número Factura', 
-            'Fecha Expedición', 
-            'NIF/DNI Destinatario', 
-            'Nombre/Razón Social Destinatario', 
-            'Base Imponible (€)', 
-            'Tipo IVA (%)', 
-            'Cuota IVA (€)', 
+            'Número Factura',
+            'Fecha Expedición',
+            'NIF/DNI Destinatario',
+            'Nombre/Razón Social Destinatario',
+            'Base Imponible (€)',
+            'Tipo IVA (%)',
+            'Cuota IVA (€)',
             'Total Factura (€)',
             'Identificador Huella (Verifactu)'
         ], ';');
@@ -177,9 +178,9 @@ class AccountingController extends Controller
     {
         $year = $_GET['anio'] ?? date('Y');
         $gastoModel = $this->model('Gasto');
-        
+
         $gastos = $gastoModel->getAll();
-        $gastos = array_filter($gastos, function($g) use ($year) {
+        $gastos = array_filter($gastos, function ($g) use ($year) {
             return date('Y', strtotime($g['fecha_emision'])) == $year;
         });
 
@@ -188,7 +189,7 @@ class AccountingController extends Controller
 
         $output = fopen('php://output', 'w');
         // UTF-8 BOM para Excel
-        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+        fprintf($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
         fputcsv($output, [
             'ID Gasto',
@@ -235,7 +236,7 @@ class AccountingController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['invoice_file']['name'])) {
             $filename = $_FILES['invoice_file']['name'];
             $gastoModel = $this->model('Gasto');
-            
+
             if ($gastoModel->autoParseInvoice($filename)) {
                 $_SESSION['flash_success'] = "Factura '{$filename}' leída y procesada por IA con éxito.";
             } else {
@@ -255,10 +256,12 @@ class AccountingController extends Controller
             // Instanciar el modelo de feed bancario y pasarle el modelo de gasto
             $gastoModel = $this->model('Gasto');
             $bankModel = new \App\Models\BankFeed($gastoModel);
-            
+
             $results = $bankModel->importMockBankFeed();
-            
-            $createdCount = count(array_filter($results, function($r) { return $r['status'] === 'created'; }));
+
+            $createdCount = count(array_filter($results, function ($r) {
+                return $r['status'] === 'created';
+            }));
             $_SESSION['flash_success'] = "Sincronización bancaria finalizada: {$createdCount} nuevos gastos deducibles auto-conciliados.";
         }
         header('Location: ' . PROJECT_ROOT . '/contabilidad');
@@ -272,19 +275,19 @@ class AccountingController extends Controller
     {
         $quarter = $this->getCurrentQuarter();
         $year = date('Y');
-        
+
         $accountingModel = $this->model('Accounting');
         $modelo303 = $accountingModel->getModelo303($quarter, $year);
         $modelo130 = $accountingModel->getModelo130($quarter, $year);
         $modelo111 = $accountingModel->getModelo111($quarter, $year);
 
         // En un caso real, aquí se usaría PHPMailer para mandar un correo al administrador
-        $subject = "Velion - Liquidación Trimestral Automatizada T{$quarter}/{$year}";
+        $subject = "Tervion - Liquidación Trimestral Automatizada T{$quarter}/{$year}";
         $body = "Los borradores fiscales están listos para su presentación telemática:\n" .
-                "- Modelo 303 (IVA): " . number_format($modelo303['resultado'], 2) . " €\n" .
-                "- Modelo 130 (IRPF): " . number_format($modelo130['cuota_ingresar'], 2) . " €\n" .
-                "- Modelo 111 (Retenciones): " . number_format($modelo111['total_retenciones'], 2) . " €\n" .
-                "Acceda a su panel para exportar los libros oficiales.";
+            "- Modelo 303 (IVA): " . number_format($modelo303['resultado'], 2) . " €\n" .
+            "- Modelo 130 (IRPF): " . number_format($modelo130['cuota_ingresar'], 2) . " €\n" .
+            "- Modelo 111 (Retenciones): " . number_format($modelo111['total_retenciones'], 2) . " €\n" .
+            "Acceda a su panel para exportar los libros oficiales.";
 
         header('Content-Type: application/json');
         echo json_encode([

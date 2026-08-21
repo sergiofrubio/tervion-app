@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Core\Controller;
 use Fpdf\Fpdf;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -20,7 +22,7 @@ class PayrollController extends Controller
         $payrollModel = $this->model('Payroll');
         $mes = $_GET['mes'] ?? date('n');
         $anio = $_GET['anio'] ?? date('Y');
-        
+
         $data = [
             'nominas' => $payrollModel->getAllPayrolls(['mes' => $mes, 'anio' => $anio]),
             'mes' => $mes,
@@ -42,25 +44,25 @@ class PayrollController extends Controller
     {
         $payrollModel = $this->model('Payroll');
         $contractModel = $this->model('Contract');
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mes = $_POST['mes'];
             $anio = $_POST['anio'];
             $contrato_id = $_POST['contrato_id'];
-            
+
             $contract = $contractModel->getContract($contrato_id);
-            
+
             // Cálculos
             $bruto_mensual = $contract['salario_base_mensual'] + $contract['complementos_mensuales'];
-            
+
             // Deducciones
             $deduccion_ss = round($bruto_mensual * $this->ss_trabajador_rate, 2);
             $deduccion_irpf = round($bruto_mensual * ($contract['irpf_porcentaje'] / 100), 2);
             $total_deducciones = $deduccion_ss + $deduccion_irpf;
-            
+
             $liquido = $bruto_mensual - $total_deducciones;
             $coste_empresa_ss = round($bruto_mensual * $this->ss_empresa_rate, 2);
-            
+
             $data = [
                 'contrato_id' => $contrato_id,
                 'mes' => $mes,
@@ -76,7 +78,7 @@ class PayrollController extends Controller
                 'coste_seguridad_social_empresa' => $coste_empresa_ss,
                 'estado' => 'Pendiente'
             ];
-            
+
             if ($payrollModel->createPayroll($data)) {
                 header('Location: ' . PROJECT_ROOT . '/nominas?mes=' . $mes . '&anio=' . $anio);
                 $this->exitApp();
@@ -135,7 +137,7 @@ class PayrollController extends Controller
         $pdf = new Fpdf();
         $pdf->AddPage();
         $pdf->SetFont('Arial', 'B', 16);
-        
+
         // Cabecera
         $pdf->Cell(0, 10, iconv('UTF-8', 'windows-1252', 'RECIBO INDIVIDUAL DE SALARIOS (NÓMINA)'), 0, 1, 'C');
         $pdf->SetFont('Arial', '', 10);
@@ -147,15 +149,15 @@ class PayrollController extends Controller
         $pdf->Cell(95, 7, 'EMPRESA', 1, 0);
         $pdf->Cell(95, 7, 'TRABAJADOR', 1, 1);
         $pdf->SetFont('Arial', '', 9);
-        
+
         $y_start = $pdf->GetY();
-        $pdf->MultiCell(95, 5, "Velion Physiotherapy Clinic\nCIF: B12345678\nDirección: Calle Falsa 123\nCiudad: Madrid", 1);
+        $pdf->MultiCell(95, 5, "Tervion Physiotherapy Clinic\nCIF: B12345678\nDirección: Calle Falsa 123\nCiudad: Madrid", 1);
         $y_end_empresa = $pdf->GetY();
-        
+
         $pdf->SetXY(105, $y_start);
         $pdf->MultiCell(95, 5, iconv('UTF-8', 'windows-1252', $nomina['nombre'] . " " . $nomina['apellidos'] . "\nDNI: " . $nomina['dni'] . "\nNSS: " . $nomina['nss'] . "\nGrupo Cotización: " . $nomina['grupo_cotizacion']), 1);
         $y_end_trabajador = $pdf->GetY();
-        
+
         $pdf->SetY(max($y_end_empresa, $y_end_trabajador) + 10);
 
         // Conceptos
@@ -163,7 +165,7 @@ class PayrollController extends Controller
         $pdf->Cell(130, 7, 'CONCEPTOS', 1, 0, 'C');
         $pdf->Cell(30, 7, 'DEVENGOS', 1, 0, 'C');
         $pdf->Cell(30, 7, 'DEDUCCIONES', 1, 1, 'C');
-        
+
         $pdf->SetFont('Arial', '', 9);
         $pdf->Cell(130, 7, 'Salario Base', 1);
         $pdf->Cell(30, 7, number_format($nomina['devengos_base'], 2) . ' €', 1, 0, 'R');
@@ -195,7 +197,7 @@ class PayrollController extends Controller
         $pdf->Ln(10);
         $pdf->SetFont('Arial', '', 8);
         $pdf->Cell(0, 5, iconv('UTF-8', 'windows-1252', 'Coste Seguridad Social Empresa: ' . number_format($nomina['coste_seguridad_social_empresa'], 2) . ' €'), 0, 1);
-        
+
         return $pdf;
     }
 
@@ -220,9 +222,9 @@ class PayrollController extends Controller
             $mail->Port       = 1025;      // Puerto SMTP de Mailpit
             $mail->SMTPAuth   = false;     // Sin autenticación obligatoria para local
             $mail->SMTPAutoTLS = false;
-            
+
             // Destinatarios
-            $mail->setFrom('noreply@velion.local', 'Velion');
+            $mail->setFrom('noreply@tervion.local', 'Tervion');
             $mail->addAddress($emailDestinatario);
 
             // Adjuntar PDF desde memoria
@@ -235,8 +237,8 @@ class PayrollController extends Controller
             // Contenido del correo
             $mail->isHTML(true);
             $mail->CharSet = 'UTF-8';
-            $mail->Subject = iconv('UTF-8', 'windows-1252', "Velion - Tu Nómina de $mesNombre de $anio");
-            $mail->Body    = "Hola $nombreCompleto,<br><br>Adjuntamos a este correo tu recibo de salarios correspondiente al periodo de $mesNombre de $anio.<br><br>Un saludo,<br>El equipo de Velion.";
+            $mail->Subject = iconv('UTF-8', 'windows-1252', "Tervion - Tu Nómina de $mesNombre de $anio");
+            $mail->Body    = "Hola $nombreCompleto,<br><br>Adjuntamos a este correo tu recibo de salarios correspondiente al periodo de $mesNombre de $anio.<br><br>Un saludo,<br>El equipo de Tervion.";
 
             $mail->send();
             return true;
@@ -259,7 +261,7 @@ class PayrollController extends Controller
         $payrollModel = $this->model('Payroll');
         $contractModel = $this->model('Contract');
         $activeContracts = $contractModel->getActiveContracts();
-        
+
         $results = [
             'total' => count($activeContracts),
             'generated' => 0,
@@ -294,15 +296,15 @@ class PayrollController extends Controller
                 } else {
                     // Si no existe, la generamos
                     $bruto_mensual = $contract['salario_base_mensual'] + $contract['complementos_mensuales'];
-                    
+
                     // Deducciones
                     $deduccion_ss = round($bruto_mensual * $this->ss_trabajador_rate, 2);
                     $deduccion_irpf = round($bruto_mensual * ($contract['irpf_porcentaje'] / 100), 2);
                     $total_deducciones = $deduccion_ss + $deduccion_irpf;
-                    
+
                     $liquido = $bruto_mensual - $total_deducciones;
                     $coste_empresa_ss = round($bruto_mensual * $this->ss_empresa_rate, 2);
-                    
+
                     $data = [
                         'contrato_id' => $contrato_id,
                         'mes' => $mes,
@@ -318,7 +320,7 @@ class PayrollController extends Controller
                         'coste_seguridad_social_empresa' => $coste_empresa_ss,
                         'estado' => 'Pendiente'
                     ];
-                    
+
                     if ($payrollModel->createPayroll($data)) {
                         $results['generated']++;
                         // Buscar la nómina recién creada para tener toda la información formateada/completa
@@ -348,7 +350,6 @@ class PayrollController extends Controller
                 } else {
                     $results['errors'][] = "No se pudo recuperar la nómina generada para $nombreCompleto.";
                 }
-
             } catch (\Exception $e) {
                 $results['errors'][] = "Excepción procesando nómina de $nombreCompleto: " . $e->getMessage();
             }

@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Core\Controller;
 
 class AppointmentController extends Controller
@@ -16,7 +18,7 @@ class AppointmentController extends Controller
     public function list()
     {
         $appointment = $this->model('Appointment');
-        
+
         if ($_SESSION['rol'] === 'Paciente') {
             $data = ['appointments' => $appointment->getByPatient($_SESSION['usuario_id'])];
             $this->view('patient-view/appointment/list', $data);
@@ -60,7 +62,7 @@ class AppointmentController extends Controller
             $data = [
                 'fisioterapeutas' => $userModel->getByRol('Fisioterapeuta')
             ];
-            
+
             if ($_SESSION['rol'] === 'Paciente') {
                 $this->view('patient-view/appointment/create', $data);
             } else {
@@ -113,7 +115,7 @@ class AppointmentController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $appointment = $this->model('Appointment');
             $id = $_POST['cita_id'];
-            
+
             // Verificación de propiedad para pacientes
             if ($_SESSION['rol'] === 'Paciente') {
                 $citaExistente = $appointment->getById($id);
@@ -145,7 +147,7 @@ class AppointmentController extends Controller
                 'appointment' => $appointment->getById($id),
                 'fisioterapeutas' => $userModel->getByRol('Fisioterapeuta')
             ];
-            
+
             if ($_SESSION['rol'] === 'Paciente') {
                 // Verificar propiedad
                 if (!$data['appointment'] || $data['appointment']['paciente_id'] !== $_SESSION['usuario_id']) {
@@ -246,12 +248,12 @@ class AppointmentController extends Controller
                 $confirmLink = $scheme . '://' . $host . PROJECT_ROOT . '/citas/confirmar?token=' . $token;
 
                 $fecha_formateada = date('d/m/Y H:i', strtotime($cita['fecha_hora']));
-                $subject = "Recordatorio de cita - Velion";
+                $subject = "Recordatorio de cita - Tervion";
                 $body = "
                     <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: #ffffff;'>
                         <h2 style='color: #0f172a;'>Recordatorio de tu cita</h2>
                         <p>Hola, <strong>" . htmlspecialchars($cita['paciente_nombre']) . " " . htmlspecialchars($cita['paciente_apellidos']) . "</strong>,</p>
-                        <p>Te recordamos que tienes una cita programada en Velion:</p>
+                        <p>Te recordamos que tienes una cita programada en Tervion:</p>
                         <div style='background-color: #f8fafc; padding: 15px; border-radius: 6px; margin: 20px 0;'>
                             <p style='margin: 5px 0;'><strong>Fecha y Hora:</strong> " . $fecha_formateada . "</p>
                             <p style='margin: 5px 0;'><strong>Fisioterapeuta:</strong> " . htmlspecialchars($cita['fisioterapeuta_nombre']) . " " . htmlspecialchars($cita['fisioterapeuta_apellidos']) . "</p>

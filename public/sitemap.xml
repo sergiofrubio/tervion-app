@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <!-- Página principal / Landing Page -->
     <url>
-        <loc>https://velion.es/</loc>
+        <loc>https://tervion.es/</loc>
         <lastmod>2026-08-20</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
@@ -10,7 +10,7 @@
 
     <!-- Página de acceso / Login -->
     <url>
-        <loc>https://velion.es/login</loc>
+        <loc>https://tervion.es/login</loc>
         <lastmod>2026-08-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
@@ -18,7 +18,7 @@
 
     <!-- Página de registro -->
     <url>
-        <loc>https://velion.es/registro</loc>
+        <loc>https://tervion.es/registro</loc>
         <lastmod>2026-08-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>

@@ -24,7 +24,7 @@ class VerifactuConfig
     {
         $this->env = $params['verifactu_env'] ?? self::ENV_PRUEBAS;
         $this->nifEmisor = $params['nif_cif'] ?? 'B12345678';
-        $this->nombreRazonEmisor = $params['razon_social'] ?? $params['nombre_comercial'] ?? 'VELION ERP DEMO S.L.';
+        $this->nombreRazonEmisor = $params['razon_social'] ?? $params['nombre_comercial'] ?? 'tervion ERP DEMO S.L.';
         $this->certPath = $params['verifactu_cert_path'] ?? null;
         $this->certPassword = $params['verifactu_cert_password'] ?? null;
         $this->activo = isset($params['verifactu_activo']) ? (bool)$params['verifactu_activo'] : true;

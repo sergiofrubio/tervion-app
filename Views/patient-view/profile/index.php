@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Mi Perfil - Velion";
+$pageTitle = "Mi Perfil - Tervion";
 include TEMPLATE_DIR . 'header.php';
 
 // Los datos del usuario vienen del controlador en la variable $usuario
@@ -14,7 +14,7 @@ $success = $_GET['success'] ?? null;
             <h1 class="text-3xl font-extrabold tracking-tight text-gray-900">Mi Perfil</h1>
             <p class="text-gray-500">Gestiona tu información personal y preferencias de cuenta.</p>
         </div>
-        
+
         <?php if ($success): ?>
             <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-2 rounded-2xl flex items-center gap-2 animate-bounce">
                 <i class="bi bi-check-circle-fill"></i>
@@ -35,11 +35,11 @@ $success = $_GET['success'] ?? null;
                 </div>
                 <h2 class="text-xl font-bold text-gray-900"><?= htmlspecialchars($nombreCompleto) ?></h2>
                 <p class="text-sm text-gray-500 mb-6"><?= htmlspecialchars($usuario['email'] ?? '') ?></p>
-                
+
                 <div class="flex flex-col gap-2">
-                    <button @click="editMode = !editMode" 
-                            :class="editMode ? 'bg-gray-100 text-gray-700' : 'bg-primary-600 text-white shadow-primary-200'"
-                            class="w-full py-3 rounded-2xl font-bold text-sm transition-all hover:scale-[1.02] active:scale-95 shadow-lg flex items-center justify-center gap-2">
+                    <button @click="editMode = !editMode"
+                        :class="editMode ? 'bg-gray-100 text-gray-700' : 'bg-primary-600 text-white shadow-primary-200'"
+                        class="w-full py-3 rounded-2xl font-bold text-sm transition-all hover:scale-[1.02] active:scale-95 shadow-lg flex items-center justify-center gap-2">
                         <i :class="editMode ? 'bi bi-x-circle' : 'bi bi-pencil-square'"></i>
                         <span x-text="editMode ? 'Cancelar Edición' : 'Editar mi Perfil'"></span>
                     </button>
@@ -81,7 +81,7 @@ $success = $_GET['success'] ?? null;
                     <h2 class="text-lg font-bold text-gray-900" x-text="editMode ? 'Editar Información Personal' : 'Información Personal'"></h2>
                     <i class="bi bi-person-vcard text-gray-300 text-xl"></i>
                 </div>
-                
+
                 <div class="p-8">
                     <!-- Display Mode -->
                     <div x-show="!editMode" x-transition class="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-12">
@@ -126,32 +126,32 @@ $success = $_GET['success'] ?? null;
                             <div class="space-y-2">
                                 <label for="nombre" class="text-sm font-bold text-gray-700">Nombre</label>
                                 <input type="text" name="nombre" id="nombre" value="<?= htmlspecialchars($usuario['nombre'] ?? '') ?>" required
-                                       class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                                    class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
                             </div>
                             <div class="space-y-2">
                                 <label for="apellidos" class="text-sm font-bold text-gray-700">Apellidos</label>
                                 <input type="text" name="apellidos" id="apellidos" value="<?= htmlspecialchars($usuario['apellidos'] ?? '') ?>" required
-                                       class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                                    class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
                             </div>
                             <div class="space-y-2">
                                 <label for="email" class="text-sm font-bold text-gray-700">Email</label>
                                 <input type="email" name="email" id="email" value="<?= htmlspecialchars($usuario['email'] ?? '') ?>" required
-                                       class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                                    class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
                             </div>
                             <div class="space-y-2">
                                 <label for="telefono" class="text-sm font-bold text-gray-700">Teléfono</label>
                                 <input type="text" name="telefono" id="telefono" value="<?= htmlspecialchars($usuario['telefono'] ?? '') ?>"
-                                       class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                                    class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
                             </div>
                             <div class="space-y-2">
                                 <label for="fecha_nacimiento" class="text-sm font-bold text-gray-700">Fecha de Nacimiento</label>
                                 <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" value="<?= $usuario['fecha_nacimiento'] ?? '' ?>"
-                                       class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                                    class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
                             </div>
                             <div class="space-y-2">
                                 <label for="genero" class="text-sm font-bold text-gray-700">Género</label>
-                                <select name="genero" id="genero" 
-                                        class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm appearance-none bg-white">
+                                <select name="genero" id="genero"
+                                    class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm appearance-none bg-white">
                                     <option value="Hombre" <?= ($usuario['genero'] ?? '') == 'Hombre' ? 'selected' : '' ?>>Hombre</option>
                                     <option value="Mujer" <?= ($usuario['genero'] ?? '') == 'Mujer' ? 'selected' : '' ?>>Mujer</option>
                                     <option value="Otro" <?= ($usuario['genero'] ?? '') == 'Otro' ? 'selected' : '' ?>>Otro</option>
@@ -160,22 +160,22 @@ $success = $_GET['success'] ?? null;
                             <div class="md:col-span-2 space-y-2">
                                 <label for="direccion" class="text-sm font-bold text-gray-700">Dirección</label>
                                 <input type="text" name="direccion" id="direccion" value="<?= htmlspecialchars($usuario['direccion'] ?? '') ?>"
-                                       class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                                    class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
                             </div>
                             <div class="space-y-2">
                                 <label for="provincia" class="text-sm font-bold text-gray-700">Provincia</label>
                                 <input type="text" name="provincia" id="provincia" value="<?= htmlspecialchars($usuario['provincia'] ?? '') ?>"
-                                       class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                                    class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
                             </div>
                             <div class="space-y-2">
                                 <label for="municipio" class="text-sm font-bold text-gray-700">Municipio</label>
                                 <input type="text" name="municipio" id="municipio" value="<?= htmlspecialchars($usuario['municipio'] ?? '') ?>"
-                                       class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                                    class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
                             </div>
                             <div class="space-y-2">
                                 <label for="cp" class="text-sm font-bold text-gray-700">Código Postal</label>
                                 <input type="text" name="cp" id="cp" value="<?= htmlspecialchars($usuario['cp'] ?? '') ?>"
-                                       class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                                    class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
                             </div>
                         </div>
 
@@ -184,7 +184,7 @@ $success = $_GET['success'] ?? null;
                             <h3 class="text-sm font-bold text-gray-900">Cambiar Contraseña (opcional)</h3>
                             <div class="relative">
                                 <input :type="showPassword ? 'text' : 'password'" name="pass" id="pass" placeholder="Nueva contraseña"
-                                       class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                                    class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
                                 <button type="button" @click="showPassword = !showPassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                                     <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
                                 </button>
@@ -205,9 +205,17 @@ $success = $_GET['success'] ?? null;
 
 <style>
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in {
         animation: fadeIn 0.5s ease-out forwards;
     }

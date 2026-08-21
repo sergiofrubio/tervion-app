@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Inicio de sesión - Velion</title>
+    <title>Inicio de sesión - Tervion</title>
     <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion.jpg" type="image/jpeg">
 
     <!-- Google Fonts -->
@@ -34,9 +34,9 @@ $hasSystemAlert = $systemAlertMessage !== '';
         <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 p-8 sm:p-10 transition-all">
 
             <div class="text-center mb-8">
-                <!-- <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Velion Logo" class="w-24 mx-auto rounded-2xl shadow-sm mb-4"> -->
+                <!-- <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="w-24 mx-auto rounded-2xl shadow-sm mb-4"> -->
                 <a href="<?= PROJECT_ROOT ?>/" class="w-24 mx-auto flex items-center mb-4">
-                    <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Velion Logo" class="h-9 object-contain">
+                    <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-9 object-contain">
                 </a>
                 <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Bienvenido de nuevo</h2>
                 <p class="text-sm text-gray-500 mt-1">Inicia sesión en tu cuenta</p>

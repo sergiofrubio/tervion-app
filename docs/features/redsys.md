@@ -40,13 +40,13 @@ sequenceDiagram
 
 ## 🛠️ Clases y Componentes Implicados
 
-### 1. [`ShopController.php`](file:///c:/Users/sergi/Documents/velion-app/Controllers/ShopController.php)
+### 1. [`ShopController.php`](file:///c:/Users/sergi/Documents/tervion-app/Controllers/ShopController.php)
 Controlador encargado de orquestar el flujo comercial y de pagos:
 - `list()`: Muestra los bonos activos configurados en el sistema de gestión.
 - `procesarPago()`: 
   - Genera una orden única a través de `time()` (un número de 10 dígitos requerido por Redsys).
   - Multiplica el importe por 100 y lo castea a un número entero (ej. `45.50` € -> `4550` céntimos).
-  - Inicializa la clase `Redsys\Merchant` a través del token `REDSYS_API_KEY` definido en [config.php](file:///c:/Users/sergi/Documents/velion-app/Core/config.php).
+  - Inicializa la clase `Redsys\Merchant` a través del token `REDSYS_API_KEY` definido en [config.php](file:///c:/Users/sergi/Documents/tervion-app/Core/config.php).
   - Delega la redirección en `Redsys\Redirect::authorisation()`.
 - `notificacion()`: 
   - Punto de entrada de la Notificación Online Asíncrona (IPN).
@@ -63,7 +63,7 @@ Ubicada en `vendor/redsys-lib/src/`, es una biblioteca que abstrae la firma HMAC
 
 ## ⚙️ Configuración y Entornos
 
-La constante `REDSYS_API_KEY` en [config.php](file:///c:/Users/sergi/Documents/velion-app/Core/config.php) almacena la clave criptográfica para firmar los mensajes.
+La constante `REDSYS_API_KEY` en [config.php](file:///c:/Users/sergi/Documents/tervion-app/Core/config.php) almacena la clave criptográfica para firmar los mensajes.
 
 - **Entorno de Sandbox / Integración:** Se usa un TPV virtual ficticio provisto por Redsys con tarjetas de prueba. La URL del TPV y las claves son del entorno de pruebas de Redsys.
 - **Entorno de Producción:** Debe reemplazarse la constante con la clave real provista por la entidad bancaria a través de su portal de administración TPV.

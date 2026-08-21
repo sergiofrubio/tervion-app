@@ -89,7 +89,7 @@ class SettingTest extends TestCase
 
     public function testGetClinica()
     {
-        $clinicaData = ['id_clinica' => 1, 'nombre_comercial' => 'Velion Clinica'];
+        $clinicaData = ['id_clinica' => 1, 'nombre_comercial' => 'Tervion Clinica'];
 
         $this->stmtMock->expects($this->once())
             ->method('execute')

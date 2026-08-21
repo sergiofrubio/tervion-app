@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Mis Facturas - Velion";
+$pageTitle = "Mis Facturas - Tervion";
 include TEMPLATE_DIR . 'header.php';
 ?>
 
@@ -94,9 +94,9 @@ include TEMPLATE_DIR . 'header.php';
                                     <span class="text-sm font-black text-gray-900"><?= number_format($f['total'], 2, ',', '.') ?> €</span>
                                 </td>
                                 <td class="px-6 py-5 text-center">
-                                    <a href="<?= PROJECT_ROOT ?>/paciente/facturas/pdf?id=<?= $f['factura_id'] ?>" 
-                                       target="_blank"
-                                       class="inline-flex items-center gap-2 bg-gray-50 text-gray-600 px-4 py-2 rounded-xl font-bold text-xs transition-all hover:bg-primary-600 hover:text-white hover:scale-105 active:scale-95 shadow-sm">
+                                    <a href="<?= PROJECT_ROOT ?>/paciente/facturas/pdf?id=<?= $f['factura_id'] ?>"
+                                        target="_blank"
+                                        class="inline-flex items-center gap-2 bg-gray-50 text-gray-600 px-4 py-2 rounded-xl font-bold text-xs transition-all hover:bg-primary-600 hover:text-white hover:scale-105 active:scale-95 shadow-sm">
                                         <i class="bi bi-file-earmark-pdf"></i>
                                         Descargar PDF
                                     </a>
@@ -120,12 +120,12 @@ include TEMPLATE_DIR . 'header.php';
                 <p class="text-sm text-gray-500 leading-relaxed">
                     Si encuentras algún error o necesitas una factura rectificativa, por favor ponte en contacto con administración.
                 </p>
-                <a href="mailto:administracion@velion.com" class="text-sm font-bold text-primary-600 hover:text-primary-700 inline-flex items-center gap-1 transition-all hover:gap-2">
+                <a href="mailto:administracion@tervion.com" class="text-sm font-bold text-primary-600 hover:text-primary-700 inline-flex items-center gap-1 transition-all hover:gap-2">
                     Contactar con soporte <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
         </div>
-        
+
         <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm flex items-start gap-6">
             <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
                 <i class="bi bi-shield-check text-2xl"></i>
@@ -142,9 +142,17 @@ include TEMPLATE_DIR . 'header.php';
 
 <style>
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in {
         animation: fadeIn 0.5s ease-out forwards;
     }

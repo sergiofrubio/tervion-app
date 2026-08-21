@@ -31,7 +31,7 @@ docker exec -it <nombre-contenedor-apache> ./vendor/bin/phpunit
 El contenedor de desarrollo de Apache tiene **Xdebug** preinstalado y configurado automáticamente para permitir depuración por breakpoints paso a paso y análisis de cobertura de pruebas (`coverage`).
 
 ### Configuración del Servidor PHP (en Docker)
-Como se detalla en el [Dockerfile](file:///c:/Users/sergi/Documents/velion-app/Dockerfile), Xdebug está parametrizado con los siguientes valores para desarrollo:
+Como se detalla en el [Dockerfile](file:///c:/Users/sergi/Documents/tervion-app/Dockerfile), Xdebug está parametrizado con los siguientes valores para desarrollo:
 - `xdebug.mode=coverage,debug` (habilita depuración activa y reportes de cobertura)
 - `xdebug.start_with_request=yes` (inicia el handshake de depuración en cada petición entrante)
 - `xdebug.client_host=host.docker.internal` (redirige el puerto al host que aloja los contenedores)

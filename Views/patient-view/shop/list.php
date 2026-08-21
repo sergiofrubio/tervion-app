@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Tienda de Bonos - Velion";
+$pageTitle = "Tienda de Bonos - Tervion";
 include TEMPLATE_DIR . 'header.php';
 
 // Los bonos activos vienen del controlador $bonosActivos
@@ -12,7 +12,7 @@ include TEMPLATE_DIR . 'header.php';
             <div class="max-w-2xl space-y-4">
                 <h1 class="text-4xl md:text-5xl font-black tracking-tight">Tu Salud, a tu Ritmo 🧘‍♂️</h1>
                 <p class="text-orange-50 text-lg opacity-90 leading-relaxed">
-                    Adquiere nuestros bonos de sesiones y disfruta de una atención personalizada con descuentos exclusivos. 
+                    Adquiere nuestros bonos de sesiones y disfruta de una atención personalizada con descuentos exclusivos.
                     Sin caducidad inmediata y totalmente gestionables desde tu panel.
                 </p>
             </div>
@@ -22,7 +22,7 @@ include TEMPLATE_DIR . 'header.php';
                 </div>
             </div>
         </div>
-        
+
         <!-- Abstract Shapes -->
         <div class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
         <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-72 h-72 bg-amber-400/20 rounded-full blur-3xl"></div>
@@ -47,7 +47,7 @@ include TEMPLATE_DIR . 'header.php';
                     <div class="group relative bg-white rounded-[2rem] border border-gray-100 p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden">
                         <!-- Background Accent -->
                         <div class="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-primary-50 rounded-full transition-transform group-hover:scale-150 duration-700"></div>
-                        
+
                         <div class="relative z-10 flex flex-col h-full">
                             <div class="flex justify-between items-start mb-6">
                                 <div class="p-4 bg-orange-50 text-orange-600 rounded-2xl group-hover:bg-orange-100 transition-colors">
@@ -92,8 +92,8 @@ include TEMPLATE_DIR . 'header.php';
                             </div>
 
                             <div class="pt-6 border-t border-gray-50 mt-auto">
-                                <a href="<?= PROJECT_ROOT ?>/paciente/tienda/pago?id=<?= $bono['bono_id'] ?? 0 ?>" 
-                                   class="w-full inline-flex items-center justify-center gap-2 bg-gray-900 text-white px-8 py-4 rounded-2xl font-bold transition-all hover:bg-primary-600 hover:scale-[1.02] active:scale-95 shadow-lg shadow-gray-200">
+                                <a href="<?= PROJECT_ROOT ?>/paciente/tienda/pago?id=<?= $bono['bono_id'] ?? 0 ?>"
+                                    class="w-full inline-flex items-center justify-center gap-2 bg-gray-900 text-white px-8 py-4 rounded-2xl font-bold transition-all hover:bg-primary-600 hover:scale-[1.02] active:scale-95 shadow-lg shadow-gray-200">
                                     Comprar Ahora
                                     <i class="bi bi-arrow-right"></i>
                                 </a>
@@ -172,9 +172,17 @@ include TEMPLATE_DIR . 'header.php';
 
 <style>
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in {
         animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }

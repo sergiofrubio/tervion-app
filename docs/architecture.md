@@ -1,6 +1,6 @@
 # Arquitectura del Sistema e Infraestructura de Software
 
-Este documento proporciona una visión general y técnica de la arquitectura interna de **Velion ERP**. La aplicación está construida sobre una arquitectura modular propia basada en el patrón **MVC (Modelo-Vista-Controlador)** sin dependencias de frameworks pesados, optimizando el rendimiento y el control de la base de código.
+Este documento proporciona una visión general y técnica de la arquitectura interna de **Tervion ERP**. La aplicación está construida sobre una arquitectura modular propia basada en el patrón **MVC (Modelo-Vista-Controlador)** sin dependencias de frameworks pesados, optimizando el rendimiento y el control de la base de código.
 
 ---
 
@@ -24,26 +24,26 @@ graph TD
 
 ## 📂 Organización y Estructura del Código
 
-El proyecto se adhiere al estándar de carga de clases **PSR-4** configurado en [composer.json](file:///c:/Users/sergi/Documents/velion-app/composer.json). A continuación se describe la responsabilidad de cada directorio principal:
+El proyecto se adhiere al estándar de carga de clases **PSR-4** configurado en [composer.json](file:///c:/Users/sergi/Documents/tervion-app/composer.json). A continuación se describe la responsabilidad de cada directorio principal:
 
-- **[`Core/`](file:///c:/Users/sergi/Documents/velion-app/Core)**: Clases fundamentales del motor del aplicativo.
-  - [DataBase.php](file:///c:/Users/sergi/Documents/velion-app/Core/DataBase.php): Abstracción e inicio del pool de conexiones utilizando **PDO** con atributos de excepción estrictos.
-  - [Controller.php](file:///c:/Users/sergi/Documents/velion-app/Core/Controller.php): Controlador base que define utilidades para instanciar modelos y extraer variables a las vistas.
-  - [config.php](file:///c:/Users/sergi/Documents/velion-app/Core/config.php): Constantes globales del sistema y credenciales fijas de APIs.
-- **[`Router/`](file:///c:/Users/sergi/Documents/velion-app/Router)**: Gestión del enrutamiento de la aplicación.
-  - [Router.php](file:///c:/Users/sergi/Documents/velion-app/Router/Router.php): Parser de peticiones URL, manejo de sesiones de usuario y validación de ACL (Access Control Lists).
-  - [routes.php](file:///c:/Users/sergi/Documents/velion-app/Router/routes.php): Declaración de todas las rutas HTTP del sistema, especificando el método, controlador, políticas de autenticación y roles permitidos.
-- **[`Controllers/`](file:///c:/Users/sergi/Documents/velion-app/Controllers)**: Interceptores de las peticiones HTTP que ejecutan la lógica de orquestación del negocio.
-- **[`Models/`](file:///c:/Users/sergi/Documents/velion-app/Models)**: Representación de las entidades de negocio y abstracción de consultas SQL directas a través de PDO.
-- **[`Views/`](file:///c:/Users/sergi/Documents/velion-app/Views)**: Plantillas PHP/HTML que componen la interfaz del usuario.
-- **[`Templates/`](file:///c:/Users/sergi/Documents/velion-app/Templates)**: Fragmentos de código UI reutilizables (layouts de navegación, modales, etc.).
-- **[`Services/`](file:///c:/Users/sergi/Documents/velion-app/Services)**: Capas de servicio externas integradas, encapsulando la complejidad de las integraciones (como Verifactu).
+- **[`Core/`](file:///c:/Users/sergi/Documents/tervion-app/Core)**: Clases fundamentales del motor del aplicativo.
+  - [DataBase.php](file:///c:/Users/sergi/Documents/tervion-app/Core/DataBase.php): Abstracción e inicio del pool de conexiones utilizando **PDO** con atributos de excepción estrictos.
+  - [Controller.php](file:///c:/Users/sergi/Documents/tervion-app/Core/Controller.php): Controlador base que define utilidades para instanciar modelos y extraer variables a las vistas.
+  - [config.php](file:///c:/Users/sergi/Documents/tervion-app/Core/config.php): Constantes globales del sistema y credenciales fijas de APIs.
+- **[`Router/`](file:///c:/Users/sergi/Documents/tervion-app/Router)**: Gestión del enrutamiento de la aplicación.
+  - [Router.php](file:///c:/Users/sergi/Documents/tervion-app/Router/Router.php): Parser de peticiones URL, manejo de sesiones de usuario y validación de ACL (Access Control Lists).
+  - [routes.php](file:///c:/Users/sergi/Documents/tervion-app/Router/routes.php): Declaración de todas las rutas HTTP del sistema, especificando el método, controlador, políticas de autenticación y roles permitidos.
+- **[`Controllers/`](file:///c:/Users/sergi/Documents/tervion-app/Controllers)**: Interceptores de las peticiones HTTP que ejecutan la lógica de orquestación del negocio.
+- **[`Models/`](file:///c:/Users/sergi/Documents/tervion-app/Models)**: Representación de las entidades de negocio y abstracción de consultas SQL directas a través de PDO.
+- **[`Views/`](file:///c:/Users/sergi/Documents/tervion-app/Views)**: Plantillas PHP/HTML que componen la interfaz del usuario.
+- **[`Templates/`](file:///c:/Users/sergi/Documents/tervion-app/Templates)**: Fragmentos de código UI reutilizables (layouts de navegación, modales, etc.).
+- **[`Services/`](file:///c:/Users/sergi/Documents/tervion-app/Services)**: Capas de servicio externas integradas, encapsulando la complejidad de las integraciones (como Verifactu).
 
 ---
 
 ## 🚦 Enrutamiento y Sistema de Permisos (ACL)
 
-El motor de enrutamiento implementado en [Router.php](file:///c:/Users/sergi/Documents/velion-app/Router/Router.php) evalúa los siguientes parámetros para cada ruta registrada mediante `$router->add($method, $url, $action, $auth, $roles)`:
+El motor de enrutamiento implementado en [Router.php](file:///c:/Users/sergi/Documents/tervion-app/Router/Router.php) evalúa los siguientes parámetros para cada ruta registrada mediante `$router->add($method, $url, $action, $auth, $roles)`:
 
 1. **Método HTTP:** `GET` o `POST`.
 2. **Path de la Solicitud:** Extracción del URI base, limpiando parámetros Query String (`strtok($requestUrl, '?')`).

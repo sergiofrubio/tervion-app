@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Core;
+
 use PDO;
 use PDOException;
 
@@ -15,7 +17,7 @@ class DataBase
     public function __construct()
     {
         $this->host = getenv('DB_HOST') ?: 'db';
-        $this->db_name = getenv('DB_NAME') ?: 'velion';
+        $this->db_name = getenv('DB_NAME') ?: 'tervion';
         $this->username = getenv('DB_USER') ?: 'root';
         $this->password = getenv('DB_PASS') ?: 'root';
     }

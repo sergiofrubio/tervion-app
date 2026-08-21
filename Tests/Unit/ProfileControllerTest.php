@@ -55,7 +55,7 @@ class ProfileControllerTest extends ControllerTestCase
             ->with('patient-view/profile/index', [
                 'usuario' => $usuario,
                 'metodosPago' => [],
-                'pageTitle' => 'Mi Perfil - Velion'
+                'pageTitle' => 'Mi Perfil - Tervion'
             ]);
 
         $controller->index();
@@ -71,7 +71,7 @@ class ProfileControllerTest extends ControllerTestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['update'])
             ->getMock();
-        $userModelMock->method('update')->with('U123', $this->callback(function($data) {
+        $userModelMock->method('update')->with('U123', $this->callback(function ($data) {
             return $data['nombre'] === 'Johnny';
         }))->willReturn(true);
 
@@ -80,7 +80,7 @@ class ProfileControllerTest extends ControllerTestCase
 
         $this->expectException(TestExitException::class);
         $controller->edit();
-        
+
         $this->assertEquals('Johnny', $_SESSION['nombre']);
     }
 }

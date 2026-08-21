@@ -6,7 +6,7 @@ Este documento detalla los procesos asíncronos y tareas en segundo plano que se
 
 ## ⚙️ Configuración del Demonio Cron en Producción
 
-Como se define en el [Dockerfile](file:///c:/Users/sergi/Documents/velion-app/Dockerfile) del entorno de producción, las tareas del sistema se orquestan bajo el archivo `/etc/cron.d/app-cron` dentro del contenedor Apache.
+Como se define en el [Dockerfile](file:///c:/Users/sergi/Documents/tervion-app/Dockerfile) del entorno de producción, las tareas del sistema se orquestan bajo el archivo `/etc/cron.d/app-cron` dentro del contenedor Apache.
 
 La definición exacta de las tareas en crontab es:
 
@@ -25,16 +25,16 @@ La definición exacta de las tareas en crontab es:
 
 ## 📁 Detalle de los Scripts
 
-Los scripts CLI se encuentran en la carpeta [`Scripts/`](file:///c:/Users/sergi/Documents/velion-app/Scripts) y cargan las clases necesarias utilizando el autoloader de Composer, lo que les permite reutilizar toda la lógica de los controladores y modelos del ERP.
+Los scripts CLI se encuentran en la carpeta [`Scripts/`](file:///c:/Users/sergi/Documents/tervion-app/Scripts) y cargan las clases necesarias utilizando el autoloader de Composer, lo que les permite reutilizar toda la lógica de los controladores y modelos del ERP.
 
-### 1. [`send_reminders.php`](file:///c:/Users/sergi/Documents/velion-app/Scripts/send_reminders.php)
+### 1. [`send_reminders.php`](file:///c:/Users/sergi/Documents/tervion-app/Scripts/send_reminders.php)
 Este script se ejecuta diariamente. Su objetivo es notificar a los pacientes sobre sus próximas citas médicas para reducir la tasa de inasistencia.
-- **Funcionamiento:** Instancia [`AppointmentController`](file:///c:/Users/sergi/Documents/velion-app/Controllers/AppointmentController.php) y ejecuta el método `enviarRecordatorios()`.
+- **Funcionamiento:** Instancia [`AppointmentController`](file:///c:/Users/sergi/Documents/tervion-app/Controllers/AppointmentController.php) y ejecuta el método `enviarRecordatorios()`.
 - **Lógica de Negocio:** Busca citas agendadas para el día siguiente, construye una plantilla de correo electrónico utilizando PHPMailer y la encola o transmite al servidor SMTP.
 
-### 2. [`generate_payroll.php`](file:///c:/Users/sergi/Documents/velion-app/Scripts/generate_payroll.php)
+### 2. [`generate_payroll.php`](file:///c:/Users/sergi/Documents/tervion-app/Scripts/generate_payroll.php)
 Este script se ejecuta el día 25 de cada mes.
-- **Funcionamiento:** Instancia [`PayrollController`](file:///c:/Users/sergi/Documents/velion-app/Controllers/PayrollController.php) y llama a `processAllMonthlyPayrolls(date('m'), date('Y'))`.
+- **Funcionamiento:** Instancia [`PayrollController`](file:///c:/Users/sergi/Documents/tervion-app/Controllers/PayrollController.php) y llama a `processAllMonthlyPayrolls(date('m'), date('Y'))`.
 - **Lógica de Negocio:** Lee los contratos activos (`Contract` model), calcula el salario base e incentivos mensuales basándose en el registro del trabajador, y genera los registros de nómina correspondientes en la base de datos para su posterior firma o exportación a PDF.
 
 ---

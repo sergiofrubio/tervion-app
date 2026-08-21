@@ -1,10 +1,13 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Core\Controller;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-class LoginController extends Controller {
+class LoginController extends Controller
+{
 
     private $loginModel;
 
@@ -13,7 +16,8 @@ class LoginController extends Controller {
      *
      * Inicializa el modelo de inicio de sesión.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->loginModel = $this->model('Login');
     }
 
@@ -24,7 +28,8 @@ class LoginController extends Controller {
      *
      * @return void
      */
-    public function index(){
+    public function index()
+    {
         if (isset($_SESSION['email'])) {
             header('Location: ' . PROJECT_ROOT . '/inicio');
             $this->exitApp();
@@ -40,7 +45,8 @@ class LoginController extends Controller {
      *
      * @return void
      */
-    public function iniciarSesion() {
+    public function iniciarSesion()
+    {
         $email = $_POST['email'] ?? null;
         $pass = $_POST['pass'] ?? null;
 
@@ -67,9 +73,10 @@ class LoginController extends Controller {
      * @param array $usuario Datos del usuario a almacenar en la sesión.
      * @return void
      */
-    private function startSession($usuario) {
+    private function startSession($usuario)
+    {
         $_SESSION = array_merge($_SESSION, $usuario);
-        
+
         header('Location: ' . PROJECT_ROOT . '/inicio');
         $this->exitApp();
     }
@@ -106,7 +113,8 @@ class LoginController extends Controller {
      * @param string $alertType Tipo de alerta (por ejemplo, 'danger', 'warning', 'success').
      * @return void
      */
-    private function redirectWithMessage($message, $alertType) {
+    private function redirectWithMessage($message, $alertType)
+    {
         header("Location: " . PROJECT_ROOT . "/login?alert=$alertType&message=" . urlencode($message));
         $this->exitApp();
     }
@@ -116,7 +124,8 @@ class LoginController extends Controller {
      *
      * @return void
      */
-    public function generatePasswordResetToken() {
+    public function generatePasswordResetToken()
+    {
         $email = $_POST['resetEmail'] ?? null;
 
         if ($email) {
@@ -126,15 +135,15 @@ class LoginController extends Controller {
                 $token = bin2hex(random_bytes(32));
                 if ($this->loginModel->saveResetToken($email, $token)) {
                     $emailController = new EmailController();
-                    
+
                     $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
                     $host = $_SERVER['HTTP_HOST'];
                     $resetLink = $scheme . '://' . $host . PROJECT_ROOT . '/login/reset-password?token=' . $token;
 
-                    $subject = 'Restablecer Contraseña - Velion';
+                    $subject = 'Restablecer Contraseña - Tervion';
                     $body = "
                         <h2>Hola, {$usuario['nombre']}</h2>
-                        <p>Has solicitado restablecer tu contraseña para tu cuenta en Velion.</p>
+                        <p>Has solicitado restablecer tu contraseña para tu cuenta en Tervion.</p>
                         <p>Haz clic en el siguiente enlace para establecer una nueva contraseña (este enlace expira en 1 hora):</p>
                         <p><a href='{$resetLink}' style='background-color:#0f172a; color:#ffffff; padding:10px 20px; text-decoration:none; border-radius:8px; display:inline-block;'>Restablecer Contraseña</a></p>
                         <p>Si no solicitaste este cambio, puedes ignorar este correo.</p>
@@ -155,7 +164,8 @@ class LoginController extends Controller {
      *
      * @return void
      */
-    public function showResetForm() {
+    public function showResetForm()
+    {
         $token = $_GET['token'] ?? null;
 
         if ($token) {
@@ -175,7 +185,8 @@ class LoginController extends Controller {
      *
      * @return void
      */
-    public function updatePassword() {
+    public function updatePassword()
+    {
         $token = $_POST['token'] ?? null;
         $pass = $_POST['pass'] ?? null;
         $confirmPassword = $_POST['confirmPassword'] ?? null;
@@ -210,4 +221,3 @@ class LoginController extends Controller {
         }
     }
 }
-?>

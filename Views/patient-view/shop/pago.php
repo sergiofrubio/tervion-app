@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Confirmar Compra - Velion";
+$pageTitle = "Confirmar Compra - Tervion";
 include TEMPLATE_DIR . 'header.php';
 ?>
 
@@ -15,7 +15,7 @@ include TEMPLATE_DIR . 'header.php';
     <div class="bg-white rounded-[2rem] border border-gray-100 p-8 md:p-10 shadow-2xl shadow-gray-100/50 overflow-hidden relative">
         <!-- Accent Glow -->
         <div class="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-orange-100/40 rounded-full blur-3xl"></div>
-        
+
         <div class="relative z-10 space-y-8">
             <div class="border-b border-gray-100 pb-6">
                 <h1 class="text-3xl font-black text-gray-900">Resumen del Pedido</h1>
@@ -54,7 +54,7 @@ include TEMPLATE_DIR . 'header.php';
             <!-- Form submission to Redsys procesarPago -->
             <form action="<?= PROJECT_ROOT ?>/paciente/tienda/procesar-pago" method="POST" class="pt-6">
                 <input type="hidden" name="bono_id" value="<?= $bono['bono_id'] ?>">
-                
+
                 <button type="submit" class="w-full flex items-center justify-center gap-3 bg-gray-900 text-white px-8 py-5 rounded-2xl font-bold text-lg transition-all hover:bg-primary-600 hover:scale-[1.01] active:scale-95 shadow-xl shadow-gray-200">
                     <i class="bi bi-shield-lock-fill"></i>
                     Proceder al Pago Seguro con Redsys
@@ -79,9 +79,17 @@ include TEMPLATE_DIR . 'header.php';
 
 <style>
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in {
         animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }

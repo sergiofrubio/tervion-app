@@ -17,7 +17,7 @@
 #         image: mysql:8.0
 #         env:
 #           MYSQL_ROOT_PASSWORD: root
-#           MYSQL_DATABASE: velion
+#           MYSQL_DATABASE: tervion
 #         ports:
 #           - 3306:3306
 #         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -46,7 +46,7 @@
 
 #       # Inicializar el esquema de la base de datos
 #       - name: Initialize Database Schema
-#         run: mysql -h 127.0.0.1 -u root -proot velion < ./data/velion.sql
+#         run: mysql -h 127.0.0.1 -u root -proot tervion < ./data/tervion.sql
 
 #       # Ejecutar tests pasando las variables de entorno para la conexión
 #       - name: Run tests
@@ -54,5 +54,5 @@
 #           DB_HOST: 127.0.0.1
 #           DB_USER: root
 #           DB_PASS: root
-#           DB_NAME: velion
+#           DB_NAME: tervion
 #         run: vendor/bin/phpunit

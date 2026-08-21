@@ -155,7 +155,7 @@ CREATE TABLE `clinicas` (
 --
 
 INSERT INTO `clinicas` (`id_clinica`, `nombre_comercial`, `razon_social`, `nif_cif`, `direccion_calle`, `ciudad`, `provincia_estado`, `codigo_postal`, `pais`, `telefono_contacto`, `email_contacto`, `sitio_web`, `verifactu_env`, `verifactu_cert_path`, `verifactu_cert_password`, `verifactu_activo`, `fecha_registro`, `activo`) VALUES
-(1, 'Clínica Velion', 'Velion S.L.', 'B87654321', 'Paseo de la Castellana 120', 'Madrid', 'Madrid', '28046', 'España', '910123456', 'contacto@velion.es', 'https://www.velion.es', 'pruebas', NULL, NULL, 1, '2026-05-01 08:00:00', 1);
+(1, 'Clínica Tervion', 'Tervion S.L.', 'B87654321', 'Paseo de la Castellana 120', 'Madrid', 'Madrid', '28046', 'España', '910123456', 'contacto@tervion.es', 'https://www.tervion.es', 'pruebas', NULL, NULL, 1, '2026-05-01 08:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -208,7 +208,7 @@ CREATE TABLE `cuentas_clientes` (
 --
 
 INSERT INTO `cuentas_clientes` (`cuenta_id`, `nombre_empresa`, `nif_cif`, `slug`, `plan_suscripcion`, `plan_proximo`, `estado_cuenta`, `email_admin`, `fecha_alta`, `fecha_renovacion`, `configuracion_json`) VALUES
-(1, 'Velion S.L.', 'B87654321', 'velion-sl', 'Profesional', NULL, 'Activo', 'admin@example.com', '2026-05-01 08:00:00', '2026-09-01', NULL);
+(1, 'Tervion S.L.', 'B87654321', 'tervion-sl', 'Profesional', NULL, 'Activo', 'admin@example.com', '2026-05-01 08:00:00', '2026-09-01', NULL);
 
 -- --------------------------------------------------------
 
@@ -415,7 +415,7 @@ CREATE TABLE `metodos_pago` (
 --
 
 INSERT INTO `metodos_pago` (`metodo_id`, `usuario_id`, `tipo`, `proveedor`, `last4`, `fecha_expiracion`, `token_externo`, `es_predeterminado`, `nombre_titular`, `numero_completo`, `cvv`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
-(1, '345678901', 'Tarjeta', 'Visa', '4242', '12/2028', 'tok_velion_test_card', 1, 'PEDRO GOMEZ', '4548 1234 5678 4242', '123', '345678901', '2026-05-01 08:00:00', NULL, NULL);
+(1, '345678901', 'Tarjeta', 'Visa', '4242', '12/2028', 'tok_tervion_test_card', 1, 'PEDRO GOMEZ', '4548 1234 5678 4242', '123', '345678901', '2026-05-01 08:00:00', NULL, NULL);
 
 -- --------------------------------------------------------
 

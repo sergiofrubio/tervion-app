@@ -1,5 +1,5 @@
 /**
- * Velion Dynamic SPA Navigation Engine
+ * Tervion Dynamic SPA Navigation Engine
  * Permite la navegación fluida y sin recargas en el Dashboard interceptando
  * enlaces internos, actualizando el contenedor principal (#contenido),
  * el título, breadcrumbs y re-ejecutando scripts necesarios de forma reactiva.
@@ -148,7 +148,7 @@ async function loadContent(url, pushToHistory = true) {
         }
 
         // 9. Disparar evento personalizado para extensiones
-        window.dispatchEvent(new CustomEvent('velion:navigated', { detail: { url } }));
+        window.dispatchEvent(new CustomEvent('tervion:navigated', { detail: { url } }));
 
     } catch (err) {
         console.error('Error cargando navegación dinámica:', err);
@@ -176,7 +176,7 @@ function updateActiveSidebarLinks(targetUrl) {
     const navLinks = document.querySelectorAll('aside nav a');
     navLinks.forEach(link => {
         const linkUrl = new URL(link.href, window.location.origin);
-        const isMatch = (linkUrl.pathname === pathname) || 
+        const isMatch = (linkUrl.pathname === pathname) ||
             (pathname === '/' && linkUrl.pathname.endsWith('/inicio')) ||
             (linkUrl.pathname !== '/' && !linkUrl.pathname.endsWith('/inicio') && pathname.startsWith(linkUrl.pathname));
 

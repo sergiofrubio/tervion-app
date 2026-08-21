@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Core\Controller;
@@ -27,9 +28,9 @@ class EmailController extends Controller
             $mail->Port       = 1025;      // Puerto SMTP de Mailpit
             $mail->SMTPAuth   = false;     // Sin autenticación obligatoria para local
             $mail->SMTPAutoTLS = false;
-            
+
             // Destinatarios
-            $mail->setFrom('noreply@velion.local', 'Velion');
+            $mail->setFrom('noreply@tervion.local', 'Tervion');
             $mail->addAddress($to);
 
             // Contenido del correo
@@ -46,5 +47,4 @@ class EmailController extends Controller
             return false;
         }
     }
-
 }

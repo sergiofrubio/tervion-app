@@ -43,7 +43,7 @@ sequenceDiagram
 
 El módulo Verifactu reside bajo el espacio de nombres `App\Services\Verifactu` y consta de los siguientes componentes principales:
 
-### 1. [`VerifactuService.php`](file:///c:/Users/sergi/Documents/velion-app/Services/Verifactu/VerifactuService.php)
+### 1. [`VerifactuService.php`](file:///c:/Users/sergi/Documents/tervion-app/Services/Verifactu/VerifactuService.php)
 Es la fachada y orquestador del módulo. 
 - Valida si Verifactu está activo en la clínica.
 - Genera el huso horario estándar ISO8601 (`date('c')`).
@@ -51,7 +51,7 @@ Es la fachada y orquestador del módulo.
 - Invoca la generación del código QR y el XML.
 - Almacena en base de datos la petición y la respuesta XML completas para auditorías de no repudio.
 
-### 2. [`VerifactuHashGenerator.php`](file:///c:/Users/sergi/Documents/velion-app/Services/Verifactu/VerifactuHashGenerator.php)
+### 2. [`VerifactuHashGenerator.php`](file:///c:/Users/sergi/Documents/tervion-app/Services/Verifactu/VerifactuHashGenerator.php)
 Implementa el algoritmo de encadenamiento requerido por ley. Genera un hash SHA-256 en mayúsculas a partir de la concatenación ordenada de los atributos clave de la factura:
 ```php
 $cadena = "IDEmisorFactura=" . $nifEmisor .
@@ -65,16 +65,16 @@ $cadena = "IDEmisorFactura=" . $nifEmisor .
 ```
 Este diseño garantiza que no se puedan borrar ni modificar facturas intermedias sin romper el encadenamiento de la base de datos completa.
 
-### 3. [`VerifactuXmlBuilder.php`](file:///c:/Users/sergi/Documents/velion-app/Services/Verifactu/VerifactuXmlBuilder.php)
+### 3. [`VerifactuXmlBuilder.php`](file:///c:/Users/sergi/Documents/tervion-app/Services/Verifactu/VerifactuXmlBuilder.php)
 Construye el XML de alta de factura (`RegistroAlta`) dentro de un sobre SOAP estándar. Añade los namespaces requeridos y formatea las etiquetas de acuerdo al esquema oficial XSD de la AEAT.
 
-### 4. [`VerifactuClient.php`](file:///c:/Users/sergi/Documents/velion-app/Services/Verifactu/VerifactuClient.php)
+### 4. [`VerifactuClient.php`](file:///c:/Users/sergi/Documents/tervion-app/Services/Verifactu/VerifactuClient.php)
 Cliente de comunicaciones basado en **cURL**. Realiza una petición POST segura configurando TLS y cargando el certificado del cliente en formato `.pem` (`CURLOPT_SSLCERT` y `CURLOPT_SSLCERTPASSWD`) obtenido de la configuración de la clínica.
 Adicionalmente, se encarga de:
 - Limpiar dinámicamente los namespaces SOAP de la respuesta para parsear la información mediante `SimpleXMLElement`.
 - Interpretar errores HTTP y `SOAP Faults`.
 
-### 5. [`VerifactuQRGenerator.php`](file:///c:/Users/sergi/Documents/velion-app/Services/Verifactu/VerifactuQRGenerator.php)
+### 5. [`VerifactuQRGenerator.php`](file:///c:/Users/sergi/Documents/tervion-app/Services/Verifactu/VerifactuQRGenerator.php)
 Genera el enlace del código QR que es obligatorio incluir de forma impresa en la factura del cliente final, permitiendo al consumidor verificar directamente en la AEAT la autenticidad y el envío de su factura.
 
 ---

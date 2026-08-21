@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Core\Controller;
 
 class ProfileController extends Controller
@@ -12,9 +14,9 @@ class ProfileController extends Controller
     public function index()
     {
         $userModel = $this->model('User');
-        
+
         $usuario = $userModel->getByusuario_id($_SESSION['usuario_id']);
-        
+
         if (!$usuario) {
             header('Location: ' . PROJECT_ROOT . '/logout');
             $this->exitApp();
@@ -22,7 +24,7 @@ class ProfileController extends Controller
 
         $data = [
             'usuario' => $usuario,
-            'pageTitle' => 'Mi Perfil - Velion'
+            'pageTitle' => 'Mi Perfil - Tervion'
         ];
 
         $this->view('patient-view/profile/index', $data);

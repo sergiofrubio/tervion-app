@@ -16,14 +16,16 @@ include TEMPLATE_DIR . 'header.php';
     <?php if (isset($_SESSION['success_message'])) : ?>
         <div class="rounded-2xl bg-green-50 p-4 border border-green-100 flex items-center gap-3 animate-fade-in">
             <i class="bi bi-check-circle-fill text-green-500 text-lg"></i>
-            <p class="text-sm font-medium text-green-800"><?= $_SESSION['success_message']; unset($_SESSION['success_message']); ?></p>
+            <p class="text-sm font-medium text-green-800"><?= $_SESSION['success_message'];
+                                                            unset($_SESSION['success_message']); ?></p>
         </div>
     <?php endif; ?>
 
     <?php if (isset($_SESSION['error_message'])) : ?>
         <div class="rounded-2xl bg-red-50 p-4 border border-red-100 flex items-center gap-3 animate-fade-in">
             <i class="bi bi-exclamation-circle-fill text-red-500 text-lg"></i>
-            <p class="text-sm font-medium text-red-800"><?= $_SESSION['error_message']; unset($_SESSION['error_message']); ?></p>
+            <p class="text-sm font-medium text-red-800"><?= $_SESSION['error_message'];
+                                                        unset($_SESSION['error_message']); ?></p>
         </div>
     <?php endif; ?>
 
@@ -31,35 +33,35 @@ include TEMPLATE_DIR . 'header.php';
         <!-- Tabs Header -->
         <div class="border-b border-gray-100 bg-gray-50/30 px-6 pt-4">
             <nav class="-mb-px flex space-x-8 overflow-x-auto" aria-label="Tabs">
-                <button 
+                <button
                     @click="activeTab = 'clinica'"
                     :class="activeTab === 'clinica' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
                     class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all flex items-center gap-2">
                     <i class="bi bi-building"></i>
                     Clínica
                 </button>
-                <button 
+                <button
                     @click="activeTab = 'horarios'"
                     :class="activeTab === 'horarios' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
                     class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all flex items-center gap-2">
                     <i class="bi bi-clock"></i>
                     Horarios
                 </button>
-                <button 
+                <button
                     @click="activeTab = 'ausencias'"
                     :class="activeTab === 'ausencias' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
                     class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all flex items-center gap-2">
                     <i class="bi bi-calendar-x"></i>
                     Ausencias
                 </button>
-                <button 
+                <button
                     @click="activeTab = 'bonos'"
                     :class="activeTab === 'bonos' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
                     class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all flex items-center gap-2">
                     <i class="bi bi-ticket-perforated"></i>
                     Bonos
                 </button>
-                <button 
+                <button
                     @click="activeTab = 'suscripcion'"
                     :class="activeTab === 'suscripcion' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
                     class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all flex items-center gap-2">
@@ -71,7 +73,7 @@ include TEMPLATE_DIR . 'header.php';
 
         <!-- Tab Panels -->
         <div class="p-6 flex-1">
-            
+
             <!-- Clínica Tab -->
             <div x-show="activeTab === 'clinica'" x-cloak x-transition>
                 <div class="flex items-center justify-between mb-6">
@@ -82,20 +84,20 @@ include TEMPLATE_DIR . 'header.php';
                     <?php if ($clinica) : ?>
                         <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
                     <?php endif; ?>
-                    
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-1">
                             <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Nombre Comercial</label>
                             <input type="text" name="nombre_comercial" value="<?= $clinica['nombre_comercial'] ?? '' ?>" required
                                 class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all"
-                                placeholder="Ej: Clínica Velion">
+                                placeholder="Ej: Clínica Tervion">
                         </div>
-                        
+
                         <div class="space-y-1">
                             <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Razón Social</label>
                             <input type="text" name="razon_social" value="<?= $clinica['razon_social'] ?? '' ?>"
                                 class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all"
-                                placeholder="Ej: Velion S.L.">
+                                placeholder="Ej: Tervion S.L.">
                         </div>
 
                         <div class="space-y-1 md:col-span-2">
@@ -228,7 +230,7 @@ include TEMPLATE_DIR . 'header.php';
                         Nuevo Horario
                     </a>
                 </div>
-                
+
                 <div class="overflow-x-auto rounded-2xl border border-gray-100">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50/50">
@@ -273,7 +275,7 @@ include TEMPLATE_DIR . 'header.php';
                         Registrar Ausencia
                     </a>
                 </div>
-                
+
                 <div class="overflow-x-auto rounded-2xl border border-gray-100">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50/50">
@@ -319,7 +321,7 @@ include TEMPLATE_DIR . 'header.php';
                         Nuevo Bono
                     </a>
                 </div>
-                
+
                 <div class="overflow-x-auto rounded-2xl border border-gray-100">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50/50">
@@ -368,7 +370,7 @@ include TEMPLATE_DIR . 'header.php';
                     <div class="lg:col-span-1 bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-6">
                         <div>
                             <h4 class="text-base font-bold text-gray-900 mb-1">Tu Suscripción</h4>
-                            <p class="text-xs text-gray-500">Detalles del plan mensual contratado en Velion.</p>
+                            <p class="text-xs text-gray-500">Detalles del plan mensual contratado en Tervion.</p>
                         </div>
 
                         <?php if (!empty($cuenta['plan_proximo'])) : ?>
@@ -396,9 +398,9 @@ include TEMPLATE_DIR . 'header.php';
                                 </form>
                             </div>
                         <?php endif; ?>
-                        
+
                         <div class="p-4 bg-white rounded-xl border border-gray-200/50 space-y-4"
-                             x-data="{ 
+                            x-data="{ 
                                 currentPlan: '<?= $cuenta['plan_suscripcion'] ?? 'Basico' ?>', 
                                 selectedPlan: '<?= $cuenta['plan_proximo'] ?? ($cuenta['plan_suscripcion'] ?? 'Basico') ?>',
                                 planOrder: { 'Basico': 1, 'Profesional': 2, 'Premium': 3 }
@@ -420,7 +422,7 @@ include TEMPLATE_DIR . 'header.php';
                                         <span><strong>Upgrade Inmediato:</strong> Se aplicará al instante.</span>
                                     </div>
                                 </template>
-                                
+
                                 <template x-if="planOrder[selectedPlan] < planOrder[currentPlan]">
                                     <div class="text-[11px] bg-blue-50 text-blue-800 border border-blue-100 rounded-lg p-2.5 flex items-center gap-1.5">
                                         <i class="bi bi-calendar-check text-blue-600"></i>
@@ -428,13 +430,13 @@ include TEMPLATE_DIR . 'header.php';
                                     </div>
                                 </template>
 
-                                <button type="submit" 
-                                        :disabled="selectedPlan === currentPlan && '<?= !empty($cuenta['plan_proximo']) ? 'true' : 'false' ?>' !== 'true'"
-                                        class="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-indigo-600 text-white px-4 py-2.5 text-xs font-semibold hover:bg-indigo-700 transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                                <button type="submit"
+                                    :disabled="selectedPlan === currentPlan && '<?= !empty($cuenta['plan_proximo']) ? 'true' : 'false' ?>' !== 'true'"
+                                    class="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-indigo-600 text-white px-4 py-2.5 text-xs font-semibold hover:bg-indigo-700 transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
                                     <span x-text="planOrder[selectedPlan] > planOrder[currentPlan] ? 'Subir de Plan (Inmediato)' : (planOrder[selectedPlan] < planOrder[currentPlan] ? 'Programar Cambio a Fin de Ciclo' : 'Guardar Plan')"></span>
                                 </button>
                             </form>
-                            
+
                             <div class="pt-2 border-t border-gray-100 flex justify-between text-sm text-gray-600">
                                 <span>Mensualidad actual:</span>
                                 <span class="font-bold text-gray-900">
@@ -459,7 +461,7 @@ include TEMPLATE_DIR . 'header.php';
                                 </span>
                             </div>
                         </div>
-                        
+
                         <div class="flex items-start gap-2 bg-indigo-50 p-4 rounded-xl text-xs text-indigo-800 leading-relaxed border border-indigo-100">
                             <i class="bi bi-info-circle-fill text-sm"></i>
                             <p>Los cargos se realizan de forma automática cada mes a la tarjeta guardada. Las reducciones de plan se aplican al terminar el ciclo ya pagado.</p>
@@ -522,9 +524,17 @@ include TEMPLATE_DIR . 'header.php';
 
 <style>
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in-up {
         animation: fadeInUp 0.4s ease-out forwards;
     }

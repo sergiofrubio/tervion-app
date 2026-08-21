@@ -1,7 +1,7 @@
 {
-  "name": "velion-app-frontend",
+  "name": "tervion-app-frontend",
   "version": "1.0.0",
-  "description": "Frontend build tools for Velion ERP using Tailwind CSS and Sass",
+  "description": "Frontend build tools for Tervion ERP using Tailwind CSS and Sass",
   "main": "index.js",
   "scripts": {
     "build:sass": "sass public/custom/scss/app.scss public/custom/css/app.tmp.css",

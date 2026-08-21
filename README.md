@@ -1,6 +1,6 @@
-# Velion — Sistema de Gestión y ERP Clínico
+# Tervion — Sistema de Gestión y ERP Clínico
 
-Velion es un sistema ERP modular para clínicas médicas y de fisioterapia desarrollado en PHP moderno (PSR-4), enfocado en la automatización operativa, la integración fiscal (Verifactu) y los pagos integrados (Redsys).
+Tervion es un sistema ERP modular para clínicas médicas y de fisioterapia desarrollado en PHP moderno (PSR-4), enfocado en la automatización operativa, la integración fiscal (Verifactu) y los pagos integrados (Redsys).
 
 ---
 
@@ -8,12 +8,12 @@ Velion es un sistema ERP modular para clínicas médicas y de fisioterapia desar
 
 Para facilitar la incorporación de nuevos ingenieros al equipo, la documentación se ha modularizado detallando cada pilar del sistema:
 
-* **[Guía de Inicialización (Local Setup)](file:///c:/Users/sergi/Documents/velion-app/docs/setup.md)**: Pasos para levantar el entorno con Docker Compose, variables de entorno y credenciales por defecto.
-* **[Arquitectura e Infraestructura de Software](file:///c:/Users/sergi/Documents/velion-app/docs/architecture.md)**: Detalle del patrón MVC, el ciclo de vida de una petición HTTP, el enrutador personalizado y las políticas de acceso (ACL).
-* **[Integración y Cumplimiento de Verifactu](file:///c:/Users/sergi/Documents/velion-app/docs/features/verifactu.md)**: Detalles sobre el firmado criptográfico de facturas, generación de esquemas XML, encadenamiento de huellas (SHA-256) y remisión a la AEAT.
-* **[Pasarela de Pagos Redsys](file:///c:/Users/sergi/Documents/velion-app/docs/features/redsys.md)**: Flujo de redirección segura para compras de bonos de pacientes, notificaciones asíncronas IPN y resiliencia en local.
-* **[Pruebas Unitarias y Debugging](file:///c:/Users/sergi/Documents/velion-app/docs/testing.md)**: Cómo ejecutar PHPUnit en los contenedores y configurar Xdebug en tu IDE.
-* **[Tareas Programadas (Cron Jobs)](file:///c:/Users/sergi/Documents/velion-app/docs/cron.md)**: Automatización de recordatorios de citas y cálculo mensual de nóminas.
+* **[Guía de Inicialización (Local Setup)](file:///c:/Users/sergi/Documents/tervion-app/docs/setup.md)**: Pasos para levantar el entorno con Docker Compose, variables de entorno y credenciales por defecto.
+* **[Arquitectura e Infraestructura de Software](file:///c:/Users/sergi/Documents/tervion-app/docs/architecture.md)**: Detalle del patrón MVC, el ciclo de vida de una petición HTTP, el enrutador personalizado y las políticas de acceso (ACL).
+* **[Integración y Cumplimiento de Verifactu](file:///c:/Users/sergi/Documents/tervion-app/docs/features/verifactu.md)**: Detalles sobre el firmado criptográfico de facturas, generación de esquemas XML, encadenamiento de huellas (SHA-256) y remisión a la AEAT.
+* **[Pasarela de Pagos Redsys](file:///c:/Users/sergi/Documents/tervion-app/docs/features/redsys.md)**: Flujo de redirección segura para compras de bonos de pacientes, notificaciones asíncronas IPN y resiliencia en local.
+* **[Pruebas Unitarias y Debugging](file:///c:/Users/sergi/Documents/tervion-app/docs/testing.md)**: Cómo ejecutar PHPUnit en los contenedores y configurar Xdebug en tu IDE.
+* **[Tareas Programadas (Cron Jobs)](file:///c:/Users/sergi/Documents/tervion-app/docs/cron.md)**: Automatización de recordatorios de citas y cálculo mensual de nóminas.
 
 ---
 

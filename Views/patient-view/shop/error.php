@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Error en el Pago - Velion";
+$pageTitle = "Error en el Pago - Tervion";
 include TEMPLATE_DIR . 'header.php';
 ?>
 
@@ -30,13 +30,13 @@ include TEMPLATE_DIR . 'header.php';
             </ul>
 
             <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                <a href="<?= PROJECT_ROOT ?>/paciente/tienda" 
-                   class="flex-1 inline-flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-bold px-6 py-4 rounded-xl text-sm transition-all hover:scale-[1.01]">
+                <a href="<?= PROJECT_ROOT ?>/paciente/tienda"
+                    class="flex-1 inline-flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-bold px-6 py-4 rounded-xl text-sm transition-all hover:scale-[1.01]">
                     <i class="bi bi-arrow-left"></i>
                     Volver a Intentarlo
                 </a>
-                <a href="tel:+34900000000" 
-                   class="flex-1 inline-flex items-center justify-center gap-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 font-bold px-6 py-4 rounded-xl text-sm transition-all hover:scale-[1.01]">
+                <a href="tel:+34900000000"
+                    class="flex-1 inline-flex items-center justify-center gap-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 font-bold px-6 py-4 rounded-xl text-sm transition-all hover:scale-[1.01]">
                     <i class="bi bi-telephone-fill"></i>
                     Soporte / Ayuda
                 </a>
@@ -47,16 +47,33 @@ include TEMPLATE_DIR . 'header.php';
 
 <style>
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     @keyframes scaleUp {
-        from { transform: scale(0.8); opacity: 0; }
-        to { transform: scale(1); opacity: 1; }
+        from {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
     }
+
     .animate-fade-in {
         animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
+
     .animate-scale-up {
         animation: scaleUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }

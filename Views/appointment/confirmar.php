@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Confirmación de Asistencia - Velion</title>
+  <title>Confirmación de Asistencia - Tervion</title>
   <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion.jpg" type="image/jpeg">
 
   <!-- Google Fonts -->
@@ -79,7 +79,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
     <!-- Close/Home Action -->
     <div class="mt-8">
       <a href="<?= PROJECT_ROOT ?>/login" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gray-950 px-5 py-3 text-sm font-semibold text-white shadow-md hover:bg-gray-800 transition-all hover:scale-[1.02] active:scale-95">
-        Ir a Velion
+        Ir a Tervion
       </a>
     </div>
 

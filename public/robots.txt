@@ -10,4 +10,4 @@ Disallow: /citas
 Disallow: /configuracion
 Disallow: /trabajadores
 
-Sitemap: https://velion.es/sitemap.xml
+Sitemap: https://tervion.es/sitemap.xml

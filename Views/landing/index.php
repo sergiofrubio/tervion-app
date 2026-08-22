@@ -1023,6 +1023,65 @@ $hasSystemAlert = $systemAlertMessage !== '';
         </span>
     </a>
 
+    <!-- Banner de consentimiento de cookies -->
+    <div id="cookie-banner" class="fixed bottom-0 inset-x-0 z-50 p-4 sm:p-6 transition-all duration-500 transform translate-y-full opacity-0">
+        <div class="max-w-7xl mx-auto bg-gray-900/95 backdrop-blur-md text-white rounded-2xl p-5 sm:p-6 shadow-2xl border border-gray-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6">
+            <div class="space-y-1.5 max-w-3xl">
+                <div class="flex items-center gap-2 text-primary-400 font-semibold text-sm">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    <span>Valoramos tu privacidad</span>
+                </div>
+                <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                    Utilizamos cookies propias y de terceros para analizar el uso del sitio web, personalizar contenidos y mejorar tu experiencia de navegación. Puedes aceptar todas las cookies o configurarlas. Más detalles en nuestra 
+                    <a href="<?= PROJECT_ROOT ?>/cookies" class="text-primary-400 underline hover:text-primary-300 transition-colors">Política de Cookies</a>.
+                </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3 w-full md:w-auto shrink-0 justify-end">
+                <button type="button" id="reject-cookies-btn" class="flex-1 md:flex-none text-center px-4 py-2.5 rounded-xl border border-gray-700 text-xs sm:text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                    Rechazar
+                </button>
+                <button type="button" id="accept-cookies-btn" class="flex-1 md:flex-none text-center px-6 py-2.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-xs sm:text-sm font-semibold text-white shadow-md hover:shadow-lg transition-all hover:scale-105">
+                    Aceptar todas
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const banner = document.getElementById('cookie-banner');
+            const acceptBtn = document.getElementById('accept-cookies-btn');
+            const rejectBtn = document.getElementById('reject-cookies-btn');
+            const cookieConsent = localStorage.getItem('tervion_cookie_consent');
+
+            if (!cookieConsent) {
+                // Mostrar banner con animación si no hay decisión guardada
+                setTimeout(function() {
+                    banner.classList.remove('translate-y-full', 'opacity-0');
+                }, 400);
+            }
+
+            function hideBanner() {
+                banner.classList.add('translate-y-full', 'opacity-0');
+            }
+
+            if (acceptBtn) {
+                acceptBtn.addEventListener('click', function() {
+                    localStorage.setItem('tervion_cookie_consent', 'accepted');
+                    hideBanner();
+                });
+            }
+
+            if (rejectBtn) {
+                rejectBtn.addEventListener('click', function() {
+                    localStorage.setItem('tervion_cookie_consent', 'rejected');
+                    hideBanner();
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

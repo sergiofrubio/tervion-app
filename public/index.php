@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$mensajeActivo = '';
+$mensajeActivo = 'Versión Beta activa. Esta herramienta está en desarrollo. Si ves un fallo, avísanos.';
 $GLOBALS['systemAlertMessage'] = trim((string)$mensajeActivo);
 
 require_once '../Router/routes.php';

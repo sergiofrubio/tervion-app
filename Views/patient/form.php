@@ -24,7 +24,7 @@ include TEMPLATE_DIR . 'header.php';
             <?php if ($isEdit): ?>
                 <input type="hidden" name="usuario_id" value="<?= $u['usuario_id'] ?>">
             <?php endif; ?>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Información Personal Section -->
                 <div class="space-y-6 md:col-span-2 pb-4 border-b border-gray-50">
@@ -118,7 +118,7 @@ include TEMPLATE_DIR . 'header.php';
                         placeholder="Ej. Madrid">
                 </div>
 
-                <div class="space-y-2 flex gap-4">
+                <div class="flex gap-4">
                     <div class="flex-1 space-y-2">
                         <label for="provincia" class="block text-sm font-medium text-gray-700">Provincia</label>
                         <input type="text" name="provincia" id="provincia"
@@ -150,7 +150,47 @@ include TEMPLATE_DIR . 'header.php';
                         placeholder="<?= $isEdit ? 'Nueva contraseña' : 'Mínimo 6 caracteres' ?>">
                     <p class="text-xs text-gray-500"><?= $isEdit ? "Dejar en blanco para mantener la contraseña actual." : "Si se deja vacío, será '123456' por defecto." ?></p>
                 </div> -->
-            </div>  
+                <!-- Protección de Datos (RGPD / LOPD) Section -->
+                <div class="space-y-6 md:col-span-2 pt-6 pb-4 border-b border-gray-50">
+                    <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                        <i class="bi bi-shield-check text-primary-600"></i>
+                        Protección de Datos (RGPD / LOPD-GDD)
+                    </h2>
+                </div>
+
+                <div class="md:col-span-2 space-y-4 bg-gray-50/70 p-6 rounded-2xl border border-gray-100">
+                    <div class="text-xs text-gray-600 leading-relaxed space-y-2">
+                        <p class="font-medium text-gray-800 text-sm">Cláusula informativa de consentimiento de datos de salud y atención clínica:</p>
+                        <p>En cumplimiento de lo dispuesto en el Reglamento General de Protección de Datos (UE 2016/679) y la LOPDGDD 3/2018, los datos personales recabados y los generados en su historia clínica serán tratados por la clínica con la finalidad de prestarle la asistencia sanitaria solicitada, gestionar sus citas y facturación. Sus datos clínicos no serán cedidos a terceros salvo obligación legal o necesidad técnica justificada.</p>
+                    </div>
+
+                    <div class="flex items-start gap-3 pt-2">
+                        <input type="checkbox" name="rgpd_aceptado" id="rgpd_aceptado" value="1" required
+                            <?= !empty($u['rgpd_aceptado']) ? 'checked' : '' ?>
+                            class="mt-1 h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 cursor-pointer">
+                        <label for="rgpd_aceptado" class="text-sm font-medium text-gray-800 cursor-pointer">
+                            Confirmo que el paciente ha sido informado y <strong>acepta de forma expresa el tratamiento de sus datos personales y clínicos</strong> en los términos indicados.
+                        </label>
+                    </div>
+
+                    <!-- Canvas de Firma Digital -->
+                    <div class="pt-4 border-t border-gray-200">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Firma Digital del Paciente / Tutor</label>
+                        <div class="relative bg-white rounded-xl border border-gray-300 p-2 shadow-inner">
+                            <canvas id="signatureCanvas" width="550" height="150" class="w-full h-36 touch-none cursor-crosshair rounded-lg bg-gray-50/50"></canvas>
+                            <input type="hidden" name="firma_paciente" id="firma_paciente" value="<?= htmlspecialchars($u['firma_paciente'] ?? '') ?>">
+                        </div>
+                        <div class="mt-2 flex items-center justify-between">
+                            <button type="button" id="clearSignatureBtn" class="text-xs text-red-600 hover:text-red-800 font-medium inline-flex items-center gap-1">
+                                <i class="bi bi-eraser"></i> Limpiar
+                            </button>
+                            <span id="signatureStatus" class="text-xs text-gray-500">
+                                <?= !empty($u['firma_paciente']) ? 'Firma cargada previamente' : 'Dibuje la firma dentro del recuadro' ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="mt-10 pt-6 border-t border-gray-50 flex items-center justify-end gap-3">
                 <a href="<?= PROJECT_ROOT ?>/pacientes" class="px-6 py-3 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">
@@ -164,11 +204,108 @@ include TEMPLATE_DIR . 'header.php';
     </div>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const canvas = document.getElementById('signatureCanvas');
+        const hiddenInput = document.getElementById('firma_paciente');
+        const clearBtn = document.getElementById('clearSignatureBtn');
+        const statusText = document.getElementById('signatureStatus');
+
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let hasSignature = false;
+
+        if (hiddenInput.value && hiddenInput.value.startsWith('data:image')) {
+            const img = new Image();
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0);
+                hasSignature = true;
+            };
+            img.src = hiddenInput.value;
+        }
+
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            let clientX = e.clientX;
+            let clientY = e.clientY;
+
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            }
+
+            return {
+                x: (clientX - rect.left) * scaleX,
+                y: (clientY - rect.top) * scaleY
+            };
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const pos = getPos(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+            ctx.lineWidth = 2.5;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#1e293b';
+            e.preventDefault();
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const pos = getPos(e);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            hasSignature = true;
+            statusText.textContent = 'Firma capturada';
+            e.preventDefault();
+        }
+
+        function stopDrawing() {
+            if (isDrawing) {
+                isDrawing = false;
+                if (hasSignature) {
+                    hiddenInput.value = canvas.toDataURL('image/png');
+                }
+            }
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
+
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchmove', draw);
+        canvas.addEventListener('touchend', stopDrawing);
+
+        clearBtn.addEventListener('click', function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hiddenInput.value = '';
+            hasSignature = false;
+            statusText.textContent = 'Dibuje la firma dentro del recuadro';
+        });
+    });
+</script>
+
 <style>
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in-up {
         animation: fadeInUp 0.4s ease-out forwards;
     }

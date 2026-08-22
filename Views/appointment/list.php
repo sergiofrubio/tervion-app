@@ -75,7 +75,7 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
         </div>
     </div>
 
-    <?php 
+    <?php
     $alert = null;
     if (isset($_SESSION['alert'])) {
         $alert = $_SESSION['alert'];
@@ -86,8 +86,8 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
             'message' => $_GET['message']
         ];
     }
-    
-    if ($alert): 
+
+    if ($alert):
         $alert_type = $alert['type'];
         $alert_message = $alert['message'];
         $bg_color = $alert_type === 'danger' ? 'bg-red-50 text-red-800 border-red-200' : ($alert_type === 'success' ? 'bg-green-50 text-green-800 border-green-200' : 'bg-blue-50 text-blue-800 border-blue-200');
@@ -110,7 +110,7 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
                 <input type="date" id="fecha_hora" name="fecha_hora" value="<?= htmlspecialchars($filtro_fecha_hora) ?>" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-2.5 transition-colors">
             </div>
             <div class="w-full lg:w-auto flex-1">
-                <label for="fisioterapeuta_id" class="block text-sm font-medium text-gray-700 mb-1.5">Agenda (Fisioterapeuta)</label>
+                <label for="fisioterapeuta_id" class="block text-sm font-medium text-gray-700 mb-1.5">Agenda</label>
                 <select id="fisioterapeuta_id" name="fisioterapeuta_id" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-2.5 bg-white transition-colors">
                     <option value="" <?= $filtro_fisioterapeuta === '' ? 'selected' : '' ?>>Todos los fisioterapeutas</option>
                     <?php if (!empty($fisioterapeutas)): ?>
@@ -216,7 +216,7 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
                                                 <i class="bi bi-journal-medical text-lg"></i>
                                             </button>
                                         <?php endif; ?>
-                                        
+
                                         <?php if (!($cita['estado'] == 'Realizada' || $cita['estado'] == 'Cancelada')): ?>
                                             <a href="<?= PROJECT_ROOT ?>/citas/edit?id=<?= $cita['cita_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-2 rounded-lg transition-all duration-200" title="Editar">
                                                 <i class="bi bi-pencil-square text-lg"></i>
@@ -248,44 +248,52 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
                 </tbody>
             </table>
         </div>
-        
+
         <!-- Pagination -->
         <?php if ($n_botones_paginacion > 1): ?>
-        <div class="bg-white px-4 py-3 border-t border-gray-100 sm:px-6 flex items-center justify-between">
-            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                <div>
-                    <p class="text-sm text-gray-700">
-                        Mostrando <span class="font-semibold text-gray-900"><?= min($iniciar + 1, $total_citas) ?></span> a <span class="font-semibold text-gray-900"><?= min($iniciar + $articulos_x_pagina, $total_citas) ?></span> de <span class="font-semibold text-gray-900"><?= $total_citas ?></span> citas
-                    </p>
-                </div>
-                <div>
-                    <nav class="relative z-0 inline-flex rounded-lg shadow-sm -space-x-px" aria-label="Pagination">
-                        <a href="?pagina=<?= max(1, $pagina - 1) . $queryString ?>" class="relative inline-flex items-center px-3 py-2 rounded-l-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina <= 1 ? 'pointer-events-none opacity-50' : '' ?>">
-                            <span class="sr-only">Anterior</span>
-                            <i class="bi bi-chevron-left text-xs"></i>
-                        </a>
-                        <?php for ($i = 0; $i < $n_botones_paginacion; $i++) : ?>
-                            <a href="?pagina=<?= ($i + 1) . $queryString ?>" aria-current="<?= $pagina == $i + 1 ? 'page' : 'false' ?>" class="relative inline-flex items-center px-4 py-2 border text-sm font-medium transition-colors <?= $pagina == $i + 1 ? 'z-10 bg-primary-50 border-primary-500 text-primary-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' ?>">
-                                <?= $i + 1 ?>
+            <div class="bg-white px-4 py-3 border-t border-gray-100 sm:px-6 flex items-center justify-between">
+                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                    <div>
+                        <p class="text-sm text-gray-700">
+                            Mostrando <span class="font-semibold text-gray-900"><?= min($iniciar + 1, $total_citas) ?></span> a <span class="font-semibold text-gray-900"><?= min($iniciar + $articulos_x_pagina, $total_citas) ?></span> de <span class="font-semibold text-gray-900"><?= $total_citas ?></span> citas
+                        </p>
+                    </div>
+                    <div>
+                        <nav class="relative z-0 inline-flex rounded-lg shadow-sm -space-x-px" aria-label="Pagination">
+                            <a href="?pagina=<?= max(1, $pagina - 1) . $queryString ?>" class="relative inline-flex items-center px-3 py-2 rounded-l-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina <= 1 ? 'pointer-events-none opacity-50' : '' ?>">
+                                <span class="sr-only">Anterior</span>
+                                <i class="bi bi-chevron-left text-xs"></i>
                             </a>
-                        <?php endfor; ?>
-                        <a href="?pagina=<?= min($n_botones_paginacion, $pagina + 1) . $queryString ?>" class="relative inline-flex items-center px-3 py-2 rounded-r-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina >= $n_botones_paginacion ? 'pointer-events-none opacity-50' : '' ?>">
-                            <span class="sr-only">Siguiente</span>
-                            <i class="bi bi-chevron-right text-xs"></i>
-                        </a>
-                    </nav>
+                            <?php for ($i = 0; $i < $n_botones_paginacion; $i++) : ?>
+                                <a href="?pagina=<?= ($i + 1) . $queryString ?>" aria-current="<?= $pagina == $i + 1 ? 'page' : 'false' ?>" class="relative inline-flex items-center px-4 py-2 border text-sm font-medium transition-colors <?= $pagina == $i + 1 ? 'z-10 bg-primary-50 border-primary-500 text-primary-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' ?>">
+                                    <?= $i + 1 ?>
+                                </a>
+                            <?php endfor; ?>
+                            <a href="?pagina=<?= min($n_botones_paginacion, $pagina + 1) . $queryString ?>" class="relative inline-flex items-center px-3 py-2 rounded-r-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina >= $n_botones_paginacion ? 'pointer-events-none opacity-50' : '' ?>">
+                                <span class="sr-only">Siguiente</span>
+                                <i class="bi bi-chevron-right text-xs"></i>
+                            </a>
+                        </nav>
+                    </div>
                 </div>
             </div>
-        </div>
         <?php endif; ?>
     </div>
 </div>
 
 <style>
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in-up {
         animation: fadeInUp 0.4s ease-out forwards;
     }

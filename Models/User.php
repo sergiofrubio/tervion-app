@@ -29,8 +29,12 @@ class User
         try {
             $this->db->beginTransaction();
 
-            $query = "INSERT INTO usuarios (usuario_id, nombre, apellidos, telefono, fecha_nacimiento, direccion, provincia, municipio, cp, email, pass, genero, rol) 
-                      VALUES (:usuario_id, :nombre, :apellidos, :telefono, :fecha_nacimiento, :direccion, :provincia, :municipio, :cp, :email, :pass, :genero, :rol)";
+            $rgpdAceptado = !empty($data['rgpd_aceptado']) ? 1 : 0;
+            $fechaConsentimiento = !empty($data['fecha_consentimiento']) ? $data['fecha_consentimiento'] : ($rgpdAceptado ? date('Y-m-d H:i:s') : null);
+            $firmaPaciente = !empty($data['firma_paciente']) ? $data['firma_paciente'] : null;
+
+            $query = "INSERT INTO usuarios (usuario_id, nombre, apellidos, telefono, fecha_nacimiento, direccion, provincia, municipio, cp, email, pass, genero, rol, rgpd_aceptado, fecha_consentimiento, firma_paciente) 
+                      VALUES (:usuario_id, :nombre, :apellidos, :telefono, :fecha_nacimiento, :direccion, :provincia, :municipio, :cp, :email, :pass, :genero, :rol, :rgpd_aceptado, :fecha_consentimiento, :firma_paciente)";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':usuario_id', $data['usuario_id']);
             $stmt->bindParam(':nombre', $data['nombre']);
@@ -45,6 +49,9 @@ class User
             $stmt->bindParam(':pass', $data['pass']);
             $stmt->bindParam(':genero', $data['genero']);
             $stmt->bindParam(':rol', $data['rol']);
+            $stmt->bindParam(':rgpd_aceptado', $rgpdAceptado, PDO::PARAM_INT);
+            $stmt->bindParam(':fecha_consentimiento', $fechaConsentimiento);
+            $stmt->bindParam(':firma_paciente', $firmaPaciente);
             $stmt->execute();
 
             if ($data['rol'] !== 'Paciente') {
@@ -146,6 +153,10 @@ class User
         try {
             $this->db->beginTransaction();
 
+            $rgpdAceptado = isset($data['rgpd_aceptado']) ? (!empty($data['rgpd_aceptado']) ? 1 : 0) : null;
+            $fechaConsentimiento = !empty($data['fecha_consentimiento']) ? $data['fecha_consentimiento'] : null;
+            $firmaPaciente = isset($data['firma_paciente']) ? $data['firma_paciente'] : null;
+
             $query = "UPDATE usuarios SET 
                         nombre = :nombre, 
                         apellidos = :apellidos, 
@@ -159,6 +170,17 @@ class User
                         genero = :genero,
                         rol = :rol";
             
+            if ($rgpdAceptado !== null) {
+                $query .= ", rgpd_aceptado = :rgpd_aceptado";
+                if ($rgpdAceptado === 1 && empty($fechaConsentimiento)) {
+                    $fechaConsentimiento = date('Y-m-d H:i:s');
+                }
+                $query .= ", fecha_consentimiento = :fecha_consentimiento";
+            }
+            if ($firmaPaciente !== null) {
+                $query .= ", firma_paciente = :firma_paciente";
+            }
+
             if (!empty($data['pass'])) {
                 $query .= ", pass = :pass";
             }
@@ -179,6 +201,13 @@ class User
             $stmt->bindParam(':genero', $data['genero']);
             $stmt->bindParam(':rol', $data['rol']);
             
+            if ($rgpdAceptado !== null) {
+                $stmt->bindParam(':rgpd_aceptado', $rgpdAceptado, PDO::PARAM_INT);
+                $stmt->bindParam(':fecha_consentimiento', $fechaConsentimiento);
+            }
+            if ($firmaPaciente !== null) {
+                $stmt->bindParam(':firma_paciente', $firmaPaciente);
+            }
             if (!empty($data['pass'])) {
                 $stmt->bindParam(':pass', $data['pass']);
             }

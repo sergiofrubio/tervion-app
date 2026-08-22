@@ -65,7 +65,7 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
         <div class="flex items-center justify-between h-20 border-b border-gray-800 bg-gray-900 transition-all duration-300 relative px-4"
             :class="sidebarCollapsed ? 'justify-center px-2' : 'px-5'">
             <a href="<?= PROJECT_ROOT ?>/inicio" class="flex items-center gap-3 group overflow-hidden shrink-0" :title="sidebarCollapsed ? 'Tervion' : ''">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-claro-sin-fondo.png" alt="Tervion Logo" class="h-10 w-auto object-contain transition-all duration-300" :class="sidebarCollapsed ? 'h-8' : 'h-10'">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-claro-sin-fondo.png" alt="Tervion Logo" class="h-8 w-auto object-contain transition-all duration-300" :class="sidebarCollapsed ? 'h-6' : 'h-8'">
             </a>
 
             <!-- Botón cerrar móvil -->
@@ -167,12 +167,12 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
 
                         <?php $isAppointmentsActive = strpos($currentUri, '/citas') !== false; ?>
                         <a href="<?= PROJECT_ROOT ?>/citas"
-                            :title="sidebarCollapsed ? 'Agenda y Citas' : ''"
+                            :title="sidebarCollapsed ? 'Agenda' : ''"
                             :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
                             class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isAppointmentsActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
                             <i class="bi bi-calendar3 text-base shrink-0 <?= $isAppointmentsActive ? 'text-white' : 'text-gray-400' ?>"></i>
                             <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
-                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Agenda y Citas</span>
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Agenda</span>
                         </a>
                     </div>
                 </div>
@@ -183,8 +183,8 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
                         Equipo y Horarios
                     </div>
                     <div class="space-y-1">
-                        <?php $isTimeActive = strpos($currentUri, '/control-horario') !== false; ?>
-                        <a href="<?= PROJECT_ROOT ?>/control-horario"
+                        <?php $isTimeActive = strpos($currentUri, '/fichajes') !== false; ?>
+                        <a href="<?= PROJECT_ROOT ?>/fichajes"
                             :title="sidebarCollapsed ? 'Control Horario' : ''"
                             :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
                             class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isTimeActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">

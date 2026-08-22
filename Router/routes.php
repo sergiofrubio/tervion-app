@@ -1,4 +1,5 @@
 <?php
+
 use App\Router\Router;
 
 $router = new Router();
@@ -38,6 +39,7 @@ $router->add('POST', '/pacientes/edit', 'PatientController@edit', true, ['Admini
 $router->add('GET', '/pacientes/detail', 'PatientController@detail', true, $staffRoles);
 $router->add('GET', '/pacientes/pdf', 'PatientController@createPDF', true, $staffRoles);
 $router->add('POST', '/pacientes/pdf', 'PatientController@createPDF', true, $staffRoles);
+$router->add('GET', '/pacientes/consentimiento-pdf', 'PatientController@downloadConsent', true, array_merge($staffRoles, ['Paciente']));
 
 // Ruta de búsqueda de trabajadores (usado para asignar citas)
 $router->add('GET', '/trabajadores/search', 'PatientController@searchWorkers', true, $staffRoles);
@@ -104,10 +106,10 @@ $router->add('GET', '/nominas/detail', 'PayrollController@detail', true, ['Admin
 $router->add('GET', '/nominas/pdf', 'PayrollController@pdf', true, ['Administrador']);
 
 // Rutas de Control Horario
-$router->add('GET', '/control-horario', 'TimeRecordController@index', true, $staffRoles);
-$router->add('POST', '/control-horario/fichar', 'TimeRecordController@fichar', true, $staffRoles);
-$router->add('GET', '/control-horario/admin', 'TimeRecordController@adminIndex', true, ['Administrador']);
-$router->add('POST', '/control-horario/admin/guardar', 'TimeRecordController@guardar', true, ['Administrador']);
+$router->add('GET', '/fichajes', 'TimeRecordController@index', true, $staffRoles);
+$router->add('POST', '/fichajes/fichar', 'TimeRecordController@fichar', true, $staffRoles);
+$router->add('GET', '/fichajes/admin', 'TimeRecordController@adminIndex', true, ['Administrador']);
+$router->add('POST', '/fichajes/admin/guardar', 'TimeRecordController@guardar', true, ['Administrador']);
 
 // Rutas de Contabilidad y Obligaciones Fiscales
 $router->add('GET', '/contabilidad', 'AccountingController@dashboard', true, ['Administrador']);

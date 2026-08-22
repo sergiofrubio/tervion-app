@@ -164,6 +164,50 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                 </div>
             </div>
 
+            <!-- RGPD Consent Card -->
+            <div class="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                        <i class="bi bi-shield-check text-primary-600"></i>
+                        Protección de Datos (RGPD)
+                    </h3>
+                    <a href="<?= PROJECT_ROOT ?>/pacientes/consentimiento-pdf?usuario_id=<?= $usuario['usuario_id'] ?>"
+                        target="_blank"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-50 text-primary-700 hover:bg-primary-100 text-xs font-semibold transition-colors">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                        Descargar
+                    </a>
+                </div>
+
+                <div class="space-y-3 text-xs">
+                    <div class="flex items-center justify-between p-3 rounded-2xl <?= !empty($usuario['rgpd_aceptado']) ? 'bg-emerald-50 text-emerald-800 border border-emerald-100' : 'bg-amber-50 text-amber-800 border border-amber-100' ?>">
+                        <span class="font-medium flex items-center gap-1.5">
+                            <i class="bi <?= !empty($usuario['rgpd_aceptado']) ? 'bi-check-circle-fill text-emerald-600' : 'bi-exclamation-triangle-fill text-amber-600' ?>"></i>
+                            Estado RGPD
+                        </span>
+                        <span class="font-bold text-xs">
+                            <?= !empty($usuario['rgpd_aceptado']) ? 'Aceptado' : 'Pendiente' ?>
+                        </span>
+                    </div>
+
+                    <?php if (!empty($usuario['fecha_consentimiento'])): ?>
+                        <div class="flex items-center justify-between text-gray-500 text-[11px] px-1">
+                            <span>Fecha de firma:</span>
+                            <span class="font-semibold text-gray-700"><?= date('d/m/Y H:i', strtotime($usuario['fecha_consentimiento'])) ?></span>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (!empty($usuario['firma_paciente'])): ?>
+                        <div class="pt-2 border-t border-gray-100 space-y-1">
+                            <span class="block font-bold text-gray-400 uppercase tracking-wider text-[10px]">Firma Registrada</span>
+                            <div class="p-2 bg-gray-50 rounded-xl border border-gray-200 flex justify-center">
+                                <img src="<?= htmlspecialchars($usuario['firma_paciente']) ?>" alt="Firma del paciente" class="h-16 object-contain">
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
             <!-- Clinical Fast Insights Card -->
             <div class="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-4">
                 <h3 class="text-sm font-bold uppercase tracking-wider text-gray-900 flex items-center gap-2">
@@ -201,7 +245,7 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                             :class="activeTab === 'history' ? 'border-primary-600 text-primary-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300 font-medium'"
                             class="whitespace-nowrap py-3.5 px-1 border-b-2 text-sm transition-all flex items-center gap-2">
                             <i class="bi bi-journal-medical text-base"></i>
-                            <span>Historial Médico & Informes</span>
+                            <span>Historial Médico</span>
                             <span class="px-2 py-0.5 rounded-full text-xs font-bold"
                                 :class="activeTab === 'history' ? 'bg-primary-50 text-primary-700' : 'bg-gray-200/70 text-gray-600'">
                                 <?= $totalInformes ?>
@@ -372,7 +416,7 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                                                     </span>
                                                 </td>
                                                 <td class="px-4 py-3.5 text-right text-xs whitespace-nowrap">
-                                                    <a href="<?= PROJECT_ROOT ?>/appointments/edit?id=<?= $cita['cita_id'] ?>"
+                                                    <a href="<?= PROJECT_ROOT ?>/citas?id=<?= $cita['cita_id'] ?>"
                                                         class="p-1.5 rounded-lg text-gray-400 hover:text-primary-600 hover:bg-primary-50 transition-colors"
                                                         title="Ver / Editar Cita">
                                                         <i class="bi bi-pencil-square text-sm"></i>

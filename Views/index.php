@@ -131,7 +131,7 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
             </div>
             <div class="pt-3 border-t border-gray-50 flex items-center justify-between text-xs">
                 <a href="<?= PROJECT_ROOT ?>/citas" class="text-amber-700 hover:text-amber-800 font-semibold inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                    <span>Abrir agenda diaria</span>
+                    <span>Abrir agenda</span>
                     <i class="bi bi-arrow-right text-[11px]"></i>
                 </a>
             </div>
@@ -219,7 +219,7 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
 
                                 <!-- Action Button -->
                                 <div class="flex items-center gap-2 shrink-0">
-                                    <a href="<?= PROJECT_ROOT ?>/appointments/edit?id=<?= $appointment['cita_id'] ?>"
+                                    <a href="<?= PROJECT_ROOT ?>/citas?id=<?= $appointment['cita_id'] ?>"
                                         class="p-2 rounded-xl text-gray-400 hover:text-primary-600 hover:bg-primary-50 transition-colors"
                                         title="Ver detalles de la cita">
                                         <i class="bi bi-arrow-right-short text-xl"></i>

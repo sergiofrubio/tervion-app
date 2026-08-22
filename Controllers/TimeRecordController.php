@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Core\Controller;
@@ -16,7 +17,7 @@ class TimeRecordController extends Controller
 
         // Registro activo de hoy (para determinar si está trabajando)
         $activeRecord = $timeRecordModel->getActiveRecord($usuario_id, $fechaHoy);
-        
+
         // Historial de fichajes propio del mes
         $history = $timeRecordModel->getHistoryByUsuario($usuario_id);
 
@@ -57,7 +58,7 @@ class TimeRecordController extends Controller
                 }
             }
         }
-        header('Location: ' . PROJECT_ROOT . '/control-horario');
+        header('Location: ' . PROJECT_ROOT . '/fichajes');
         $this->exitApp();
     }
 
@@ -120,7 +121,7 @@ class TimeRecordController extends Controller
             // Validación básica
             if ($salidaDatetime && strtotime($salidaDatetime) < strtotime($entradaDatetime)) {
                 $_SESSION['error_message'] = "La hora de salida no puede ser anterior a la hora de entrada.";
-                header('Location: ' . PROJECT_ROOT . '/control-horario/admin');
+                header('Location: ' . PROJECT_ROOT . '/fichajes/admin');
                 $this->exitApp();
             }
 
@@ -141,7 +142,7 @@ class TimeRecordController extends Controller
             }
         }
 
-        header('Location: ' . PROJECT_ROOT . '/control-horario/admin');
+        header('Location: ' . PROJECT_ROOT . '/fichajes/admin');
         $this->exitApp();
     }
 }

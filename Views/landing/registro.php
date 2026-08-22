@@ -240,40 +240,8 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     </div>
                 </div>
 
-                <!-- Step 4: Datos Profesionales -->
+                <!-- Step 4: Clínica - Datos Generales -->
                 <div x-show="currentStep === 4" x-transition class="space-y-6">
-                    <div>
-                        <h2 class="text-xl font-bold text-gray-900">Datos Profesionales</h2>
-                        <p class="text-sm text-gray-500 mt-1">Registra tu número de afiliación y cuenta bancaria para la facturación.</p>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label for="nss" class="block text-sm font-medium text-gray-700 mb-1">Nº Seguridad Social (NSS)</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
-                                    <i class="bi bi-shield-check"></i>
-                                </span>
-                                <input type="text" name="nss" id="nss" x-model="formData.nss"
-                                    class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white/50 focus:bg-white text-sm transition-all"
-                                    placeholder="123456789012">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="iban" class="block text-sm font-medium text-gray-700 mb-1">IBAN Cuenta Bancaria</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
-                                    <i class="bi bi-credit-card"></i>
-                                </span>
-                                <input type="text" name="iban" id="iban" x-model="formData.iban"
-                                    class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white/50 focus:bg-white text-sm transition-all"
-                                    placeholder="ES210000...">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step 5: Clínica - Datos Generales -->
-                <div x-show="currentStep === 5" x-transition class="space-y-6">
                     <div>
                         <h2 class="text-xl font-bold text-gray-900">Datos de la Clínica</h2>
                         <p class="text-sm text-gray-500 mt-1">Introduce los datos comerciales y de contacto de tu centro de fisioterapia.</p>
@@ -334,8 +302,8 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     </div>
                 </div>
 
-                <!-- Step 6: Clínica - Dirección / Ubicación -->
-                <div x-show="currentStep === 6" x-transition class="space-y-6">
+                <!-- Step 5: Clínica - Dirección / Ubicación -->
+                <div x-show="currentStep === 5" x-transition class="space-y-6">
                     <div>
                         <h2 class="text-xl font-bold text-gray-900">Ubicación de la Clínica</h2>
                         <p class="text-sm text-gray-500 mt-1">Registra la dirección física donde se encuentra la clínica.</p>
@@ -383,88 +351,45 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     </div>
                 </div>
 
-                <!-- Step 7: Suscripción y Pago -->
-                <div x-show="currentStep === 7" x-transition class="space-y-6">
+                <!-- Step 6: Suscripción -->
+                <div x-show="currentStep === 6" x-transition class="space-y-6">
                     <div>
-                        <h2 class="text-xl font-bold text-gray-900">Plan de Suscripción y Pago</h2>
-                        <p class="text-sm text-gray-500 mt-1">Selecciona tu plan de suscripción e introduce tus datos de pago.</p>
+                        <h2 class="text-xl font-bold text-gray-900">Plan de Suscripción</h2>
+                        <p class="text-sm text-gray-500 mt-1">El plan Premium se asigna por defecto para dar acceso a todas las funcionalidades avanzadas de la plataforma sin necesidad de ingresar datos bancarios.</p>
                     </div>
 
                     <!-- Plan Selection Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                         <!-- Plan Basico -->
-                        <label class="relative flex flex-col p-5 bg-white border rounded-2xl cursor-pointer hover:border-indigo-500 transition-all"
-                            :class="formData.plan_suscripcion === 'Basico' ? 'border-indigo-500 ring-2 ring-indigo-500/20' : 'border-gray-200'">
+                        <label class="relative flex flex-col p-5 bg-white border rounded-2xl cursor-pointer hover:border-indigo-500 transition-all opacity-60"
+                            :class="formData.plan_suscripcion === 'Basico' ? 'border-indigo-500 ring-2 ring-indigo-500/20 opacity-100' : 'border-gray-200'">
                             <input type="radio" name="plan_radio" value="Basico" x-model="formData.plan_suscripcion" class="sr-only">
                             <span class="text-sm font-bold text-gray-900">Básico</span>
                             <span class="text-2xl font-black text-indigo-600 mt-2">29,99€<span class="text-xs text-gray-400 font-normal">/mes</span></span>
                             <span class="text-xs text-gray-500 mt-3">Para profesionales individuales o clínicas pequeñas. Hasta 2 fisios.</span>
                         </label>
                         <!-- Plan Profesional -->
-                        <label class="relative flex flex-col p-5 bg-white border rounded-2xl cursor-pointer hover:border-indigo-500 transition-all"
-                            :class="formData.plan_suscripcion === 'Profesional' ? 'border-indigo-500 ring-2 ring-indigo-500/20' : 'border-gray-200'">
+                        <label class="relative flex flex-col p-5 bg-white border rounded-2xl cursor-pointer hover:border-indigo-500 transition-all opacity-60"
+                            :class="formData.plan_suscripcion === 'Profesional' ? 'border-indigo-500 ring-2 ring-indigo-500/20 opacity-100' : 'border-gray-200'">
                             <input type="radio" name="plan_radio" value="Profesional" x-model="formData.plan_suscripcion" class="sr-only">
                             <span class="text-sm font-bold text-gray-900">Profesional</span>
                             <span class="text-2xl font-black text-indigo-600 mt-2">59,99€<span class="text-xs text-gray-400 font-normal">/mes</span></span>
                             <span class="text-xs text-gray-500 mt-3">Para clínicas medianas. Hasta 10 fisios, facturación avanzada.</span>
                         </label>
                         <!-- Plan Premium -->
-                        <label class="relative flex flex-col p-5 bg-white border rounded-2xl cursor-pointer hover:border-indigo-500 transition-all"
+                        <label class="relative flex flex-col p-5 bg-white border-2 border-indigo-500 rounded-2xl cursor-pointer ring-2 ring-indigo-500/20 transition-all shadow-sm"
                             :class="formData.plan_suscripcion === 'Premium' ? 'border-indigo-500 ring-2 ring-indigo-500/20' : 'border-gray-200'">
-                            <input type="radio" name="plan_radio" value="Premium" x-model="formData.plan_suscripcion" class="sr-only">
+                            <div class="absolute -top-3 right-4 px-2.5 py-0.5 bg-indigo-600 text-white rounded-full text-[10px] font-bold uppercase tracking-wider">Incluido por defecto</div>
+                            <input checked type="radio" name="plan_radio" value="Premium" x-model="formData.plan_suscripcion" class="sr-only">
                             <span class="text-sm font-bold text-gray-900">Premium</span>
                             <span class="text-2xl font-black text-indigo-600 mt-2">99,99€<span class="text-xs text-gray-400 font-normal">/mes</span></span>
                             <span class="text-xs text-gray-500 mt-3">Para grandes clínicas. Fisios ilimitados y soporte prioritario.</span>
                         </label>
                     </div>
-
-                    <!-- Card Details Form -->
-                    <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-4">
-                        <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
-                            <i class="bi bi-credit-card-2-front text-indigo-600"></i>
-                            Datos de la Tarjeta
-                        </h3>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="sm:col-span-2">
-                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nombre del Titular *</label>
-                                <input type="text" x-model="formData.card_holder"
-                                    class="block w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 text-sm transition-all"
-                                    placeholder="JUAN PEREZ GONZALEZ">
-                                <span class="text-xs text-red-500 mt-1 block" x-show="errors.card_holder" x-text="errors.card_holder"></span>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Número de Tarjeta *</label>
-                                <input type="text" x-model="formData.card_number" maxlength="19"
-                                    @input="formData.card_number = formData.card_number.replace(/\s?/g, '').replace(/(\d{4})/g, '$1 ').trim()"
-                                    class="block w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 text-sm transition-all"
-                                    placeholder="4000 1234 5678 9010">
-                                <span class="text-xs text-red-500 mt-1 block" x-show="errors.card_number" x-text="errors.card_number"></span>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Vence (MM/YYYY) *</label>
-                                    <input type="text" x-model="formData.card_expiry" maxlength="7"
-                                        class="block w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 text-sm transition-all"
-                                        placeholder="12/2028">
-                                    <span class="text-xs text-red-500 mt-1 block" x-show="errors.card_expiry" x-text="errors.card_expiry"></span>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">CVV *</label>
-                                    <input type="text" x-model="formData.card_cvv" maxlength="4"
-                                        class="block w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 text-sm transition-all"
-                                        placeholder="123">
-                                    <span class="text-xs text-red-500 mt-1 block" x-show="errors.card_cvv" x-text="errors.card_cvv"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Step 8: Resumen -->
-                <div x-show="currentStep === 8" x-transition class="space-y-6">
+                <!-- Step 7: Resumen -->
+                <div x-show="currentStep === 7" x-transition class="space-y-6">
                     <div>
                         <h2 class="text-xl font-bold text-gray-900">Verifica la información</h2>
                         <p class="text-sm text-gray-500 mt-1">Repasa los datos introducidos antes de confirmar el registro de alta.</p>
@@ -679,16 +604,13 @@ $hasSystemAlert = $systemAlertMessage !== '';
                         name: 'Autónomo - Dirección'
                     },
                     {
-                        name: 'Datos Profesionales'
-                    },
-                    {
                         name: 'Clínica - Generales'
                     },
                     {
                         name: 'Clínica - Ubicación'
                     },
                     {
-                        name: 'Suscripción y Pago'
+                        name: 'Suscripción'
                     },
                     {
                         name: 'Resumen'
@@ -720,7 +642,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     provincia_estado: '<?= htmlspecialchars($data['provincia_estado'] ?? '') ?>',
                     codigo_postal: '<?= htmlspecialchars($data['codigo_postal'] ?? '') ?>',
                     pais: '<?= htmlspecialchars($data['pais'] ?? 'España') ?>',
-                    plan_suscripcion: 'Basico',
+                    plan_suscripcion: 'Premium',
                     card_holder: '',
                     card_number: '',
                     card_expiry: '',
@@ -762,7 +684,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                         }
                     }
 
-                    if (step === 5) {
+                    if (step === 4) {
                         if (!this.formData.nombre_comercial || this.formData.nombre_comercial.trim() === '') {
                             this.errors.nombre_comercial = 'El nombre comercial de la clínica es obligatorio.';
                         }
@@ -771,27 +693,12 @@ $hasSystemAlert = $systemAlertMessage !== '';
                         }
                     }
 
-                    if (step === 6) {
+                    if (step === 5) {
                         if (!this.formData.direccion_calle || this.formData.direccion_calle.trim() === '') {
                             this.errors.direccion_calle = 'La dirección de la clínica es obligatoria.';
                         }
                         if (!this.formData.ciudad || this.formData.ciudad.trim() === '') {
                             this.errors.ciudad = 'La ciudad es obligatoria.';
-                        }
-                    }
-
-                    if (step === 7) {
-                        if (!this.formData.card_holder || this.formData.card_holder.trim() === '') {
-                            this.errors.card_holder = 'El nombre del titular es obligatorio.';
-                        }
-                        if (!this.formData.card_number || this.formData.card_number.replace(/\s/g, '').length < 16) {
-                            this.errors.card_number = 'Introduce un número de tarjeta válido.';
-                        }
-                        if (!this.formData.card_expiry || !/^(0[1-9]|1[0-2])\/\d{4}$/.test(this.formData.card_expiry)) {
-                            this.errors.card_expiry = 'Formato de expiración incorrecto (MM/YYYY).';
-                        }
-                        if (!this.formData.card_cvv || this.formData.card_cvv.trim().length < 3) {
-                            this.errors.card_cvv = 'El código CVV es obligatorio.';
                         }
                     }
 
@@ -811,8 +718,8 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     }
                 },
                 submitForm(e) {
-                    // Validar paso final antes de enviar
-                    if (!this.validateStep(1) || !this.validateStep(2) || !this.validateStep(5) || !this.validateStep(6) || !this.validateStep(7)) {
+                    // Validar pasos requeridos antes de enviar
+                    if (!this.validateStep(1) || !this.validateStep(2) || !this.validateStep(4) || !this.validateStep(5)) {
                         e.preventDefault();
                         alert('Por favor, compruebe que todos los campos obligatorios están rellenos correctamente.');
                     }

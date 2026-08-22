@@ -44,12 +44,10 @@ $pacientesPaginados = array_slice($pacientes_filtrados, $iniciar, $articulos_x_p
             <p class="mt-1 text-sm text-gray-500">Gestiona los expedientes e historial clínico de los pacientes.</p>
         </div>
         <div class="mt-4 sm:mt-0 flex flex-col sm:flex-row gap-3">
-            <form action="<?= PROJECT_ROOT ?>/pacientes/pdf" method="POST" class="w-full sm:w-auto">
-                <button type="submit" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all">
-                    <i class="bi bi-file-earmark-pdf text-red-500 text-lg"></i>
-                    Exportar PDF
-                </button>
-            </form>
+            <!-- <a href="<?= PROJECT_ROOT ?>/pacientes/pdf" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all">
+                <i class="bi bi-file-earmark-pdf text-red-500 text-lg"></i>
+                Nuevo Paciente
+            </a> -->
             <?php if ($isAdminOrSecretary): ?>
                 <a href="<?= PROJECT_ROOT ?>/pacientes/create" class="inline-flex justify-center items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all">
                     <i class="bi bi-plus-lg"></i>

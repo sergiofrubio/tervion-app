@@ -35,12 +35,12 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
 
             <!-- Action Buttons -->
             <div class="flex flex-wrap items-center gap-3 shrink-0">
-                <a href="<?= PROJECT_ROOT ?>/citas/create" 
+                <a href="<?= PROJECT_ROOT ?>/citas/create"
                     class="inline-flex items-center gap-2 rounded-full bg-primary-600 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-primary-500 transition-all hover:scale-105 active:scale-95">
                     <i class="bi bi-plus-lg text-sm"></i>
                     <span>Nueva Cita</span>
                 </a>
-                <a href="<?= PROJECT_ROOT ?>/pacientes/create" 
+                <a href="<?= PROJECT_ROOT ?>/pacientes/create"
                     class="inline-flex items-center gap-2 rounded-full bg-gray-900 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-gray-800 transition-all hover:scale-105 active:scale-95">
                     <i class="bi bi-person-plus text-sm"></i>
                     <span>Alta Paciente</span>
@@ -51,7 +51,7 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
 
     <!-- Metrics / Key Indicators Grid (Inspirado en e-Residency & Landing Stats) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        
+
         <!-- Tarjeta: Pacientes Totales -->
         <div class="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 group flex flex-col justify-between">
             <div class="flex items-center justify-between pb-4 border-b border-gray-100">
@@ -141,7 +141,7 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
 
     <!-- Main Content Layout (2 Columns) -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         <!-- Columna Izquierda (2 spans): Próximas Citas -->
         <div class="lg:col-span-2 space-y-4">
             <div class="flex items-center justify-between">
@@ -174,7 +174,7 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
                     </div>
                 <?php else: ?>
                     <div class="divide-y divide-gray-100">
-                        <?php foreach ($upcomingAppointments as $appointment): 
+                        <?php foreach ($upcomingAppointments as $appointment):
                             $timeObj = strtotime($appointment['fecha_hora']);
                             $appointmentHour = date('H:i', $timeObj);
                             $appointmentDate = date('d/m', $timeObj);
@@ -198,7 +198,7 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
                                         <span class="text-sm font-extrabold text-gray-900 group-hover:text-primary-700 leading-none"><?= $appointmentHour ?></span>
                                         <span class="text-[10px] font-semibold text-gray-400 mt-0.5"><?= $appointmentDate ?></span>
                                     </div>
-                                    
+
                                     <!-- Patient Info -->
                                     <div class="min-w-0 flex-1">
                                         <h4 class="text-sm font-bold text-gray-900 truncate group-hover:text-primary-600 transition-colors">
@@ -219,7 +219,7 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
 
                                 <!-- Action Button -->
                                 <div class="flex items-center gap-2 shrink-0">
-                                    <a href="<?= PROJECT_ROOT ?>/appointments/edit?id=<?= $appointment['cita_id'] ?>" 
+                                    <a href="<?= PROJECT_ROOT ?>/appointments/edit?id=<?= $appointment['cita_id'] ?>"
                                         class="p-2 rounded-xl text-gray-400 hover:text-primary-600 hover:bg-primary-50 transition-colors"
                                         title="Ver detalles de la cita">
                                         <i class="bi bi-arrow-right-short text-xl"></i>
@@ -234,7 +234,7 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
 
         <!-- Columna Derecha (1 span): Pacientes Recientes & Centro de Control -->
         <div class="space-y-6">
-            
+
             <!-- Pacientes Recientes -->
             <div class="space-y-3">
                 <div class="flex items-center justify-between">
@@ -249,7 +249,7 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
                         <p class="text-xs text-gray-500 italic text-center py-6">No hay pacientes registrados recientemente.</p>
                     <?php else: ?>
                         <div class="space-y-3">
-                            <?php foreach ($recentPatients as $patient): 
+                            <?php foreach ($recentPatients as $patient):
                                 $initials = strtoupper(substr($patient['nombre'] ?? '', 0, 1) . substr($patient['apellidos'] ?? '', 0, 1));
                                 $patientName = trim(($patient['nombre'] ?? '') . ' ' . ($patient['apellidos'] ?? ''));
                                 $createdDate = !empty($patient['fecha_creacion']) ? date('d/m/Y', strtotime($patient['fecha_creacion'])) : 'Reciente';
@@ -266,7 +266,7 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
                                             <p class="text-[11px] text-gray-400">Alta: <?= $createdDate ?></p>
                                         </div>
                                     </div>
-                                    <a href="<?= PROJECT_ROOT ?>/pacientes/detail?usuario_id=<?= $patient['usuario_id'] ?>" 
+                                    <a href="<?= PROJECT_ROOT ?>/pacientes/detail?usuario_id=<?= $patient['usuario_id'] ?>"
                                         class="p-2 rounded-xl text-gray-300 hover:text-primary-600 hover:bg-primary-50 transition-colors"
                                         title="Ficha clínica">
                                         <i class="bi bi-file-earmark-person text-base"></i>
@@ -285,9 +285,8 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
             </div>
 
             <!-- Widget Banner: Inspirado en la landing y Estonia e-Residency -->
-            <div class="rounded-3xl bg-gray-900 text-white p-6 shadow-xl relative overflow-hidden border border-gray-800">
-                <!-- Glowing background accent -->
-                <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-primary-600 rounded-full opacity-25 blur-2xl pointer-events-none"></div>
+            <!-- <div class="rounded-3xl bg-gray-900 text-white p-6 shadow-xl relative overflow-hidden border border-gray-800">
+                 <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-primary-600 rounded-full opacity-25 blur-2xl pointer-events-none"></div>
                 
                 <div class="relative z-10 space-y-3">
                     <div class="flex items-center justify-between">
@@ -309,8 +308,8 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
                             </a>
                         </div>
                     <?php endif; ?>
-                </div>
-            </div>
+                </div> 
+            </div> -->
 
         </div>
     </div>
@@ -318,9 +317,17 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
 
 <style>
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(6px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in {
         animation: fadeIn 0.3s ease-out forwards;
     }

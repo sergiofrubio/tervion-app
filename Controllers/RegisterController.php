@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Core\Controller;
@@ -18,7 +19,7 @@ class RegisterController extends Controller
             header('Location: ' . PROJECT_ROOT . '/inicio');
             $this->exitApp();
         }
-        $this->view('register/register', ['data' => [], 'error' => null]);
+        $this->view('landing/registro', ['data' => [], 'error' => null]);
     }
 
     public $db = null;
@@ -198,7 +199,6 @@ class RegisterController extends Controller
             // Redirigir al login con mensaje de éxito
             header('Location: ' . PROJECT_ROOT . '/login?alert=success&message=' . urlencode('¡Registro completado con éxito! Ya puedes iniciar sesión con tu cuenta de administrador.'));
             $this->exitApp();
-
         } catch (\Exception $e) {
             if ($db->inTransaction()) {
                 $db->rollBack();

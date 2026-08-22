@@ -215,7 +215,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                                             <span>Resumen del Centro</span>
                                         </div>
                                         <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-0.5">
-                                            Bienvenido, <span class="text-primary-600">Dr. Sergio Rubio</span>
+                                            Bienvenido, <span class="text-primary-600">Dr. Rubio</span>
                                         </h3>
                                     </div>
                                     <span class="rounded-full bg-primary-600 px-3 py-1.5 text-[10px] sm:text-xs font-semibold text-white shadow-sm flex items-center gap-1 shrink-0">
@@ -368,7 +368,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                         <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center text-xl">
                             <i class="bi bi-chat-dots"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900">Recordatorios WhatsApp & Email</h3>
+                        <h3 class="text-lg font-bold text-gray-900">Recordatorios automáticos vía WhatsApp</h3>
                         <p class="text-sm text-gray-500 leading-relaxed font-light">
                             Mantén informados a tus pacientes de manera 100% desatendida. Minimiza los olvidos y reduce radicalmente las ausencias en consulta.
                         </p>
@@ -384,7 +384,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                         <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center text-xl">
                             <i class="bi bi-file-earmark-medical"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900">Historia Clínica y Pacientes</h3>
+                        <h3 class="text-lg font-bold text-gray-900">Historia Clínica</h3>
                         <p class="text-sm text-gray-500 leading-relaxed font-light">
                             Toda la información médica y de contacto centralizada, organizada y accesible al instante desde cualquier lugar con total privacidad.
                         </p>
@@ -624,92 +624,149 @@ $hasSystemAlert = $systemAlertMessage !== '';
                 <p class="text-sm text-gray-500 mt-3 leading-relaxed font-light">Elige el plan ideal para automatizar tu negocio y ganar tranquilidad en tu día a día.</p>
             </div>
 
-            <!-- Table Container -->
-            <div class="max-w-5xl mx-auto overflow-x-auto bg-white rounded-3xl shadow-sm border border-gray-100">
-                <table class="w-full min-w-[650px] border-collapse text-left">
-                    <thead>
-                        <tr class="border-b border-gray-100">
-                            <th class="p-6 text-sm font-semibold text-gray-900 w-2/5"></th>
-                            <th class="p-6 text-center w-1/5">
-                                <div class="space-y-2">
-                                    <div class="text-base font-bold text-gray-900">Básico</div>
-                                    <div class="text-2xl font-extrabold text-gray-900">17,99€<span class="text-xs font-normal text-gray-500">/mes</span></div>
-                                    <a href="<?= PROJECT_ROOT ?>/registro" class="inline-block w-full text-center rounded-full bg-gray-50 hover:bg-gray-100 py-2 text-xs font-semibold text-gray-800 transition-all border border-gray-200">
-                                        Empezar
-                                    </a>
-                                </div>
-                            </th>
-                            <th class="p-6 text-center w-1/5 bg-primary-50/20">
-                                <div class="space-y-2">
-                                    <div class="text-base font-bold text-primary-500">Profesional</div>
-                                    <div class="text-2xl font-extrabold text-gray-900">29,99€<span class="text-xs font-normal text-gray-500">/mes</span></div>
-                                    <a href="<?= PROJECT_ROOT ?>/registro" class="inline-block w-full text-center rounded-full bg-gray-50 hover:bg-gray-100 py-2 text-xs font-semibold text-gray-800 transition-all border border-gray-200">
-                                        Empezar
-                                    </a>
-                                </div>
-                            </th>
-                            <th class="p-6 text-center w-1/5 bg-primary-50/20">
-                                <div class="space-y-2">
-                                    <div class="text-base font-bold text-gray-900">Premium</div>
-                                    <div class="text-2xl font-extrabold text-gray-900">79,99€<span class="text-xs font-normal text-gray-500">/mes</span></div>
-                                    <a href="<?= PROJECT_ROOT ?>/registro" class="inline-block w-full text-center rounded-full bg-primary-500 hover:bg-primary-600 py-2 text-xs font-semibold text-white transition-all shadow-sm">
-                                        Solicitar
-                                    </a>
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Agenda y gestión integral de citas</td>
-                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                        </tr>
-                        <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Historia clínica y gestión de pacientes</td>
-                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                        </tr>
-                        <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Cumplimiento normativo VERI*FACTU (AEAT)</td>
-                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                        </tr>
-                        <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Recordatorios automáticos por WhatsApp y Email</td>
-                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                        </tr>
-                        <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Multi-usuario (Sanitarios y Recepción/Administración)</td>
-                            <td class="p-6 text-center"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
-                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
-                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                        </tr>
-                        <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Gestión laboral y cálculo de nóminas automatizado</td>
-                            <td class="p-6 text-center"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
-                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
-                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                        </tr>
-                        <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Pasarela de cobros online Redsys & TPV</td>
-                            <td class="p-6 text-center"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
-                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
-                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                        </tr>
-                        <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-6 text-sm text-gray-700 font-medium">Control financiero y conciliación de movimientos</td>
-                            <td class="p-6 text-center"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
-                            <td class="p-6 text-center bg-primary-50/10"><i class="bi bi-x-lg text-rose-400 text-sm"></i></td>
-                            <td class="p-6 text-center"><i class="bi bi-check-lg text-emerald-500 text-lg"></i></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- Cards Container -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+
+                <!-- Plan Básico -->
+                <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div>
+                        <div class="mb-4">
+                            <h3 class="text-xl font-bold text-gray-900">Básico</h3>
+                            <p class="text-xs text-gray-500 mt-1">Para profesionales independientes que están comenzando.</p>
+                        </div>
+                        <div class="mb-6">
+                            <span class="text-4xl font-extrabold text-gray-900">17,99€</span>
+                            <span class="text-xs font-normal text-gray-500">/mes</span>
+                        </div>
+                        <ul class="space-y-3.5 text-sm text-gray-600 mb-8">
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Agenda y gestión integral de citas</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Historia clínica y gestión de pacientes</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Cumplimiento normativo VERI*FACTU</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Recordatorios automáticos (WhatsApp/Email)</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-400 line-through">
+                                <i class="bi bi-x-circle text-gray-300 text-base shrink-0"></i>
+                                <span>Multi-usuario y gestión de equipo</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-400 line-through">
+                                <i class="bi bi-x-circle text-gray-300 text-base shrink-0"></i>
+                                <span>Gestión laboral y nóminas</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="<?= PROJECT_ROOT ?>/registro" class="w-full text-center rounded-xl bg-gray-50 hover:bg-gray-100 py-3 text-sm font-semibold text-gray-800 transition-all border border-gray-200">
+                        Empezar
+                    </a>
+                </div>
+
+                <!-- Plan Profesional (Destacado) -->
+                <div class="bg-white rounded-3xl p-8 shadow-lg border-2 border-primary-500 flex flex-col justify-between relative transform lg:-translate-y-2">
+                    <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-primary-500 text-white text-[11px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-sm">
+                        Más Popular
+                    </span>
+                    <div>
+                        <div class="mb-4">
+                            <h3 class="text-xl font-bold text-primary-600">Profesional</h3>
+                            <p class="text-xs text-gray-500 mt-1">La opción idónea para clínicas en crecimiento activo.</p>
+                        </div>
+                        <div class="mb-6">
+                            <span class="text-4xl font-extrabold text-gray-900">29,99€</span>
+                            <span class="text-xs font-normal text-gray-500">/mes</span>
+                        </div>
+                        <ul class="space-y-3.5 text-sm text-gray-600 mb-8">
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Agenda y gestión integral de citas</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Historia clínica y gestión de pacientes</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Cumplimiento normativo VERI*FACTU</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Recordatorios automáticos (WhatsApp/Email)</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-400 line-through">
+                                <i class="bi bi-x-circle text-gray-300 text-base shrink-0"></i>
+                                <span>Multi-usuario y gestión de equipo</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-gray-400 line-through">
+                                <i class="bi bi-x-circle text-gray-300 text-base shrink-0"></i>
+                                <span>Gestión laboral y nóminas</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="<?= PROJECT_ROOT ?>/registro" class="w-full text-center rounded-xl bg-primary-500 hover:bg-primary-600 py-3 text-sm font-semibold text-white transition-all shadow-md">
+                        Empezar ahora
+                    </a>
+                </div>
+
+                <!-- Plan Premium -->
+                <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div>
+                        <div class="mb-4">
+                            <h3 class="text-xl font-bold text-gray-900">Premium</h3>
+                            <p class="text-xs text-gray-500 mt-1">Gestión integral completa para clínicas avanzadas.</p>
+                        </div>
+                        <div class="mb-6">
+                            <span class="text-4xl font-extrabold text-gray-900">79,99€</span>
+                            <span class="text-xs font-normal text-gray-500">/mes</span>
+                        </div>
+                        <ul class="space-y-3.5 text-sm text-gray-600 mb-8">
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Agenda y gestión integral de citas</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Historia clínica y gestión de pacientes</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Cumplimiento normativo VERI*FACTU</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Recordatorios automáticos (WhatsApp/Email)</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Multi-usuario (Sanitarios y Recepción)</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Gestión laboral y nóminas automatizadas</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Pasarela de cobros online Redsys & TPV</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
+                                <span>Control financiero y conciliación</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="<?= PROJECT_ROOT ?>/registro" class="w-full text-center rounded-xl bg-gray-900 hover:bg-gray-800 py-3 text-sm font-semibold text-white transition-all shadow-sm">
+                        Solicitar plan
+                    </a>
+                </div>
+
             </div>
         </div>
     </section>
@@ -873,14 +930,13 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     </div>
                 </form>
                 <p class="text-xs text-gray-400 leading-normal">
-                    Cumplimos estrictamente con la RGPD. Lee nuestra <a href="#" class="underline hover:text-primary-500">Política de privacidad</a>.
+                    Cumplimos estrictamente con la RGPD. Lee nuestra <a href="<?= PROJECT_ROOT ?>/privacidad" class="underline hover:text-primary-500">Política de privacidad</a>.
                 </p>
             </div>
 
         </div>
     </section>
 
-    <!-- Footer -->
     <!-- Footer -->
     <footer class="bg-gray-900 text-gray-400 pt-12 pb-8 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
@@ -937,10 +993,11 @@ $hasSystemAlert = $systemAlertMessage !== '';
                 <div>
                     <h3 class="text-sm font-semibold text-white tracking-wider uppercase mb-4">Suscríbete</h3>
                     <p class="text-xs text-gray-400 mb-3">Recibe las últimas novedades y consejos de gestión sanitaria en tu correo.</p>
-                    <form action="#" method="POST" class="flex flex-col gap-2">
-                        <input type="email" placeholder="Tu correo electrónico" required class="w-full px-3 py-2 text-sm bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                        <button type="submit" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-medium text-sm py-2 px-4 rounded-lg transition-colors shadow-sm">
-                            Suscribirse
+                    <form action="#" method="POST" class="relative flex items-center">
+                        <input type="email" placeholder="Tu correo electrónico" required class="w-full pl-3 pr-28 py-2.5 text-sm bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        <button type="submit" class="absolute right-1.5 bg-primary-500 hover:bg-primary-600 text-white font-medium text-xs py-1.5 px-3.5 rounded-lg transition-colors shadow-sm inline-flex items-center gap-1.5">
+                            <!-- <span>Suscribirse</span> -->
+                            <i class="bi bi-arrow-right"></i>
                         </button>
                     </form>
                 </div>
@@ -951,6 +1008,20 @@ $hasSystemAlert = $systemAlertMessage !== '';
             </div>
         </div>
     </footer>
+
+    <!-- Botón flotante de WhatsApp -->
+    <a href="https://wa.me/34600000000?text=Hola,%20me%20gustar%C3%ADa%20recibir%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Tervion"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 group focus:outline-none focus:ring-4 focus:ring-emerald-300"
+        aria-label="Contactar por WhatsApp">
+        <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+        </svg>
+        <span class="absolute right-full mr-3 bg-gray-900 text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+            ¡Chatea con nosotros!
+        </span>
+    </a>
 
 </body>
 

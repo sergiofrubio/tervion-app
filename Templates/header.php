@@ -64,8 +64,8 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
         <!-- Sidebar Brand Header -->
         <div class="flex items-center justify-between h-20 border-b border-gray-800 bg-gray-900 transition-all duration-300 relative px-4"
             :class="sidebarCollapsed ? 'justify-center px-2' : 'px-5'">
-            <a href="<?= PROJECT_ROOT ?>/inicio" class="flex items-center gap-3 group overflow-hidden shrink-0" :title="sidebarCollapsed ? 'Velion' : ''">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-claro-sin-fondo.png" alt="Velion Logo" class="h-10 w-auto object-contain transition-all duration-300" :class="sidebarCollapsed ? 'h-8' : 'h-10'">
+            <a href="<?= PROJECT_ROOT ?>/inicio" class="flex items-center gap-3 group overflow-hidden shrink-0" :title="sidebarCollapsed ? 'Tervion' : ''">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-claro-sin-fondo.png" alt="Tervion Logo" class="h-10 w-auto object-contain transition-all duration-300" :class="sidebarCollapsed ? 'h-8' : 'h-10'">
             </a>
 
             <!-- Botón cerrar móvil -->

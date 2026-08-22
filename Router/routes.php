@@ -5,6 +5,9 @@ $router = new Router();
 
 // Rutas Públicas (Sin autenticación)
 $router->add('GET', '/', 'LandingController@index', false);
+$router->add('GET', '/privacidad', 'LandingController@privacidad', false);
+$router->add('GET', '/terminos', 'LandingController@terminos', false);
+$router->add('GET', '/cookies', 'LandingController@cookies', false);
 $router->add('GET', '/login', 'LoginController@index', false);
 $router->add('POST', '/login', 'LoginController@iniciarSesion', false);
 $router->add('POST', '/login/reset-password', 'LoginController@generatePasswordResetToken', false);

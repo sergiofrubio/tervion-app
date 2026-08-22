@@ -276,10 +276,50 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
 
             <!-- Header Quick Actions & Status -->
             <div class="flex items-center gap-3">
-                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-medium">
+                <!-- Botón de Notificaciones -->
+                <div class="relative" x-data="{ notificationsOpen: false }">
+                    <button @click="notificationsOpen = !notificationsOpen"
+                        @click.away="notificationsOpen = false"
+                        class="relative flex items-center justify-center w-9 h-9 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-colors focus:outline-none cursor-pointer"
+                        title="Notificaciones">
+                        <i class="bi bi-bell text-lg"></i>
+                        <!-- Indicador/Badge de notificaciones sin leer -->
+                        <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-primary-500 rounded-full ring-2 ring-white"></span>
+                    </button>
+
+                    <!-- Desplegable de Notificaciones -->
+                    <div x-show="notificationsOpen"
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 scale-95"
+                        x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-150"
+                        x-transition:leave-start="opacity-100 scale-100"
+                        x-transition:leave-end="opacity-0 scale-95"
+                        class="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-gray-100 py-3 z-50 overflow-hidden"
+                        style="display: none;">
+                        <div class="px-4 pb-2 border-b border-gray-100 flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-gray-800">Notificaciones</h3>
+                            <span class="text-xs font-medium text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">Nuevas</span>
+                        </div>
+                        <div class="divide-y divide-gray-50 max-h-80 overflow-y-auto">
+                            <div class="px-4 py-3 hover:bg-gray-50 transition-colors flex items-start gap-3 cursor-pointer">
+                                <div class="w-8 h-8 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center shrink-0 text-sm">
+                                    <i class="bi bi-calendar-check"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-medium text-gray-800">Nueva cita reservada</p>
+                                    <p class="text-xs text-gray-500 mt-0.5">Se ha agendado una cita para hoy a las 17:00.</p>
+                                    <span class="text-[10px] text-gray-400 mt-1 block">Hace 10 min</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-medium">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span>Sistema Conectado</span>
-                </div>
+                </div> -->
                 <!-- <div class="text-xs font-medium text-gray-500 hidden sm:block">
                     <?= date('d M Y') ?>
                 </div> -->

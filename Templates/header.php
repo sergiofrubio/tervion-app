@@ -64,15 +64,8 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
         <!-- Sidebar Brand Header -->
         <div class="flex items-center justify-between h-20 border-b border-gray-800 bg-gray-900 transition-all duration-300 relative px-4"
             :class="sidebarCollapsed ? 'justify-center px-2' : 'px-5'">
-            <a href="<?= PROJECT_ROOT ?>/inicio" class="flex items-center gap-3 group overflow-hidden shrink-0" :title="sidebarCollapsed ? 'Tervion — Gestión Clínica' : ''">
-                <div class="w-10 h-10 rounded-xl bg-gray-800 border border-gray-700 p-1.5 flex items-center justify-center shadow-inner group-hover:border-primary-500 transition-colors shrink-0">
-                    <img src="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" alt="Tervion Emblem" class="w-full h-full object-contain rounded-md">
-                </div>
-                <div class="flex flex-col transition-all duration-300 overflow-hidden whitespace-nowrap"
-                    :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">
-                    <span class="text-xl font-bold tracking-tight text-white group-hover:text-primary-400 transition-colors leading-none whitespace-nowrap">Tervion</span>
-                    <span class="text-[10px] uppercase font-semibold tracking-widest text-gray-400 mt-1 whitespace-nowrap">Gestión Clínica</span>
-                </div>
+            <a href="<?= PROJECT_ROOT ?>/inicio" class="flex items-center gap-3 group overflow-hidden shrink-0" :title="sidebarCollapsed ? 'Velion' : ''">
+                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-claro-sin-fondo.png" alt="Velion Logo" class="h-10 w-auto object-contain transition-all duration-300" :class="sidebarCollapsed ? 'h-8' : 'h-10'">
             </a>
 
             <!-- Botón cerrar móvil -->

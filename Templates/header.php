@@ -132,7 +132,7 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
                             class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isShopActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
                             <i class="bi bi-bag text-base shrink-0 <?= $isShopActive ? 'text-white' : 'text-gray-400' ?>"></i>
                             <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
-                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Tienda & Bonos</span>
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Tienda</span>
                         </a>
 
                         <?php $isProfileActive = strpos($currentUri, '/paciente/perfil') !== false; ?>
@@ -147,8 +147,8 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
                     </div>
                 </div>
 
-            <?php else : ?>
-                <!-- Menú para Personal Sanitario / Administración -->
+            <?php elseif (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Administrador') : ?>
+                <!-- Menú para Administradores -->
                 <div>
                     <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 transition-all duration-300 overflow-hidden whitespace-nowrap"
                         :class="sidebarCollapsed ? 'opacity-0 h-0 mb-0 py-0 pointer-events-none' : 'opacity-100 h-auto'">
@@ -192,38 +192,114 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
                             <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
                                 :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Control Horario</span>
                         </a>
+
+                        <?php $isPayrollActive = strpos($currentUri, '/nominas') !== false; ?>
+                        <a href="<?= PROJECT_ROOT ?>/nominas"
+                            :title="sidebarCollapsed ? 'Nóminas y Contratos' : ''"
+                            :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                            class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isPayrollActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-file-earmark-text text-base shrink-0 <?= $isPayrollActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Nóminas y Contratos</span>
+                        </a>
                     </div>
                 </div>
 
-                <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Administrador') : ?>
-                    <div>
-                        <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 transition-all duration-300 overflow-hidden whitespace-nowrap"
-                            :class="sidebarCollapsed ? 'opacity-0 h-0 mb-0 py-0 pointer-events-none' : 'opacity-100 h-auto'">
-                            Administración
-                        </div>
-                        <div class="space-y-1">
-                            <?php $isInvoicesActive = strpos($currentUri, '/facturas') !== false; ?>
-                            <a href="<?= PROJECT_ROOT ?>/facturas"
-                                :title="sidebarCollapsed ? 'Facturas' : ''"
-                                :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
-                                class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isInvoicesActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
-                                <i class="bi bi-receipt-cutoff text-base shrink-0 <?= $isInvoicesActive ? 'text-white' : 'text-gray-400' ?>"></i>
-                                <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
-                                    :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Facturas</span>
-                            </a>
-
-                            <?php $isConfigActive = strpos($currentUri, '/configuracion') !== false; ?>
-                            <a href="<?= PROJECT_ROOT ?>/configuracion"
-                                :title="sidebarCollapsed ? 'Configuración' : ''"
-                                :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
-                                class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isConfigActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
-                                <i class="bi bi-sliders text-base shrink-0 <?= $isConfigActive ? 'text-white' : 'text-gray-400' ?>"></i>
-                                <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
-                                    :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Configuración</span>
-                            </a>
-                        </div>
+                <div>
+                    <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 transition-all duration-300 overflow-hidden whitespace-nowrap"
+                        :class="sidebarCollapsed ? 'opacity-0 h-0 mb-0 py-0 pointer-events-none' : 'opacity-100 h-auto'">
+                        Administración
                     </div>
-                <?php endif; ?>
+                    <div class="space-y-1">
+                        <!-- <?php $isInvoicesActive = strpos($currentUri, '/facturas') !== false; ?>
+                        <a href="<?= PROJECT_ROOT ?>/facturas"
+                            :title="sidebarCollapsed ? 'Facturas' : ''"
+                            :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                            class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isInvoicesActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-receipt-cutoff text-base shrink-0 <?= $isInvoicesActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Facturas</span>
+                        </a> -->
+
+                        <?php $isContabilidadActive = strpos($currentUri, '/contabilidad') !== false; ?>
+                        <a href="<?= PROJECT_ROOT ?>/contabilidad"
+                            :title="sidebarCollapsed ? 'Contabilidad' : ''"
+                            :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                            class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isContabilidadActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-cash-stack text-base shrink-0 <?= $isContabilidadActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Contabilidad</span>
+                        </a>
+
+                        <?php $isConfigActive = strpos($currentUri, '/configuracion') !== false; ?>
+                        <a href="<?= PROJECT_ROOT ?>/configuracion"
+                            :title="sidebarCollapsed ? 'Configuración' : ''"
+                            :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                            class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isConfigActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-sliders text-base shrink-0 <?= $isConfigActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Configuración</span>
+                        </a>
+                    </div>
+                </div>
+
+            <?php elseif (isset($_SESSION['rol']) && ($_SESSION['rol'] === 'Fisioterapeuta' || $_SESSION['rol'] === 'Secretario')) : ?>
+                <!-- Menú para Fisioterapeutas y Secretarios -->
+                <div>
+                    <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 transition-all duration-300 overflow-hidden whitespace-nowrap"
+                        :class="sidebarCollapsed ? 'opacity-0 h-0 mb-0 py-0 pointer-events-none' : 'opacity-100 h-auto'">
+                        Atención y Citas
+                    </div>
+                    <div class="space-y-1">
+                        <?php $isPatientsActive = strpos($currentUri, '/pacientes') !== false; ?>
+                        <a href="<?= PROJECT_ROOT ?>/pacientes"
+                            :title="sidebarCollapsed ? 'Pacientes' : ''"
+                            :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                            class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isPatientsActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-people text-base shrink-0 <?= $isPatientsActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Pacientes</span>
+                        </a>
+
+                        <?php $isAppointmentsActive = strpos($currentUri, '/citas') !== false; ?>
+                        <a href="<?= PROJECT_ROOT ?>/citas"
+                            :title="sidebarCollapsed ? 'Agenda' : ''"
+                            :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                            class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isAppointmentsActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-calendar3 text-base shrink-0 <?= $isAppointmentsActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Agenda</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 transition-all duration-300 overflow-hidden whitespace-nowrap"
+                        :class="sidebarCollapsed ? 'opacity-0 h-0 mb-0 py-0 pointer-events-none' : 'opacity-100 h-auto'">
+                        Gestión
+                    </div>
+                    <div class="space-y-1">
+                        <?php $isInvoicesActive = strpos($currentUri, '/facturas') !== false; ?>
+                        <a href="<?= PROJECT_ROOT ?>/facturas"
+                            :title="sidebarCollapsed ? 'Facturas' : ''"
+                            :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                            class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isInvoicesActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-receipt-cutoff text-base shrink-0 <?= $isInvoicesActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Facturas</span>
+                        </a>
+
+                        <?php $isTimeActive = strpos($currentUri, '/fichajes') !== false; ?>
+                        <a href="<?= PROJECT_ROOT ?>/fichajes"
+                            :title="sidebarCollapsed ? 'Control Horario' : ''"
+                            :class="sidebarCollapsed ? 'justify-center px-5' : 'px-3.5 gap-3'"
+                            class="flex items-center py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isTimeActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-clock-history text-base shrink-0 <?= $isTimeActive ? 'text-white' : 'text-gray-400' ?>"></i>
+                            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                                :class="sidebarCollapsed ? 'opacity-0 max-w-0 pointer-events-none' : 'opacity-100 max-w-[200px]'">Control Horario</span>
+                        </a>
+                    </div>
+                </div>
             <?php endif; ?>
 
         </nav>

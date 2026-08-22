@@ -39,8 +39,10 @@ include TEMPLATE_DIR . 'header.php';
                 <div>
                     <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Pagadas</p>
                     <p class="text-2xl font-bold text-gray-900">
-                        <?php 
-                        echo count(array_filter($facturas, function($f) { return $f['estado'] === 'Pagada'; }));
+                        <?php
+                        echo count(array_filter($facturas, function ($f) {
+                            return $f['estado'] === 'Pagada';
+                        }));
                         ?>
                     </p>
                 </div>
@@ -54,8 +56,10 @@ include TEMPLATE_DIR . 'header.php';
                 <div>
                     <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Pendientes</p>
                     <p class="text-2xl font-bold text-gray-900">
-                        <?php 
-                        echo count(array_filter($facturas, function($f) { return $f['estado'] === 'Pendiente'; }));
+                        <?php
+                        echo count(array_filter($facturas, function ($f) {
+                            return $f['estado'] === 'Pendiente';
+                        }));
                         ?>
                     </p>
                 </div>
@@ -66,7 +70,7 @@ include TEMPLATE_DIR . 'header.php';
     <!-- Filters -->
     <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
         <form action="<?= PROJECT_ROOT ?>/facturas" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-            <div class="space-y-2">
+            <!-- <div class="space-y-2">
                 <label for="paciente_id" class="text-xs font-bold text-gray-400 uppercase tracking-widest">Filtrar por Paciente</label>
                 <select name="paciente_id" id="paciente_id" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm bg-white">
                     <option value="">Todos los pacientes</option>
@@ -76,8 +80,17 @@ include TEMPLATE_DIR . 'header.php';
                         </option>
                     <?php endforeach; ?>
                 </select>
+            </div> -->
+
+            <div class="space-y-2">
+                <label for="q" class="text-xs font-bold text-gray-400 uppercase tracking-widest">Búsqueda rápida</label>
+                <div class="relative">
+                    <input type="text" name="q" id="q" value="<?= htmlspecialchars($filters['q'] ?? '') ?>" placeholder="ID factura, nombre..."
+                        class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                    <i class="bi bi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                </div>
             </div>
-            
+
             <div class="space-y-2">
                 <label for="estado" class="text-xs font-bold text-gray-400 uppercase tracking-widest">Estado de Pago</label>
                 <select name="estado" id="estado" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm bg-white">
@@ -87,17 +100,19 @@ include TEMPLATE_DIR . 'header.php';
                 </select>
             </div>
 
-            <div class="space-y-2">
-                <label for="q" class="text-xs font-bold text-gray-400 uppercase tracking-widest">Búsqueda rápida</label>
-                <div class="relative">
-                    <input type="text" name="q" id="q" value="<?= htmlspecialchars($filters['q'] ?? '') ?>" placeholder="ID factura, nombre..." 
-                           class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
-                    <i class="bi bi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                </div>
-            </div>
-
-            <div class="flex gap-2">
+            <!-- <div class="flex gap-2">
                 <button type="submit" class="flex-1 bg-primary-600 text-white px-4 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-primary-200 hover:scale-[1.02] active:scale-95 transition-all">
+                    Filtrar
+                </button>
+                <?php if (!empty($filters['paciente_id']) || !empty($filters['estado']) || !empty($filters['q'])) : ?>
+                    <a href="<?= PROJECT_ROOT ?>/facturas" class="p-2.5 bg-gray-100 text-gray-500 rounded-xl hover:bg-gray-200 transition-all" title="Limpiar filtros">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                <?php endif; ?>
+            </div> -->
+            <div class="space-y-2">
+                <button type="submit" class="w-full lg:w-auto inline-flex justify-center items-center gap-2 rounded-xl bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 transition-all">
+                    <i class="bi bi-funnel"></i>
                     Filtrar
                 </button>
                 <?php if (!empty($filters['paciente_id']) || !empty($filters['estado']) || !empty($filters['q'])) : ?>
@@ -164,7 +179,7 @@ include TEMPLATE_DIR . 'header.php';
                                     <?php endif; ?>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <?php 
+                                    <?php
                                     $vfState = $factura['estado_verifactu'] ?? 'Pendiente';
                                     if ($vfState === 'Aceptado' || $vfState === 'AceptadoConErrores') : ?>
                                         <span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-800 ring-1 ring-inset ring-emerald-600/20" title="CSV: <?= htmlspecialchars($factura['csv_verifactu'] ?? 'Generado') ?>">
@@ -204,9 +219,17 @@ include TEMPLATE_DIR . 'header.php';
 
 <style>
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in-up {
         animation: fadeInUp 0.4s ease-out forwards;
     }

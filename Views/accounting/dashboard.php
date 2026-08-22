@@ -11,6 +11,10 @@ include TEMPLATE_DIR . 'header.php';
             <p class="mt-1 text-sm text-gray-500">Gestión de balances, cuenta de pérdidas y ganancias, y obligaciones fiscales.</p>
         </div>
         <div class="mt-4 sm:ml-16 sm:mt-0 flex flex-wrap gap-2">
+            <!-- <a href="<?= PROJECT_ROOT ?>/facturas" class="inline-flex items-center gap-2 rounded-xl bg-white border border-gray-200 text-gray-700 px-4 py-2.5 text-sm font-semibold shadow-sm hover:bg-gray-50 transition-all hover:scale-105 active:scale-95">
+                <i class="bi bi-file-earmark-text text-primary-600"></i>
+                Facturas Emitidas
+            </a> -->
             <a href="<?= PROJECT_ROOT ?>/contabilidad/gastos" class="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-gray-800 transition-all hover:scale-105 active:scale-95">
                 <i class="bi bi-receipt"></i>
                 Libro de Gastos
@@ -95,6 +99,9 @@ include TEMPLATE_DIR . 'header.php';
         </form>
 
         <div class="flex flex-wrap gap-2">
+            <a href="<?= PROJECT_ROOT ?>/facturas" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gray-100 text-gray-700 font-bold text-xs hover:bg-gray-200 transition-all border border-gray-200">
+                <i class="bi bi-file-earmark-text text-primary-600"></i> Facturas Emitidas
+            </a>
             <a href="<?= PROJECT_ROOT ?>/contabilidad/exportar/emitidas?anio=<?= $year ?>" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-50 text-blue-700 font-bold text-xs hover:bg-blue-100 transition-all">
                 <i class="bi bi-file-earmark-spreadsheet"></i> Libro Emitidas (CSV)
             </a>

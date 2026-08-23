@@ -60,7 +60,7 @@ $pacientesPaginados = array_slice($pacientes_filtrados, $iniciar, $articulos_x_p
             <form method="get" action="<?= PROJECT_ROOT ?>/pacientes" class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div class="relative flex-1 max-w-md">
                     <i class="bi bi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                    <input type="text" name="usuario_id" id="usuario_id" value="<?= htmlspecialchars($filtro_usuario_id) ?>" class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all" placeholder="Buscar por DNI, Nombre o Apellidos...">
+                    <input type="text" name="usuario_id" id="usuario_id" value="<?= htmlspecialchars($filtro_usuario_id) ?>" class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all" placeholder="Buscar por DNI o nombre">
                 </div>
                 <div class="flex items-center gap-3">
                     <?php if ($filtro_usuario_id !== ''): ?>
@@ -79,7 +79,7 @@ $pacientesPaginados = array_slice($pacientes_filtrados, $iniciar, $articulos_x_p
             <table class="w-full text-left text-xs">
                 <thead>
                     <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
-                        <th class="py-3 px-4 font-semibold">DNI / ID</th>
+                        <th class="py-3 px-4 font-semibold">DNI</th>
                         <th class="py-3 px-4 font-semibold">Nombre Completo</th>
                         <th class="py-3 px-4 font-semibold">Email</th>
                         <th class="py-3 px-4 font-semibold">Teléfono</th>

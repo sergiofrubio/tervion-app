@@ -131,11 +131,12 @@ async function loadContent(url, pushToHistory = true) {
             history.pushState({ url: url, title: doc.title }, doc.title, url);
         }
 
-        // 6. Cerrar sidebar en móvil si está abierto (Alpine integration)
+        // 6. Cerrar menús desplegables en móvil y desktop tras la navegación (Alpine integration)
         if (window.Alpine) {
             const bodyEl = document.querySelector('body[x-data]');
             if (bodyEl && bodyEl._x_dataStack && bodyEl._x_dataStack[0]) {
-                bodyEl._x_dataStack[0].sidebarOpen = false;
+                bodyEl._x_dataStack[0].mobileMenuOpen = false;
+                bodyEl._x_dataStack[0].configMenuOpen = false;
             }
         }
 
@@ -167,38 +168,57 @@ function hideLoadingState(container) {
 }
 
 /**
- * Actualiza las clases visuales de los links en la barra lateral
+ * Actualiza las clases visuales de los links en el Topbar Superior
  */
 function updateActiveSidebarLinks(targetUrl) {
     const urlObj = new URL(targetUrl, window.location.origin);
     const pathname = urlObj.pathname;
 
-    const navLinks = document.querySelectorAll('aside nav a');
+    const navLinks = document.querySelectorAll('header nav a, header .md\\:hidden a');
+    let configMatch = false;
+
     navLinks.forEach(link => {
         const linkUrl = new URL(link.href, window.location.origin);
-        const isMatch = (linkUrl.pathname === pathname) ||
-            (pathname === '/' && linkUrl.pathname.endsWith('/inicio')) ||
-            (linkUrl.pathname !== '/' && !linkUrl.pathname.endsWith('/inicio') && pathname.startsWith(linkUrl.pathname));
+        
+        // Excluir botón de logout o inicio puro
+        if (linkUrl.pathname.endsWith('/logout')) return;
 
-        const icon = link.querySelector('i');
+        const isMatch = (linkUrl.pathname === pathname) ||
+            (linkUrl.pathname !== '/' && linkUrl.pathname.length > 1 && pathname.startsWith(linkUrl.pathname));
 
         if (isMatch) {
-            link.classList.remove('text-gray-300', 'hover:bg-gray-800', 'hover:text-white');
-            link.classList.add('bg-primary-600', 'text-white', 'shadow-md', 'font-semibold');
-            if (icon) {
-                icon.classList.remove('text-gray-400');
-                icon.classList.add('text-white');
+            link.classList.remove('text-gray-300', 'hover:bg-gray-800', 'hover:text-white', 'text-slate-700');
+            link.classList.add('bg-primary-600', 'text-white', 'shadow-md');
+            
+            // Si coincide con alguna subopción de configuración (facultativos, contabilidad, configuracion)
+            if (['/nominas', '/contabilidad', '/configuracion'].some(p => linkUrl.pathname.startsWith(p))) {
+                configMatch = true;
             }
         } else {
-            link.classList.remove('bg-primary-600', 'text-white', 'shadow-md', 'font-semibold');
-            link.classList.add('text-gray-300', 'hover:bg-gray-800', 'hover:text-white');
-            if (icon) {
-                icon.classList.remove('text-white');
-                icon.classList.add('text-gray-400');
+            // Solo quitar bg-primary-600 si no es una opción del desplegable interno
+            if (!link.closest('[x-show="configMenuOpen"]')) {
+                link.classList.remove('bg-primary-600', 'text-white', 'shadow-md');
+                link.classList.add('text-gray-300', 'hover:bg-gray-800', 'hover:text-white');
+            } else {
+                link.classList.remove('bg-primary-600', 'text-white', 'shadow-md');
+                link.classList.add('text-slate-700');
             }
         }
     });
+
+    // Actualizar botón de la rueda de configuración si corresponde
+    const configBtn = document.querySelector('header nav div button');
+    if (configBtn) {
+        if (configMatch) {
+            configBtn.classList.remove('text-gray-300', 'hover:bg-gray-800');
+            configBtn.classList.add('bg-primary-600', 'text-white', 'shadow-md');
+        } else {
+            configBtn.classList.remove('bg-primary-600', 'text-white', 'shadow-md');
+            configBtn.classList.add('text-gray-300', 'hover:bg-gray-800');
+        }
+    }
 }
+
 
 /**
  * Ejecuta scripts que vienen dentro del contenido nuevo (ej. formularios de citas, gráficos)

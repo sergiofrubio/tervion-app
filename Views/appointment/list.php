@@ -111,7 +111,7 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1 max-w-3xl">
                     <input type="date" id="fecha_hora" name="fecha_hora" value="<?= htmlspecialchars($filtro_fecha_hora) ?>" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
                     <select id="fisioterapeuta_id" name="fisioterapeuta_id" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer">
-                        <option value="" <?= $filtro_fisioterapeuta === '' ? 'selected' : '' ?>>Todos los fisioterapeutas</option>
+                        <option value="" <?= $filtro_fisioterapeuta === '' ? 'selected' : '' ?>>Todas las agendas</option>
                         <?php if (!empty($fisioterapeutas)): ?>
                             <?php foreach ($fisioterapeutas as $fisio): ?>
                                 <option value="<?= htmlspecialchars($fisio['usuario_id']) ?>" <?= (string)$filtro_fisioterapeuta === (string)$fisio['usuario_id'] ? 'selected' : '' ?>>

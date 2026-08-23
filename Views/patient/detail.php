@@ -70,9 +70,6 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                         <h1 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
                             <?= htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellidos']) ?>
                         </h1>
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span> Paciente Activo
-                        </span>
                     </div>
                     <div class="flex flex-wrap items-center gap-x-4 gap-y-1 gap-1 text-xs text-gray-500 font-medium">
                         <span><strong class="text-gray-700">NHC:</strong> #<?= htmlspecialchars($usuario['usuario_id']) ?></span>
@@ -80,9 +77,6 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                         <span><strong class="text-gray-700">Género:</strong> <?= htmlspecialchars($usuario['genero'] ?? 'No especificado') ?></span>
                         <span>•</span>
                         <span><strong class="text-gray-700">Edad:</strong> <?= $edadCalculada !== 'N/D' ? $edadCalculada . ' años' : 'N/D' ?></span>
-                        <?php if (!empty($usuario['fecha_nacimiento'])): ?>
-                            <span class="hidden sm:inline">(<?= date('d/m/Y', strtotime($usuario['fecha_nacimiento'])) ?>)</span>
-                        <?php endif; ?>
                     </div>
                 </div>
             </div>

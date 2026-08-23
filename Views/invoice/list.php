@@ -11,7 +11,7 @@ include TEMPLATE_DIR . 'header.php';
             <p class="mt-1 text-sm text-gray-500">Listado y gestión de facturas de pacientes.</p>
         </div>
         <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-            <a href="<?= PROJECT_ROOT ?>/facturas/create" class="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 transition-all focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+            <a href="<?= PROJECT_ROOT ?>/facturas/crear" class="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 transition-all focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
                 <i class="bi bi-plus-lg"></i>
                 Nueva Factura
             </a>
@@ -203,7 +203,7 @@ include TEMPLATE_DIR . 'header.php';
                                         <a href="<?= PROJECT_ROOT ?>/facturas/pdf?id=<?= $factura['factura_id'] ?>" target="_blank" class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all" title="Imprimir PDF">
                                             <i class="bi bi-file-earmark-pdf"></i>
                                         </a>
-                                        <a href="<?= PROJECT_ROOT ?>/facturas/edit?id=<?= $factura['factura_id'] ?>" class="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all" title="Editar">
+                                        <a href="<?= PROJECT_ROOT ?>/facturas/editar?id=<?= $factura['factura_id'] ?>" class="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all" title="Editar">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
                                     </div>

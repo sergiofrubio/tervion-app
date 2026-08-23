@@ -35,12 +35,12 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
 
             <!-- Action Buttons -->
             <div class="flex flex-wrap items-center gap-3 shrink-0">
-                <a href="<?= PROJECT_ROOT ?>/citas/create"
+                <a href="<?= PROJECT_ROOT ?>/citas/crear"
                     class="inline-flex items-center gap-2 rounded-full bg-primary-600 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-primary-500 transition-all hover:scale-105 active:scale-95">
                     <i class="bi bi-plus-lg text-sm"></i>
                     <span>Nueva Cita</span>
                 </a>
-                <a href="<?= PROJECT_ROOT ?>/pacientes/create"
+                <a href="<?= PROJECT_ROOT ?>/pacientes/crear"
                     class="inline-flex items-center gap-2 rounded-full bg-gray-900 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-gray-800 transition-all hover:scale-105 active:scale-95">
                     <i class="bi bi-person-plus text-sm"></i>
                     <span>Alta Paciente</span>
@@ -167,7 +167,7 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
                             <h3 class="text-sm font-bold text-gray-900">No hay citas pendientes para hoy</h3>
                             <p class="text-xs text-gray-500 font-light leading-relaxed">Las nuevas citas programadas para la jornada se listarán aquí en tiempo real.</p>
                         </div>
-                        <a href="<?= PROJECT_ROOT ?>/citas/create" class="inline-flex items-center gap-2 rounded-full bg-primary-50 text-primary-600 hover:bg-primary-100 px-4 py-2 text-xs font-semibold transition-colors">
+                        <a href="<?= PROJECT_ROOT ?>/citas/crear" class="inline-flex items-center gap-2 rounded-full bg-primary-50 text-primary-600 hover:bg-primary-100 px-4 py-2 text-xs font-semibold transition-colors">
                             <i class="bi bi-plus-lg"></i>
                             <span>Programar una cita</span>
                         </a>
@@ -266,7 +266,7 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
                                             <p class="text-[11px] text-gray-400">Alta: <?= $createdDate ?></p>
                                         </div>
                                     </div>
-                                    <a href="<?= PROJECT_ROOT ?>/pacientes/detail?usuario_id=<?= $patient['usuario_id'] ?>"
+                                    <a href="<?= PROJECT_ROOT ?>/pacientes/detalle?usuario_id=<?= $patient['usuario_id'] ?>"
                                         class="p-2 rounded-xl text-gray-300 hover:text-primary-600 hover:bg-primary-50 transition-colors"
                                         title="Ficha clínica">
                                         <i class="bi bi-file-earmark-person text-base"></i>

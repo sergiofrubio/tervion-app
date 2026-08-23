@@ -24,13 +24,13 @@ $router->add('GET', '/citas/cron/recordatorios', 'AppointmentController@enviarRe
 
 // Rutas de Administración SaaS (SuperAdmin)
 $router->add('GET', '/superadmin/clientes', 'SaasAdminController@tenants', true, ['SuperAdmin']);
-$router->add('GET', '/superadmin/clientes/create', 'SaasAdminController@createTenant', true, ['SuperAdmin']);
-$router->add('POST', '/superadmin/clientes/create', 'SaasAdminController@createTenant', true, ['SuperAdmin']);
-$router->add('POST', '/superadmin/clientes/status', 'SaasAdminController@updateStatus', true, ['SuperAdmin']);
+$router->add('GET', '/superadmin/clientes/crear', 'SaasAdminController@createTenant', true, ['SuperAdmin']);
+$router->add('POST', '/superadmin/clientes/crear', 'SaasAdminController@createTenant', true, ['SuperAdmin']);
+$router->add('POST', '/superadmin/clientes/estado', 'SaasAdminController@updateStatus', true, ['SuperAdmin']);
 $router->add('POST', '/superadmin/clientes/plan', 'SaasAdminController@updatePlan', true, ['SuperAdmin']);
 $router->add('GET', '/superadmin/facturas', 'SaasAdminController@invoices', true, ['SuperAdmin']);
-$router->add('GET', '/superadmin/facturas/nueva', 'SaasAdminController@createInvoice', true, ['SuperAdmin']);
-$router->add('POST', '/superadmin/facturas/nueva', 'SaasAdminController@createInvoice', true, ['SuperAdmin']);
+$router->add('GET', '/superadmin/facturas/crear', 'SaasAdminController@createInvoice', true, ['SuperAdmin']);
+$router->add('POST', '/superadmin/facturas/crear', 'SaasAdminController@createInvoice', true, ['SuperAdmin']);
 $router->add('POST', '/superadmin/facturas/estado', 'SaasAdminController@updateInvoiceStatus', true, ['SuperAdmin']);
 $router->add('GET', '/superadmin/facturas/pdf', 'SaasAdminController@invoicePdf', true, ['SuperAdmin']);
 
@@ -42,76 +42,76 @@ $staffRoles = ['Administrador', 'Fisioterapeuta', 'Secretario'];
 
 // Rutas para Pacientes
 $router->add('GET', '/pacientes', 'PatientController@list', true, $staffRoles);
-$router->add('GET', '/pacientes/search', 'PatientController@search', true, $staffRoles);
-$router->add('GET', '/pacientes/create', 'PatientController@create', true, ['Administrador', 'Secretario']);
-$router->add('POST', '/pacientes/create', 'PatientController@create', true, ['Administrador', 'Secretario']);
-$router->add('POST', '/pacientes/delete', 'PatientController@delete', true, ['Administrador']);
-$router->add('GET', '/pacientes/edit', 'PatientController@edit', true, ['Administrador', 'Secretario']);
-$router->add('POST', '/pacientes/edit', 'PatientController@edit', true, ['Administrador', 'Secretario']);
-$router->add('GET', '/pacientes/detail', 'PatientController@detail', true, $staffRoles);
+$router->add('GET', '/pacientes/buscar', 'PatientController@search', true, $staffRoles);
+$router->add('GET', '/pacientes/crear', 'PatientController@create', true, ['Administrador', 'Secretario']);
+$router->add('POST', '/pacientes/crear', 'PatientController@create', true, ['Administrador', 'Secretario']);
+$router->add('POST', '/pacientes/eliminar', 'PatientController@delete', true, ['Administrador']);
+$router->add('GET', '/pacientes/editar', 'PatientController@edit', true, ['Administrador', 'Secretario']);
+$router->add('POST', '/pacientes/editar', 'PatientController@edit', true, ['Administrador', 'Secretario']);
+$router->add('GET', '/pacientes/detalle', 'PatientController@detail', true, $staffRoles);
 $router->add('GET', '/pacientes/pdf', 'PatientController@createPDF', true, $staffRoles);
 $router->add('POST', '/pacientes/pdf', 'PatientController@createPDF', true, $staffRoles);
 $router->add('GET', '/pacientes/consentimiento-pdf', 'PatientController@downloadConsent', true, array_merge($staffRoles, ['Paciente']));
 
 // Ruta de búsqueda de trabajadores (usado para asignar citas)
-$router->add('GET', '/trabajadores/search', 'PatientController@searchWorkers', true, $staffRoles);
+$router->add('GET', '/trabajadores/buscar', 'PatientController@searchWorkers', true, $staffRoles);
 
 
 $router->add('GET', '/citas', 'AppointmentController@list', true, $staffRoles);
-$router->add('GET', '/citas/create', 'AppointmentController@create', true, $staffRoles);
-$router->add('POST', '/citas/create', 'AppointmentController@create', true, $staffRoles);
-$router->add('POST', '/citas/delete', 'AppointmentController@delete', true, $staffRoles);
-$router->add('POST', '/citas/edit', 'AppointmentController@edit', true, $staffRoles);
-$router->add('GET', '/citas/edit', 'AppointmentController@edit', true, $staffRoles);
+$router->add('GET', '/citas/crear', 'AppointmentController@create', true, $staffRoles);
+$router->add('POST', '/citas/crear', 'AppointmentController@create', true, $staffRoles);
+$router->add('POST', '/citas/eliminar', 'AppointmentController@delete', true, $staffRoles);
+$router->add('POST', '/citas/editar', 'AppointmentController@edit', true, $staffRoles);
+$router->add('GET', '/citas/editar', 'AppointmentController@edit', true, $staffRoles);
 $router->add('GET', '/citas/slots', 'AppointmentController@getSlots', true, ['Administrador', 'Fisioterapeuta', 'Secretario', 'Paciente']);
 $router->add('GET', '/citas/dias-disponibles', 'AppointmentController@getAvailableDays', true, ['Administrador', 'Fisioterapeuta', 'Secretario', 'Paciente']);
 
 $router->add('GET', '/configuracion', 'SettingController@index', true, ['Administrador']);
-$router->add('GET', '/configuracion/horarios/create', 'SettingController@createHorario', true, ['Administrador']);
-$router->add('POST', '/configuracion/horarios/create', 'SettingController@createHorario', true, ['Administrador']);
-$router->add('GET', '/configuracion/horarios/edit', 'SettingController@editHorario', true, ['Administrador']);
-$router->add('POST', '/configuracion/horarios/edit', 'SettingController@editHorario', true, ['Administrador']);
+$router->add('GET', '/configuracion/horarios/crear', 'SettingController@createHorario', true, ['Administrador']);
+$router->add('POST', '/configuracion/horarios/crear', 'SettingController@createHorario', true, ['Administrador']);
+$router->add('GET', '/configuracion/horarios/editar', 'SettingController@editHorario', true, ['Administrador']);
+$router->add('POST', '/configuracion/horarios/editar', 'SettingController@editHorario', true, ['Administrador']);
 
-$router->add('GET', '/configuracion/ausencias/create', 'SettingController@createAusencia', true, ['Administrador']);
-$router->add('POST', '/configuracion/ausencias/create', 'SettingController@createAusencia', true, ['Administrador']);
-$router->add('GET', '/configuracion/ausencias/edit', 'SettingController@editAusencia', true, ['Administrador']);
-$router->add('POST', '/configuracion/ausencias/edit', 'SettingController@editAusencia', true, ['Administrador']);
+$router->add('GET', '/configuracion/ausencias/crear', 'SettingController@createAusencia', true, ['Administrador']);
+$router->add('POST', '/configuracion/ausencias/crear', 'SettingController@createAusencia', true, ['Administrador']);
+$router->add('GET', '/configuracion/ausencias/editar', 'SettingController@editAusencia', true, ['Administrador']);
+$router->add('POST', '/configuracion/ausencias/editar', 'SettingController@editAusencia', true, ['Administrador']);
 
-$router->add('GET', '/configuracion/bonos/create', 'SettingController@createBono', true, ['Administrador']);
-$router->add('POST', '/configuracion/bonos/create', 'SettingController@createBono', true, ['Administrador']);
-$router->add('GET', '/configuracion/bonos/edit', 'SettingController@editBono', true, ['Administrador']);
-$router->add('POST', '/configuracion/bonos/edit', 'SettingController@editBono', true, ['Administrador']);
+$router->add('GET', '/configuracion/bonos/crear', 'SettingController@createBono', true, ['Administrador']);
+$router->add('POST', '/configuracion/bonos/crear', 'SettingController@createBono', true, ['Administrador']);
+$router->add('GET', '/configuracion/bonos/editar', 'SettingController@editBono', true, ['Administrador']);
+$router->add('POST', '/configuracion/bonos/editar', 'SettingController@editBono', true, ['Administrador']);
 
-$router->add('POST', '/configuracion/clinica/update', 'SettingController@saveClinica', true, ['Administrador']);
-$router->add('POST', '/configuracion/clinica/save', 'SettingController@saveClinica', true, ['Administrador']);
-$router->add('POST', '/configuracion/tarjeta/update', 'SettingController@updateTarjeta', true, ['Administrador']);
-$router->add('POST', '/configuracion/suscripcion/update-plan', 'SettingController@updatePlan', true, ['Administrador']);
+$router->add('POST', '/configuracion/clinica/actualizar', 'SettingController@saveClinica', true, ['Administrador']);
+$router->add('POST', '/configuracion/clinica/guardar', 'SettingController@saveClinica', true, ['Administrador']);
+$router->add('POST', '/configuracion/tarjeta/actualizar', 'SettingController@updateTarjeta', true, ['Administrador']);
+$router->add('POST', '/configuracion/suscripcion/actualizar', 'SettingController@updatePlan', true, ['Administrador']);
 $router->add('POST', '/configuracion/suscripcion/cancel-downgrade', 'SettingController@cancelPlanDowngrade', true, ['Administrador']);
 
-$router->add('GET', '/historial/create', 'MedicalReportController@create', true, $staffRoles);
-$router->add('POST', '/historial/create', 'MedicalReportController@create', true, $staffRoles);
-$router->add('GET', '/historial/detail', 'MedicalReportController@detail', true, $staffRoles);
+$router->add('GET', '/historial/crear', 'MedicalReportController@create', true, $staffRoles);
+$router->add('POST', '/historial/crear', 'MedicalReportController@create', true, $staffRoles);
+$router->add('GET', '/historial/detalle', 'MedicalReportController@detail', true, $staffRoles);
 $router->add('GET', '/historial/pdf', 'MedicalReportController@pdf', true, $staffRoles);
 
 $router->add('GET', '/facturas', 'InvoiceController@list', true, $staffRoles);
-$router->add('GET', '/facturas/create', 'InvoiceController@create', true, $staffRoles);
-$router->add('POST', '/facturas/create', 'InvoiceController@create', true, $staffRoles);
-$router->add('GET', '/facturas/edit', 'InvoiceController@edit', true, $staffRoles);
-$router->add('POST', '/facturas/edit', 'InvoiceController@edit', true, $staffRoles);
-$router->add('POST', '/facturas/delete', 'InvoiceController@delete', true, $staffRoles);
+$router->add('GET', '/facturas/crear', 'InvoiceController@create', true, $staffRoles);
+$router->add('POST', '/facturas/crear', 'InvoiceController@create', true, $staffRoles);
+$router->add('GET', '/facturas/editar', 'InvoiceController@edit', true, $staffRoles);
+$router->add('POST', '/facturas/editar', 'InvoiceController@edit', true, $staffRoles);
+$router->add('POST', '/facturas/eliminar', 'InvoiceController@delete', true, $staffRoles);
 $router->add('GET', '/facturas/pdf', 'InvoiceController@pdf', true, array_merge($staffRoles, ['SuperAdmin']));
 $router->add('GET', '/facturas/reenviar', 'InvoiceController@reenviarVerifactu', true, $staffRoles);
 $router->add('POST', '/facturas/reenviar', 'InvoiceController@reenviarVerifactu', true, $staffRoles);
 
 $router->add('GET', '/nominas', 'PayrollController@list', true, ['Administrador']);
 $router->add('GET', '/nominas/contratos', 'ContractController@list', true, ['Administrador']);
-$router->add('GET', '/nominas/contratos/create', 'ContractController@create', true, ['Administrador']);
-$router->add('POST', '/nominas/contratos/create', 'ContractController@create', true, ['Administrador']);
-$router->add('GET', '/nominas/contratos/edit', 'ContractController@edit', true, ['Administrador']);
-$router->add('POST', '/nominas/contratos/edit', 'ContractController@edit', true, ['Administrador']);
-$router->add('GET', '/nominas/generate', 'PayrollController@generate', true, ['Administrador']);
-$router->add('POST', '/nominas/generate', 'PayrollController@generate', true, ['Administrador']);
-$router->add('GET', '/nominas/detail', 'PayrollController@detail', true, ['Administrador']);
+$router->add('GET', '/nominas/contratos/crear', 'ContractController@create', true, ['Administrador']);
+$router->add('POST', '/nominas/contratos/crear', 'ContractController@create', true, ['Administrador']);
+$router->add('GET', '/nominas/contratos/editar', 'ContractController@edit', true, ['Administrador']);
+$router->add('POST', '/nominas/contratos/editar', 'ContractController@edit', true, ['Administrador']);
+$router->add('GET', '/nominas/generar', 'PayrollController@generate', true, ['Administrador']);
+$router->add('POST', '/nominas/generar', 'PayrollController@generate', true, ['Administrador']);
+$router->add('GET', '/nominas/detalle', 'PayrollController@detail', true, ['Administrador']);
 $router->add('GET', '/nominas/pdf', 'PayrollController@pdf', true, ['Administrador']);
 
 // Rutas de Control Horario
@@ -124,7 +124,7 @@ $router->add('POST', '/fichajes/admin/guardar', 'TimeRecordController@guardar', 
 $router->add('GET', '/contabilidad', 'AccountingController@dashboard', true, ['Administrador']);
 $router->add('GET', '/contabilidad/gastos', 'AccountingController@expenses', true, ['Administrador']);
 $router->add('POST', '/contabilidad/gastos', 'AccountingController@expenses', true, ['Administrador']);
-$router->add('POST', '/contabilidad/gastos/delete', 'AccountingController@deleteExpense', true, ['Administrador']);
+$router->add('POST', '/contabilidad/gastos/eliminar', 'AccountingController@deleteExpense', true, ['Administrador']);
 $router->add('GET', '/contabilidad/impuestos', 'AccountingController@taxes', true, ['Administrador']);
 $router->add('GET', '/contabilidad/exportar/emitidas', 'AccountingController@exportLibroEmitidas', true, ['Administrador']);
 $router->add('GET', '/contabilidad/exportar/recibidas', 'AccountingController@exportLibroRecibidas', true, ['Administrador']);
@@ -136,13 +136,13 @@ $router->add('GET', '/contabilidad/cron/trimestral', 'AccountingController@runQu
 $router->add('GET', '/paciente/citas', 'AppointmentController@list', true, ['Paciente']);
 $router->add('GET', '/paciente/citas/nueva', 'AppointmentController@create', true, ['Paciente']);
 $router->add('POST', '/paciente/citas/nueva', 'AppointmentController@create', true, ['Paciente']);
-$router->add('GET', '/paciente/citas/edit', 'AppointmentController@edit', true, ['Paciente']);
-$router->add('POST', '/paciente/citas/edit', 'AppointmentController@edit', true, ['Paciente']);
-$router->add('POST', '/paciente/citas/delete', 'AppointmentController@delete', true, ['Paciente']);
+$router->add('GET', '/paciente/citas/editar', 'AppointmentController@edit', true, ['Paciente']);
+$router->add('POST', '/paciente/citas/editar', 'AppointmentController@edit', true, ['Paciente']);
+$router->add('POST', '/paciente/citas/eliminar', 'AppointmentController@delete', true, ['Paciente']);
 
 $router->add('GET', '/paciente/perfil', 'ProfileController@index', true, ['Paciente']);
-$router->add('GET', '/paciente/perfil/edit', 'ProfileController@edit', true, ['Paciente']);
-$router->add('POST', '/paciente/perfil/edit', 'ProfileController@edit', true, ['Paciente']);
+$router->add('GET', '/paciente/perfil/editar', 'ProfileController@edit', true, ['Paciente']);
+$router->add('POST', '/paciente/perfil/editar', 'ProfileController@edit', true, ['Paciente']);
 
 $router->add('GET', '/paciente/tienda', 'ShopController@list', true, ['Paciente']);
 $router->add('GET', '/paciente/tienda/pago', 'ShopController@pago', true, ['Paciente']);

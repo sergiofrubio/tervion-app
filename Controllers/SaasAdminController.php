@@ -134,7 +134,7 @@ class SaasAdminController extends Controller
             'errorMessage' => $errorMessage
         ];
 
-        $this->view('saas-admin/form', $data);
+        $this->view('saas-admin/customer/form', $data);
     }
 
     /**
@@ -304,7 +304,7 @@ class SaasAdminController extends Controller
                     'tenants' => $saasModel->getAllTenants(),
                     'errorMessage' => 'Ocurrió un error al guardar la factura SaaS.'
                 ];
-                $this->view('superadmin/create_invoice', $data);
+                $this->view('saas-admin/invoice/form', $data);
                 return;
             }
         }
@@ -319,7 +319,7 @@ class SaasAdminController extends Controller
             'errorMessage' => null
         ];
 
-        $this->view('saas-admin/customer/list', $data);
+        $this->view('saas-admin/invoice/list', $data);
     }
 
     /**

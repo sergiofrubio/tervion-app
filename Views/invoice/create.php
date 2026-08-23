@@ -16,13 +16,13 @@ include TEMPLATE_DIR . 'header.php';
     </div>
 
     <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-        <form action="<?= PROJECT_ROOT ?>/facturas/create" method="POST" class="p-8" x-data="{ precio: 0, impuesto: 21, total: 0, 
+        <form action="<?= PROJECT_ROOT ?>/facturas/crear" method="POST" class="p-8" x-data="{ precio: 0, impuesto: 21, total: 0, 
             calcularTotal() { 
                 this.total = (parseFloat(this.precio) + (parseFloat(this.precio) * (parseFloat(this.impuesto) / 100))).toFixed(2);
             } 
         }">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                
+
                 <!-- Serie y Tipo -->
                 <div class="space-y-2">
                     <label class="text-sm font-semibold text-gray-700">Serie de Facturación</label>
@@ -127,9 +127,17 @@ include TEMPLATE_DIR . 'header.php';
 
 <style>
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in-up {
         animation: fadeInUp 0.4s ease-out forwards;
     }

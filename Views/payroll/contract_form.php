@@ -12,7 +12,7 @@ include TEMPLATE_DIR . 'header.php';
         <h1 class="text-2xl font-bold text-gray-900 tracking-tight"><?= $pageTitle ?></h1>
     </div>
 
-    <form method="POST" action="<?= $isEdit ? PROJECT_ROOT . '/nominas/contratos/edit' : PROJECT_ROOT . '/nominas/contratos/create' ?>" class="bg-white rounded-2xl border border-gray-100 shadow-xl overflow-hidden">
+    <form method="POST" action="<?= $isEdit ? PROJECT_ROOT . '/nominas/contratos/editar' : PROJECT_ROOT . '/nominas/contratos/crear' ?>" class="bg-white rounded-2xl border border-gray-100 shadow-xl overflow-hidden">
         <?php if ($isEdit): ?>
             <input type="hidden" name="contrato_id" value="<?= $contrato['contrato_id'] ?>">
         <?php endif; ?>

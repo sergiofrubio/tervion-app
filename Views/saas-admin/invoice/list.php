@@ -20,7 +20,7 @@
             <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">Facturación B2B</h1>
             <p class="text-gray-500 text-sm mt-0.5">Consulta, emisión y control de cobro de facturas por servicios de suscripción SaaS.</p>
         </div>
-        <a href="<?= PROJECT_ROOT ?>/superadmin/facturas/nueva" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-2xl font-semibold text-sm shadow-md transition-all cursor-pointer">
+        <a href="<?= PROJECT_ROOT ?>/superadmin/facturas/crear" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-2xl font-semibold text-sm shadow-md transition-all cursor-pointer">
             <i class="bi bi-plus-lg"></i>
             <span>Emitir Factura SaaS</span>
         </a>
@@ -137,4 +137,4 @@
     </div>
 </div>
 
-<?php include_once __DIR__ . '/../../Templates/footer.php'; ?>
+<?php include TEMPLATE_DIR . 'footer.php'; ?>

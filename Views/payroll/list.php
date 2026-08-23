@@ -15,7 +15,7 @@ include TEMPLATE_DIR . 'header.php';
                 <i class="bi bi-file-earmark-text"></i>
                 Gestionar Contratos
             </a>
-            <a href="<?= PROJECT_ROOT ?>/nominas/generate" class="inline-flex justify-center items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all">
+            <a href="<?= PROJECT_ROOT ?>/nominas/generar" class="inline-flex justify-center items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all">
                 <i class="bi bi-plus-lg"></i>
                 Generar Nómina
             </a>
@@ -94,7 +94,7 @@ include TEMPLATE_DIR . 'header.php';
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex items-center justify-end gap-2">
-                                        <a href="<?= PROJECT_ROOT ?>/nominas/detail?id=<?= $n['nomina_id'] ?>" class="text-gray-400 hover:text-blue-600 p-1 rounded-lg transition-colors" title="Ver Detalle">
+                                        <a href="<?= PROJECT_ROOT ?>/nominas/detalle?id=<?= $n['nomina_id'] ?>" class="text-gray-400 hover:text-blue-600 p-1 rounded-lg transition-colors" title="Ver Detalle">
                                             <i class="bi bi-eye text-lg"></i>
                                         </a>
                                         <a href="<?= PROJECT_ROOT ?>/nominas/pdf?id=<?= $n['nomina_id'] ?>" target="_blank" class="text-gray-400 hover:text-red-600 p-1 rounded-lg transition-colors" title="Descargar PDF">

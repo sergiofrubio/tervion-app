@@ -31,9 +31,9 @@ include TEMPLATE_DIR . 'header.php';
     </div>
 
     <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-        <form action="<?= PROJECT_ROOT ?>/facturas/edit" method="POST" class="p-8">
+        <form action="<?= PROJECT_ROOT ?>/facturas/editar" method="POST" class="p-8">
             <input type="hidden" name="factura_id" value="<?= $factura['factura_id'] ?>">
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Conceptos Bloqueados -->
                 <div class="space-y-4 md:col-span-2 bg-gray-50 p-6 rounded-2xl border border-gray-100">
@@ -89,9 +89,17 @@ include TEMPLATE_DIR . 'header.php';
 
 <style>
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in-up {
         animation: fadeInUp 0.4s ease-out forwards;
     }

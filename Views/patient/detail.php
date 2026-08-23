@@ -42,12 +42,12 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
 
         <div class="flex items-center gap-3">
             <?php if ($rol !== "Paciente") : ?>
-                <a href="<?= PROJECT_ROOT ?>/citas/create?paciente_id=<?= $usuario['usuario_id'] ?>"
+                <a href="<?= PROJECT_ROOT ?>/citas/crear?paciente_id=<?= $usuario['usuario_id'] ?>"
                     class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-600 text-white text-xs font-semibold hover:bg-primary-500 transition-all shadow-sm hover:scale-105 active:scale-95">
                     <i class="bi bi-calendar-plus"></i>
                     <span>Agendar Cita</span>
                 </a>
-                <a href="<?= PROJECT_ROOT ?>/historial/create?paciente_id=<?= $usuario['usuario_id'] ?>"
+                <a href="<?= PROJECT_ROOT ?>/historial/crear?paciente_id=<?= $usuario['usuario_id'] ?>"
                     class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-900 text-white text-xs font-semibold hover:bg-gray-800 transition-all shadow-sm hover:scale-105 active:scale-95">
                     <i class="bi bi-file-earmark-plus"></i>
                     <span>Nuevo Informe</span>
@@ -116,7 +116,7 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                         <i class="bi bi-person-lines-fill text-primary-600"></i>
                         Datos de Contacto
                     </h3>
-                    <a href="<?= PROJECT_ROOT ?>/pacientes/edit?id=<?= $usuario['usuario_id'] ?>" class="text-xs font-semibold text-primary-600 hover:text-primary-700">
+                    <a href="<?= PROJECT_ROOT ?>/pacientes/editar?id=<?= $usuario['usuario_id'] ?>" class="text-xs font-semibold text-primary-600 hover:text-primary-700">
                         Editar
                     </a>
                 </div>
@@ -277,7 +277,7 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                                 <p class="text-xs text-gray-500 mt-0.5">Historial cronológico de consultas, diagnósticos y tratamientos.</p>
                             </div>
                             <?php if ($rol !== "Paciente") : ?>
-                                <a href="<?= PROJECT_ROOT ?>/historial/create?paciente_id=<?= $usuario['usuario_id'] ?>"
+                                <a href="<?= PROJECT_ROOT ?>/historial/crear?paciente_id=<?= $usuario['usuario_id'] ?>"
                                     class="inline-flex items-center gap-1.5 rounded-full bg-primary-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-primary-500 transition-all">
                                     <i class="bi bi-plus-lg"></i>
                                     <span>Añadir Informe</span>
@@ -293,7 +293,7 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                                 <h4 class="text-sm font-bold text-gray-900">Sin historial médico registrado</h4>
                                 <p class="text-xs text-gray-500 max-w-sm mt-1 mb-4 font-light">Este paciente aún no tiene informes clínicos o notas de evolución registradas.</p>
                                 <?php if ($rol !== "Paciente") : ?>
-                                    <a href="<?= PROJECT_ROOT ?>/historial/create?paciente_id=<?= $usuario['usuario_id'] ?>"
+                                    <a href="<?= PROJECT_ROOT ?>/historial/crear?paciente_id=<?= $usuario['usuario_id'] ?>"
                                         class="inline-flex items-center gap-2 rounded-full bg-primary-600 text-white px-4 py-2 text-xs font-semibold hover:bg-primary-500 transition-colors">
                                         <i class="bi bi-plus-lg"></i>
                                         <span>Redactar primera consulta</span>
@@ -336,7 +336,7 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                                                 <?php endif; ?>
                                             </div>
 
-                                            <a href="<?= PROJECT_ROOT ?>/historial/detail?id=<?= $informe['historial_id'] ?>"
+                                            <a href="<?= PROJECT_ROOT ?>/historial/detalle?id=<?= $informe['historial_id'] ?>"
                                                 class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-primary-600 bg-primary-50 hover:bg-primary-100 transition-colors shrink-0">
                                                 <span>Ver informe</span>
                                                 <i class="bi bi-chevron-right text-[10px]"></i>
@@ -356,7 +356,7 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                                 <p class="text-xs text-gray-500 mt-0.5">Listado de sesiones de tratamiento y revisiones del paciente.</p>
                             </div>
                             <?php if ($rol !== "Paciente") : ?>
-                                <a href="<?= PROJECT_ROOT ?>/citas/create?paciente_id=<?= $usuario['usuario_id'] ?>"
+                                <a href="<?= PROJECT_ROOT ?>/citas/crear?paciente_id=<?= $usuario['usuario_id'] ?>"
                                     class="inline-flex items-center gap-1.5 rounded-full bg-primary-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-primary-500 transition-all">
                                     <i class="bi bi-plus-lg"></i>
                                     <span>Nueva Cita</span>
@@ -372,7 +372,7 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                                 <h4 class="text-sm font-bold text-gray-900">No hay citas registradas</h4>
                                 <p class="text-xs text-gray-500 max-w-sm mt-1 mb-4 font-light">Este paciente no tiene citas agendadas actualmente.</p>
                                 <?php if ($rol !== "Paciente") : ?>
-                                    <a href="<?= PROJECT_ROOT ?>/citas/create?paciente_id=<?= $usuario['usuario_id'] ?>"
+                                    <a href="<?= PROJECT_ROOT ?>/citas/crear?paciente_id=<?= $usuario['usuario_id'] ?>"
                                         class="inline-flex items-center gap-2 rounded-full bg-primary-600 text-white px-4 py-2 text-xs font-semibold hover:bg-primary-500 transition-colors">
                                         <i class="bi bi-calendar-plus"></i>
                                         <span>Programar primera cita</span>

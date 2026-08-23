@@ -10,7 +10,7 @@ include TEMPLATE_DIR . 'header.php';
             <p class="mt-1 text-sm text-gray-500">Gestión de condiciones salariales del personal.</p>
         </div>
         <div class="mt-4 sm:mt-0">
-            <a href="<?= PROJECT_ROOT ?>/nominas/contratos/create" class="inline-flex justify-center items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 transition-all">
+            <a href="<?= PROJECT_ROOT ?>/nominas/contratos/crear" class="inline-flex justify-center items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 transition-all">
                 <i class="bi bi-plus-lg"></i>
                 Nuevo Contrato
             </a>
@@ -52,7 +52,7 @@ include TEMPLATE_DIR . 'header.php';
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="<?= PROJECT_ROOT ?>/nominas/contratos/edit?id=<?= $c['contrato_id'] ?>" class="text-gray-400 hover:text-amber-500 p-1 rounded-lg transition-colors">
+                                    <a href="<?= PROJECT_ROOT ?>/nominas/contratos/editar?id=<?= $c['contrato_id'] ?>" class="text-gray-400 hover:text-amber-500 p-1 rounded-lg transition-colors">
                                         <i class="bi bi-pencil-square text-lg"></i>
                                     </a>
                                 </td>

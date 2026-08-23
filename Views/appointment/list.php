@@ -68,7 +68,7 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
             <p class="mt-1 text-sm text-gray-500">Gestiona las citas programadas de los pacientes.</p>
         </div>
         <div class="mt-4 sm:mt-0">
-            <a href="<?= PROJECT_ROOT ?>/citas/create" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all">
+            <a href="<?= PROJECT_ROOT ?>/citas/crear" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all">
                 <i class="bi bi-plus-lg"></i>
                 Asignar Cita
             </a>
@@ -218,10 +218,10 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
                                         <?php endif; ?>
 
                                         <?php if (!($cita['estado'] == 'Realizada' || $cita['estado'] == 'Cancelada')): ?>
-                                            <a href="<?= PROJECT_ROOT ?>/citas/edit?id=<?= $cita['cita_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-2 rounded-lg transition-all duration-200" title="Editar">
+                                            <a href="<?= PROJECT_ROOT ?>/citas/editar?id=<?= $cita['cita_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-2 rounded-lg transition-all duration-200" title="Editar">
                                                 <i class="bi bi-pencil-square text-lg"></i>
                                             </a>
-                                            <form action="<?= PROJECT_ROOT ?>/citas/delete" method="POST" class="inline-block m-0" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta cita?');">
+                                            <form action="<?= PROJECT_ROOT ?>/citas/eliminar" method="POST" class="inline-block m-0" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta cita?');">
                                                 <input type="hidden" name="id" value="<?= $cita['cita_id'] ?>">
                                                 <button type="submit" class="text-gray-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-lg transition-all duration-200" title="Eliminar">
                                                     <i class="bi bi-trash3 text-lg"></i>

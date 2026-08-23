@@ -86,7 +86,7 @@ if (!empty($appointments)) {
                             </div>
 
                             <div class="mt-8">
-                                <form action="<?= PROJECT_ROOT ?>/paciente/citas/delete" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas cancelar esta cita?');">
+                                <form action="<?= PROJECT_ROOT ?>/paciente/citas/eliminar" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas cancelar esta cita?');">
                                     <input type="hidden" name="id" value="<?= $cita['cita_id'] ?>">
                                     <button type="submit" class="w-full py-3 px-4 rounded-xl border border-gray-100 text-gray-400 text-[11px] font-black uppercase tracking-widest hover:bg-red-50 hover:text-red-600 hover:border-red-100 transition-all flex items-center justify-center gap-2">
                                         <i class="bi bi-x-circle"></i>

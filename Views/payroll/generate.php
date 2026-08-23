@@ -12,7 +12,7 @@ include TEMPLATE_DIR . 'header.php';
     </div>
 
     <div class="bg-white rounded-2xl border border-gray-100 shadow-xl overflow-hidden p-6 sm:p-8">
-        <form method="POST" action="<?= PROJECT_ROOT ?>/nominas/generate" class="space-y-6">
+        <form method="POST" action="<?= PROJECT_ROOT ?>/nominas/generar" class="space-y-6">
             <div>
                 <label for="contrato_id" class="block text-sm font-medium text-gray-700 mb-2">Empleado / Contrato</label>
                 <select name="contrato_id" id="contrato_id" required class="block w-full rounded-xl border-gray-200 focus:ring-2 focus:ring-primary-600 sm:text-sm py-3 transition-all">

@@ -11,7 +11,7 @@
             <p class="text-slate-400 text-sm mt-1">Supervisión general de la plataforma Velion, métricas de negocio e inquilinos.</p>
         </div>
         <div class="flex items-center gap-3">
-            <a href="<?= PROJECT_ROOT ?>/superadmin/clientes/create" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-500 text-white px-5 py-2.5 rounded-2xl font-semibold text-sm shadow-lg shadow-primary-600/30 transition-all hover:scale-105 active:scale-95 cursor-pointer">
+            <a href="<?= PROJECT_ROOT ?>/superadmin/clientes/crear" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-500 text-white px-5 py-2.5 rounded-2xl font-semibold text-sm shadow-lg shadow-primary-600/30 transition-all hover:scale-105 active:scale-95 cursor-pointer">
                 <i class="bi bi-plus-lg"></i>
                 <span>Alta Nueva Clínica</span>
             </a>
@@ -243,4 +243,4 @@
     </div>
 </div>
 
-<?php include_once __DIR__ . '/../../Templates/footer.php'; ?>
+<?php include TEMPLATE_DIR . 'footer.php'; ?>

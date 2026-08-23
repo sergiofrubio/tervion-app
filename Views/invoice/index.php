@@ -11,7 +11,7 @@ include TEMPLATE_DIR . 'header.php';
             <p class="mt-1 text-sm text-gray-500">Sistema adaptado a Verifactu con encadenamiento de registros.</p>
         </div>
         <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-            <a href="<?= PROJECT_ROOT ?>/facturas/create" class="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 transition-all focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+            <a href="<?= PROJECT_ROOT ?>/facturas/crear" class="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 transition-all focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
                 <i class="bi bi-plus-lg"></i>
                 Nueva Factura
             </a>
@@ -66,7 +66,7 @@ include TEMPLATE_DIR . 'header.php';
                                         <span class="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20">
                                             Pendiente
                                         </span>
-                                    <?php     endif; ?>
+                                    <?php endif; ?>
                                 </td>
                                 <!-- <td class="px-6 py-4 whitespace-nowrap text-xs font-mono text-gray-400">
                                     <span title="<?= $factura['huella'] ?>"><?= substr($factura['huella'], 0, 8) ?>...</span>
@@ -76,7 +76,7 @@ include TEMPLATE_DIR . 'header.php';
                                         <a href="<?= PROJECT_ROOT ?>/facturas/pdf?id=<?= $factura['factura_id'] ?>" target="_blank" class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all" title="Imprimir PDF">
                                             <i class="bi bi-file-earmark-pdf"></i>
                                         </a>
-                                        <a href="<?= PROJECT_ROOT ?>/facturas/edit?id=<?= $factura['factura_id'] ?>" class="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all" title="Gestionar Pago">
+                                        <a href="<?= PROJECT_ROOT ?>/facturas/editar?id=<?= $factura['factura_id'] ?>" class="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all" title="Gestionar Pago">
                                             <i class="bi bi-cash-stack"></i>
                                         </a>
                                     </div>
@@ -92,9 +92,17 @@ include TEMPLATE_DIR . 'header.php';
 
 <style>
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in-up {
         animation: fadeInUp 0.4s ease-out forwards;
     }

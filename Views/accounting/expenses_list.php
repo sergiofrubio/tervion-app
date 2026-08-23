@@ -40,13 +40,13 @@ include TEMPLATE_DIR . 'header.php';
             <div class="space-y-2">
                 <label for="fecha_desde" class="text-xs font-bold text-gray-400 uppercase tracking-widest">Fecha Desde</label>
                 <input type="date" name="fecha_desde" id="fecha_desde" value="<?= htmlspecialchars($filters['fecha_desde'] ?? '') ?>"
-                       class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                    class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
             </div>
 
             <div class="space-y-2">
                 <label for="fecha_hasta" class="text-xs font-bold text-gray-400 uppercase tracking-widest">Fecha Hasta</label>
                 <input type="date" name="fecha_hasta" id="fecha_hasta" value="<?= htmlspecialchars($filters['fecha_hasta'] ?? '') ?>"
-                       class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                    class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
             </div>
 
             <div class="flex gap-2">
@@ -122,7 +122,7 @@ include TEMPLATE_DIR . 'header.php';
                                     <?= number_format($g['total'], 2, ',', '.') ?> €
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                                    <form action="<?= PROJECT_ROOT ?>/contabilidad/gastos/delete" method="POST" class="inline" onsubmit="return confirm('¿Desea borrar este gasto? Esta acción modificará los cálculos fiscales.');">
+                                    <form action="<?= PROJECT_ROOT ?>/contabilidad/gastos/eliminar" method="POST" class="inline" onsubmit="return confirm('¿Desea borrar este gasto? Esta acción modificará los cálculos fiscales.');">
                                         <input type="hidden" name="gasto_id" value="<?= $g['gasto_id'] ?>">
                                         <button type="submit" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all" title="Eliminar">
                                             <i class="bi bi-trash"></i>
@@ -146,19 +146,19 @@ include TEMPLATE_DIR . 'header.php';
         </button>
 
         <h3 class="text-xl font-bold text-gray-900 mb-6">Registrar Factura Recibida / Gasto</h3>
-        
+
         <form action="<?= PROJECT_ROOT ?>/contabilidad/gastos" method="POST" class="space-y-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="space-y-1">
                     <label for="nif_proveedor" class="text-xs font-bold text-gray-400 uppercase tracking-widest">NIF/CIF Proveedor</label>
                     <input type="text" name="nif_proveedor" id="nif_proveedor" placeholder="B12345678" required
-                           class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
                 </div>
 
                 <div class="space-y-1">
                     <label for="nombre_proveedor" class="text-xs font-bold text-gray-400 uppercase tracking-widest">Nombre Proveedor</label>
                     <input type="text" name="nombre_proveedor" id="nombre_proveedor" placeholder="Proveedor de material S.L." required
-                           class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
                 </div>
             </div>
 
@@ -166,20 +166,20 @@ include TEMPLATE_DIR . 'header.php';
                 <div class="space-y-1">
                     <label for="numero_factura" class="text-xs font-bold text-gray-400 uppercase tracking-widest">Nº Factura del Proveedor</label>
                     <input type="text" name="numero_factura" id="numero_factura" placeholder="FV-2026/001" required
-                           class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
                 </div>
 
                 <div class="space-y-1">
                     <label for="fecha_emision" class="text-xs font-bold text-gray-400 uppercase tracking-widest">Fecha Factura</label>
                     <input type="date" name="fecha_emision" id="fecha_emision" required
-                           class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
                 </div>
             </div>
 
             <div class="space-y-1">
                 <label for="concepto" class="text-xs font-bold text-gray-400 uppercase tracking-widest">Concepto / Descripción</label>
                 <input type="text" name="concepto" id="concepto" placeholder="Compra de camilla médica y cremas" required
-                       class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -198,7 +198,7 @@ include TEMPLATE_DIR . 'header.php';
                 <div class="space-y-1">
                     <label for="base_imponible" class="text-xs font-bold text-gray-400 uppercase tracking-widest">Base Imponible (€)</label>
                     <input type="number" step="0.01" min="0" name="base_imponible" id="base_imponible" placeholder="100.00" required
-                           class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
+                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none text-sm">
                 </div>
             </div>
 
@@ -232,21 +232,29 @@ include TEMPLATE_DIR . 'header.php';
 </div>
 
 <script>
-function toggleModal(show) {
-    const modal = document.getElementById('expenseModal');
-    if (show) {
-        modal.classList.remove('hidden');
-    } else {
-        modal.classList.add('hidden');
+    function toggleModal(show) {
+        const modal = document.getElementById('expenseModal');
+        if (show) {
+            modal.classList.remove('hidden');
+        } else {
+            modal.classList.add('hidden');
+        }
     }
-}
 </script>
 
 <style>
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
+
     .animate-fade-in-up {
         animation: fadeInUp 0.4s ease-out forwards;
     }

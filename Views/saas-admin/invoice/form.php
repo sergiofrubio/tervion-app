@@ -22,7 +22,7 @@
     <?php endif; ?>
 
     <!-- Invoice Creation Form -->
-    <form action="<?= PROJECT_ROOT ?>/superadmin/facturas/nueva" method="POST" class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-6">
+    <form action="<?= PROJECT_ROOT ?>/superadmin/facturas/crear" method="POST" class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-6">
         <div>
             <label class="block text-xs font-semibold text-gray-700 mb-1">Clínica Cliente (Organización Facturada) *</label>
             <select name="cuenta_id" required class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:outline-none font-semibold text-gray-900">
@@ -115,4 +115,4 @@
     calculateTotal();
 </script>
 
-<?php include_once __DIR__ . '/../../Templates/footer.php'; ?>
+<?php include TEMPLATE_DIR . 'footer.php'; ?>

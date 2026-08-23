@@ -18,7 +18,7 @@ include TEMPLATE_DIR . 'header.php';
 
     <!-- Form Card -->
     <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
-        <form action="<?= PROJECT_ROOT ?>/paciente/citas/edit" method="POST" class="p-8 md:p-12">
+        <form action="<?= PROJECT_ROOT ?>/paciente/citas/editar" method="POST" class="p-8 md:p-12">
             <input type="hidden" name="cita_id" value="<?= $appointment['cita_id'] ?>">
             <input type="hidden" name="estado" value="<?= $appointment['estado'] ?>"> <!-- Mantenemos el estado actual -->
 

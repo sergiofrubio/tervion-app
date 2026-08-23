@@ -22,7 +22,7 @@
     <?php endif; ?>
 
     <!-- Onboarding Form -->
-    <form action="<?= PROJECT_ROOT ?>/superadmin/clientes/create" method="POST" class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-8">
+    <form action="<?= PROJECT_ROOT ?>/superadmin/clientes/crear" method="POST" class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-8">
         <!-- Seccion 1: Datos de la Empresa / Cliente -->
         <div>
             <div class="flex items-center gap-3 pb-3 border-b border-gray-100">
@@ -163,4 +163,4 @@
     </form>
 </div>
 
-<?php include_once __DIR__ . '/../../Templates/footer.php'; ?>
+<?php include TEMPLATE_DIR . 'footer.php'; ?>

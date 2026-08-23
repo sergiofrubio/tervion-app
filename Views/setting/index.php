@@ -80,7 +80,7 @@ include TEMPLATE_DIR . 'header.php';
                     <h4 class="text-base font-bold text-gray-900">Datos de la Clínica</h4>
                 </div>
 
-                <form action="<?= PROJECT_ROOT ?>/configuracion/clinica/update" method="POST" enctype="multipart/form-data" class="max-w-4xl">
+                <form action="<?= PROJECT_ROOT ?>/configuracion/clinica/actualizar" method="POST" enctype="multipart/form-data" class="max-w-4xl">
                     <?php if ($clinica) : ?>
                         <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
                     <?php endif; ?>
@@ -225,7 +225,7 @@ include TEMPLATE_DIR . 'header.php';
             <div x-show="activeTab === 'horarios'" x-cloak x-transition>
                 <div class="flex items-center justify-between mb-6">
                     <h4 class="text-base font-bold text-gray-900">Horarios de Fisioterapeutas</h4>
-                    <a href="<?= PROJECT_ROOT ?>/configuracion/horarios/create" class="inline-flex items-center gap-1.5 rounded-xl bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary-700 transition-all">
+                    <a href="<?= PROJECT_ROOT ?>/configuracion/horarios/crear" class="inline-flex items-center gap-1.5 rounded-xl bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary-700 transition-all">
                         <i class="bi bi-plus-circle"></i>
                         Nuevo Horario
                     </a>
@@ -255,7 +255,7 @@ include TEMPLATE_DIR . 'header.php';
                                         <td class="px-4 py-3 text-sm text-gray-600"><?= date('H:i', strtotime($horario['hora_inicio'])) ?></td>
                                         <td class="px-4 py-3 text-sm text-gray-600"><?= date('H:i', strtotime($horario['hora_fin'])) ?></td>
                                         <td class="px-4 py-3 text-right text-sm">
-                                            <a href="<?= PROJECT_ROOT ?>/configuracion/horarios/edit?id=<?= $horario['horario_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-1.5 rounded-lg transition-all inline-block" title="Editar"><i class="bi bi-pencil"></i></a>
+                                            <a href="<?= PROJECT_ROOT ?>/configuracion/horarios/editar?id=<?= $horario['horario_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-1.5 rounded-lg transition-all inline-block" title="Editar"><i class="bi bi-pencil"></i></a>
                                             <button class="text-gray-400 hover:text-red-600 hover:bg-red-50 p-1.5 rounded-lg transition-all" title="Eliminar"><i class="bi bi-trash"></i></button>
                                         </td>
                                     </tr>
@@ -270,7 +270,7 @@ include TEMPLATE_DIR . 'header.php';
             <div x-show="activeTab === 'ausencias'" x-cloak x-transition>
                 <div class="flex items-center justify-between mb-6">
                     <h4 class="text-base font-bold text-gray-900">Ausencias de Fisioterapeutas</h4>
-                    <a href="<?= PROJECT_ROOT ?>/configuracion/ausencias/create" class="inline-flex items-center gap-1.5 rounded-xl bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary-700 transition-all">
+                    <a href="<?= PROJECT_ROOT ?>/configuracion/ausencias/crear" class="inline-flex items-center gap-1.5 rounded-xl bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary-700 transition-all">
                         <i class="bi bi-plus-circle"></i>
                         Registrar Ausencia
                     </a>
@@ -300,7 +300,7 @@ include TEMPLATE_DIR . 'header.php';
                                         <td class="px-4 py-3 text-sm text-gray-600"><?= date('d/m/Y', strtotime($ausencia['fecha_fin'])) ?></td>
                                         <td class="px-4 py-3 text-sm text-gray-600"><?= $ausencia['motivo'] ?: 'Sin especificar' ?></td>
                                         <td class="px-4 py-3 text-right text-sm">
-                                            <a href="<?= PROJECT_ROOT ?>/configuracion/ausencias/edit?id=<?= $ausencia['ausencia_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-1.5 rounded-lg transition-all inline-block" title="Editar"><i class="bi bi-pencil"></i></a>
+                                            <a href="<?= PROJECT_ROOT ?>/configuracion/ausencias/editar?id=<?= $ausencia['ausencia_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-1.5 rounded-lg transition-all inline-block" title="Editar"><i class="bi bi-pencil"></i></a>
                                             <button class="text-gray-400 hover:text-red-600 hover:bg-red-50 p-1.5 rounded-lg transition-all" title="Eliminar"><i class="bi bi-trash"></i></button>
                                         </td>
                                     </tr>
@@ -316,7 +316,7 @@ include TEMPLATE_DIR . 'header.php';
             <div x-show="activeTab === 'bonos'" x-cloak x-transition>
                 <div class="flex items-center justify-between mb-6">
                     <h4 class="text-base font-bold text-gray-900">Bonos de Sesiones</h4>
-                    <a href="<?= PROJECT_ROOT ?>/configuracion/bonos/create" class="inline-flex items-center gap-1.5 rounded-xl bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary-700 transition-all">
+                    <a href="<?= PROJECT_ROOT ?>/configuracion/bonos/crear" class="inline-flex items-center gap-1.5 rounded-xl bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary-700 transition-all">
                         <i class="bi bi-plus-circle"></i>
                         Nuevo Bono
                     </a>
@@ -352,7 +352,7 @@ include TEMPLATE_DIR . 'header.php';
                                             <?php endif; ?>
                                         </td>
                                         <td class="px-4 py-3 text-right text-sm">
-                                            <a href="<?= PROJECT_ROOT ?>/configuracion/bonos/edit?id=<?= $bono['bono_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-1.5 rounded-lg transition-all inline-block" title="Editar"><i class="bi bi-pencil"></i></a>
+                                            <a href="<?= PROJECT_ROOT ?>/configuracion/bonos/editar?id=<?= $bono['bono_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-1.5 rounded-lg transition-all inline-block" title="Editar"><i class="bi bi-pencil"></i></a>
                                             <button class="text-gray-400 hover:text-red-600 hover:bg-red-50 p-1.5 rounded-lg transition-all" title="Eliminar"><i class="bi bi-trash"></i></button>
                                         </td>
                                     </tr>
@@ -405,7 +405,7 @@ include TEMPLATE_DIR . 'header.php';
                                 selectedPlan: '<?= $cuenta['plan_proximo'] ?? ($cuenta['plan_suscripcion'] ?? 'Basico') ?>',
                                 planOrder: { 'Basico': 1, 'Profesional': 2, 'Premium': 3 }
                              }">
-                            <form action="<?= PROJECT_ROOT ?>/configuracion/suscripcion/update-plan" method="POST" class="space-y-3">
+                            <form action="<?= PROJECT_ROOT ?>/configuracion/suscripcion/actualizar" method="POST" class="space-y-3">
                                 <div>
                                     <label class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1.5">Plan Contratado</label>
                                     <select name="plan_suscripcion" x-model="selectedPlan" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all">
@@ -475,7 +475,7 @@ include TEMPLATE_DIR . 'header.php';
                             <p class="text-xs text-gray-500">Actualiza los datos de la tarjeta de crédito para la facturación mensual.</p>
                         </div>
 
-                        <form action="<?= PROJECT_ROOT ?>/configuracion/tarjeta/update" method="POST" class="space-y-4">
+                        <form action="<?= PROJECT_ROOT ?>/configuracion/tarjeta/actualizar" method="POST" class="space-y-4">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div class="sm:col-span-2">
                                     <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Titular de la Tarjeta *</label>

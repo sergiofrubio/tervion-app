@@ -49,7 +49,7 @@ $pacientesPaginados = array_slice($pacientes_filtrados, $iniciar, $articulos_x_p
                 Nuevo Paciente
             </a> -->
             <?php if ($isAdminOrSecretary): ?>
-                <a href="<?= PROJECT_ROOT ?>/pacientes/create" class="inline-flex justify-center items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all">
+                <a href="<?= PROJECT_ROOT ?>/pacientes/crear" class="inline-flex justify-center items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all">
                     <i class="bi bi-plus-lg"></i>
                     Nuevo Paciente
                 </a>
@@ -117,16 +117,16 @@ $pacientesPaginados = array_slice($pacientes_filtrados, $iniciar, $articulos_x_p
                                 </td>
                                 <td class="sticky right-0 bg-white group-hover:bg-gray-50/50 px-6 py-4 whitespace-nowrap text-right text-sm font-medium border-l border-gray-100/50 shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.02)] transition-colors">
                                     <div class="flex items-center justify-end gap-1">
-                                        <a href="<?= PROJECT_ROOT ?>/pacientes/detail?usuario_id=<?= $paciente['usuario_id'] ?>" class="text-gray-400 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-all duration-200" title="Ver Historial / Detalle">
+                                        <a href="<?= PROJECT_ROOT ?>/pacientes/detalle?usuario_id=<?= $paciente['usuario_id'] ?>" class="text-gray-400 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-all duration-200" title="Ver Historial / Detalle">
                                             <i class="bi bi-eye text-lg"></i>
                                         </a>
                                         <?php if ($isAdminOrSecretary): ?>
-                                            <a href="<?= PROJECT_ROOT ?>/pacientes/edit?id=<?= $paciente['usuario_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-2 rounded-lg transition-all duration-200" title="Editar">
+                                            <a href="<?= PROJECT_ROOT ?>/pacientes/editar?id=<?= $paciente['usuario_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-2 rounded-lg transition-all duration-200" title="Editar">
                                                 <i class="bi bi-pencil-square text-lg"></i>
                                             </a>
                                         <?php endif; ?>
                                         <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Administrador'): ?>
-                                            <form action="<?= PROJECT_ROOT ?>/pacientes/delete" method="POST" class="inline-block m-0" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este paciente?');">
+                                            <form action="<?= PROJECT_ROOT ?>/pacientes/eliminar" method="POST" class="inline-block m-0" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este paciente?');">
                                                 <input type="hidden" name="id" value="<?= $paciente['usuario_id'] ?>">
                                                 <button type="submit" class="text-gray-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-lg transition-all duration-200" title="Eliminar">
                                                     <i class="bi bi-trash3 text-lg"></i>

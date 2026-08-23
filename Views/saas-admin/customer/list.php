@@ -19,7 +19,7 @@
         <div>
             <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">Directorio de Clientes</h1>
         </div>
-        <a href="<?= PROJECT_ROOT ?>/superadmin/clientes/create" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-2xl font-semibold text-sm shadow-md transition-all cursor-pointer">
+        <a href="<?= PROJECT_ROOT ?>/superadmin/clientes/crear" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-2xl font-semibold text-sm shadow-md transition-all cursor-pointer">
             <i class="bi bi-plus-lg"></i>
             <span>Alta de Clínica</span>
         </a>
@@ -103,7 +103,7 @@
                                     <div class="text-[11px] text-gray-400"><?= $t['total_citas'] ?> citas totales</div>
                                 </td>
                                 <td class="py-4 px-4 text-right">
-                                    <form action="<?= PROJECT_ROOT ?>/superadmin/clientes/status" method="POST" class="inline-block">
+                                    <form action="<?= PROJECT_ROOT ?>/superadmin/clientes/estado" method="POST" class="inline-block">
                                         <input type="hidden" name="cuenta_id" value="<?= $t['cuenta_id'] ?>">
                                         <?php if ($t['estado_cuenta'] === 'Activo'): ?>
                                             <input type="hidden" name="estado_cuenta" value="Suspendido">
@@ -140,4 +140,4 @@
     }
 </script>
 
-<?php include_once __DIR__ . '/../../Templates/footer.php'; ?>
+<?php include TEMPLATE_DIR . 'footer.php'; ?>

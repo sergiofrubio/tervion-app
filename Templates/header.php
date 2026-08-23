@@ -76,7 +76,17 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
                     Principal
                 </div>
                 <div class="space-y-1">
-                    <?php $isHomeActive = (strpos($currentUri, '/inicio') !== false || $currentUri === PROJECT_ROOT . '/' || $currentUri === PROJECT_ROOT); ?>
+                    <?php
+                    $cleanUri = parse_url($currentUri, PHP_URL_PATH) ?? '';
+                    if (defined('PROJECT_ROOT') && PROJECT_ROOT !== '') {
+                        $rootPath = parse_url(PROJECT_ROOT, PHP_URL_PATH) ?? PROJECT_ROOT;
+                        if ($rootPath !== '' && strpos($cleanUri, $rootPath) === 0) {
+                            $cleanUri = substr($cleanUri, strlen($rootPath));
+                        }
+                    }
+                    $cleanUri = rtrim($cleanUri, '/') ?: '/';
+                    $isHomeActive = ($cleanUri === '/inicio' || $cleanUri === '/');
+                    ?>
                     <a href="<?= PROJECT_ROOT ?>/inicio"
                         class="flex items-center px-3.5 gap-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isHomeActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
                         <i class="bi bi-grid-1x2 text-base shrink-0 <?= $isHomeActive ? 'text-white' : 'text-gray-400' ?>"></i>
@@ -85,7 +95,41 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
                 </div>
             </div>
 
-            <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Paciente') : ?>
+            <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'SuperAdmin') : ?>
+                <!-- Menú para SuperAdmin SaaS -->
+                <div>
+                    <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-primary-400">
+                        Administración SaaS
+                    </div>
+                    <div class="space-y-1">
+                        <?php
+                        // $isSaasDashActive = ($cleanUri === '/superadmin' || $cleanUri === '/superadmin/dashboard');
+                        $isSaasClientsActive = (strpos($cleanUri, '/superadmin/clientes') === 0);
+                        $isSaasPlanesActive = (strpos($cleanUri, '/superadmin/planes') === 0);
+                        $isSaasFacturasActive = (strpos($cleanUri, '/superadmin/facturas') === 0);
+                        ?>
+
+                        <a href="<?= PROJECT_ROOT ?>/superadmin/clientes"
+                            class="flex items-center px-3.5 gap-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isSaasClientsActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-building text-base shrink-0 <?= $isSaasClientsActive ? 'text-white' : 'text-primary-400' ?>"></i>
+                            <span class="whitespace-nowrap">Gestión Clientes</span>
+                        </a>
+
+                        <!-- <a href="<?= PROJECT_ROOT ?>/superadmin/planes"
+                            class="flex items-center px-3.5 gap-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isSaasPlanesActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-box text-base shrink-0 <?= $isSaasPlanesActive ? 'text-white' : 'text-primary-400' ?>"></i>
+                            <span class="whitespace-nowrap">Planes & Suscripciones</span>
+                        </a> -->
+
+                        <a href="<?= PROJECT_ROOT ?>/superadmin/facturas"
+                            class="flex items-center px-3.5 gap-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isSaasFacturasActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                            <i class="bi bi-receipt-cutoff text-base shrink-0 <?= $isSaasFacturasActive ? 'text-white' : 'text-primary-400' ?>"></i>
+                            <span class="whitespace-nowrap">Facturación B2B</span>
+                        </a>
+                    </div>
+                </div>
+
+            <?php elseif (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Paciente') : ?>
                 <!-- Menú para Pacientes -->
                 <div>
                     <div class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-gray-400">
@@ -271,68 +315,71 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
                 <button @click="sidebarOpen = true" class="lg:hidden text-gray-600 hover:text-gray-900 focus:outline-none p-2 rounded-xl hover:bg-gray-100 transition-colors">
                     <i class="bi bi-list text-2xl"></i>
                 </button>
-<?php
-// Generar breadcrumbs dinámicos si no han sido definidos en la vista
-if (!isset($breadcrumbs) || !is_array($breadcrumbs)) {
-    $breadcrumbItems = [];
-    $breadcrumbItems[] = ['title' => 'Inicio', 'url' => PROJECT_ROOT . '/inicio'];
-    
-    $uriPath = parse_url($currentUri, PHP_URL_PATH) ?? '';
-    if (defined('PROJECT_ROOT') && PROJECT_ROOT !== '') {
-        $rootPath = parse_url(PROJECT_ROOT, PHP_URL_PATH) ?? PROJECT_ROOT;
-        if ($rootPath !== '' && strpos($uriPath, $rootPath) === 0) {
-            $uriPath = substr($uriPath, strlen($rootPath));
-        }
-    }
-    
-    $cleanPath = trim($uriPath, '/');
-    $segments = $cleanPath !== '' ? array_values(array_filter(explode('/', $cleanPath))) : [];
+                <?php
+                // Generar breadcrumbs dinámicos si no han sido definidos en la vista
+                if (!isset($breadcrumbs) || !is_array($breadcrumbs)) {
+                    $breadcrumbItems = [];
+                    $breadcrumbItems[] = ['title' => 'Inicio', 'url' => PROJECT_ROOT . '/inicio'];
 
-    $sectionNames = [
-        'inicio' => 'Panel de Control',
-        'pacientes' => 'Pacientes',
-        'citas' => 'Agenda',
-        'fichajes' => 'Control Horario',
-        'nominas' => 'Nóminas y Contratos',
-        'contabilidad' => 'Contabilidad',
-        'configuracion' => 'Configuración',
-        'facturas' => 'Facturas',
-        'paciente' => 'Mi Área Personal',
-        'perfil' => 'Perfil',
-        'tienda' => 'Tienda',
-        'create' => 'Nuevo Registro',
-        'edit' => 'Editar',
-        'detail' => 'Detalle'
-    ];
+                    $uriPath = parse_url($currentUri, PHP_URL_PATH) ?? '';
+                    if (defined('PROJECT_ROOT') && PROJECT_ROOT !== '') {
+                        $rootPath = parse_url(PROJECT_ROOT, PHP_URL_PATH) ?? PROJECT_ROOT;
+                        if ($rootPath !== '' && strpos($uriPath, $rootPath) === 0) {
+                            $uriPath = substr($uriPath, strlen($rootPath));
+                        }
+                    }
 
-    if (!empty($segments) && $segments[0] !== 'inicio') {
-        $accumulatedPath = defined('PROJECT_ROOT') ? PROJECT_ROOT : '';
-        $totalSegs = count($segments);
+                    $cleanPath = trim($uriPath, '/');
+                    $segments = $cleanPath !== '' ? array_values(array_filter(explode('/', $cleanPath))) : [];
 
-        foreach ($segments as $idx => $seg) {
-            $accumulatedPath .= '/' . $seg;
-            $isLastSeg = ($idx === $totalSegs - 1);
+                    $sectionNames = [
+                        'superadmin' => 'Administración SaaS',
+                        'clientes' => 'Clientes SaaS',
+                        'planes' => 'Planes & Suscripciones',
+                        'inicio' => 'Panel de Control',
+                        'pacientes' => 'Pacientes',
+                        'citas' => 'Agenda',
+                        'fichajes' => 'Control Horario',
+                        'nominas' => 'Nóminas y Contratos',
+                        'contabilidad' => 'Contabilidad',
+                        'configuracion' => 'Configuración',
+                        'facturas' => 'Facturas',
+                        'paciente' => 'Mi Área Personal',
+                        'perfil' => 'Perfil',
+                        'tienda' => 'Tienda',
+                        'create' => 'Nuevo Registro',
+                        'edit' => 'Editar',
+                        'detail' => 'Detalle'
+                    ];
 
-            $segTitle = $sectionNames[strtolower($seg)] ?? ucfirst(str_replace(['-', '_'], ' ', $seg));
-            if ($isLastSeg && !empty($pageTitle)) {
-                $segTitle = $pageTitle;
-            }
+                    if (!empty($segments) && $segments[0] !== 'inicio') {
+                        $accumulatedPath = defined('PROJECT_ROOT') ? PROJECT_ROOT : '';
+                        $totalSegs = count($segments);
 
-            $breadcrumbItems[] = [
-                'title' => $segTitle,
-                'url' => $isLastSeg ? null : $accumulatedPath
-            ];
-        }
-    } else {
-        $breadcrumbItems[0]['url'] = null;
-        if (!empty($pageTitle) && $pageTitle !== 'Panel de Control') {
-            $breadcrumbItems[0]['title'] = $pageTitle;
-        }
-    }
-} else {
-    $breadcrumbItems = $breadcrumbs;
-}
-?>
+                        foreach ($segments as $idx => $seg) {
+                            $accumulatedPath .= '/' . $seg;
+                            $isLastSeg = ($idx === $totalSegs - 1);
+
+                            $segTitle = $sectionNames[strtolower($seg)] ?? ucfirst(str_replace(['-', '_'], ' ', $seg));
+                            if ($isLastSeg && !empty($pageTitle)) {
+                                $segTitle = $pageTitle;
+                            }
+
+                            $breadcrumbItems[] = [
+                                'title' => $segTitle,
+                                'url' => $isLastSeg ? null : $accumulatedPath
+                            ];
+                        }
+                    } else {
+                        $breadcrumbItems[0]['url'] = null;
+                        if (!empty($pageTitle) && $pageTitle !== 'Panel de Control') {
+                            $breadcrumbItems[0]['title'] = $pageTitle;
+                        }
+                    }
+                } else {
+                    $breadcrumbItems = $breadcrumbs;
+                }
+                ?>
                 <div id="header-breadcrumb" class="hidden sm:flex items-center gap-2 text-xs font-medium text-gray-400">
                     <?php foreach ($breadcrumbItems as $i => $item): ?>
                         <?php if ($i > 0): ?>

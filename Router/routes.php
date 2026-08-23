@@ -22,8 +22,20 @@ $router->add('GET', '/logout', 'LoginController@finishSesion', false);
 $router->add('GET', '/citas/confirmar', 'AppointmentController@confirmarAsistencia', false);
 $router->add('GET', '/citas/cron/recordatorios', 'AppointmentController@enviarRecordatorios', false);
 
+// Rutas de Administración SaaS (SuperAdmin)
+$router->add('GET', '/superadmin/clientes', 'SaasAdminController@tenants', true, ['SuperAdmin']);
+$router->add('GET', '/superadmin/clientes/create', 'SaasAdminController@createTenant', true, ['SuperAdmin']);
+$router->add('POST', '/superadmin/clientes/create', 'SaasAdminController@createTenant', true, ['SuperAdmin']);
+$router->add('POST', '/superadmin/clientes/status', 'SaasAdminController@updateStatus', true, ['SuperAdmin']);
+$router->add('POST', '/superadmin/clientes/plan', 'SaasAdminController@updatePlan', true, ['SuperAdmin']);
+$router->add('GET', '/superadmin/facturas', 'SaasAdminController@invoices', true, ['SuperAdmin']);
+$router->add('GET', '/superadmin/facturas/nueva', 'SaasAdminController@createInvoice', true, ['SuperAdmin']);
+$router->add('POST', '/superadmin/facturas/nueva', 'SaasAdminController@createInvoice', true, ['SuperAdmin']);
+$router->add('POST', '/superadmin/facturas/estado', 'SaasAdminController@updateInvoiceStatus', true, ['SuperAdmin']);
+$router->add('GET', '/superadmin/facturas/pdf', 'SaasAdminController@invoicePdf', true, ['SuperAdmin']);
+
 // Rutas Generales (Requieren autenticación, accesibles por todos los roles)
-$router->add('GET', '/inicio', 'HomeController@index', true, ['Administrador', 'Fisioterapeuta', 'Paciente']);
+$router->add('GET', '/inicio', 'HomeController@index', true, ['SuperAdmin', 'Administrador', 'Fisioterapeuta', 'Paciente']);
 
 // Rutas para Administradores y Fisioterapeutas/Secretarios (Staff)
 $staffRoles = ['Administrador', 'Fisioterapeuta', 'Secretario'];
@@ -65,9 +77,6 @@ $router->add('POST', '/configuracion/ausencias/create', 'SettingController@creat
 $router->add('GET', '/configuracion/ausencias/edit', 'SettingController@editAusencia', true, ['Administrador']);
 $router->add('POST', '/configuracion/ausencias/edit', 'SettingController@editAusencia', true, ['Administrador']);
 
-
-
-
 $router->add('GET', '/configuracion/bonos/create', 'SettingController@createBono', true, ['Administrador']);
 $router->add('POST', '/configuracion/bonos/create', 'SettingController@createBono', true, ['Administrador']);
 $router->add('GET', '/configuracion/bonos/edit', 'SettingController@editBono', true, ['Administrador']);
@@ -90,7 +99,7 @@ $router->add('POST', '/facturas/create', 'InvoiceController@create', true, $staf
 $router->add('GET', '/facturas/edit', 'InvoiceController@edit', true, $staffRoles);
 $router->add('POST', '/facturas/edit', 'InvoiceController@edit', true, $staffRoles);
 $router->add('POST', '/facturas/delete', 'InvoiceController@delete', true, $staffRoles);
-$router->add('GET', '/facturas/pdf', 'InvoiceController@pdf', true, $staffRoles);
+$router->add('GET', '/facturas/pdf', 'InvoiceController@pdf', true, array_merge($staffRoles, ['SuperAdmin']));
 $router->add('GET', '/facturas/reenviar', 'InvoiceController@reenviarVerifactu', true, $staffRoles);
 $router->add('POST', '/facturas/reenviar', 'InvoiceController@reenviarVerifactu', true, $staffRoles);
 

@@ -1,8 +1,11 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Core\Controller;
 
-class HomeController extends Controller {
+class HomeController extends Controller
+{
     /**
      * Muestra la página de inicio o el panel de control (dashboard) correspondiente según el rol de usuario.
      *
@@ -10,10 +13,16 @@ class HomeController extends Controller {
      *
      * @return void
      */
-    public function index() {       
+    public function index()
+    {
         if (!isset($_SESSION['email'])) {
             header('Location: ' . PROJECT_ROOT . '/login');
             $this->exitApp();
+        }
+
+        if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'SuperAdmin') {
+            $data = [];
+            $this->view('saas-admin/index', $data);
         }
 
         if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Paciente') {
@@ -21,9 +30,10 @@ class HomeController extends Controller {
                 'nombrePaciente' => $_SESSION['nombre'] ?? 'Paciente'
             ];
             $this->view('patient-view/index', $data);
-        } else {
+        }
+        if (isset($_SESSION['rol']) && ($_SESSION['rol'] === 'Administrador' || $_SESSION['rol'] === 'Fisioterapeuta' || $_SESSION['rol'] === 'Secretario')) {
             $dashboardModel = $this->model('Dashboard');
-            
+
             $data = [
                 'totalPatients' => $dashboardModel->getTotalPatients(),
                 'monthlyRevenue' => $dashboardModel->getMonthlyRevenue(),

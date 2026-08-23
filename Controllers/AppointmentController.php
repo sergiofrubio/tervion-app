@@ -232,7 +232,7 @@ class AppointmentController extends Controller
     {
         $appointmentModel = $this->model('Appointment');
         $upcoming = $appointmentModel->getUpcomingAppointmentsWithoutReminder(1); // Mañana
-        $emailController = new EmailController();
+        $notificationController = new NotificationController();
 
         $enviadosEmail = 0;
 
@@ -266,7 +266,7 @@ class AppointmentController extends Controller
                     </div>
                 ";
 
-                if ($emailController->sendEmail($cita['paciente_email'], $subject, $body)) {
+                if ($notificationController->sendEmail($cita['paciente_email'], $subject, $body)) {
                     $enviadosEmail++;
                 }
             }

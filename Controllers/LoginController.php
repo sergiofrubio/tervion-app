@@ -134,7 +134,7 @@ class LoginController extends Controller
             if ($usuario) {
                 $token = bin2hex(random_bytes(32));
                 if ($this->loginModel->saveResetToken($email, $token)) {
-                    $emailController = new EmailController();
+                    $notificationController = new NotificationController();
 
                     $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
                     $host = $_SERVER['HTTP_HOST'];
@@ -149,7 +149,7 @@ class LoginController extends Controller
                         <p>Si no solicitaste este cambio, puedes ignorar este correo.</p>
                     ";
 
-                    $emailController->sendEmail($email, $subject, $body);
+                    $notificationController->sendEmail($email, $subject, $body);
                 }
             }
             // Por seguridad, mostramos el mismo mensaje siempre

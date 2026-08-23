@@ -2,13 +2,13 @@
 
 namespace Tests\Unit;
 
-use App\Controllers\EmailController;
+use App\Controllers\NotificationController;
 
-class EmailControllerTest extends ControllerTestCase
+class NotificationControllerTest extends ControllerTestCase
 {
     public function testSendEmailReturnsBoolean()
     {
-        $controller = new EmailController();
+        $controller = new NotificationController();
         // We can call sendEmail with invalid details, it should catch the exception and return false
         // or if mailpit is available, we try to send. Let's capture output or handle it.
         $result = $controller->sendEmail('invalid-email-format', 'Test', 'Body');

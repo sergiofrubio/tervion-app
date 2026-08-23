@@ -6,7 +6,7 @@ use App\Core\Controller;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-class EmailController extends Controller
+class NotificationController extends Controller
 {
     /**
      * Envía un correo electrónico utilizando PHPMailer configurado para Mailpit.

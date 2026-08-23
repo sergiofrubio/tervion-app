@@ -506,7 +506,7 @@ CREATE TABLE `usuarios` (
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `pass` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `genero` enum('Hombre','Mujer','Otro') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `rol` enum('Administrador','Fisioterapeuta','Secretario','Paciente') NOT NULL DEFAULT 'Paciente',
+  `rol` enum('SuperAdmin','Administrador','Fisioterapeuta','Secretario','Paciente') NOT NULL DEFAULT 'Paciente',
   `rgpd_aceptado` tinyint(1) NOT NULL DEFAULT '0',
   `fecha_consentimiento` datetime DEFAULT NULL,
   `firma_paciente` longtext DEFAULT NULL,
@@ -521,6 +521,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`usuario_id`, `cuenta_id`, `nombre`, `apellidos`, `telefono`, `fecha_nacimiento`, `direccion`, `provincia`, `municipio`, `cp`, `email`, `pass`, `genero`, `rol`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
+('000000000', 1, 'Super', 'Admin', '600000000', '1980-01-01', 'SaaS HQ', 'Madrid', 'Madrid', '28001', 'superadmin@tervion.es', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Hombre', 'SuperAdmin', NULL, '2026-05-01 08:00:00', NULL, NULL),
 ('123456789', 1, 'Juan', 'Perez', '123456789', '1990-01-01', 'Calle 123', 'Provincia 1', 'Ciudad 1', '12345', 'patient@example.com', '$2y$12$bIEopyzNCTfMkRN7b/W.EOf22V1.Ss/n9bDOYE6pew9w5oX4ciseC', 'Hombre', 'Paciente', NULL, '2026-05-04 17:30:03', NULL, '2026-06-09 17:16:00'),
 ('234567890', 1, 'Maria', 'Lopez', '234567890', '1995-05-05', 'Avenida 456', 'Provincia 2', 'Ciudad 2', '23456', 'fisio@example.com', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Mujer', 'Fisioterapeuta', NULL, '2026-05-04 17:30:03', NULL, '2026-06-12 20:07:40'),
 ('345678901', 1, 'Pedro', 'Gomez', '345678901', '1985-10-10', 'Plaza 789', 'Provincia 3', 'Ciudad 3', '34567', 'admin@example.com', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Hombre', 'Administrador', NULL, '2026-05-04 17:30:03', NULL, '2026-06-12 20:07:40');
@@ -964,7 +965,60 @@ CREATE TABLE `codigos_descuento` (
   CONSTRAINT `fk_codigos_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_codigos_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_codigos_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE
+--
+-- Estructura de tabla para la tabla `facturas_saas` (Facturación B2B a Clínicas/Clientes)
+--
+CREATE TABLE `facturas_saas` (
+  `factura_saas_id` int NOT NULL AUTO_INCREMENT,
+  `cuenta_id` int NOT NULL,
+  `serie` varchar(10) NOT NULL DEFAULT 'SAAS',
+  `numero` int NOT NULL,
+  `fecha_emision` date NOT NULL,
+  `fecha_vencimiento` date DEFAULT NULL,
+  `concepto` varchar(255) NOT NULL COMMENT 'Ej: Suscripción Plan Profesional - Agosto 2026',
+  `plan_suscripcion` enum('Basico','Profesional','Premium') NOT NULL DEFAULT 'Profesional',
+  `base_imponible` decimal(10,2) NOT NULL,
+  `tipo_iva` decimal(5,2) NOT NULL DEFAULT '21.00',
+  `cuota_iva` decimal(10,2) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `estado` enum('Pendiente','Pagada','Vencida','Cancelada') NOT NULL DEFAULT 'Pendiente',
+  `metodo_pago` varchar(50) DEFAULT 'Tarjeta',
+  `notas` text DEFAULT NULL,
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`factura_saas_id`),
+  UNIQUE KEY `uk_saas_serie_numero` (`serie`, `numero`),
+  KEY `idx_saas_cuenta` (`cuenta_id`),
+  CONSTRAINT `fk_saas_facturas_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Estructura de tabla para la tabla `planes_suscripcion` (Gestión de Planes SaaS)
+--
+CREATE TABLE `planes_suscripcion` (
+  `plan_id` int NOT NULL AUTO_INCREMENT,
+  `codigo` enum('Basico','Profesional','Premium') NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `precio_mensual` decimal(10,2) NOT NULL,
+  `precio_anual` decimal(10,2) DEFAULT NULL,
+  `max_fisioterapeutas` int DEFAULT NULL COMMENT 'NULL o 0 = ilimitado',
+  `incluye_verifactu` tinyint(1) NOT NULL DEFAULT '1',
+  `incluye_nominas` tinyint(1) NOT NULL DEFAULT '1',
+  `soporte_prioritario` tinyint(1) NOT NULL DEFAULT '0',
+  `estado` enum('Activo','Inactivo') NOT NULL DEFAULT 'Activo',
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`plan_id`),
+  UNIQUE KEY `uk_plan_codigo` (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `planes_suscripcion`
+--
+INSERT INTO `planes_suscripcion` (`plan_id`, `codigo`, `nombre`, `descripcion`, `precio_mensual`, `precio_anual`, `max_fisioterapeutas`, `incluye_verifactu`, `incluye_nominas`, `soporte_prioritario`, `estado`) VALUES
+(1, 'Basico', 'Plan Inicial Clínicas', 'Diseñado para fisioterapeutas autónomos y pequeñas consultas.', 29.00, 290.00, 1, 0, 0, 0, 'Activo'),
+(2, 'Profesional', 'Plan Clínica Multidisciplinar', 'Para clínicas en crecimiento con varios terapeutas y control fiscal Verifactu.', 79.00, 790.00, 5, 1, 1, 0, 'Activo'),
+(3, 'Premium', 'Plan Red de Clínicas / Franquicias', 'Capacidad ilimitada, integraciones dedicadas y soporte prioritario 24/7.', 199.00, 1990.00, NULL, 1, 1, 1, 'Activo');
 
 COMMIT;
 

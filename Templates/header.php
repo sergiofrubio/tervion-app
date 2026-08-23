@@ -464,7 +464,7 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
                         x-transition:leave="transition ease-in duration-150"
                         x-transition:leave-start="opacity-100 scale-100"
                         x-transition:leave-end="opacity-0 scale-95"
-                        class="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 overflow-hidden"
+                        class="absolute right-0 mt-2 w-auto bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 overflow-hidden"
                         style="display: none;">
 
                         <!-- Info de usuario en móvil -->
@@ -484,7 +484,7 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
                         <a href="<?= PROJECT_ROOT ?>/logout"
                             class="flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-rose-600 hover:bg-rose-50 transition-colors">
                             <i class="bi bi-box-arrow-right text-base text-rose-500"></i>
-                            <span>Cerrar sesión</span>
+                            <span>Salir</span>
                         </a>
                     </div>
                 </div>

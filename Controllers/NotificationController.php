@@ -22,15 +22,36 @@ class NotificationController extends Controller
         $mail = new PHPMailer(true);
 
         try {
-            // Configuración del servidor local Mailpit
+            // Configuración del servidor SMTP mediante variables de entorno
             $mail->isSMTP();
-            $mail->Host       = 'mailpit'; // Host del servicio dentro de la red Docker
-            $mail->Port       = 1025;      // Puerto SMTP de Mailpit
-            $mail->SMTPAuth   = false;     // Sin autenticación obligatoria para local
-            $mail->SMTPAutoTLS = false;
+            $mail->Host       = getenv('MAIL_HOST') ?: 'mailpit';
+            $mail->Port       = (int)(getenv('MAIL_PORT') ?: 1025);
+            
+            $smtpAuth = getenv('MAIL_SMTP_AUTH');
+            $mail->SMTPAuth = $smtpAuth !== false ? filter_var($smtpAuth, FILTER_VALIDATE_BOOLEAN) : false;
+
+            $username = getenv('MAIL_USERNAME');
+            if ($username !== false && $username !== '') {
+                $mail->Username = $username;
+            }
+
+            $password = getenv('MAIL_PASSWORD');
+            if ($password !== false && $password !== '') {
+                $mail->Password = $password;
+            }
+
+            $encryption = getenv('MAIL_ENCRYPTION');
+            if ($encryption !== false && $encryption !== '') {
+                $mail->SMTPSecure = $encryption;
+            }
+
+            $autoTls = getenv('MAIL_AUTO_TLS');
+            $mail->SMTPAutoTLS = $autoTls !== false ? filter_var($autoTls, FILTER_VALIDATE_BOOLEAN) : false;
 
             // Destinatarios
-            $mail->setFrom('noreply@tervion.local', 'Tervion');
+            $fromAddress = getenv('MAIL_FROM_ADDRESS') ?: 'noreply@tervion.local';
+            $fromName    = getenv('MAIL_FROM_NAME') ?: 'Tervion';
+            $mail->setFrom($fromAddress, $fromName);
             $mail->addAddress($to);
 
             // Contenido del correo

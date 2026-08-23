@@ -35,9 +35,13 @@ $router->add('POST', '/superadmin/facturas/estado', 'SaasAdminController@updateI
 $router->add('GET', '/superadmin/facturas/pdf', 'SaasAdminController@invoicePdf', true, ['SuperAdmin']);
 
 // Rutas Generales (Requieren autenticación, accesibles por todos los roles)
-$router->add('GET', '/inicio', 'HomeController@index', true, ['SuperAdmin', 'Administrador', 'Fisioterapeuta', 'Paciente']);
+$allRoles = ['SuperAdmin', 'Administrador', 'Fisioterapeuta', 'Secretario', 'Paciente'];
+$router->add('GET', '/inicio', 'HomeController@index', true, $allRoles);
+$router->add('GET', '/perfil', 'ProfileController@index', true, $allRoles);
+$router->add('GET', '/perfil/editar', 'ProfileController@edit', true, $allRoles);
+$router->add('POST', '/perfil/editar', 'ProfileController@edit', true, $allRoles);
 
-// Rutas para Administradores y Fisioterapeutas/Secretarios (Staff)
+// Rutas para Administradores y Fisioterapeutas/Secretarios
 $staffRoles = ['Administrador', 'Fisioterapeuta', 'Secretario'];
 
 // Rutas para Pacientes
@@ -139,10 +143,6 @@ $router->add('POST', '/paciente/citas/nueva', 'AppointmentController@create', tr
 $router->add('GET', '/paciente/citas/editar', 'AppointmentController@edit', true, ['Paciente']);
 $router->add('POST', '/paciente/citas/editar', 'AppointmentController@edit', true, ['Paciente']);
 $router->add('POST', '/paciente/citas/eliminar', 'AppointmentController@delete', true, ['Paciente']);
-
-$router->add('GET', '/paciente/perfil', 'ProfileController@index', true, ['Paciente']);
-$router->add('GET', '/paciente/perfil/editar', 'ProfileController@edit', true, ['Paciente']);
-$router->add('POST', '/paciente/perfil/editar', 'ProfileController@edit', true, ['Paciente']);
 
 $router->add('GET', '/paciente/tienda', 'ShopController@list', true, ['Paciente']);
 $router->add('GET', '/paciente/tienda/pago', 'ShopController@pago', true, ['Paciente']);

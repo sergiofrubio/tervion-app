@@ -156,13 +156,6 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
                             <i class="bi bi-bag text-base shrink-0 <?= $isShopActive ? 'text-white' : 'text-gray-400' ?>"></i>
                             <span class="whitespace-nowrap">Tienda</span>
                         </a>
-
-                        <?php $isProfileActive = strpos($currentUri, '/paciente/perfil') !== false; ?>
-                        <a href="<?= PROJECT_ROOT ?>/paciente/perfil"
-                            class="flex items-center px-3.5 gap-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 <?= $isProfileActive ? 'bg-primary-600 text-white shadow-md font-semibold' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
-                            <i class="bi bi-person-badge text-base shrink-0 <?= $isProfileActive ? 'text-white' : 'text-gray-400' ?>"></i>
-                            <span class="whitespace-nowrap">Mi Perfil</span>
-                        </a>
                     </div>
                 </div>
 
@@ -480,14 +473,7 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
                             <p class="text-[10px] text-gray-500 font-medium truncate"><?= htmlspecialchars($userRole) ?></p>
                         </div>
 
-                        <?php
-                        $profileUrl = PROJECT_ROOT . '/paciente/perfil';
-                        if (isset($_SESSION['rol']) && $_SESSION['rol'] !== 'Paciente') {
-                            $profileUrl = PROJECT_ROOT . '/configuracion';
-                        }
-                        ?>
-
-                        <a href="<?= $profileUrl ?>"
+                        <a href="<?= PROJECT_ROOT ?>/perfil"
                             class="flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 hover:text-primary-600 transition-colors">
                             <i class="bi bi-person text-base text-gray-400"></i>
                             <span>Ver Perfil</span>

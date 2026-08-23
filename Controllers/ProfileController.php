@@ -7,15 +7,21 @@ use App\Core\Controller;
 class ProfileController extends Controller
 {
     /**
-     * Muestra el perfil del paciente con sus datos personales y métodos de pago guardados.
+     * Muestra el perfil del usuario loggeado con sus datos personales.
      *
      * @return void
      */
     public function index()
     {
         $userModel = $this->model('User');
+        $usuario_id = $_SESSION['usuario_id'] ?? null;
 
-        $usuario = $userModel->getByusuario_id($_SESSION['usuario_id']);
+        if (!$usuario_id) {
+            header('Location: ' . PROJECT_ROOT . '/login');
+            $this->exitApp();
+        }
+
+        $usuario = $userModel->getByusuario_id($usuario_id);
 
         if (!$usuario) {
             header('Location: ' . PROJECT_ROOT . '/logout');
@@ -24,24 +30,33 @@ class ProfileController extends Controller
 
         $data = [
             'usuario' => $usuario,
-            'pageTitle' => 'Mi Perfil - Tervion'
+            'pageTitle' => 'Mi Perfil'
         ];
 
-        $this->view('patient-view/profile/index', $data);
+        $this->view('profile/index', $data);
     }
 
     /**
-     * Modifica/actualiza los datos del perfil del paciente.
-     *
-     * Si es POST, procesa los datos del formulario, los valida y los actualiza en la base de datos.
-     * Si falla o es GET, redirige a la vista del perfil con los errores oportunos.
+     * Modifica/actualiza los datos del perfil del usuario loggeado.
      *
      * @return void
      */
     public function edit()
     {
         $userModel = $this->model('User');
-        $usuario_id = $_SESSION['usuario_id'];
+        $usuario_id = $_SESSION['usuario_id'] ?? null;
+
+        if (!$usuario_id) {
+            header('Location: ' . PROJECT_ROOT . '/login');
+            $this->exitApp();
+        }
+
+        $usuarioActual = $userModel->getByusuario_id($usuario_id);
+
+        if (!$usuarioActual) {
+            header('Location: ' . PROJECT_ROOT . '/logout');
+            $this->exitApp();
+        }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
@@ -54,8 +69,11 @@ class ProfileController extends Controller
                 'municipio' => htmlspecialchars($_POST['municipio'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'cp' => htmlspecialchars($_POST['cp'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'email' => htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'),
-                'rol' => 'Paciente', // Keep the same role
-                'genero' => $_POST['genero'] ?? 'Otro'
+                'rol' => $usuarioActual['rol'] ?? ($_SESSION['rol'] ?? 'Paciente'),
+                'genero' => $_POST['genero'] ?? 'Otro',
+                'nss' => htmlspecialchars($_POST['nss'] ?? ($usuarioActual['nss'] ?? ''), ENT_QUOTES, 'UTF-8'),
+                'iban' => htmlspecialchars($_POST['iban'] ?? ($usuarioActual['iban'] ?? ''), ENT_QUOTES, 'UTF-8'),
+                'grupo_cotizacion' => $usuarioActual['grupo_cotizacion'] ?? 1
             ];
 
             if (!empty($_POST['pass'])) {
@@ -63,17 +81,18 @@ class ProfileController extends Controller
             }
 
             if ($userModel->update($usuario_id, $data)) {
-                // Update session info if needed
                 $_SESSION['nombre'] = $data['nombre'];
-                header('Location: ' . PROJECT_ROOT . '/paciente/perfil?success=1');
+                header('Location: ' . PROJECT_ROOT . '/perfil?success=1');
                 $this->exitApp();
             } else {
                 $data['error'] = "Error al actualizar el perfil.";
                 $data['usuario'] = $userModel->getByusuario_id($usuario_id);
-                $this->view('patient-view/profile/index', $data);
+                $data['pageTitle'] = 'Mi Perfil';
+                $this->view('profile/index', $data);
             }
         } else {
-            header('Location: ' . PROJECT_ROOT . '/paciente/perfil');
+            header('Location: ' . PROJECT_ROOT . '/perfil');
+            $this->exitApp();
         }
     }
 }

@@ -52,10 +52,9 @@ class ProfileControllerTest extends ControllerTestCase
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('patient-view/profile/index', [
+            ->with('profile/index', [
                 'usuario' => $usuario,
-                'metodosPago' => [],
-                'pageTitle' => 'Mi Perfil - Tervion'
+                'pageTitle' => 'Mi Perfil'
             ]);
 
         $controller->index();

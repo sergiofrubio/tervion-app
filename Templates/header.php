@@ -286,7 +286,7 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
         </nav>
 
         <!-- Sidebar User Card & Footer -->
-        <div class="p-3 border-t border-gray-800 bg-gray-950">
+        <!-- <div class="p-3 border-t border-gray-800 bg-gray-950">
             <div class="flex items-center justify-between gap-3 p-2 rounded-2xl bg-gray-900 border border-gray-800">
                 <div class="flex items-center gap-3 min-w-0 overflow-hidden">
                     <div class="w-9 h-9 rounded-xl bg-primary-600/20 text-primary-400 border border-primary-500/30 flex items-center justify-center font-bold text-xs shrink-0">
@@ -302,7 +302,7 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
                     <i class="bi bi-box-arrow-right text-base"></i>
                 </a>
             </div>
-        </div>
+        </div> -->
     </aside>
 
     <!-- Main Content Area -->
@@ -444,6 +444,62 @@ $userRole = $_SESSION['rol'] ?? 'Usuario';
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Desplegable del Perfil del Usuario -->
+                <div class="relative" x-data="{ userMenuOpen: false }">
+                    <button @click="userMenuOpen = !userMenuOpen"
+                        @click.away="userMenuOpen = false"
+                        class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-gray-100 transition-colors focus:outline-none cursor-pointer"
+                        title="Menú de usuario">
+                        <div class="w-8 h-8 rounded-xl bg-primary-600/20 text-primary-600 border border-primary-500/30 flex items-center justify-center font-bold text-xs shrink-0">
+                            <?= strtoupper(substr($userName, 0, 1)) ?>
+                        </div>
+                        <div class="hidden md:flex flex-col text-left">
+                            <span class="text-xs font-semibold text-gray-800 leading-tight"><?= htmlspecialchars($userName) ?></span>
+                            <span class="text-[10px] text-gray-500 font-medium leading-tight"><?= htmlspecialchars($userRole) ?></span>
+                        </div>
+                        <i class="bi bi-chevron-down text-xs text-gray-400 ml-0.5"></i>
+                    </button>
+
+                    <!-- Menú Desplegable -->
+                    <div x-show="userMenuOpen"
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 scale-95"
+                        x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-150"
+                        x-transition:leave-start="opacity-100 scale-100"
+                        x-transition:leave-end="opacity-0 scale-95"
+                        class="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 overflow-hidden"
+                        style="display: none;">
+
+                        <!-- Info de usuario en móvil -->
+                        <div class="px-4 py-2 border-b border-gray-100 md:hidden">
+                            <p class="text-xs font-semibold text-gray-800 truncate"><?= htmlspecialchars($userName) ?></p>
+                            <p class="text-[10px] text-gray-500 font-medium truncate"><?= htmlspecialchars($userRole) ?></p>
+                        </div>
+
+                        <?php
+                        $profileUrl = PROJECT_ROOT . '/paciente/perfil';
+                        if (isset($_SESSION['rol']) && $_SESSION['rol'] !== 'Paciente') {
+                            $profileUrl = PROJECT_ROOT . '/configuracion';
+                        }
+                        ?>
+
+                        <a href="<?= $profileUrl ?>"
+                            class="flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 hover:text-primary-600 transition-colors">
+                            <i class="bi bi-person text-base text-gray-400"></i>
+                            <span>Ver Perfil</span>
+                        </a>
+
+                        <div class="my-1 border-t border-gray-100"></div>
+
+                        <a href="<?= PROJECT_ROOT ?>/logout"
+                            class="flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-rose-600 hover:bg-rose-50 transition-colors">
+                            <i class="bi bi-box-arrow-right text-base text-rose-500"></i>
+                            <span>Cerrar sesión</span>
+                        </a>
                     </div>
                 </div>
 

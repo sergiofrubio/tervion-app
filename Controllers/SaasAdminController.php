@@ -270,7 +270,7 @@ class SaasAdminController extends Controller
 
             if ($cuentaId <= 0 || $base <= 0 || $concepto === '') {
                 $data = [
-                    'pageTitle' => 'Emitir Factura SaaS a Clínica',
+                    'pageTitle' => 'Nueva Factura a Clínica',
                     'tenants' => $saasModel->getAllTenants(),
                     'errorMessage' => 'Por favor, selecciona una clínica cliente, indica un concepto válido y un importe base mayor a 0.'
                 ];
@@ -300,7 +300,7 @@ class SaasAdminController extends Controller
                 exit;
             } else {
                 $data = [
-                    'pageTitle' => 'Emitir Factura SaaS a Clínica',
+                    'pageTitle' => 'Nueva Factura a Clínica',
                     'tenants' => $saasModel->getAllTenants(),
                     'errorMessage' => 'Ocurrió un error al guardar la factura SaaS.'
                 ];
@@ -319,7 +319,7 @@ class SaasAdminController extends Controller
             'errorMessage' => null
         ];
 
-        $this->view('saas-admin/invoice/list', $data);
+        $this->view('saas-admin/invoice/form', $data);
     }
 
     /**

@@ -22,7 +22,7 @@
         </div>
         <a href="<?= PROJECT_ROOT ?>/superadmin/facturas/crear" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-2xl font-semibold text-sm shadow-md transition-all cursor-pointer">
             <i class="bi bi-plus-lg"></i>
-            <span>Emitir Factura SaaS</span>
+            <span>Nueva Factura</span>
         </a>
     </div>
 
@@ -75,12 +75,12 @@
                 <thead>
                     <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
                         <th class="py-3 px-4 font-semibold">Nº Factura</th>
-                        <th class="py-3 px-4 font-semibold">Clínica / Cliente</th>
-                        <th class="py-3 px-4 font-semibold">Plan / Concepto</th>
+                        <th class="py-3 px-4 font-semibold">Clínica</th>
+                        <th class="py-3 px-4 font-semibold">Concepto</th>
                         <th class="py-3 px-4 font-semibold">Fecha Emisión</th>
                         <th class="py-3 px-4 font-semibold">Base Imponible</th>
                         <th class="py-3 px-4 font-semibold">Total (+21% IVA)</th>
-                        <th class="py-3 px-4 font-semibold">Estado Cobro</th>
+                        <th class="py-3 px-4 font-semibold">Estado</th>
                         <th class="py-3 px-4 font-semibold text-right">Acciones</th>
                     </tr>
                 </thead>
@@ -125,7 +125,7 @@
                                 </td>
                                 <td class="py-3.5 px-4 text-right">
                                     <a href="<?= PROJECT_ROOT ?>/superadmin/facturas/pdf?id=<?= $inv['factura_saas_id'] ?>" target="_blank" class="inline-flex items-center gap-1 text-xs font-semibold text-primary-600 hover:text-primary-800 hover:underline">
-                                        <i class="bi bi-file-earmark-pdf text-sm"></i> Ver Factura
+                                        <i class="bi bi-file-earmark-pdf text-sm"></i>
                                     </a>
                                 </td>
                             </tr>

@@ -4,7 +4,7 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">Emitir Factura SaaS a Clínica</h1>
+            <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">Nueva Factura a Clínica</h1>
             <p class="text-gray-500 text-sm mt-0.5">Genera una factura oficial de suscripción B2B emitida a una clínica cliente.</p>
         </div>
         <a href="<?= PROJECT_ROOT ?>/superadmin/facturas" class="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 px-3.5 py-2 rounded-xl transition-colors">

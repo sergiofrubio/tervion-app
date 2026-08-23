@@ -55,8 +55,8 @@ $hasSystemAlert = $systemAlertMessage !== '';
 
             <!-- Nav Links (Desktop) -->
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+                <a href="#caracteristicas" class="hover:text-primary-500 transition-colors">Características</a>
                 <a href="#como-funciona" class="hover:text-primary-500 transition-colors">Cómo funciona</a>
-                <a href="#caracteristicas" class="hover:text-primary-500 transition-colors">Solución</a>
                 <a href="#precios" class="hover:text-primary-500 transition-colors">Precios</a>
                 <a href="#soporte" class="hover:text-primary-500 transition-colors">Soporte</a>
             </nav>
@@ -1034,7 +1034,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     <span>Valoramos tu privacidad</span>
                 </div>
                 <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
-                    Utilizamos cookies propias y de terceros para analizar el uso del sitio web, personalizar contenidos y mejorar tu experiencia de navegación. Puedes aceptar todas las cookies o configurarlas. Más detalles en nuestra 
+                    Utilizamos cookies propias y de terceros para analizar el uso del sitio web, personalizar contenidos y mejorar tu experiencia de navegación. Puedes aceptar todas las cookies o configurarlas. Más detalles en nuestra
                     <a href="<?= PROJECT_ROOT ?>/cookies" class="text-primary-400 underline hover:text-primary-300 transition-colors">Política de Cookies</a>.
                 </p>
             </div>

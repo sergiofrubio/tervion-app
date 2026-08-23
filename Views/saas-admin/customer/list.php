@@ -42,8 +42,8 @@
                 <thead>
                     <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
                         <th class="py-3 px-4 font-semibold">ID</th>
-                        <th class="py-3 px-4 font-semibold">Empresa / Clínica</th>
-                        <th class="py-3 px-4 font-semibold">Admin Email</th>
+                        <th class="py-3 px-4 font-semibold">Empresa</th>
+                        <th class="py-3 px-4 font-semibold">Contacto</th>
                         <th class="py-3 px-4 font-semibold">Plan Actual</th>
                         <th class="py-3 px-4 font-semibold">Estado</th>
                         <th class="py-3 px-4 font-semibold">Usuarios / Citas</th>

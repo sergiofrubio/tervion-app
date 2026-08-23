@@ -2,7 +2,7 @@
 
 <div class="space-y-6">
     <!-- Header Page Title & Quick Actions -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-6 rounded-3xl shadow-xl border border-slate-700/50 text-white">
+    <!-- <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-6 rounded-3xl shadow-xl border border-slate-700/50 text-white">
         <div>
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-500/20 text-primary-300 border border-primary-500/30 text-xs font-semibold uppercase tracking-wider mb-2">
                 <i class="bi bi-shield-check text-primary-400"></i> SaaS Control Center
@@ -16,7 +16,7 @@
                 <span>Alta Nueva Clínica</span>
             </a>
         </div>
-    </div>
+    </div> -->
 
     <!-- Key Metrics Grid (4 Cards) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">

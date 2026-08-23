@@ -26,50 +26,39 @@
         </a>
     </div>
 
-    <!-- Filters Bar -->
-    <div class="bg-white p-4 rounded-3xl border border-gray-100 shadow-sm">
-        <form method="GET" action="<?= PROJECT_ROOT ?>/superadmin/facturas" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            <div>
-                <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Buscar Factura</label>
-                <input type="text" name="q" value="<?= htmlspecialchars($filters['q'] ?? '') ?>" placeholder="Nº Factura, empresa, CIF, concepto..." class="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-primary-500/20 focus:outline-none">
-            </div>
-
-            <!-- <div>
-                <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Clínica Cliente</label>
-                <select name="cuenta_id" class="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-primary-500/20 focus:outline-none">
-                    <option value="">-- Todas las Clínicas --</option>
-                    <?php foreach ($tenants as $t): ?>
-                        <option value="<?= $t['cuenta_id'] ?>" <?= (string)($filters['cuenta_id'] ?? '') === (string)$t['cuenta_id'] ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($t['nombre_empresa']) ?> (<?= htmlspecialchars($t['nif_cif']) ?>)
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div> -->
-
-            <div>
-                <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Estado de Cobro</label>
-                <select name="estado" class="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-primary-500/20 focus:outline-none">
-                    <option value="">-- Todos los Estados --</option>
-                    <option value="Pagada" <?= ($filters['estado'] ?? '') === 'Pagada' ? 'selected' : '' ?>>Pagada</option>
-                    <option value="Pendiente" <?= ($filters['estado'] ?? '') === 'Pendiente' ? 'selected' : '' ?>>Pendiente</option>
-                    <option value="Vencida" <?= ($filters['estado'] ?? '') === 'Vencida' ? 'selected' : '' ?>>Vencida</option>
-                    <option value="Cancelada" <?= ($filters['estado'] ?? '') === 'Cancelada' ? 'selected' : '' ?>>Cancelada</option>
-                </select>
-            </div>
-
-            <div class="flex items-end gap-2">
-                <button type="submit" class="flex-1 bg-primary-600 hover:bg-primary-700 text-white font-bold py-1.5 px-3 rounded-xl text-xs transition-colors">
-                    Filtrar
-                </button>
-                <a href="<?= PROJECT_ROOT ?>/superadmin/facturas" class="bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold py-1.5 px-3 rounded-xl text-xs transition-colors">
-                    Limpiar
-                </a>
-            </div>
-        </form>
-    </div>
-
-    <!-- Invoices Table -->
+    <!-- Invoices Table Card -->
     <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+        <!-- Table Card Header & Filters -->
+        <div class="p-4 sm:p-6 border-b border-gray-100">
+            <form method="GET" action="<?= PROJECT_ROOT ?>/superadmin/facturas" class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 max-w-2xl">
+                    <div class="relative flex-1">
+                        <i class="bi bi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="text" name="q" value="<?= htmlspecialchars($filters['q'] ?? '') ?>" placeholder="Nº Factura, empresa, CIF, concepto..." class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
+                    </div>
+                    <select name="estado" class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer">
+                        <option value="">-- Todos los Estados --</option>
+                        <option value="Pagada" <?= ($filters['estado'] ?? '') === 'Pagada' ? 'selected' : '' ?>>Pagada</option>
+                        <option value="Pendiente" <?= ($filters['estado'] ?? '') === 'Pendiente' ? 'selected' : '' ?>>Pendiente</option>
+                        <option value="Vencida" <?= ($filters['estado'] ?? '') === 'Vencida' ? 'selected' : '' ?>>Vencida</option>
+                        <option value="Cancelada" <?= ($filters['estado'] ?? '') === 'Cancelada' ? 'selected' : '' ?>>Cancelada</option>
+                    </select>
+                    <div class="flex items-center gap-2">
+                        <button type="submit" class="inline-flex items-center justify-center gap-1.5 bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-xl text-xs shadow-sm transition-all cursor-pointer shrink-0">
+                            <i class="bi bi-funnel"></i>
+                            <span>Filtrar</span>
+                        </button>
+                        <a href="<?= PROJECT_ROOT ?>/superadmin/facturas" class="p-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-xs font-semibold transition-colors shrink-0" title="Limpiar filtros">
+                            <i class="bi bi-x-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="text-xs text-gray-500 font-medium whitespace-nowrap">
+                    Total registrado: <span class="font-bold text-gray-900"><?= count($invoices) ?></span> facturas
+                </div>
+            </form>
+        </div>
+
         <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
                 <thead>
@@ -92,27 +81,27 @@
                     <?php else: ?>
                         <?php foreach ($invoices as $inv): ?>
                             <tr class="hover:bg-gray-50/80 transition-colors">
-                                <td class="py-3.5 px-4 font-bold text-gray-900 font-mono">
+                                <td class="py-4 px-4 font-bold text-gray-900 font-mono">
                                     <?= htmlspecialchars($inv['serie']) ?>-<?= sprintf('%04d', $inv['numero']) ?>
                                 </td>
-                                <td class="py-3.5 px-4">
-                                    <div class="font-bold text-gray-900"><?= htmlspecialchars($inv['nombre_empresa']) ?></div>
+                                <td class="py-4 px-4">
+                                    <div class="font-bold text-gray-900 text-sm"><?= htmlspecialchars($inv['nombre_empresa']) ?></div>
                                     <div class="text-[11px] text-gray-400 font-mono">CIF: <?= htmlspecialchars($inv['nif_cif']) ?></div>
                                 </td>
-                                <td class="py-3.5 px-4">
+                                <td class="py-4 px-4">
                                     <div class="font-semibold text-gray-800"><?= htmlspecialchars($inv['concepto']) ?></div>
-                                    <span class="text-[10px] text-gray-400">Plan <?= htmlspecialchars($inv['plan_suscripcion']) ?></span>
+                                    <span class="bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded text-[10px]">Plan <?= htmlspecialchars($inv['plan_suscripcion']) ?></span>
                                 </td>
-                                <td class="py-3.5 px-4 text-gray-500">
+                                <td class="py-4 px-4 text-gray-500 font-medium">
                                     <?= date('d/m/Y', strtotime($inv['fecha_emision'])) ?>
                                 </td>
-                                <td class="py-3.5 px-4 font-medium text-gray-700 font-mono">
+                                <td class="py-4 px-4 font-medium text-gray-700 font-mono">
                                     <?= number_format($inv['base_imponible'], 2, ',', '.') ?> €
                                 </td>
-                                <td class="py-3.5 px-4 font-black text-gray-900 font-mono">
+                                <td class="py-4 px-4 font-black text-gray-900 font-mono">
                                     <?= number_format($inv['total'], 2, ',', '.') ?> €
                                 </td>
-                                <td class="py-3.5 px-4">
+                                <td class="py-4 px-4">
                                     <form action="<?= PROJECT_ROOT ?>/superadmin/facturas/estado" method="POST" class="inline-block">
                                         <input type="hidden" name="factura_saas_id" value="<?= $inv['factura_saas_id'] ?>">
                                         <select name="estado" onchange="this.form.submit()" class="bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 text-xs font-bold focus:ring-2 focus:ring-primary-500/20 cursor-pointer <?= $inv['estado'] === 'Pagada' ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : 'text-amber-700 bg-amber-50 border-amber-200' ?>">
@@ -123,8 +112,8 @@
                                         </select>
                                     </form>
                                 </td>
-                                <td class="py-3.5 px-4 text-right">
-                                    <a href="<?= PROJECT_ROOT ?>/superadmin/facturas/pdf?id=<?= $inv['factura_saas_id'] ?>" target="_blank" class="inline-flex items-center gap-1 text-xs font-semibold text-primary-600 hover:text-primary-800 hover:underline">
+                                <td class="py-4 px-4 text-right">
+                                    <a href="<?= PROJECT_ROOT ?>/superadmin/facturas/pdf?id=<?= $inv['factura_saas_id'] ?>" target="_blank" class="p-1.5 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all" title="Descargar PDF">
                                         <i class="bi bi-file-earmark-pdf text-sm"></i>
                                     </a>
                                 </td>

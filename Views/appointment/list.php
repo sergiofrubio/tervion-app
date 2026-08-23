@@ -61,16 +61,16 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
 ?>
 
 <div class="space-y-6 animate-fade-in-up">
-    <!-- Header -->
-    <div class="sm:flex sm:items-center sm:justify-between">
+    <!-- Title & Action Bar -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Citas</h1>
-            <p class="mt-1 text-sm text-gray-500">Gestiona las citas programadas de los pacientes.</p>
+            <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">Citas</h1>
+            <p class="text-gray-500 text-sm mt-0.5">Gestiona las citas programadas de los pacientes.</p>
         </div>
-        <div class="mt-4 sm:mt-0">
-            <a href="<?= PROJECT_ROOT ?>/citas/crear" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all">
+        <div>
+            <a href="<?= PROJECT_ROOT ?>/citas/crear" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-2xl font-semibold text-sm shadow-md transition-all cursor-pointer">
                 <i class="bi bi-plus-lg"></i>
-                Asignar Cita
+                <span>Asignar Cita</span>
             </a>
         </div>
     </div>
@@ -90,141 +90,138 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
     if ($alert):
         $alert_type = $alert['type'];
         $alert_message = $alert['message'];
-        $bg_color = $alert_type === 'danger' ? 'bg-red-50 text-red-800 border-red-200' : ($alert_type === 'success' ? 'bg-green-50 text-green-800 border-green-200' : 'bg-blue-50 text-blue-800 border-blue-200');
+        $bg_color = $alert_type === 'danger' ? 'bg-rose-50 text-rose-800 border-rose-200' : ($alert_type === 'success' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-blue-50 text-blue-800 border-blue-200');
     ?>
-        <div class="rounded-lg border p-4 <?= $bg_color ?>" role="alert" x-data="{ show: true }" x-show="show">
-            <div class="flex justify-between items-center">
-                <div class="text-sm font-medium"><?= htmlspecialchars($alert_message) ?></div>
-                <button @click="show = false" class="text-gray-500 hover:text-gray-700 focus:outline-none">
-                    <i class="bi bi-x-lg"></i>
-                </button>
+        <div class="p-4 rounded-2xl border flex items-center justify-between text-sm font-medium <?= $bg_color ?>" role="alert" x-data="{ show: true }" x-show="show">
+            <div class="flex items-center gap-2">
+                <i class="bi <?= $alert_type === 'success' ? 'bi-check-circle-fill text-emerald-500' : ($alert_type === 'danger' ? 'bi-exclamation-triangle-fill text-rose-500' : 'bi-info-circle-fill text-blue-500') ?> text-lg"></i>
+                <span><?= htmlspecialchars($alert_message) ?></span>
             </div>
+            <button @click="show = false" class="text-gray-400 hover:text-gray-600">
+                <i class="bi bi-x-lg"></i>
+            </button>
         </div>
     <?php endif; ?>
 
-    <!-- Filters -->
-    <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-gray-100">
-        <form action="<?= PROJECT_ROOT ?>/citas" method="GET" class="flex flex-col lg:flex-row gap-4 items-end">
-            <div class="w-full lg:w-auto flex-1">
-                <label for="fecha_hora" class="block text-sm font-medium text-gray-700 mb-1.5">Fecha</label>
-                <input type="date" id="fecha_hora" name="fecha_hora" value="<?= htmlspecialchars($filtro_fecha_hora) ?>" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-2.5 transition-colors">
-            </div>
-            <div class="w-full lg:w-auto flex-1">
-                <label for="fisioterapeuta_id" class="block text-sm font-medium text-gray-700 mb-1.5">Agenda</label>
-                <select id="fisioterapeuta_id" name="fisioterapeuta_id" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-2.5 bg-white transition-colors">
-                    <option value="" <?= $filtro_fisioterapeuta === '' ? 'selected' : '' ?>>Todos los fisioterapeutas</option>
-                    <?php if (!empty($fisioterapeutas)): ?>
-                        <?php foreach ($fisioterapeutas as $fisio): ?>
-                            <option value="<?= htmlspecialchars($fisio['usuario_id']) ?>" <?= (string)$filtro_fisioterapeuta === (string)$fisio['usuario_id'] ? 'selected' : '' ?>>
-                                <?= htmlspecialchars(($fisio['nombre'] ?? '') . ' ' . ($fisio['apellidos'] ?? '')) ?>
-                            </option>
-                        <?php endforeach; ?>
+    <!-- Appointments Table Card -->
+    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+        <!-- Table Card Header & Filters -->
+        <div class="p-4 sm:p-6 border-b border-gray-100">
+            <form action="<?= PROJECT_ROOT ?>/citas" method="GET" class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1 max-w-3xl">
+                    <input type="date" id="fecha_hora" name="fecha_hora" value="<?= htmlspecialchars($filtro_fecha_hora) ?>" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
+                    <select id="fisioterapeuta_id" name="fisioterapeuta_id" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer">
+                        <option value="" <?= $filtro_fisioterapeuta === '' ? 'selected' : '' ?>>Todos los fisioterapeutas</option>
+                        <?php if (!empty($fisioterapeutas)): ?>
+                            <?php foreach ($fisioterapeutas as $fisio): ?>
+                                <option value="<?= htmlspecialchars($fisio['usuario_id']) ?>" <?= (string)$filtro_fisioterapeuta === (string)$fisio['usuario_id'] ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars(($fisio['nombre'] ?? '') . ' ' . ($fisio['apellidos'] ?? '')) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
+                    <select id="estado" name="estado" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer">
+                        <option value="" <?= $filtro_estado === '' ? 'selected' : '' ?>>Todos los estados</option>
+                        <option value="Programada" <?= $filtro_estado === 'Programada' ? 'selected' : '' ?>>Programada</option>
+                        <option value="Realizada" <?= $filtro_estado === 'Realizada' ? 'selected' : '' ?>>Realizada</option>
+                        <option value="Cancelada" <?= $filtro_estado === 'Cancelada' ? 'selected' : '' ?>>Cancelada</option>
+                        <option value="Pendiente" <?= $filtro_estado === 'Pendiente' ? 'selected' : '' ?>>Pendiente</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="submit" class="inline-flex items-center justify-center gap-1.5 bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-xl text-xs shadow-sm transition-all cursor-pointer shrink-0">
+                        <i class="bi bi-funnel"></i>
+                        <span>Filtrar</span>
+                    </button>
+                    <?php if ($filtro_fecha_hora !== '' || $filtro_estado !== '' || $filtro_fisioterapeuta !== ''): ?>
+                        <a href="<?= PROJECT_ROOT ?>/citas" class="p-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-xs transition-colors shrink-0" title="Limpiar filtros">
+                            <i class="bi bi-x-lg"></i>
+                        </a>
                     <?php endif; ?>
-                </select>
-            </div>
-            <div class="w-full lg:w-auto flex-1">
-                <label for="estado" class="block text-sm font-medium text-gray-700 mb-1.5">Estado</label>
-                <select id="estado" name="estado" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-2.5 bg-white transition-colors">
-                    <option value="" <?= $filtro_estado === '' ? 'selected' : '' ?>>Todos los estados</option>
-                    <option value="Programada" <?= $filtro_estado === 'Programada' ? 'selected' : '' ?>>Programada</option>
-                    <option value="Realizada" <?= $filtro_estado === 'Realizada' ? 'selected' : '' ?>>Realizada</option>
-                    <option value="Cancelada" <?= $filtro_estado === 'Cancelada' ? 'selected' : '' ?>>Cancelada</option>
-                    <option value="Pendiente" <?= $filtro_estado === 'Pendiente' ? 'selected' : '' ?>>Pendiente</option>
-                </select>
-            </div>
-            <div class="w-full lg:w-auto">
-                <button type="submit" class="w-full lg:w-auto inline-flex justify-center items-center gap-2 rounded-xl bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 transition-all">
-                    <i class="bi bi-funnel"></i>
-                    Filtrar
-                </button>
-            </div>
-        </form>
-    </div>
+                    <div class="text-xs text-gray-500 font-medium whitespace-nowrap ml-2">
+                        Total: <span class="font-bold text-gray-900"><?= $total_citas ?></span> citas
+                    </div>
+                </div>
+            </form>
+        </div>
 
-    <!-- Table -->
-    <div class="bg-white overflow-hidden rounded-2xl border border-gray-100 shadow-sm">
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50/50">
-                    <tr>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">ID Pac.</th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Fecha</th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Paciente</th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Contacto</th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Fis. Asoc.</th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Estado</th>
-                        <th scope="col" class="sticky right-0 bg-gray-50/90 backdrop-blur-sm px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider border-l border-gray-100 shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.02)]">Acciones</th>
+            <table class="w-full text-left text-xs">
+                <thead>
+                    <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
+                        <th class="py-3 px-4 font-semibold">ID Pac.</th>
+                        <th class="py-3 px-4 font-semibold">Fecha</th>
+                        <th class="py-3 px-4 font-semibold">Paciente</th>
+                        <th class="py-3 px-4 font-semibold">Contacto</th>
+                        <th class="py-3 px-4 font-semibold">Fis. Asoc.</th>
+                        <th class="py-3 px-4 font-semibold">Estado</th>
+                        <th class="py-3 px-4 font-semibold text-right">Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100 bg-white">
+                <tbody class="divide-y divide-gray-100">
                     <?php if (!empty($citasPaginadas)) : ?>
                         <?php foreach ($citasPaginadas as $cita) : ?>
-                            <tr class="hover:bg-gray-50/50 transition-colors group">
-                                <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 font-medium">#<?= htmlspecialchars($cita['paciente_id'] ?? $cita['cita_id'] ?? '') ?></td>
-                                <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
-                                    <div class="flex items-center gap-2">
-                                        <i class="bi bi-calendar2 text-gray-400"></i>
+                            <tr class="hover:bg-gray-50/80 transition-colors">
+                                <td class="py-4 px-4 font-bold text-gray-400">#<?= htmlspecialchars($cita['paciente_id'] ?? $cita['cita_id'] ?? '') ?></td>
+                                <td class="py-4 px-4 font-semibold text-gray-900">
+                                    <div class="flex items-center gap-1.5">
+                                        <i class="bi bi-calendar2 text-gray-400 text-xs"></i>
                                         <?= !empty($cita['fecha_hora']) ? date('d/m/Y H:i', strtotime($cita['fecha_hora'])) : '' ?>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-900">
-                                    <div class="font-medium text-gray-900"><?= htmlspecialchars(trim(($cita['paciente_nombre'] ?? '') . " " . ($cita['paciente_apellidos'] ?? ''))) ?></div>
+                                <td class="py-4 px-4 font-bold text-gray-900 text-sm">
+                                    <?= htmlspecialchars(trim(($cita['paciente_nombre'] ?? '') . " " . ($cita['paciente_apellidos'] ?? ''))) ?>
                                 </td>
-                                <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                                <td class="py-4 px-4 text-gray-600 font-medium">
                                     <a href="tel:<?= htmlspecialchars($cita['paciente_telefono'] ?? '') ?>" class="hover:text-primary-600 transition-colors">
                                         <?= htmlspecialchars($cita['paciente_telefono'] ?? '') ?>
                                     </a>
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-600">
+                                <td class="py-4 px-4 text-gray-600 font-medium">
                                     <div class="flex items-center gap-2">
-                                        <div class="w-6 h-6 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-xs font-bold">
+                                        <div class="w-6 h-6 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center text-[10px] font-bold">
                                             <?= htmlspecialchars(substr($cita['fisioterapeuta_nombre'] ?? '', 0, 1)) ?>
                                         </div>
-                                        <?= htmlspecialchars(trim(($cita['fisioterapeuta_nombre'] ?? '') . " " . substr($cita['fisioterapeuta_apellidos'] ?? '', 0, 1) . ".")) ?>
+                                        <span><?= htmlspecialchars(trim(($cita['fisioterapeuta_nombre'] ?? '') . " " . substr($cita['fisioterapeuta_apellidos'] ?? '', 0, 1) . ".")) ?></span>
                                     </div>
                                 </td>
-                                <td class="whitespace-nowrap px-6 py-4 text-sm">
+                                <td class="py-4 px-4">
                                     <?php
                                     $estado = $cita['estado'];
-                                    $bg = 'bg-gray-100 text-gray-700 ring-gray-600/20';
-                                    $dot = 'bg-gray-500';
-                                    if ($estado == 'Realizada') {
-                                        $bg = 'bg-green-50 text-green-700 ring-green-600/20';
-                                        $dot = 'bg-green-500';
-                                    } elseif ($estado == 'Cancelada') {
-                                        $bg = 'bg-red-50 text-red-700 ring-red-600/10';
-                                        $dot = 'bg-red-500';
-                                    } elseif ($estado == 'Programada') {
-                                        $bg = 'bg-amber-50 text-amber-700 ring-amber-600/20';
-                                        $dot = 'bg-amber-500';
-                                    } elseif ($estado == 'Pendiente') {
-                                        $bg = 'bg-blue-50 text-blue-700 ring-blue-700/10';
-                                        $dot = 'bg-blue-500';
-                                    }
-                                    ?>
-                                    <span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset <?= $bg ?>">
-                                        <svg class="h-1.5 w-1.5 fill-current <?= $dot ?>" viewBox="0 0 6 6" aria-hidden="true">
-                                            <circle cx="3" cy="3" r="3" />
-                                        </svg>
-                                        <?= $estado ?>
-                                    </span>
+                                    if ($estado == 'Realizada'): ?>
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Realizada
+                                        </span>
+                                    <?php elseif ($estado == 'Cancelada'): ?>
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200">
+                                            <span class="w-2 h-2 rounded-full bg-rose-500"></span> Cancelada
+                                        </span>
+                                    <?php elseif ($estado == 'Programada'): ?>
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                                            <span class="w-2 h-2 rounded-full bg-amber-500"></span> Programada
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                                            <span class="w-2 h-2 rounded-full bg-blue-500"></span> Pendiente
+                                        </span>
+                                    <?php endif; ?>
                                 </td>
-                                <td class="sticky right-0 bg-white group-hover:bg-gray-50/50 px-6 py-4 whitespace-nowrap text-right text-sm font-medium border-l border-gray-100/50 shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.02)] transition-colors">
+                                <td class="py-4 px-4 text-right">
                                     <div class="flex items-center justify-end gap-1">
                                         <?php if (!($cita['estado'] == 'Programada' || $cita['estado'] == 'Pendiente' || $cita['estado'] == 'Cancelada')): ?>
-                                            <button onclick="window.location='<?= PROJECT_ROOT ?>/historial?usuario_id=<?= $cita['paciente_id'] ?>'" class="text-gray-400 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-all duration-200" title="Historial Médico">
-                                                <i class="bi bi-journal-medical text-lg"></i>
+                                            <button onclick="window.location='<?= PROJECT_ROOT ?>/historial?usuario_id=<?= $cita['paciente_id'] ?>'" class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Historial Médico">
+                                                <i class="bi bi-journal-medical text-sm"></i>
                                             </button>
                                         <?php endif; ?>
 
                                         <?php if (!($cita['estado'] == 'Realizada' || $cita['estado'] == 'Cancelada')): ?>
-                                            <a href="<?= PROJECT_ROOT ?>/citas/editar?id=<?= $cita['cita_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-2 rounded-lg transition-all duration-200" title="Editar">
-                                                <i class="bi bi-pencil-square text-lg"></i>
+                                            <a href="<?= PROJECT_ROOT ?>/citas/editar?id=<?= $cita['cita_id'] ?>" class="p-1.5 text-gray-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-all" title="Editar">
+                                                <i class="bi bi-pencil-square text-sm"></i>
                                             </a>
                                             <form action="<?= PROJECT_ROOT ?>/citas/eliminar" method="POST" class="inline-block m-0" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta cita?');">
                                                 <input type="hidden" name="id" value="<?= $cita['cita_id'] ?>">
-                                                <button type="submit" class="text-gray-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-lg transition-all duration-200" title="Eliminar">
-                                                    <i class="bi bi-trash3 text-lg"></i>
+                                                <button type="submit" class="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all cursor-pointer" title="Eliminar">
+                                                    <i class="bi bi-trash3 text-sm"></i>
                                                 </button>
                                             </form>
                                         <?php endif; ?>
@@ -234,13 +231,13 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
                         <?php endforeach; ?>
                     <?php else : ?>
                         <tr>
-                            <td colspan="8" class="px-6 py-16 text-center">
+                            <td colspan="7" class="py-12 text-center">
                                 <div class="flex flex-col items-center justify-center">
-                                    <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-                                        <i class="bi bi-calendar-x text-2xl text-gray-400"></i>
+                                    <div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mb-3 text-gray-400">
+                                        <i class="bi bi-calendar-x text-xl"></i>
                                     </div>
-                                    <h3 class="text-sm font-medium text-gray-900">No hay citas</h3>
-                                    <p class="mt-1 text-sm text-gray-500">No se encontraron citas con los filtros aplicados.</p>
+                                    <h3 class="text-xs font-bold text-gray-900">No hay citas</h3>
+                                    <p class="mt-0.5 text-xs text-gray-500">No se encontraron citas con los filtros aplicados.</p>
                                 </div>
                             </td>
                         </tr>
@@ -251,26 +248,24 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
 
         <!-- Pagination -->
         <?php if ($n_botones_paginacion > 1): ?>
-            <div class="bg-white px-4 py-3 border-t border-gray-100 sm:px-6 flex items-center justify-between">
+            <div class="px-4 py-3 border-t border-gray-100 flex items-center justify-between">
                 <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                     <div>
-                        <p class="text-sm text-gray-700">
-                            Mostrando <span class="font-semibold text-gray-900"><?= min($iniciar + 1, $total_citas) ?></span> a <span class="font-semibold text-gray-900"><?= min($iniciar + $articulos_x_pagina, $total_citas) ?></span> de <span class="font-semibold text-gray-900"><?= $total_citas ?></span> citas
+                        <p class="text-xs text-gray-500 font-medium">
+                            Mostrando <span class="font-bold text-gray-900"><?= min($iniciar + 1, $total_citas) ?></span> a <span class="font-bold text-gray-900"><?= min($iniciar + $articulos_x_pagina, $total_citas) ?></span> de <span class="font-bold text-gray-900"><?= $total_citas ?></span> citas
                         </p>
                     </div>
                     <div>
-                        <nav class="relative z-0 inline-flex rounded-lg shadow-sm -space-x-px" aria-label="Pagination">
-                            <a href="?pagina=<?= max(1, $pagina - 1) . $queryString ?>" class="relative inline-flex items-center px-3 py-2 rounded-l-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina <= 1 ? 'pointer-events-none opacity-50' : '' ?>">
-                                <span class="sr-only">Anterior</span>
+                        <nav class="relative z-0 inline-flex rounded-xl shadow-sm -space-x-px" aria-label="Pagination">
+                            <a href="?pagina=<?= max(1, $pagina - 1) . $queryString ?>" class="relative inline-flex items-center px-3 py-2 rounded-l-xl border border-gray-200 bg-white text-xs font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina <= 1 ? 'pointer-events-none opacity-50' : '' ?>">
                                 <i class="bi bi-chevron-left text-xs"></i>
                             </a>
                             <?php for ($i = 0; $i < $n_botones_paginacion; $i++) : ?>
-                                <a href="?pagina=<?= ($i + 1) . $queryString ?>" aria-current="<?= $pagina == $i + 1 ? 'page' : 'false' ?>" class="relative inline-flex items-center px-4 py-2 border text-sm font-medium transition-colors <?= $pagina == $i + 1 ? 'z-10 bg-primary-50 border-primary-500 text-primary-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' ?>">
+                                <a href="?pagina=<?= ($i + 1) . $queryString ?>" aria-current="<?= $pagina == $i + 1 ? 'page' : 'false' ?>" class="relative inline-flex items-center px-3 py-2 border text-xs font-semibold transition-colors <?= $pagina == $i + 1 ? 'z-10 bg-primary-50 border-primary-500 text-primary-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' ?>">
                                     <?= $i + 1 ?>
                                 </a>
                             <?php endfor; ?>
-                            <a href="?pagina=<?= min($n_botones_paginacion, $pagina + 1) . $queryString ?>" class="relative inline-flex items-center px-3 py-2 rounded-r-lg border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina >= $n_botones_paginacion ? 'pointer-events-none opacity-50' : '' ?>">
-                                <span class="sr-only">Siguiente</span>
+                            <a href="?pagina=<?= min($n_botones_paginacion, $pagina + 1) . $queryString ?>" class="relative inline-flex items-center px-3 py-2 rounded-r-xl border border-gray-200 bg-white text-xs font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina >= $n_botones_paginacion ? 'pointer-events-none opacity-50' : '' ?>">
                                 <i class="bi bi-chevron-right text-xs"></i>
                             </a>
                         </nav>

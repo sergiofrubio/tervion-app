@@ -21,10 +21,10 @@ $userGreetingName = !empty($_SESSION['nombre']) ? $_SESSION['nombre'] : (explode
 
         <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div class="space-y-3 max-w-2xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 border border-primary-100 text-primary-600 text-xs font-semibold tracking-wide">
+                <!-- <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 border border-primary-100 text-primary-600 text-xs font-semibold tracking-wide">
                     <span class="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></span>
                     <span>Resumen Operativo del Centro</span>
-                </div>
+                </div> -->
                 <h1 class="text-2xl sm:text-3xl lg:text-4xl font-light text-gray-900 tracking-tight leading-tight">
                     Bienvenido de nuevo, <span class="font-normal text-primary-600"><?= htmlspecialchars($userGreetingName) ?></span>
                 </h1>

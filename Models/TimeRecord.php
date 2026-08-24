@@ -99,9 +99,10 @@ class TimeRecord
      */
     public function getAllRecords($filters = [])
     {
-        $sql = "SELECT r.*, u.nombre, u.apellidos, u.rol 
+        $sql = "SELECT r.*, u.nombre, u.apellidos, u.rol, e.nss 
                 FROM registro_horario r
                 JOIN usuarios u ON r.usuario_id = u.usuario_id 
+                LEFT JOIN empleados e ON r.usuario_id = e.usuario_id
                 WHERE 1=1";
         
         $params = [];

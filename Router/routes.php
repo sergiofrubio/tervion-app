@@ -138,6 +138,7 @@ $router->add('GET', '/fichajes', 'TimeRecordController@index', true, $staffRoles
 $router->add('POST', '/fichajes/fichar', 'TimeRecordController@fichar', true, $staffRoles);
 $router->add('GET', '/fichajes/admin', 'TimeRecordController@adminIndex', true, ['Administrador']);
 $router->add('POST', '/fichajes/admin/guardar', 'TimeRecordController@guardar', true, ['Administrador']);
+$router->add('GET', '/fichajes/admin/exportar', 'TimeRecordController@exportInspeccion', true, ['Administrador']);
 
 // Rutas de Contabilidad y Obligaciones Fiscales
 $router->add('GET', '/contabilidad', 'AccountingController@dashboard', true, ['Administrador']);

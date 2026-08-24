@@ -33,22 +33,22 @@ include TEMPLATE_DIR . 'header.php';
         this.showModal = true;
     }
 }">
-    <!-- Header -->
-    <div class="sm:flex sm:items-center sm:justify-between">
+    <!-- Header & Action Bar -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Administración de Control Horario</h1>
-            <p class="mt-1 text-sm text-gray-500">Supervisa, filtra y corrige manualmente los registros horarios de la plantilla.</p>
+            <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">Administración de Control Horario</h1>
+            <p class="text-gray-500 text-sm mt-0.5">Supervisa, filtra y corrige manualmente los registros horarios de la plantilla.</p>
         </div>
-        <div class="mt-4 sm:mt-0 flex gap-2">
-            <a href="<?= PROJECT_ROOT ?>/fichajes"
-                class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 transition-all rounded-xl shadow-sm gap-2">
-                <i class="bi bi-clock"></i>
-                Mi Fichaje
+        <div class="flex items-center gap-2">
+            <a href="<?= PROJECT_ROOT ?>/fichajes/admin/exportar?<?= http_build_query($filters) ?>"
+                class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 transition-all rounded-2xl shadow-sm gap-2">
+                <i class="bi bi-download"></i>
+                <span>Exportar datos</span>
             </a>
             <button @click="openCreate()"
-                class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 hover:shadow-lg hover:shadow-primary-100 transition-all rounded-xl shadow-sm gap-2">
+                class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-2xl font-semibold text-sm shadow-md transition-all cursor-pointer">
                 <i class="bi bi-plus-lg"></i>
-                Registro Manual
+                <span>Registro Manual</span>
             </button>
         </div>
     </div>
@@ -70,69 +70,76 @@ include TEMPLATE_DIR . 'header.php';
         </div>
     <?php endif; ?>
 
-    <!-- Tarjeta Filtros -->
-    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
-        <form method="GET" action="<?= PROJECT_ROOT ?>/fichajes/admin" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-            <div class="space-y-1">
-                <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Trabajador</label>
-                <select name="usuario_id" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all">
-                    <option value="">Todos los empleados</option>
-                    <?php foreach ($workers as $worker) : ?>
-                        <option value="<?= $worker['usuario_id'] ?>" <?= $filters['usuario_id'] === $worker['usuario_id'] ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($worker['nombre'] . ' ' . $worker['apellidos'], ENT_QUOTES, 'UTF-8') ?> (<?= $worker['rol'] ?>)
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
+    <!-- Table Card -->
+    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+        <!-- Table Card Header & Filters -->
+        <div class="p-4 sm:p-6 border-b border-gray-100">
+            <form id="filterForm" method="GET" action="<?= PROJECT_ROOT ?>/fichajes/admin" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 items-center">
+                <div>
+                    <select name="usuario_id" onchange="document.getElementById('filterForm').submit()" class="w-full px-3.5 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
+                        <option value="">Todos los empleados</option>
+                        <?php foreach ($workers as $worker) : ?>
+                            <option value="<?= $worker['usuario_id'] ?>" <?= $filters['usuario_id'] === $worker['usuario_id'] ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($worker['nombre'] . ' ' . $worker['apellidos'], ENT_QUOTES, 'UTF-8') ?> (<?= $worker['rol'] ?>)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
-            <div class="space-y-1">
-                <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Fecha Inicio</label>
-                <input type="date" name="fecha_inicio" value="<?= htmlspecialchars($filters['fecha_inicio']) ?>"
-                    class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all">
-            </div>
+                <div>
+                    <input type="date" name="fecha_inicio" value="<?= htmlspecialchars($filters['fecha_inicio']) ?>"
+                        onchange="document.getElementById('filterForm').submit()"
+                        class="w-full px-3.5 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all"
+                        placeholder="Fecha Inicio">
+                </div>
 
-            <div class="space-y-1">
-                <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Fecha Fin</label>
-                <input type="date" name="fecha_fin" value="<?= htmlspecialchars($filters['fecha_fin']) ?>"
-                    class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all">
-            </div>
+                <div>
+                    <input type="date" name="fecha_fin" value="<?= htmlspecialchars($filters['fecha_fin']) ?>"
+                        onchange="document.getElementById('filterForm').submit()"
+                        class="w-full px-3.5 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all"
+                        placeholder="Fecha Fin">
+                </div>
 
-            <div class="flex gap-2">
-                <button type="submit"
-                    class="flex-1 inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 transition-all rounded-xl shadow-sm gap-2">
-                    <i class="bi bi-filter"></i>
-                    Filtrar
-                </button>
-                <a href="<?= PROJECT_ROOT ?>/fichajes/admin"
-                    class="inline-flex items-center justify-center p-2.5 text-sm font-semibold text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all rounded-xl border border-gray-200">
-                    <i class="bi bi-arrow-counterclockwise text-lg"></i>
-                </a>
-            </div>
-        </form>
-    </div>
+                <div class="flex items-center justify-end gap-3">
+                    <?php if (!empty($filters['usuario_id']) || !empty($filters['fecha_inicio']) || !empty($filters['fecha_fin'])) : ?>
+                        <a href="<?= PROJECT_ROOT ?>/fichajes/admin"
+                            class="p-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-xs transition-colors shrink-0" title="Limpiar filtros">
+                            <i class="bi bi-x-lg"></i>
+                        </a>
+                    <?php endif; ?>
+                    <div class="text-xs text-gray-500 font-medium whitespace-nowrap">
+                        Total registrado: <span class="font-bold text-gray-900"><?= count($records) ?></span> registros
+                    </div>
+                </div>
+            </form>
+        </div>
 
-    <!-- Tabla de Registros -->
-    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+        <!-- Table -->
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-100">
-                <thead class="bg-gray-50/50">
-                    <tr>
-                        <th class="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Empleado</th>
-                        <th class="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Rol</th>
-                        <th class="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Fecha</th>
-                        <th class="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Entrada</th>
-                        <th class="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Salida</th>
-                        <th class="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Duración</th>
-                        <th class="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Notas</th>
-                        <th class="px-6 py-3.5 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Acciones</th>
+            <table class="w-full text-left text-xs">
+                <thead>
+                    <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
+                        <th class="py-3 px-4 font-semibold">Empleado</th>
+                        <th class="py-3 px-4 font-semibold">Rol</th>
+                        <th class="py-3 px-4 font-semibold">Fecha</th>
+                        <th class="py-3 px-4 font-semibold">Entrada</th>
+                        <th class="py-3 px-4 font-semibold">Salida</th>
+                        <th class="py-3 px-4 font-semibold">Duración</th>
+                        <th class="py-3 px-4 font-semibold">Notas</th>
+                        <th class="py-3 px-4 font-semibold text-right">Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-100">
+                <tbody class="divide-y divide-gray-100">
                     <?php if (empty($records)) : ?>
                         <tr>
-                            <td colspan="8" class="px-6 py-10 text-center text-sm text-gray-400">
-                                <i class="bi bi-clock text-3xl mb-2 block"></i>
-                                No se encontraron registros coincidentes con los filtros.
+                            <td colspan="8" class="py-12 text-center">
+                                <div class="flex flex-col items-center justify-center">
+                                    <div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mb-3 text-gray-400">
+                                        <i class="bi bi-clock text-xl"></i>
+                                    </div>
+                                    <h3 class="text-xs font-bold text-gray-900">No hay registros</h3>
+                                    <p class="mt-0.5 text-xs text-gray-500">No se encontraron registros de control horario con los filtros aplicados.</p>
+                                </div>
                             </td>
                         </tr>
                     <?php else : ?>
@@ -147,40 +154,61 @@ include TEMPLATE_DIR . 'header.php';
                                 $minutes = floor(($diff % 3600) / 60);
                                 $duracion = sprintf("%dh %02dm", $hours, $minutes);
                             } elseif ($row['entrada']) {
-                                $duracion = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100 animate-pulse">En curso</span>';
+                                $duracion = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-green-50 text-green-700 border border-green-100 animate-pulse">En curso</span>';
                             }
 
                             // Preparar datos JSON seguros para pasar al JS de Alpine
                             $rowJson = htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8');
                             ?>
-                            <tr class="hover:bg-gray-50/50 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    <?= htmlspecialchars($row['nombre'] . ' ' . $row['apellidos'], ENT_QUOTES, 'UTF-8') ?>
+                            <tr class="hover:bg-gray-50/80 transition-colors">
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="h-7 w-7 rounded-full bg-primary-50 flex items-center justify-center text-primary-600 font-bold text-xs">
+                                            <?= htmlspecialchars(substr($row['nombre'], 0, 1), ENT_QUOTES, 'UTF-8') ?>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-gray-900 text-sm"><?= htmlspecialchars($row['nombre'] . ' ' . $row['apellidos'], ENT_QUOTES, 'UTF-8') ?></div>
+                                            <div class="text-[11px] text-gray-400 font-medium">#<?= htmlspecialchars($row['usuario_id'], ENT_QUOTES, 'UTF-8') ?></div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <?= $row['rol'] ?>
+                                <td class="py-4 px-4 font-medium text-gray-600">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-medium bg-gray-100 text-gray-700">
+                                        <?= htmlspecialchars($row['rol'], ENT_QUOTES, 'UTF-8') ?>
+                                    </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <td class="py-4 px-4 font-bold text-gray-900">
                                     <?= date('d/m/Y', strtotime($row['fecha'])) ?>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <?= date('H:i:s', strtotime($row['entrada'])) ?>
+                                <td class="py-4 px-4 font-medium text-gray-600">
+                                    <span class="inline-flex items-center gap-1">
+                                        <i class="bi bi-box-arrow-in-right text-green-600 text-xs"></i>
+                                        <?= date('H:i:s', strtotime($row['entrada'])) ?>
+                                    </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <?= $row['salida'] ? date('H:i:s', strtotime($row['salida'])) : '<span class="text-gray-400">—</span>' ?>
+                                <td class="py-4 px-4 font-medium text-gray-600">
+                                    <?php if ($row['salida']): ?>
+                                        <span class="inline-flex items-center gap-1">
+                                            <i class="bi bi-box-arrow-right text-rose-600 text-xs"></i>
+                                            <?= date('H:i:s', strtotime($row['salida'])) ?>
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="text-gray-400">—</span>
+                                    <?php endif; ?>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">
+                                <td class="py-4 px-4 font-bold text-gray-900">
                                     <?= $duracion ?>
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+                                <td class="py-4 px-4 text-gray-500 max-w-xs truncate">
                                     <?= htmlspecialchars($row['notas'] ?? '', ENT_QUOTES, 'UTF-8') ?: '<span class="text-gray-300">Ninguna</span>' ?>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button @click="openEdit(<?= $rowJson ?>)"
-                                        class="inline-flex items-center text-primary-600 hover:text-primary-900 gap-1 bg-primary-50 hover:bg-primary-100/80 px-2.5 py-1.5 rounded-lg transition-colors">
-                                        <i class="bi bi-pencil"></i>
-                                        Editar
-                                    </button>
+                                <td class="py-4 px-4 text-right">
+                                    <div class="flex items-center justify-end gap-1">
+                                        <button @click="openEdit(<?= $rowJson ?>)"
+                                            class="p-1.5 text-gray-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-all cursor-pointer" title="Editar Registro">
+                                            <i class="bi bi-pencil-square text-sm"></i>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

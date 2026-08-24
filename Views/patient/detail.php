@@ -20,6 +20,7 @@ $iniciales = strtoupper(substr($usuario['nombre'] ?? '', 0, 1) . substr($usuario
 $totalInformes = count($informes ?? []);
 $totalCitas = count($citas ?? []);
 $totalDocumentos = count($documentos ?? []);
+$totalFacturas = count($facturas ?? []);
 
 // Última consulta
 $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
@@ -184,7 +185,7 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                             :class="activeTab === 'appointments' ? 'border-primary-600 text-primary-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300 font-medium'"
                             class="whitespace-nowrap py-3.5 px-1 border-b-2 text-sm transition-all flex items-center gap-2">
                             <i class="bi bi-calendar3 text-base"></i>
-                            <span>Agenda de Citas</span>
+                            <span>Citas</span>
                             <span class="px-2 py-0.5 rounded-full text-xs font-bold"
                                 :class="activeTab === 'appointments' ? 'bg-primary-50 text-primary-700' : 'bg-gray-200/70 text-gray-600'">
                                 <?= $totalCitas ?>
@@ -200,6 +201,18 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                             <span class="px-2 py-0.5 rounded-full text-xs font-bold"
                                 :class="activeTab === 'documents' ? 'bg-primary-50 text-primary-700' : 'bg-gray-200/70 text-gray-600'">
                                 <?= $totalDocumentos ?>
+                            </span>
+                        </button>
+
+                        <button
+                            @click="activeTab = 'invoices'"
+                            :class="activeTab === 'invoices' ? 'border-primary-600 text-primary-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300 font-medium'"
+                            class="whitespace-nowrap py-3.5 px-1 border-b-2 text-sm transition-all flex items-center gap-2">
+                            <i class="bi bi-receipt text-base"></i>
+                            <span>Facturas</span>
+                            <span class="px-2 py-0.5 rounded-full text-xs font-bold"
+                                :class="activeTab === 'invoices' ? 'bg-primary-50 text-primary-700' : 'bg-gray-200/70 text-gray-600'">
+                                <?= $totalFacturas ?>
                             </span>
                         </button>
                     </nav>
@@ -454,6 +467,110 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                                                                 class="p-1.5 rounded-lg text-gray-500 hover:text-primary-600 hover:bg-primary-50 transition-colors"
                                                                 title="Descargar PDF">
                                                                 <i class="bi bi-file-earmark-pdf text-sm"></i>
+                                                            </a>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- TAB 4: Facturas -->
+                    <div x-show="activeTab === 'invoices'" x-cloak>
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 class="text-base font-bold text-gray-900">Facturas Emitidas</h3>
+                                <p class="text-xs text-gray-500 mt-0.5">Historial de facturación, estado de pago y registro fiscal Verifactu.</p>
+                            </div>
+                            <?php if ($rol !== "Paciente") : ?>
+                                <a href="<?= PROJECT_ROOT ?>/facturas/crear?paciente_id=<?= $usuario['usuario_id'] ?>"
+                                    class="inline-flex items-center gap-1.5 rounded-full bg-primary-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-primary-500 transition-all hover:scale-105 active:scale-95">
+                                    <i class="bi bi-plus-lg"></i>
+                                    <span>Emitir Factura</span>
+                                </a>
+                            <?php endif; ?>
+                        </div>
+
+                        <?php if (empty($facturas)) : ?>
+                            <div class="flex flex-col items-center justify-center py-16 text-center bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                                <div class="w-14 h-14 bg-white rounded-2xl border border-gray-200 flex items-center justify-center mb-3 text-gray-400 text-2xl shadow-sm">
+                                    <i class="bi bi-receipt"></i>
+                                </div>
+                                <h4 class="text-sm font-bold text-gray-900">No hay facturas registradas</h4>
+                                <p class="text-xs text-gray-500 mt-1 max-w-xs">Aún no se ha emitido ninguna factura para este paciente.</p>
+                                <?php if ($rol !== "Paciente") : ?>
+                                    <a href="<?= PROJECT_ROOT ?>/facturas/crear?paciente_id=<?= $usuario['usuario_id'] ?>"
+                                        class="mt-4 inline-flex items-center gap-2 rounded-full bg-primary-600 text-white px-4 py-2 text-xs font-semibold hover:bg-primary-500 transition-colors">
+                                        <i class="bi bi-plus-lg"></i>
+                                        <span>Emitir primera factura</span>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        <?php else : ?>
+                            <div class="overflow-x-auto rounded-2xl border border-gray-200">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Nº Factura</th>
+                                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Fecha</th>
+                                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Total</th>
+                                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Estado Pago</th>
+                                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Verifactu</th>
+                                            <th class="px-4 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100 bg-white">
+                                        <?php foreach ($facturas as $factura) : ?>
+                                            <tr class="hover:bg-gray-50 transition-colors">
+                                                <td class="px-4 py-3.5 text-xs font-bold text-gray-900 font-mono whitespace-nowrap">
+                                                    <?= htmlspecialchars($factura['serie'] ?? 'A') ?>-<?= str_pad($factura['numero'], 5, '0', STR_PAD_LEFT) ?>
+                                                </td>
+                                                <td class="px-4 py-3.5 text-xs text-gray-600 whitespace-nowrap">
+                                                    <?= date('d/m/Y', strtotime($factura['fecha_emision'])) ?>
+                                                </td>
+                                                <td class="px-4 py-3.5 text-xs font-bold text-gray-900 font-mono whitespace-nowrap">
+                                                    <?= number_format($factura['total'], 2, ',', '.') ?> €
+                                                </td>
+                                                <td class="px-4 py-3.5 text-xs whitespace-nowrap">
+                                                    <?php if ($factura['estado'] === 'Pagada') : ?>
+                                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Pagada
+                                                        </span>
+                                                    <?php else : ?>
+                                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                                                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Pendiente
+                                                        </span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td class="px-4 py-3.5 text-xs whitespace-nowrap">
+                                                    <?php
+                                                    $vfState = $factura['estado_verifactu'] ?? 'Pendiente';
+                                                    if ($vfState === 'Aceptado' || $vfState === 'AceptadoConErrores') : ?>
+                                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200" title="CSV: <?= htmlspecialchars($factura['csv_verifactu'] ?? 'Generado') ?>">
+                                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Remitida
+                                                        </span>
+                                                    <?php elseif ($vfState === 'Rechazado') : ?>
+                                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200" title="<?= htmlspecialchars($factura['mensaje_verifactu'] ?? 'Error AEAT') ?>">
+                                                            <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Rechazada
+                                                        </span>
+                                                    <?php else : ?>
+                                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                                                            <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Pendiente AEAT
+                                                        </span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td class="px-4 py-3.5 text-right text-xs whitespace-nowrap">
+                                                    <div class="flex items-center justify-end gap-1.5">
+                                                        <a href="<?= PROJECT_ROOT ?>/facturas/pdf?id=<?= $factura['factura_id'] ?>" target="_blank" class="p-1.5 rounded-lg text-gray-500 hover:text-primary-600 hover:bg-primary-50 transition-colors" title="Descargar PDF">
+                                                            <i class="bi bi-file-earmark-pdf text-sm"></i>
+                                                        </a>
+                                                        <?php if ($rol !== "Paciente") : ?>
+                                                            <a href="<?= PROJECT_ROOT ?>/facturas/editar?id=<?= $factura['factura_id'] ?>" class="p-1.5 rounded-lg text-gray-500 hover:text-amber-600 hover:bg-amber-50 transition-colors" title="Editar Factura">
+                                                                <i class="bi bi-pencil-square text-sm"></i>
                                                             </a>
                                                         <?php endif; ?>
                                                     </div>

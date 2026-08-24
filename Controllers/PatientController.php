@@ -142,6 +142,7 @@ class PatientController extends Controller
         $historyModel = $this->model('MedicalReport');
         $appointmentModel = $this->model('Appointment');
         $documentModel = $this->model('Document');
+        $invoiceModel = $this->model('Invoice');
         $cuenta_id = $_SESSION['cuenta_id'] ?? 1;
 
         $data = [
@@ -149,7 +150,8 @@ class PatientController extends Controller
             'rol' => $_SESSION['rol'] ?? 'Administrador',
             'informes' => $historyModel->getByPaciente($id),
             'citas' => $appointmentModel->getByPatient($id),
-            'documentos' => $documentModel->getByPacienteWithTemplates($id, $cuenta_id)
+            'documentos' => $documentModel->getByPacienteWithTemplates($id, $cuenta_id),
+            'facturas' => $invoiceModel->getAll(['paciente_id' => $id])
         ];
 
         $this->view('patient/detail', $data);

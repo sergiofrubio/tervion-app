@@ -47,10 +47,13 @@ include TEMPLATE_DIR . 'header.php';
                     <label class="text-sm font-semibold text-gray-700 flex items-center gap-2">
                         <i class="bi bi-person text-primary-500"></i> Paciente
                     </label>
+                    <?php $selectedPacienteId = $_GET['paciente_id'] ?? ''; ?>
                     <select name="paciente_id" required class="w-full rounded-2xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all">
                         <option value="">Selecciona un paciente</option>
                         <?php foreach ($pacientes as $paciente) : ?>
-                            <option value="<?= $paciente['usuario_id'] ?>"><?= $paciente['nombre'] . ' ' . $paciente['apellidos'] ?></option>
+                            <option value="<?= $paciente['usuario_id'] ?>" <?= ($selectedPacienteId == $paciente['usuario_id']) ? 'selected' : '' ?>>
+                                <?= $paciente['nombre'] . ' ' . $paciente['apellidos'] ?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
                 </div>

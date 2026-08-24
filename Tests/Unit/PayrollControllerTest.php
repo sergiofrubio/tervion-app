@@ -24,7 +24,7 @@ class PayrollControllerTest extends ControllerTestCase
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('payroll/list', [
+            ->with('therapist/payroll/list', [
                 'nominas' => [],
                 'mes' => 6,
                 'anio' => 2026
@@ -46,7 +46,7 @@ class PayrollControllerTest extends ControllerTestCase
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('payroll/contracts_list', ['contratos' => []]);
+            ->with('therapist/payroll/contracts_list', ['contratos' => []]);
 
         $controller->listContracts();
     }
@@ -69,7 +69,7 @@ class PayrollControllerTest extends ControllerTestCase
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('payroll/contract_form', ['especialidades' => []]);
+            ->with('therapist/payroll/contract_form', ['especialidades' => []]);
 
         $controller->createContract();
     }
@@ -124,7 +124,7 @@ class PayrollControllerTest extends ControllerTestCase
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('payroll/contract_form', [
+            ->with('therapist/payroll/contract_form', [
                 'contrato' => ['contrato_id' => 5, 'usuario_id' => 'F123'],
                 'empleado' => ['usuario_id' => 'F123']
             ]);
@@ -172,7 +172,7 @@ class PayrollControllerTest extends ControllerTestCase
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('payroll/generate', ['contratos' => []]);
+            ->with('therapist/payroll/generate', ['contratos' => []]);
 
         $controller->generate();
     }
@@ -217,7 +217,7 @@ class PayrollControllerTest extends ControllerTestCase
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('payroll/detail', ['nomina' => ['id' => 8]]);
+            ->with('therapist/payroll/detail', ['nomina' => ['id' => 8]]);
 
         $controller->detail();
     }
@@ -226,13 +226,22 @@ class PayrollControllerTest extends ControllerTestCase
     {
         $_GET['id'] = 8;
         $nomina = [
-            'id' => 8, 'mes' => 6, 'anio' => 2026,
-            'nombre' => 'John', 'apellidos' => 'Doe',
-            'dni' => '12345678A', 'nss' => '1212', 'grupo_cotizacion' => 1,
-            'devengos_base' => 2000, 'devengos_complementos' => 100,
-            'deduccion_seguridad_social_trabajador' => 130, 'deduccion_irpf' => 300,
-            'devengos_total_bruto' => 2100, 'deducciones_total' => 430,
-            'irpf_porcentaje' => 15, 'liquido_a_percibir' => 1670,
+            'id' => 8,
+            'mes' => 6,
+            'anio' => 2026,
+            'nombre' => 'John',
+            'apellidos' => 'Doe',
+            'dni' => '12345678A',
+            'nss' => '1212',
+            'grupo_cotizacion' => 1,
+            'devengos_base' => 2000,
+            'devengos_complementos' => 100,
+            'deduccion_seguridad_social_trabajador' => 130,
+            'deduccion_irpf' => 300,
+            'devengos_total_bruto' => 2100,
+            'deducciones_total' => 430,
+            'irpf_porcentaje' => 15,
+            'liquido_a_percibir' => 1670,
             'coste_seguridad_social_empresa' => 693
         ];
 

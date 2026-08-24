@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Facultativos y Personal";
+$pageTitle = "Facultativos";
 $isAdmin = isset($_SESSION['rol']) && $_SESSION['rol'] === 'Administrador';
 include TEMPLATE_DIR . 'header.php';
 
@@ -45,14 +45,10 @@ $trabajadoresPaginados = array_slice($trabajadores_filtrados, $iniciar, $articul
     <!-- Title & Action Bar -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">Facultativos y Personal</h1>
-            <p class="text-gray-500 text-sm mt-0.5">Gestión de fisioterapeutas, secretarios y personal médico de la clínica.</p>
+            <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">Facultativos</h1>
+            <p class="text-gray-500 text-sm mt-0.5">Gestión del personal de la clínica.</p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
-            <a href="<?= PROJECT_ROOT ?>/nominas" class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-2xl font-semibold text-sm transition-all cursor-pointer">
-                <i class="bi bi-file-earmark-spreadsheet"></i>
-                <span>Gestión de Nóminas</span>
-            </a>
             <?php if ($isAdmin): ?>
                 <a href="<?= PROJECT_ROOT ?>/terapeutas/crear" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-2xl font-semibold text-sm shadow-md transition-all cursor-pointer">
                     <i class="bi bi-person-plus-fill"></i>

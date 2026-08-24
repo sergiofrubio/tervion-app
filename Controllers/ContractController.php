@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Core\Controller;
 
 class ContractController extends Controller
@@ -12,18 +14,6 @@ class ContractController extends Controller
             header('Location: ' . PROJECT_ROOT . '/inicio');
             $this->exitApp();
         }
-    }
-
-    /**
-     * Muestra la lista de todos los contratos laborales existentes.
-     *
-     * @return void
-     */
-    public function list()
-    {
-        $contractModel = $this->model('Contract');
-        $data = ['contratos' => $contractModel->getAllContracts()];
-        $this->view('payroll/contracts_list', $data);
     }
 
     /**
@@ -41,7 +31,7 @@ class ContractController extends Controller
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $usuario_id = htmlspecialchars($_POST['usuario_id'] ?? '', ENT_QUOTES, 'UTF-8');
-            
+
             $workerData = [
                 'usuario_id' => $usuario_id,
                 'nombre' => htmlspecialchars($_POST['nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
@@ -82,7 +72,7 @@ class ContractController extends Controller
                 $this->exitApp();
             }
         } else {
-            $this->view('payroll/contract_form');
+            $this->view('therapist/payroll/contract_form');
         }
     }
 
@@ -133,7 +123,7 @@ class ContractController extends Controller
                 'contrato' => $contract,
                 'empleado' => $employee
             ];
-            $this->view('payroll/contract_form', $data);
+            $this->view('therapist/payroll/contract_form', $data);
         }
     }
 }

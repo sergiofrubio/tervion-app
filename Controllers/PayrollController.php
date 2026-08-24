@@ -12,25 +12,6 @@ class PayrollController extends Controller
     private $ss_trabajador_rate = 0.065; // 6.5% aprox (Contingencias, Desempleo, FP, MEI 2026)
     private $ss_empresa_rate = 0.33;    // 33% aprox
 
-    /**
-     * Muestra la lista de nóminas filtradas por mes y año.
-     *
-     * @return void
-     */
-    public function list()
-    {
-        $payrollModel = $this->model('Payroll');
-        $mes = $_GET['mes'] ?? date('n');
-        $anio = $_GET['anio'] ?? date('Y');
-
-        $data = [
-            'nominas' => $payrollModel->getAllPayrolls(['mes' => $mes, 'anio' => $anio]),
-            'mes' => $mes,
-            'anio' => $anio
-        ];
-        $this->view('payroll/list', $data);
-    }
-
 
     /**
      * Genera una nueva nómina para un contrato y periodo determinados.
@@ -87,7 +68,7 @@ class PayrollController extends Controller
             $data = [
                 'contratos' => $contractModel->getAllContracts()
             ];
-            $this->view('payroll/generate', $data);
+            $this->view('therapist/payroll/generate', $data);
         }
     }
 
@@ -101,7 +82,7 @@ class PayrollController extends Controller
         $payrollModel = $this->model('Payroll');
         $id = $_GET['id'] ?? null;
         $data = ['nomina' => $payrollModel->getPayroll($id)];
-        $this->view('payroll/detail', $data);
+        $this->view('therapist/payroll/detail', $data);
     }
 
     /**

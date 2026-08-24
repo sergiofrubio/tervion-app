@@ -26,10 +26,6 @@ $totalCitas = count($citas ?? []);
         </div>
 
         <div class="flex items-center gap-3">
-            <a href="<?= PROJECT_ROOT ?>/nominas/generar?usuario_id=<?= $t['usuario_id'] ?>" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-500 transition-all shadow-sm">
-                <i class="bi bi-plus-circle"></i>
-                <span>Emitir Nómina</span>
-            </a>
             <a href="<?= PROJECT_ROOT ?>/terapeutas/editar?id=<?= $t['usuario_id'] ?>" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-600 text-white text-xs font-semibold hover:bg-primary-500 transition-all shadow-sm">
                 <i class="bi bi-pencil-square"></i>
                 <span>Editar Perfil</span>
@@ -94,11 +90,11 @@ $totalCitas = count($citas ?? []);
         <nav class="-mb-px flex gap-6" aria-label="Tabs">
             <button @click="activeTab = 'nominas'" :class="{ 'border-primary-600 text-primary-600 font-bold': activeTab === 'nominas', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium': activeTab !== 'nominas' }" class="py-3 px-1 border-b-2 text-xs transition-colors flex items-center gap-2 cursor-pointer">
                 <i class="bi bi-file-earmark-spreadsheet text-base"></i>
-                <span>Nóminas & Recibos (<?= $totalNominas ?>)</span>
+                <span>Nóminas (<?= $totalNominas ?>)</span>
             </button>
             <button @click="activeTab = 'contrato'" :class="{ 'border-primary-600 text-primary-600 font-bold': activeTab === 'contrato', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium': activeTab !== 'contrato' }" class="py-3 px-1 border-b-2 text-xs transition-colors flex items-center gap-2 cursor-pointer">
                 <i class="bi bi-file-earmark-text text-base"></i>
-                <span>Datos Laborales & Contrato</span>
+                <span>Datos Laborales</span>
             </button>
             <button @click="activeTab = 'citas'" :class="{ 'border-primary-600 text-primary-600 font-bold': activeTab === 'citas', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium': activeTab !== 'citas' }" class="py-3 px-1 border-b-2 text-xs transition-colors flex items-center gap-2 cursor-pointer">
                 <i class="bi bi-calendar-event text-base"></i>

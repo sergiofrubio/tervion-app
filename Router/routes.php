@@ -60,7 +60,6 @@ $router->add('GET', '/pacientes/consentimiento-pdf', 'PatientController@download
 // Ruta de búsqueda de trabajadores (usado para asignar citas)
 $router->add('GET', '/trabajadores/buscar', 'PatientController@searchWorkers', true, $staffRoles);
 
-
 $router->add('GET', '/citas', 'AppointmentController@list', true, $staffRoles);
 $router->add('GET', '/citas/crear', 'AppointmentController@create', true, $staffRoles);
 $router->add('POST', '/citas/crear', 'AppointmentController@create', true, $staffRoles);
@@ -124,8 +123,7 @@ $router->add('GET', '/documentos/editar', 'DocumentController@edit', true, $staf
 $router->add('POST', '/documentos/editar', 'DocumentController@edit', true, $staffRoles);
 $router->add('POST', '/documentos/eliminar', 'DocumentController@delete', true, $staffRoles);
 
-$router->add('GET', '/nominas', 'PayrollController@list', true, ['Administrador']);
-$router->add('GET', '/nominas/contratos', 'ContractController@list', true, ['Administrador']);
+// Rutas de Nóminas y Contratos
 $router->add('GET', '/nominas/contratos/crear', 'ContractController@create', true, ['Administrador']);
 $router->add('POST', '/nominas/contratos/crear', 'ContractController@create', true, ['Administrador']);
 $router->add('GET', '/nominas/contratos/editar', 'ContractController@edit', true, ['Administrador']);

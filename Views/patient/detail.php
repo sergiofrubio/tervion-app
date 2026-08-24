@@ -19,6 +19,7 @@ $edadCalculada = calcularEdad($usuario['fecha_nacimiento'] ?? null);
 $iniciales = strtoupper(substr($usuario['nombre'] ?? '', 0, 1) . substr($usuario['apellidos'] ?? '', 0, 1));
 $totalInformes = count($informes ?? []);
 $totalCitas = count($citas ?? []);
+$totalDocumentos = count($documentos ?? []);
 
 // Última consulta
 $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
@@ -157,74 +158,6 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                     </div>
                 </div>
             </div>
-
-            <!-- RGPD Consent Card -->
-            <div class="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-4">
-                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-                    <h3 class="text-sm font-bold uppercase tracking-wider text-gray-900 flex items-center gap-2">
-                        <i class="bi bi-shield-check text-primary-600"></i>
-                        Protección de Datos (RGPD)
-                    </h3>
-                    <a href="<?= PROJECT_ROOT ?>/pacientes/consentimiento-pdf?usuario_id=<?= $usuario['usuario_id'] ?>"
-                        target="_blank"
-                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-50 text-primary-700 hover:bg-primary-100 text-xs font-semibold transition-colors">
-                        <i class="bi bi-file-earmark-pdf"></i>
-                        Descargar
-                    </a>
-                </div>
-
-                <div class="space-y-3 text-xs">
-                    <div class="flex items-center justify-between p-3 rounded-2xl <?= !empty($usuario['rgpd_aceptado']) ? 'bg-emerald-50 text-emerald-800 border border-emerald-100' : 'bg-amber-50 text-amber-800 border border-amber-100' ?>">
-                        <span class="font-medium flex items-center gap-1.5">
-                            <i class="bi <?= !empty($usuario['rgpd_aceptado']) ? 'bi-check-circle-fill text-emerald-600' : 'bi-exclamation-triangle-fill text-amber-600' ?>"></i>
-                            Estado RGPD
-                        </span>
-                        <span class="font-bold text-xs">
-                            <?= !empty($usuario['rgpd_aceptado']) ? 'Aceptado' : 'Pendiente' ?>
-                        </span>
-                    </div>
-
-                    <?php if (!empty($usuario['fecha_consentimiento'])): ?>
-                        <div class="flex items-center justify-between text-gray-500 text-[11px] px-1">
-                            <span>Fecha de firma:</span>
-                            <span class="font-semibold text-gray-700"><?= date('d/m/Y H:i', strtotime($usuario['fecha_consentimiento'])) ?></span>
-                        </div>
-                    <?php endif; ?>
-
-                    <?php if (!empty($usuario['firma_paciente'])): ?>
-                        <div class="pt-2 border-t border-gray-100 space-y-1">
-                            <span class="block font-bold text-gray-400 uppercase tracking-wider text-[10px]">Firma Registrada</span>
-                            <div class="p-2 bg-gray-50 rounded-xl border border-gray-200 flex justify-center">
-                                <img src="<?= htmlspecialchars($usuario['firma_paciente']) ?>" alt="Firma del paciente" class="h-16 object-contain">
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <!-- Clinical Fast Insights Card -->
-            <div class="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-4">
-                <h3 class="text-sm font-bold uppercase tracking-wider text-gray-900 flex items-center gap-2">
-                    <i class="bi bi-activity text-emerald-600"></i>
-                    Resumen Asistencial
-                </h3>
-
-                <div class="space-y-3">
-                    <div class="p-3.5 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-between">
-                        <span class="text-xs text-gray-500">Última consulta</span>
-                        <span class="text-xs font-bold text-gray-900"><?= $ultimaConsulta ?></span>
-                    </div>
-                    <div class="p-3.5 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-between">
-                        <span class="text-xs text-gray-500">Total Informes</span>
-                        <span class="text-xs font-bold text-primary-600"><?= $totalInformes ?> evolutivos</span>
-                    </div>
-                    <div class="p-3.5 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-between">
-                        <span class="text-xs text-gray-500">Historial Citas</span>
-                        <span class="text-xs font-bold text-gray-900"><?= $totalCitas ?> registradas</span>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
         <!-- Right Column: Tabs (Historial Médico / Citas) -->
@@ -255,6 +188,18 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                             <span class="px-2 py-0.5 rounded-full text-xs font-bold"
                                 :class="activeTab === 'appointments' ? 'bg-primary-50 text-primary-700' : 'bg-gray-200/70 text-gray-600'">
                                 <?= $totalCitas ?>
+                            </span>
+                        </button>
+
+                        <button
+                            @click="activeTab = 'documents'"
+                            :class="activeTab === 'documents' ? 'border-primary-600 text-primary-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300 font-medium'"
+                            class="whitespace-nowrap py-3.5 px-1 border-b-2 text-sm transition-all flex items-center gap-2">
+                            <i class="bi bi-file-earmark-text text-base"></i>
+                            <span>Documentos</span>
+                            <span class="px-2 py-0.5 rounded-full text-xs font-bold"
+                                :class="activeTab === 'documents' ? 'bg-primary-50 text-primary-700' : 'bg-gray-200/70 text-gray-600'">
+                                <?= $totalDocumentos ?>
                             </span>
                         </button>
                     </nav>
@@ -415,6 +360,103 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                                                         title="Ver / Editar Cita">
                                                         <i class="bi bi-pencil-square text-sm"></i>
                                                     </a>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- TAB 3: Documentos -->
+                    <div x-show="activeTab === 'documents'" x-cloak>
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 class="text-base font-bold text-gray-900">Documentos y Consentimientos Informados</h3>
+                                <p class="text-xs text-gray-500 mt-0.5">Plantillas de la clínica, estado de firma del paciente y emisión de documentos.</p>
+                            </div>
+                        </div>
+
+                        <?php if (empty($documentos)) : ?>
+                            <div class="flex flex-col items-center justify-center py-16 text-center bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                                <div class="w-14 h-14 bg-white rounded-2xl border border-gray-200 flex items-center justify-center mb-3 text-gray-400 text-2xl shadow-sm">
+                                    <i class="bi bi-file-earmark-x"></i>
+                                </div>
+                                <h4 class="text-sm font-bold text-gray-900">No hay documentos registrados</h4>
+                                <p class="text-xs text-gray-500 mt-1 max-w-xs">No se han encontrado plantillas de documentos configuradas en la clínica.</p>
+                                <?php if ($rol !== "Paciente") : ?>
+                                    <a href="<?= PROJECT_ROOT ?>/documentos/crear"
+                                        class="mt-4 inline-flex items-center gap-2 rounded-full bg-primary-600 text-white px-4 py-2 text-xs font-semibold hover:bg-primary-500 transition-colors">
+                                        <i class="bi bi-plus-lg"></i>
+                                        <span>Crear primera plantilla</span>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        <?php else : ?>
+                            <div class="overflow-x-auto rounded-2xl border border-gray-200">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Documento</th>
+                                            <!-- <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Descripción</th> -->
+                                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Estado de Firma</th>
+                                            <th class="px-4 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100 bg-white">
+                                        <?php foreach ($documentos as $doc) :
+                                            $isFirmado = !empty($doc['firmado']);
+                                        ?>
+                                            <tr class="hover:bg-gray-50 transition-colors">
+                                                <td class="px-4 py-3.5 text-xs font-bold text-gray-900 whitespace-nowrap">
+                                                    <div class="flex items-center gap-2.5">
+                                                        <div class="w-8 h-8 rounded-xl <?= $isFirmado ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-amber-50 text-amber-600 border border-amber-100' ?> flex items-center justify-center font-bold shrink-0 text-sm">
+                                                            <i class="bi <?= $isFirmado ? 'bi-file-earmark-check-fill' : 'bi-file-earmark-text' ?>"></i>
+                                                        </div>
+                                                        <div>
+                                                            <span class="font-bold text-gray-900 block"><?= htmlspecialchars($doc['titulo']) ?></span>
+                                                            <!-- <span class="text-[10px] text-gray-400 font-normal">ID Doc: #<?= $doc['documento_id'] ?></span> -->
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <!-- <td class="px-4 py-3.5 text-xs text-gray-600 max-w-xs truncate">
+                                                    <?= htmlspecialchars($doc['descripcion'] ?? 'Sin descripción') ?>
+                                                </td> -->
+                                                <td class="px-4 py-3.5 text-xs whitespace-nowrap">
+                                                    <?php if ($isFirmado) : ?>
+                                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold border bg-emerald-50 text-emerald-700 border-emerald-100">
+                                                            <i class="bi bi-check-circle-fill text-emerald-500 text-[9px]"></i>
+                                                            Firmado <?= !empty($doc['fecha_firma']) ? '(' . date('d/m/Y', strtotime($doc['fecha_firma'])) . ')' : '' ?>
+                                                        </span>
+                                                    <?php else : ?>
+                                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold border bg-amber-50 text-amber-700 border-amber-100">
+                                                            <i class="bi bi-clock-history text-amber-500 text-[9px]"></i>
+                                                            Pendiente de firma
+                                                        </span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td class="px-4 py-3.5 text-right text-xs whitespace-nowrap">
+                                                    <div class="flex items-center justify-end gap-1.5">
+                                                        <a href="<?= PROJECT_ROOT ?>/pacientes/documentos/firmar?paciente_id=<?= $usuario['usuario_id'] ?>&documento_id=<?= $doc['documento_id'] ?>"
+                                                            class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-semibold text-xs shadow-sm transition-all hover:scale-105 active:scale-95"
+                                                            title="<?= $isFirmado ? 'Editar o Refirmar Documento' : 'Rellenar y Firmar Documento' ?>">
+                                                            <i class="bi <?= $isFirmado ? 'bi-pencil-square' : 'bi-pen' ?>"></i>
+                                                            <span><?= $isFirmado ? 'Editar / Refirmar' : 'Rellenar y Firmar' ?></span>
+                                                        </a>
+                                                        <?php if ($isFirmado) : ?>
+                                                            <a href="<?= PROJECT_ROOT ?>/pacientes/documentos/ver?paciente_id=<?= $usuario['usuario_id'] ?>&documento_id=<?= $doc['documento_id'] ?>"
+                                                                class="p-1.5 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+                                                                title="Ver documento firmado">
+                                                                <i class="bi bi-eye text-sm"></i>
+                                                            </a>
+                                                            <a href="<?= PROJECT_ROOT ?>/pacientes/documentos/pdf?paciente_id=<?= $usuario['usuario_id'] ?>&documento_id=<?= $doc['documento_id'] ?>"
+                                                                class="p-1.5 rounded-lg text-gray-500 hover:text-primary-600 hover:bg-primary-50 transition-colors"
+                                                                title="Descargar PDF">
+                                                                <i class="bi bi-file-earmark-pdf text-sm"></i>
+                                                            </a>
+                                                        <?php endif; ?>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

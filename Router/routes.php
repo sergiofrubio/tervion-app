@@ -56,6 +56,10 @@ $router->add('GET', '/pacientes/detalle', 'PatientController@detail', true, $sta
 $router->add('GET', '/pacientes/pdf', 'PatientController@createPDF', true, $staffRoles);
 $router->add('POST', '/pacientes/pdf', 'PatientController@createPDF', true, $staffRoles);
 $router->add('GET', '/pacientes/consentimiento-pdf', 'PatientController@downloadConsent', true, array_merge($staffRoles, ['Paciente']));
+$router->add('GET', '/pacientes/documentos/firmar', 'PatientController@signDocument', true, array_merge($staffRoles, ['Paciente']));
+$router->add('POST', '/pacientes/documentos/firmar', 'PatientController@signDocument', true, array_merge($staffRoles, ['Paciente']));
+$router->add('GET', '/pacientes/documentos/ver', 'PatientController@viewSignedDocument', true, array_merge($staffRoles, ['Paciente']));
+$router->add('GET', '/pacientes/documentos/pdf', 'PatientController@downloadSignedDocumentPdf', true, array_merge($staffRoles, ['Paciente']));
 
 // Ruta de búsqueda de trabajadores (usado para asignar citas)
 $router->add('GET', '/trabajadores/buscar', 'PatientController@searchWorkers', true, $staffRoles);

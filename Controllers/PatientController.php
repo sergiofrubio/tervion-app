@@ -141,12 +141,15 @@ class PatientController extends Controller
 
         $historyModel = $this->model('MedicalReport');
         $appointmentModel = $this->model('Appointment');
+        $documentModel = $this->model('Document');
+        $cuenta_id = $_SESSION['cuenta_id'] ?? 1;
 
         $data = [
             'usuario' => $usuario,
             'rol' => $_SESSION['rol'] ?? 'Administrador',
             'informes' => $historyModel->getByPaciente($id),
-            'citas' => $appointmentModel->getByPatient($id)
+            'citas' => $appointmentModel->getByPatient($id),
+            'documentos' => $documentModel->getByPacienteWithTemplates($id, $cuenta_id)
         ];
 
         $this->view('patient/detail', $data);
@@ -318,5 +321,210 @@ class PatientController extends Controller
         }
 
         $pdf->Output('D', 'Consentimiento_RGPD_' . $usuario['usuario_id'] . '.pdf');
+    }
+
+    /**
+     * Muestra la vista para cumplimentar y firmar digitalmente una plantilla de documento para un paciente.
+     */
+    public function signDocument()
+    {
+        $cuenta_id = $_SESSION['cuenta_id'] ?? 1;
+        $documentModel = $this->model('Document');
+        $userModel = $this->model('User');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $paciente_id = $_POST['paciente_id'] ?? null;
+            $documento_id = (int)($_POST['documento_id'] ?? 0);
+            $contenido_firmado = $_POST['contenido'] ?? '';
+            $firma_paciente = $_POST['firma_paciente'] ?? null;
+
+            if (!$paciente_id || !$documento_id || empty($contenido_firmado)) {
+                header('Location: ' . PROJECT_ROOT . '/pacientes/documentos/firmar?paciente_id=' . $paciente_id . '&documento_id=' . $documento_id . '&alert=danger&message=El contenido del documento es obligatorio.');
+                $this->exitApp();
+            }
+
+            $data = [
+                'cuenta_id' => $cuenta_id,
+                'paciente_id' => $paciente_id,
+                'documento_id' => $documento_id,
+                'contenido_firmado' => $contenido_firmado,
+                'firma_paciente' => !empty($firma_paciente) ? $firma_paciente : null,
+                'firmado' => !empty($firma_paciente) ? 1 : 0,
+                'fecha_firma' => !empty($firma_paciente) ? date('Y-m-d H:i:s') : null,
+                'usuario_id' => $_SESSION['usuario_id'] ?? $_SESSION['user_id'] ?? null
+            ];
+
+            $savedId = $documentModel->savePacienteDocumento($data);
+
+            if ($savedId) {
+                $mensaje = !empty($firma_paciente) ? 'Documento firmado y guardado correctamente.' : 'Borrador de documento guardado correctamente.';
+                header('Location: ' . PROJECT_ROOT . '/pacientes/detalle?usuario_id=' . $paciente_id . '&alert=success&message=' . urlencode($mensaje));
+                $this->exitApp();
+            } else {
+                header('Location: ' . PROJECT_ROOT . '/pacientes/documentos/firmar?paciente_id=' . $paciente_id . '&documento_id=' . $documento_id . '&alert=danger&message=' . urlencode('Error al guardar el documento.'));
+                $this->exitApp();
+            }
+        } else {
+            $paciente_id = $_GET['paciente_id'] ?? null;
+            $documento_id = (int)($_GET['documento_id'] ?? 0);
+
+            if (!$paciente_id || !$documento_id) {
+                header('Location: ' . PROJECT_ROOT . '/pacientes');
+                $this->exitApp();
+            }
+
+            $paciente = $userModel->getByusuario_id($paciente_id);
+            $plantilla = $documentModel->getById($documento_id, $cuenta_id);
+            $docPaciente = $documentModel->getPacienteDocumento($paciente_id, $documento_id, $cuenta_id);
+
+            if (!$paciente || !$plantilla) {
+                header('Location: ' . PROJECT_ROOT . '/pacientes?alert=danger&message=' . urlencode('Paciente o plantilla no encontrados.'));
+                $this->exitApp();
+            }
+
+            $contenido = $docPaciente ? $docPaciente['contenido_firmado'] : $plantilla['contenido'];
+            $firma = $docPaciente ? $docPaciente['firma_paciente'] : ($paciente['firma_paciente'] ?? '');
+
+            $data = [
+                'paciente' => $paciente,
+                'plantilla' => $plantilla,
+                'docPaciente' => $docPaciente,
+                'contenido' => $contenido,
+                'firma' => $firma
+            ];
+
+            $this->view('document/document_sign', $data);
+        }
+    }
+
+    /**
+     * Muestra la vista de solo lectura o modal/detalle de un documento firmado.
+     */
+    public function viewSignedDocument()
+    {
+        $cuenta_id = $_SESSION['cuenta_id'] ?? 1;
+        $documentModel = $this->model('Document');
+        $userModel = $this->model('User');
+
+        $paciente_id = $_GET['paciente_id'] ?? null;
+        $documento_id = (int)($_GET['documento_id'] ?? 0);
+
+        if (!$paciente_id || !$documento_id) {
+            header('Location: ' . PROJECT_ROOT . '/pacientes');
+            $this->exitApp();
+        }
+
+        $paciente = $userModel->getByusuario_id($paciente_id);
+        $plantilla = $documentModel->getById($documento_id, $cuenta_id);
+        $docPaciente = $documentModel->getPacienteDocumento($paciente_id, $documento_id, $cuenta_id);
+
+        if (!$paciente || !$plantilla) {
+            header('Location: ' . PROJECT_ROOT . '/pacientes');
+            $this->exitApp();
+        }
+
+        $data = [
+            'paciente' => $paciente,
+            'plantilla' => $plantilla,
+            'docPaciente' => $docPaciente,
+            'contenido' => $docPaciente['contenido_firmado'] ?? $plantilla['contenido'],
+            'firma' => $docPaciente['firma_paciente'] ?? null,
+            'isReadOnly' => true
+        ];
+
+        $this->view('document/document_sign', $data);
+    }
+
+    /**
+     * Genera y descarga en PDF el documento de un paciente con su firma digital.
+     */
+    public function downloadSignedDocumentPdf()
+    {
+        $cuenta_id = $_SESSION['cuenta_id'] ?? 1;
+        $documentModel = $this->model('Document');
+        $userModel = $this->model('User');
+
+        $paciente_id = $_GET['paciente_id'] ?? null;
+        $documento_id = (int)($_GET['documento_id'] ?? 0);
+
+        if (!$paciente_id || !$documento_id) {
+            header('Location: ' . PROJECT_ROOT . '/pacientes');
+            $this->exitApp();
+        }
+
+        $paciente = $userModel->getByusuario_id($paciente_id);
+        $plantilla = $documentModel->getById($documento_id, $cuenta_id);
+        $docPaciente = $documentModel->getPacienteDocumento($paciente_id, $documento_id, $cuenta_id);
+
+        if (!$paciente || !$plantilla) {
+            header('Location: ' . PROJECT_ROOT . '/pacientes');
+            $this->exitApp();
+        }
+
+        if (ob_get_length()) ob_end_clean();
+
+        $pdf = new Fpdf();
+        $pdf->AddPage('P');
+        $pdf->SetMargins(15, 15, 15);
+
+        // Encabezado
+        $pdf->SetFont('Arial', 'B', 15);
+        $pdf->Cell(0, 10, iconv('UTF-8', 'windows-1252', strtoupper($plantilla['titulo'])), 0, 1, 'C');
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->Cell(0, 5, iconv('UTF-8', 'windows-1252', 'Documento Clínico Oficial — Clínica Tervion / Velion'), 0, 1, 'C');
+        $pdf->Ln(4);
+
+        // Ficha Paciente
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFillColor(245, 247, 250);
+        $pdf->Cell(0, 7, iconv('UTF-8', 'windows-1252', '  Datos del Paciente'), 1, 1, 'L', true);
+
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->Cell(90, 6, iconv('UTF-8', 'windows-1252', '  Nombre: ' . ($paciente['nombre'] ?? '') . ' ' . ($paciente['apellidos'] ?? '')), 'L', 0);
+        $pdf->Cell(90, 6, iconv('UTF-8', 'windows-1252', 'DNI/NIF: ' . ($paciente['usuario_id'] ?? '')), 'R', 1);
+
+        $pdf->Cell(90, 6, iconv('UTF-8', 'windows-1252', '  Teléfono: ' . ($paciente['telefono'] ?? '-')), 'L', 0);
+        $pdf->Cell(90, 6, iconv('UTF-8', 'windows-1252', 'Email: ' . ($paciente['email'] ?? '-')), 'R', 1);
+        $pdf->Cell(180, 1, '', 'LBR', 1);
+        $pdf->Ln(4);
+
+        // Contenido del documento
+        $contenidoRaw = $docPaciente ? $docPaciente['contenido_firmado'] : $plantilla['contenido'];
+        $contenidoTexto = strip_tags(str_replace(['<br>', '<br/>', '<br />', '</p>', '</h1>', '</h2>', '</h3>', '</li>'], ["\n", "\n", "\n", "\n\n", "\n\n", "\n\n", "\n\n", "\n"], $contenidoRaw));
+        $contenidoTexto = html_entity_decode($contenidoTexto, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $contenidoTexto = trim(preg_replace("/\n{3,}/", "\n\n", $contenidoTexto));
+
+        $pdf->SetFont('Arial', '', 9.5);
+        $pdf->MultiCell(180, 5.5, iconv('UTF-8', 'windows-1252//TRANSLIT', $contenidoTexto), 0, 'J');
+        $pdf->Ln(6);
+
+        // Bloque de Firma
+        $pdf->SetFont('Arial', 'B', 10);
+        $isFirmado = !empty($docPaciente['firmado']);
+        $fechaFirma = !empty($docPaciente['fecha_firma']) ? date('d/m/Y H:i', strtotime($docPaciente['fecha_firma'])) : '-';
+
+        $pdf->Cell(0, 6, iconv('UTF-8', 'windows-1252', 'Estado de Firma: ' . ($isFirmado ? 'FIRMADO DIGITALMENTE' : 'PENDIENTE DE FIRMA')), 0, 1, 'L');
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->Cell(0, 5, iconv('UTF-8', 'windows-1252', 'Fecha de la firma: ' . $fechaFirma), 0, 1, 'L');
+        $pdf->Ln(3);
+
+        $firmaImg = $docPaciente['firma_paciente'] ?? null;
+        if (!empty($firmaImg) && strpos($firmaImg, 'data:image') === 0) {
+            $imageData = explode(',', $firmaImg);
+            if (count($imageData) === 2) {
+                $decodedImg = base64_decode($imageData[1]);
+                $tempFile = tempnam(sys_get_temp_dir(), 'sig_doc_') . '.png';
+                file_put_contents($tempFile, $decodedImg);
+
+                $pdf->SetFont('Arial', 'B', 9);
+                $pdf->Cell(0, 5, iconv('UTF-8', 'windows-1252', 'Firma del Paciente:'), 0, 1, 'L');
+                $yPos = $pdf->GetY();
+                $pdf->Image($tempFile, 15, $yPos + 1, 55, 22);
+                unlink($tempFile);
+            }
+        }
+
+        $sanitizedTitle = preg_replace('/[^A-Za-z0-9_-]/', '_', $plantilla['titulo']);
+        $pdf->Output('D', 'Documento_' . $sanitizedTitle . '_' . $paciente['usuario_id'] . '.pdf');
     }
 }

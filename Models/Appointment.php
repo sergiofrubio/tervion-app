@@ -14,10 +14,11 @@ class Appointment
 
     public function getById($cita_id)
     {
-        $query = "SELECT c.*, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.telefono as paciente_telefono, f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos 
+        $query = "SELECT c.*, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.telefono as paciente_telefono, f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos, tc.nombre as tipo_cita_nombre, tc.color as tipo_cita_color, tc.duracion_minutos as tipo_cita_duracion, tc.precio as tipo_cita_precio 
                   FROM citas c 
                   LEFT JOIN usuarios p ON c.paciente_id = p.usuario_id 
                   LEFT JOIN usuarios f ON c.fisioterapeuta_id = f.usuario_id 
+                  LEFT JOIN tipos_citas tc ON c.tipo_cita_id = tc.tipo_cita_id 
                   WHERE c.cita_id = :cita_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':cita_id', $cita_id, PDO::PARAM_INT);
@@ -25,13 +26,14 @@ class Appointment
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function save($paciente_id, $fisioterapeuta_id, $fecha_hora, $estado = "Programada")
+    public function save($paciente_id, $fisioterapeuta_id, $fecha_hora, $estado = "Programada", $tipo_cita_id = null)
     {
-        $query = "INSERT INTO citas (paciente_id, fisioterapeuta_id, fecha_hora, estado) 
-                  VALUES (:paciente_id, :fisioterapeuta_id, :fecha_hora, :estado)";
+        $query = "INSERT INTO citas (paciente_id, fisioterapeuta_id, tipo_cita_id, fecha_hora, estado) 
+                  VALUES (:paciente_id, :fisioterapeuta_id, :tipo_cita_id, :fecha_hora, :estado)";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':paciente_id', $paciente_id);
         $stmt->bindParam(':fisioterapeuta_id', $fisioterapeuta_id);
+        $stmt->bindValue(':tipo_cita_id', $tipo_cita_id ? $tipo_cita_id : null, PDO::PARAM_INT);
         $stmt->bindParam(':fecha_hora', $fecha_hora);
         $stmt->bindParam(':estado', $estado);
         return $stmt->execute();
@@ -39,10 +41,11 @@ class Appointment
 
     public function getAll()
     {
-        $query = "SELECT c.*, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.telefono as paciente_telefono, f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos 
+        $query = "SELECT c.*, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.telefono as paciente_telefono, f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos, tc.nombre as tipo_cita_nombre, tc.color as tipo_cita_color 
                   FROM citas c 
                   LEFT JOIN usuarios p ON c.paciente_id = p.usuario_id 
                   LEFT JOIN usuarios f ON c.fisioterapeuta_id = f.usuario_id 
+                  LEFT JOIN tipos_citas tc ON c.tipo_cita_id = tc.tipo_cita_id 
                   ORDER BY c.fecha_hora DESC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -57,16 +60,16 @@ class Appointment
         return $stmt->execute();
     }
 
-    public function update($cita_id, $paciente_id, $fisioterapeuta_id, $fecha_hora, $estado = "Programada")
+    public function update($cita_id, $paciente_id, $fisioterapeuta_id, $fecha_hora, $estado = "Programada", $tipo_cita_id = null)
     {
-        $query = "UPDATE citas SET paciente_id = :paciente_id, fisioterapeuta_id = :fisioterapeuta_id, fecha_hora = :fecha_hora
+        $query = "UPDATE citas SET paciente_id = :paciente_id, fisioterapeuta_id = :fisioterapeuta_id, tipo_cita_id = :tipo_cita_id, fecha_hora = :fecha_hora
                   WHERE cita_id = :cita_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':cita_id', $cita_id, PDO::PARAM_INT);
         $stmt->bindParam(':paciente_id', $paciente_id);
         $stmt->bindParam(':fisioterapeuta_id', $fisioterapeuta_id);
+        $stmt->bindValue(':tipo_cita_id', $tipo_cita_id ? $tipo_cita_id : null, PDO::PARAM_INT);
         $stmt->bindParam(':fecha_hora', $fecha_hora);
-        $stmt->bindParam(':estado', $estado);
         return $stmt->execute();
     }
     public function getByPatient($paciente_id)
@@ -107,11 +110,12 @@ class Appointment
         $stmtA->execute([':fisio_id' => $fisioterapeuta_id, ':fecha' => $fecha]);
         if ($stmtA->fetch()) return [];
 
-        $queryCitas = "SELECT fecha_hora, 60 as duracion_minutos 
-                      FROM citas 
-                      WHERE fisioterapeuta_id = :fisio_id 
-                      AND DATE(fecha_hora) = :fecha 
-                      AND estado != 'Cancelada'";
+        $queryCitas = "SELECT c.fecha_hora, COALESCE(tc.duracion_minutos, 60) as duracion_minutos 
+                      FROM citas c 
+                      LEFT JOIN tipos_citas tc ON c.tipo_cita_id = tc.tipo_cita_id 
+                      WHERE c.fisioterapeuta_id = :fisio_id 
+                      AND DATE(c.fecha_hora) = :fecha 
+                      AND c.estado != 'Cancelada'";
         $stmtC = $this->db->prepare($queryCitas);
         $stmtC->execute([':fisio_id' => $fisioterapeuta_id, ':fecha' => $fecha]);
         $citas = $stmtC->fetchAll(PDO::FETCH_ASSOC);

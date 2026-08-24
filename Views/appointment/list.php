@@ -151,6 +151,7 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
                     <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
                         <th class="py-3 px-4 font-semibold">ID Pac.</th>
                         <th class="py-3 px-4 font-semibold">Fecha</th>
+                        <th class="py-3 px-4 font-semibold">Tipo</th>
                         <th class="py-3 px-4 font-semibold">Paciente</th>
                         <th class="py-3 px-4 font-semibold">Contacto</th>
                         <th class="py-3 px-4 font-semibold">Fis. Asoc.</th>
@@ -168,6 +169,16 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
                                         <i class="bi bi-calendar2 text-gray-400 text-xs"></i>
                                         <?= !empty($cita['fecha_hora']) ? date('d/m/Y H:i', strtotime($cita['fecha_hora'])) : '' ?>
                                     </div>
+                                </td>
+                                <td class="py-4 px-4 font-medium text-xs">
+                                    <?php if (!empty($cita['tipo_cita_nombre'])): ?>
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-gray-700 bg-gray-100 border border-gray-200">
+                                            <span class="w-2 h-2 rounded-full" style="background-color: <?= htmlspecialchars($cita['tipo_cita_color'] ?? '#3b82f6') ?>"></span>
+                                            <?= htmlspecialchars($cita['tipo_cita_nombre']) ?>
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="text-gray-400 font-normal italic">Estándar</span>
+                                    <?php endif; ?>
                                 </td>
                                 <td class="py-4 px-4 font-bold text-gray-900 text-sm">
                                     <?= htmlspecialchars(trim(($cita['paciente_nombre'] ?? '') . " " . ($cita['paciente_apellidos'] ?? ''))) ?>

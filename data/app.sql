@@ -90,6 +90,36 @@ CREATE TABLE `bonos_pacientes` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tipos_citas`
+--
+
+CREATE TABLE `tipos_citas` (
+  `tipo_cita_id` int NOT NULL AUTO_INCREMENT,
+  `cuenta_id` int NOT NULL DEFAULT '1',
+  `nombre` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `duracion_minutos` int NOT NULL DEFAULT '60',
+  `precio` decimal(10,2) DEFAULT '0.00',
+  `color` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '#3b82f6',
+  `estado` enum('Activo','Inactivo') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'Activo',
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`tipo_cita_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `tipos_citas`
+--
+
+INSERT INTO `tipos_citas` (`tipo_cita_id`, `cuenta_id`, `nombre`, `descripcion`, `duracion_minutos`, `precio`, `color`, `estado`) VALUES
+(1, 1, 'Valoración Inicial', 'Evaluación completa y diagnóstico inicial del paciente.', 60, 50.00, '#3b82f6', 'Activo'),
+(2, 1, 'Tratamiento General de Fisioterapia', 'Sesión estándar de terapia manual y tratamiento.', 45, 40.00, '#10b981', 'Activo'),
+(3, 1, 'Sesión de Fisioterapia Deportiva', 'Tratamiento enfocado en lesiones deportivas y rendimiento.', 60, 45.00, '#f59e0b', 'Activo'),
+(4, 1, 'Rehabilitación Post-Quirúrgica', 'Sesión intensiva de recuperación postoperatoria.', 60, 55.00, '#ef4444', 'Activo'),
+(5, 1, 'Sesión Corta / Revisión', 'Revisión rápida de evolución y ajustes puntuales.', 30, 25.00, '#8b5cf6', 'Activo');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `citas`
 --
 
@@ -98,6 +128,7 @@ CREATE TABLE `citas` (
   `cuenta_id` int NOT NULL DEFAULT '1',
   `paciente_id` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `fisioterapeuta_id` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `tipo_cita_id` int DEFAULT NULL,
   `fecha_hora` datetime NOT NULL,
   `estado` enum('Programada','Cancelada','Realizada','Pendiente','Confirmada') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `bono_paciente_id` int DEFAULT NULL,
@@ -112,20 +143,20 @@ CREATE TABLE `citas` (
 -- Volcado de datos para la tabla `citas`
 --
 
-INSERT INTO `citas` (`cita_id`, `cuenta_id`, `paciente_id`, `fisioterapeuta_id`, `fecha_hora`, `estado`, `bono_paciente_id`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
-(1, 1, '123456789', '234567890', '2024-01-15 10:00:00', 'Realizada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
-(2, 1, '123456789', '234567890', '2024-02-20 11:00:00', 'Realizada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
-(3, 1, '123456789', '234567890', '2024-03-25 09:00:00', 'Realizada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
-(4, 1, '123456789', '234567890', '2024-04-20 10:00:00', 'Programada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
-(5, 1, '234567890', '345678901', '2024-05-05 14:00:00', 'Cancelada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
-(8, 1, '123456789', '234567890', '2026-05-12 08:42:00', 'Programada', NULL, NULL, '2026-05-10 08:42:05', NULL, NULL),
-(9, 1, '123456789', '234567890', '2026-05-12 08:42:00', 'Programada', NULL, NULL, '2026-05-10 08:42:29', NULL, NULL),
-(10, 1, '123456789', '234567890', '2026-05-12 08:45:00', 'Programada', NULL, NULL, '2026-05-10 08:45:47', NULL, NULL),
-(11, 1, '123456789', '234567890', '2026-05-12 08:47:00', 'Programada', NULL, NULL, '2026-05-10 08:47:34', NULL, NULL),
-(12, 1, '123456789', '234567890', '2026-05-12 08:49:00', 'Programada', NULL, NULL, '2026-05-10 08:49:44', NULL, NULL),
-(13, 1, '123456789', '234567890', '2026-05-12 08:50:00', 'Programada', NULL, NULL, '2026-05-10 08:50:29', NULL, NULL),
-(14, 1, '123456789', '234567890', '2026-06-15 09:00:00', 'Programada', NULL, NULL, '2026-06-14 18:41:50', NULL, NULL),
-(15, 1, '123456789', '234567890', '2026-06-15 10:00:00', 'Programada', NULL, NULL, '2026-06-14 18:41:57', NULL, NULL);
+INSERT INTO `citas` (`cita_id`, `cuenta_id`, `paciente_id`, `fisioterapeuta_id`, `tipo_cita_id`, `fecha_hora`, `estado`, `bono_paciente_id`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
+(1, 1, '123456789', '234567890', 1, '2024-01-15 10:00:00', 'Realizada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
+(2, 1, '123456789', '234567890', 2, '2024-02-20 11:00:00', 'Realizada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
+(3, 1, '123456789', '234567890', 3, '2024-03-25 09:00:00', 'Realizada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
+(4, 1, '123456789', '234567890', 2, '2024-04-20 10:00:00', 'Programada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
+(5, 1, '234567890', '345678901', 4, '2024-05-05 14:00:00', 'Cancelada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
+(8, 1, '123456789', '234567890', 2, '2026-05-12 08:42:00', 'Programada', NULL, NULL, '2026-05-10 08:42:05', NULL, NULL),
+(9, 1, '123456789', '234567890', 2, '2026-05-12 08:42:00', 'Programada', NULL, NULL, '2026-05-10 08:42:29', NULL, NULL),
+(10, 1, '123456789', '234567890', 2, '2026-05-12 08:45:00', 'Programada', NULL, NULL, '2026-05-10 08:45:47', NULL, NULL),
+(11, 1, '123456789', '234567890', 2, '2026-05-12 08:47:00', 'Programada', NULL, NULL, '2026-05-10 08:47:34', NULL, NULL),
+(12, 1, '123456789', '234567890', 2, '2026-05-12 08:49:00', 'Programada', NULL, NULL, '2026-05-10 08:49:44', NULL, NULL),
+(13, 1, '123456789', '234567890', 2, '2026-05-12 08:50:00', 'Programada', NULL, NULL, '2026-05-10 08:50:29', NULL, NULL),
+(14, 1, '123456789', '234567890', 2, '2026-06-15 09:00:00', 'Programada', NULL, NULL, '2026-06-14 18:41:50', NULL, NULL),
+(15, 1, '123456789', '234567890', 2, '2026-06-15 10:00:00', 'Programada', NULL, NULL, '2026-06-14 18:41:57', NULL, NULL);
 
 -- --------------------------------------------------------
 

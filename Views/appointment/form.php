@@ -5,7 +5,7 @@ $pageTitle = $isEdit ? "Editar Cita" : "Nueva Cita";
 include TEMPLATE_DIR . 'header.php';
 ?>
 
-<div class="max-w-4xl mx-auto animate-fade-in-up">
+<div class="w-full animate-fade-in-up">
     <!-- Header -->
     <div class="mb-8 flex items-center justify-between">
         <div>
@@ -48,6 +48,27 @@ include TEMPLATE_DIR . 'header.php';
                         <input type="hidden" name="paciente_id" id="paciente_id" value="<?= $a['paciente_id'] ?? '' ?>" required>
                         <div id="paciente_results" class="absolute z-20 w-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 hidden max-h-64 overflow-y-auto py-2 animate-in fade-in slide-in-from-top-2 duration-200">
                         </div>
+                    </div>
+                </div>
+
+                <!-- Tipo de Cita -->
+                <div class="space-y-2">
+                    <label for="tipo_cita_id" class="block text-sm font-medium text-gray-700">Tipo de Cita</label>
+                    <div class="relative">
+                        <select name="tipo_cita_id" id="tipo_cita_id" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm border p-3 bg-white appearance-none transition-all">
+                            <option value="">-- Seleccionar Tipo de Cita --</option>
+                            <?php if (!empty($tiposCitas)): ?>
+                                <?php foreach ($tiposCitas as $tc): ?>
+                                    <?php $selected = ($isEdit && isset($a['tipo_cita_id']) && $a['tipo_cita_id'] == $tc['tipo_cita_id']) ? 'selected' : ''; ?>
+                                    <option value="<?= $tc['tipo_cita_id'] ?>" <?= $selected ?>>
+                                        <?= htmlspecialchars($tc['nombre']) ?> (<?= $tc['duracion_minutos'] ?> min - <?= number_format($tc['precio'], 2) ?>€)
+                                    </option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
+                        <span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-400">
+                            <i class="bi bi-chevron-down"></i>
+                        </span>
                     </div>
                 </div>
 
@@ -189,6 +210,8 @@ include TEMPLATE_DIR . 'header.php';
             return html;
         }
 
+        const tipoCitaSelect = document.getElementById('tipo_cita_id');
+
         function loadAvailableDays(fisioId, initialDateTime = '') {
             diasContainer.innerHTML = '<div class="text-sm text-gray-500 py-4 w-full text-center">Cargando días disponibles...</div>';
             slotsContainer.innerHTML = '<div class="col-span-full text-sm text-gray-400 italic p-6 bg-gray-50/50 rounded-2xl text-center border border-gray-100">Selecciona un día primero para ver las horas.</div>';
@@ -203,7 +226,8 @@ include TEMPLATE_DIR . 'header.php';
                 }
             }
 
-            fetch(`<?= PROJECT_ROOT ?>/citas/dias-disponibles?fisio_id=${encodeURIComponent(fisioId)}`)
+            const tipoCitaId = tipoCitaSelect ? tipoCitaSelect.value : '';
+            fetch(`<?= PROJECT_ROOT ?>/citas/dias-disponibles?fisio_id=${encodeURIComponent(fisioId)}&tipo_cita_id=${encodeURIComponent(tipoCitaId)}`)
                 .then(response => response.json())
                 .then(days => {
                     diasContainer.innerHTML = '';
@@ -278,7 +302,8 @@ include TEMPLATE_DIR . 'header.php';
         function loadAvailableHours(fisioId, dateStr, initialTime = '') {
             slotsContainer.innerHTML = '<div class="col-span-full text-sm text-gray-500 py-4 text-center">Cargando horas disponibles...</div>';
 
-            fetch(`<?= PROJECT_ROOT ?>/citas/slots?fisio_id=${encodeURIComponent(fisioId)}&fecha=${encodeURIComponent(dateStr)}`)
+            const tipoCitaId = tipoCitaSelect ? tipoCitaSelect.value : '';
+            fetch(`<?= PROJECT_ROOT ?>/citas/slots?fisio_id=${encodeURIComponent(fisioId)}&fecha=${encodeURIComponent(dateStr)}&tipo_cita_id=${encodeURIComponent(tipoCitaId)}`)
                 .then(response => response.json())
                 .then(slots => {
                     slotsContainer.innerHTML = '';
@@ -321,6 +346,14 @@ include TEMPLATE_DIR . 'header.php';
                     console.error(err);
                     slotsContainer.innerHTML = '<div class="col-span-full text-sm text-red-500 py-4 text-center">Error al cargar las horas.</div>';
                 });
+        }
+
+        if (tipoCitaSelect) {
+            tipoCitaSelect.addEventListener('change', function() {
+                if (hiddenFisioInput.value) {
+                    loadAvailableDays(hiddenFisioInput.value);
+                }
+            });
         }
 
         function setupSearch(inputId, resultsId, hiddenId, rol, onSelect) {

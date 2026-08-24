@@ -70,24 +70,18 @@ include TEMPLATE_DIR . 'header.php';
                     <div class="relative flex-1">
                         <i class="bi bi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
                         <input type="text" name="q" id="q" value="<?= htmlspecialchars($filters['q'] ?? '') ?>" placeholder="Buscar por ID, paciente..."
-                            class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
+                            onchange="this.form.submit()" class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
                     </div>
-                    <select name="estado" id="estado" class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer">
+                    <select name="estado" id="estado" onchange="this.form.submit()" class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer">
                         <option value="">Cualquier estado</option>
                         <option value="Pagada" <?= ($filters['estado'] ?? '') == 'Pagada' ? 'selected' : '' ?>>Pagada</option>
                         <option value="Pendiente" <?= ($filters['estado'] ?? '') == 'Pendiente' ? 'selected' : '' ?>>Pendiente</option>
                     </select>
-                    <div class="flex items-center gap-2">
-                        <button type="submit" class="inline-flex items-center justify-center gap-1.5 bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-xl text-xs shadow-sm transition-all cursor-pointer shrink-0">
-                            <i class="bi bi-funnel"></i>
-                            <span>Filtrar</span>
-                        </button>
-                        <?php if (!empty($filters['paciente_id']) || !empty($filters['estado']) || !empty($filters['q'])) : ?>
-                            <a href="<?= PROJECT_ROOT ?>/facturas" class="p-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-xs transition-colors shrink-0" title="Limpiar filtros">
-                                <i class="bi bi-x-lg"></i>
-                            </a>
-                        <?php endif; ?>
-                    </div>
+                    <?php if (!empty($filters['paciente_id']) || !empty($filters['estado']) || !empty($filters['q'])) : ?>
+                        <a href="<?= PROJECT_ROOT ?>/facturas" class="p-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-xs transition-colors shrink-0" title="Limpiar filtros">
+                            <i class="bi bi-x-lg"></i>
+                        </a>
+                    <?php endif; ?>
                 </div>
                 <div class="text-xs text-gray-500 font-medium whitespace-nowrap">
                     Total registrado: <span class="font-bold text-gray-900"><?= count($facturas) ?></span> facturas

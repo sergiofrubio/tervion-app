@@ -98,18 +98,14 @@ $trabajadoresPaginados = array_slice($trabajadores_filtrados, $iniciar, $articul
                 <div class="flex flex-col sm:flex-row items-center gap-3 flex-1 max-w-xl">
                     <div class="relative w-full">
                         <i class="bi bi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                        <input type="text" name="q" value="<?= htmlspecialchars($filtro_busqueda) ?>" class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all" placeholder="Buscar por DNI o nombre...">
+                        <input type="text" name="q" value="<?= htmlspecialchars($filtro_busqueda) ?>" onchange="this.form.submit()" class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all" placeholder="Buscar por DNI o nombre...">
                     </div>
-                    <select name="rol" class="w-full sm:w-48 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer">
+                    <select name="rol" onchange="this.form.submit()" class="w-full sm:w-48 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer">
                         <option value="">Todos los roles</option>
                         <option value="Fisioterapeuta" <?= $filtro_rol === 'Fisioterapeuta' ? 'selected' : '' ?>>Fisioterapeuta</option>
                         <option value="Secretario" <?= $filtro_rol === 'Secretario' ? 'selected' : '' ?>>Secretario</option>
                         <option value="Administrador" <?= $filtro_rol === 'Administrador' ? 'selected' : '' ?>>Administrador</option>
                     </select>
-                    <button type="submit" class="inline-flex items-center justify-center gap-1.5 bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-xl text-xs shadow-sm transition-all cursor-pointer shrink-0">
-                        <i class="bi bi-funnel"></i>
-                        <span>Filtrar</span>
-                    </button>
                     <?php if ($filtro_busqueda !== '' || $filtro_rol !== ''): ?>
                         <a href="<?= PROJECT_ROOT ?>/terapeutas" class="p-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-xs transition-colors shrink-0" title="Limpiar filtro">
                             <i class="bi bi-x-lg"></i>

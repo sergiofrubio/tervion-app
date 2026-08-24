@@ -109,8 +109,8 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
         <div class="p-4 sm:p-6 border-b border-gray-100">
             <form action="<?= PROJECT_ROOT ?>/citas" method="GET" class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1 max-w-3xl">
-                    <input type="date" id="fecha_hora" name="fecha_hora" value="<?= htmlspecialchars($filtro_fecha_hora) ?>" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
-                    <select id="fisioterapeuta_id" name="fisioterapeuta_id" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer">
+                    <input type="date" id="fecha_hora" name="fecha_hora" value="<?= htmlspecialchars($filtro_fecha_hora) ?>" onchange="this.form.submit()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
+                    <select id="fisioterapeuta_id" name="fisioterapeuta_id" onchange="this.form.submit()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer">
                         <option value="" <?= $filtro_fisioterapeuta === '' ? 'selected' : '' ?>>Todas las agendas</option>
                         <?php if (!empty($fisioterapeutas)): ?>
                             <?php foreach ($fisioterapeutas as $fisio): ?>
@@ -120,7 +120,7 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </select>
-                    <select id="estado" name="estado" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer">
+                    <select id="estado" name="estado" onchange="this.form.submit()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer">
                         <option value="" <?= $filtro_estado === '' ? 'selected' : '' ?>>Todos los estados</option>
                         <option value="Programada" <?= $filtro_estado === 'Programada' ? 'selected' : '' ?>>Programada</option>
                         <option value="Realizada" <?= $filtro_estado === 'Realizada' ? 'selected' : '' ?>>Realizada</option>
@@ -129,16 +129,12 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
                     </select>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button type="submit" class="inline-flex items-center justify-center gap-1.5 bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-xl text-xs shadow-sm transition-all cursor-pointer shrink-0">
-                        <i class="bi bi-funnel"></i>
-                        <span>Filtrar</span>
-                    </button>
                     <?php if ($filtro_fecha_hora !== '' || $filtro_estado !== '' || $filtro_fisioterapeuta !== ''): ?>
                         <a href="<?= PROJECT_ROOT ?>/citas" class="p-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-xs transition-colors shrink-0" title="Limpiar filtros">
                             <i class="bi bi-x-lg"></i>
                         </a>
                     <?php endif; ?>
-                    <div class="text-xs text-gray-500 font-medium whitespace-nowrap ml-2">
+                    <div class="text-xs text-gray-500 font-medium whitespace-nowrap">
                         Total: <span class="font-bold text-gray-900"><?= $total_citas ?></span> citas
                     </div>
                 </div>

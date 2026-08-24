@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 18-06-2026 a las 08:18:04
--- Versión del servidor: 8.0.44
+-- Tiempo de generación: 24-08-2026 a las 11:51:31
+-- Versión del servidor: 8.0.46
 -- Versión de PHP: 8.3.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -90,36 +90,6 @@ CREATE TABLE `bonos_pacientes` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipos_citas`
---
-
-CREATE TABLE `tipos_citas` (
-  `tipo_cita_id` int NOT NULL AUTO_INCREMENT,
-  `cuenta_id` int NOT NULL DEFAULT '1',
-  `nombre` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `duracion_minutos` int NOT NULL DEFAULT '60',
-  `precio` decimal(10,2) DEFAULT '0.00',
-  `color` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '#3b82f6',
-  `estado` enum('Activo','Inactivo') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'Activo',
-  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`tipo_cita_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Volcado de datos para la tabla `tipos_citas`
---
-
-INSERT INTO `tipos_citas` (`tipo_cita_id`, `cuenta_id`, `nombre`, `descripcion`, `duracion_minutos`, `precio`, `color`, `estado`) VALUES
-(1, 1, 'Valoración Inicial', 'Evaluación completa y diagnóstico inicial del paciente.', 60, 50.00, '#3b82f6', 'Activo'),
-(2, 1, 'Tratamiento General de Fisioterapia', 'Sesión estándar de terapia manual y tratamiento.', 45, 40.00, '#10b981', 'Activo'),
-(3, 1, 'Sesión de Fisioterapia Deportiva', 'Tratamiento enfocado en lesiones deportivas y rendimiento.', 60, 45.00, '#f59e0b', 'Activo'),
-(4, 1, 'Rehabilitación Post-Quirúrgica', 'Sesión intensiva de recuperación postoperatoria.', 60, 55.00, '#ef4444', 'Activo'),
-(5, 1, 'Sesión Corta / Revisión', 'Revisión rápida de evolución y ajustes puntuales.', 30, 25.00, '#8b5cf6', 'Activo');
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `citas`
 --
 
@@ -143,20 +113,21 @@ CREATE TABLE `citas` (
 -- Volcado de datos para la tabla `citas`
 --
 
-INSERT INTO `citas` (`cita_id`, `cuenta_id`, `paciente_id`, `fisioterapeuta_id`, `tipo_cita_id`, `fecha_hora`, `estado`, `bono_paciente_id`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
-(1, 1, '123456789', '234567890', 1, '2024-01-15 10:00:00', 'Realizada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
-(2, 1, '123456789', '234567890', 2, '2024-02-20 11:00:00', 'Realizada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
-(3, 1, '123456789', '234567890', 3, '2024-03-25 09:00:00', 'Realizada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
-(4, 1, '123456789', '234567890', 2, '2024-04-20 10:00:00', 'Programada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
-(5, 1, '234567890', '345678901', 4, '2024-05-05 14:00:00', 'Cancelada', NULL, NULL, '2026-05-04 17:37:34', NULL, NULL),
-(8, 1, '123456789', '234567890', 2, '2026-05-12 08:42:00', 'Programada', NULL, NULL, '2026-05-10 08:42:05', NULL, NULL),
-(9, 1, '123456789', '234567890', 2, '2026-05-12 08:42:00', 'Programada', NULL, NULL, '2026-05-10 08:42:29', NULL, NULL),
-(10, 1, '123456789', '234567890', 2, '2026-05-12 08:45:00', 'Programada', NULL, NULL, '2026-05-10 08:45:47', NULL, NULL),
-(11, 1, '123456789', '234567890', 2, '2026-05-12 08:47:00', 'Programada', NULL, NULL, '2026-05-10 08:47:34', NULL, NULL),
-(12, 1, '123456789', '234567890', 2, '2026-05-12 08:49:00', 'Programada', NULL, NULL, '2026-05-10 08:49:44', NULL, NULL),
-(13, 1, '123456789', '234567890', 2, '2026-05-12 08:50:00', 'Programada', NULL, NULL, '2026-05-10 08:50:29', NULL, NULL),
-(14, 1, '123456789', '234567890', 2, '2026-06-15 09:00:00', 'Programada', NULL, NULL, '2026-06-14 18:41:50', NULL, NULL),
-(15, 1, '123456789', '234567890', 2, '2026-06-15 10:00:00', 'Programada', NULL, NULL, '2026-06-14 18:41:57', NULL, NULL);
+INSERT INTO `citas` (`cita_id`, `cuenta_id`, `paciente_id`, `fisioterapeuta_id`, `tipo_cita_id`, `fecha_hora`, `estado`, `bono_paciente_id`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`, `token_confirmacion`) VALUES
+(1, 1, '123456789', '234567890', 2, '2024-01-15 10:00:00', 'Realizada', NULL, NULL, '2026-05-04 17:37:34', NULL, '2026-08-24 07:24:15', NULL),
+(2, 1, '123456789', '234567890', 2, '2024-02-20 11:00:00', 'Realizada', NULL, NULL, '2026-05-04 17:37:34', NULL, '2026-08-24 07:24:15', NULL),
+(3, 1, '123456789', '234567890', 2, '2024-03-25 09:00:00', 'Realizada', NULL, NULL, '2026-05-04 17:37:34', NULL, '2026-08-24 07:24:15', NULL),
+(4, 1, '123456789', '234567890', 2, '2024-04-20 10:00:00', 'Programada', NULL, NULL, '2026-05-04 17:37:34', NULL, '2026-08-24 07:24:15', NULL),
+(5, 1, '234567890', '345678901', 2, '2024-05-05 14:00:00', 'Cancelada', NULL, NULL, '2026-05-04 17:37:34', NULL, '2026-08-24 07:24:15', NULL),
+(8, 1, '123456789', '234567890', 2, '2026-05-12 08:42:00', 'Programada', NULL, NULL, '2026-05-10 08:42:05', NULL, '2026-08-24 07:24:15', NULL),
+(9, 1, '123456789', '234567890', 2, '2026-05-12 08:42:00', 'Programada', NULL, NULL, '2026-05-10 08:42:29', NULL, '2026-08-24 07:24:15', NULL),
+(10, 1, '123456789', '234567890', 2, '2026-05-12 08:45:00', 'Programada', NULL, NULL, '2026-05-10 08:45:47', NULL, '2026-08-24 07:24:15', NULL),
+(11, 1, '123456789', '234567890', 2, '2026-05-12 08:47:00', 'Programada', NULL, NULL, '2026-05-10 08:47:34', NULL, '2026-08-24 07:24:15', NULL),
+(12, 1, '123456789', '234567890', 2, '2026-05-12 08:49:00', 'Programada', NULL, NULL, '2026-05-10 08:49:44', NULL, '2026-08-24 07:24:15', NULL),
+(13, 1, '123456789', '234567890', 2, '2026-05-12 08:50:00', 'Programada', NULL, NULL, '2026-05-10 08:50:29', NULL, '2026-08-24 07:24:15', NULL),
+(14, 1, '123456789', '234567890', 2, '2026-06-15 09:00:00', 'Programada', NULL, NULL, '2026-06-14 18:41:50', NULL, '2026-08-24 07:24:15', NULL),
+(15, 1, '123456789', '234567890', 2, '2026-06-15 10:00:00', 'Programada', NULL, NULL, '2026-06-14 18:41:57', NULL, '2026-08-24 07:24:15', NULL),
+(16, 1, '123456789', '234567890', 2, '2026-06-15 09:00:00', 'Programada', NULL, NULL, '2026-08-24 07:02:02', NULL, '2026-08-24 07:24:15', NULL);
 
 -- --------------------------------------------------------
 
@@ -192,6 +163,31 @@ CREATE TABLE `clinicas` (
 
 INSERT INTO `clinicas` (`id_clinica`, `cuenta_id`, `nombre_comercial`, `razon_social`, `nif_cif`, `direccion_calle`, `ciudad`, `provincia_estado`, `codigo_postal`, `pais`, `telefono_contacto`, `email_contacto`, `sitio_web`, `verifactu_env`, `verifactu_cert_path`, `verifactu_cert_password`, `verifactu_activo`, `fecha_registro`, `activo`) VALUES
 (1, 1, 'Clínica Tervion', 'Tervion S.L.', 'B87654321', 'Paseo de la Castellana 120', 'Madrid', 'Madrid', '28046', 'España', '910123456', 'contacto@tervion.es', 'https://www.tervion.es', 'pruebas', NULL, NULL, 1, '2026-05-01 08:00:00', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `codigos_descuento`
+--
+
+CREATE TABLE `codigos_descuento` (
+  `codigo_id` int NOT NULL,
+  `cuenta_id` int NOT NULL DEFAULT '1',
+  `codigo` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `descripcion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `tipo_descuento` enum('porcentaje','fijo') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'porcentaje',
+  `valor` decimal(10,2) NOT NULL,
+  `monto_minimo` decimal(10,2) DEFAULT '0.00',
+  `usos_maximos` int DEFAULT NULL,
+  `usos_actuales` int NOT NULL DEFAULT '0',
+  `fecha_inicio` datetime DEFAULT NULL,
+  `fecha_fin` datetime DEFAULT NULL,
+  `estado` enum('Activo','Inactivo') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'Activo',
+  `creado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `modificado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -245,7 +241,60 @@ CREATE TABLE `cuentas_clientes` (
 --
 
 INSERT INTO `cuentas_clientes` (`cuenta_id`, `nombre_empresa`, `nif_cif`, `slug`, `plan_suscripcion`, `plan_proximo`, `estado_cuenta`, `email_admin`, `fecha_alta`, `fecha_renovacion`, `configuracion_json`) VALUES
-(1, 'Tervion S.L.', 'B87654321', 'tervion-sl', 'Profesional', NULL, 'Activo', 'admin@example.com', '2026-05-01 08:00:00', '2026-09-01', NULL);
+(1, 'Tervion S.L.', 'B87654321', 'tervion-sl', 'Basico', NULL, 'Activo', 'admin@example.com', '2026-05-01 08:00:00', '2026-09-01', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `documentos`
+--
+
+CREATE TABLE `documentos` (
+  `documento_id` int NOT NULL,
+  `cuenta_id` int NOT NULL DEFAULT '1',
+  `titulo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `descripcion` varchar(255) DEFAULT NULL,
+  `categoria` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'General',
+  `contenido` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `tipo_letra` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'Inter',
+  `tamano_letra` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '14px',
+  `alineacion` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'left',
+  `creado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `modificado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `documentos`
+--
+
+INSERT INTO `documentos` (`documento_id`, `cuenta_id`, `titulo`, `descripcion`, `categoria`, `contenido`, `tipo_letra`, `tamano_letra`, `alineacion`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
+(1, 1, 'Consentimiento Informado para Fisioterapia General', 'Autorización general del paciente para la realización de terapia manual, ejercicios terapéuticos y electroterapia.', 'General', '<h2>CONSENTIMIENTO INFORMADO DE FISIOTERAPIA</h2><p>Mediante el presente documento, el paciente declara haber sido informado satisfactoriamente sobre los <strong>tratamientos de fisioterapia</strong> que le serán aplicados en la clínica.</p><h3>Objetivo del tratamiento</h3><p>El tratamiento tiene como finalidad la disminución del dolor, la mejora de la movilidad articular y la recuperación funcional mediante técnicas manuales, ejercicio terapéutico y aparatología especializada.</p><h3>Posibles efectos secundarios</h3><ul><li>Molestias musculares o agujetas tras la sesión (24-48 horas).</li><li>Leve enrojecimiento de la piel en caso de termoterapia o electroterapia.</li></ul><p>El paciente consiente expresamente la realización de las técnicas prescritas por el fisioterapeuta colegiado.</p>', 'Inter', '14px', 'left', '123456789', '2026-05-15 10:00:00', NULL, NULL),
+(2, 1, 'Cláusula de Protección de Datos Personales (RGPD)', 'Consentimiento expreso del tratamiento de datos de salud conforme al Reglamento General de Protección de Datos.', 'General', '<h2>INFORMACIÓN SOBRE PROTECCIÓN DE DATOS (RGPD / LOPDGDD)</h2><p>En cumplimiento del Reglamento (UE) 2016/679, le informamos de que sus datos personales de salud serán tratados bajo la responsabilidad de <strong>Clínica Tervion</strong>.</p><h3>Finalidad del tratamiento</h3><p>Gestión de su historia clínica, programación de citas, facturación y prestación de servicios sanitarios de fisioterapia y rehabilitación.</p><h3>Derechos del usuario</h3><p>Usted puede ejercer en cualquier momento sus derechos de <strong>acceso, rectificación, supresión, oposición y portabilidad</strong> de sus datos dirigiéndose por escrito a la clínica o mediante correo electrónico.</p>', 'Inter', '14px', 'left', '123456789', '2026-05-20 11:30:00', NULL, NULL),
+(3, 1, 'Consentimiento Informado para Punción Seca', 'Consentimiento específico detallando riesgos, contraindicaciones y beneficios del tratamiento invasivo miofascial.', 'General', '<h2>CONSENTIMIENTO INFORMADO: PUNCIÓN SECA</h2><p>La <strong>Punción Seca</strong> es una técnica invasiva utilizada en fisioterapia para el tratamiento de los puntos gatillo miofasciales mediante el uso de agujas de acupuntura.</p><h3>Beneficios esperados</h3><p>Relajación inmediata del músculo afectado, alivio del dolor referido y restauración del rango de movimiento habitual.</p><h3>Riesgos y efectos secundarios informados</h3><ul><li>Dolor post-punción durante 24 a 72 horas.</li><li>Aparición de pequeños hematomas locales.</li><li>Neumotórax (riesgo extremadamente bajo en zonas torácicas/escapulares, minimizado mediante ecografía y técnica adecuada).</li></ul><p>Declaró no presentar alergia a metales ni alteraciones graves de la coagulación.</p>', 'Inter', '14px', 'left', '234567890', '2026-06-01 09:15:00', NULL, NULL),
+(4, 1, 'Informe de Alta de Tratamiento y Pauta Domiciliaria', 'Plantilla normalizada para emitir el informe final de alta del paciente con recomendaciones de ejercicios domiciliarios.', 'General', '<h2>INFORME DE ALTA DE FISIOTERAPIA</h2><p>Se emite el presente informe tras haber completado satisfactoriamente el plan de tratamiento prescrito.</p><table border=\"1\" style=\"width:100%; border-collapse: collapse; text-align: left;\"><thead><tr style=\"background-color: #f1f5f9;\"><th>Parámetro</th><th>Evaluación Inicial</th><th>Estado al Alta</th></tr></thead><tbody><tr><td>Dolor (Escala EVA)</td><td>8 / 10</td><td>1 / 10</td></tr><tr><td>Balance Articular</td><td>Limitación moderada</td><td>Completo sin restricción</td></tr><tr><td>Autonomía Funcional</td><td>Parcial</td><td>100% Autónomo</td></tr></tbody></table><h3>Recomendaciones al Alta</h3><ol><li>Realizar estiramientos diarios según la pauta entregada.</li><li>Mantener hidratación adecuada e higiene postural en el puesto de trabajo.</li><li>Revisión preventiva en 6 meses o ante reaparición de síntomas.</li></ol>', 'Inter', '14px', 'left', '123456789', '2026-06-10 16:45:00', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `documentos_pacientes`
+--
+
+CREATE TABLE `documentos_pacientes` (
+  `id` int NOT NULL,
+  `cuenta_id` int NOT NULL DEFAULT '1',
+  `documento_id` int NOT NULL,
+  `paciente_id` varchar(9) NOT NULL,
+  `contenido_firmado` mediumtext,
+  `firma_paciente` longtext,
+  `firmado` tinyint(1) NOT NULL DEFAULT '0',
+  `fecha_firma` datetime DEFAULT NULL,
+  `creado_por` varchar(9) DEFAULT NULL,
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `modificado_por` varchar(9) DEFAULT NULL,
+  `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -297,11 +346,11 @@ CREATE TABLE `facturas` (
   `estado_verifactu` enum('Pendiente','Enviado','Aceptado','AceptadoConErrores','Rechazado','ErrorConexion') DEFAULT 'Pendiente',
   `csv_verifactu` varchar(255) DEFAULT NULL,
   `codigo_error_verifactu` varchar(50) DEFAULT NULL,
-  `mensaje_verifactu` text DEFAULT NULL,
+  `mensaje_verifactu` text,
   `fecha_envio_verifactu` datetime DEFAULT NULL,
-  `qr_url` text DEFAULT NULL,
-  `xml_peticion` mediumtext DEFAULT NULL,
-  `xml_respuesta` mediumtext DEFAULT NULL,
+  `qr_url` text,
+  `xml_peticion` mediumtext,
+  `xml_respuesta` mediumtext,
   `subsanacion` tinyint(1) DEFAULT '0',
   `creado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -313,8 +362,40 @@ CREATE TABLE `facturas` (
 -- Volcado de datos para la tabla `facturas`
 --
 
-INSERT INTO `facturas` (`factura_id`, `cuenta_id`, `serie`, `numero`, `tipo_factura`, `paciente_id`, `fecha_emision`, `fecha_hora_emision`, `estado`, `descripcion`, `precio`, `impuesto`, `cuota_iva`, `total`, `huella`, `huella_anterior`, `firma_digital`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
-(4, 1, 'A', 1, 'F1', '123456789', '2026-05-09', '2026-05-09 19:06:34', 'Pendiente', 'prueba', 10.00, 21.00, 2.10, 12, '8f28111958bd099216831fb420f37087733deb3502330570e8079b3f75769663', NULL, NULL, '345678901', '2026-05-09 19:06:34', NULL, NULL);
+INSERT INTO `facturas` (`factura_id`, `cuenta_id`, `serie`, `numero`, `tipo_factura`, `paciente_id`, `fecha_emision`, `fecha_hora_emision`, `estado`, `descripcion`, `precio`, `impuesto`, `cuota_iva`, `total`, `nif_emisor`, `fecha_hora_huso`, `huella`, `huella_anterior`, `firma_digital`, `estado_verifactu`, `csv_verifactu`, `codigo_error_verifactu`, `mensaje_verifactu`, `fecha_envio_verifactu`, `qr_url`, `xml_peticion`, `xml_respuesta`, `subsanacion`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
+(4, 1, 'A', 1, 'F1', '123456789', '2026-05-09', '2026-05-09 19:06:34', 'Pendiente', 'prueba', 10.00, 21.00, 2.10, 12.00, 'B12345678', NULL, '8f28111958bd099216831fb420f37087733deb3502330570e8079b3f75769663', NULL, NULL, 'Pendiente', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '345678901', '2026-05-09 19:06:34', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `facturas_saas`
+--
+
+CREATE TABLE `facturas_saas` (
+  `factura_saas_id` int NOT NULL,
+  `cuenta_id` int NOT NULL,
+  `serie` varchar(10) NOT NULL DEFAULT 'SAAS',
+  `numero` int NOT NULL,
+  `fecha_emision` date NOT NULL,
+  `fecha_vencimiento` date DEFAULT NULL,
+  `concepto` varchar(255) NOT NULL COMMENT 'Ej: Suscripción Plan Profesional - Agosto 2026',
+  `plan_suscripcion` enum('Basico','Profesional','Premium') NOT NULL DEFAULT 'Profesional',
+  `base_imponible` decimal(10,2) NOT NULL,
+  `tipo_iva` decimal(5,2) NOT NULL DEFAULT '21.00',
+  `cuota_iva` decimal(10,2) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `estado` enum('Pendiente','Pagada','Vencida','Cancelada') NOT NULL DEFAULT 'Pendiente',
+  `metodo_pago` varchar(50) DEFAULT 'Tarjeta',
+  `notas` text,
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `facturas_saas`
+--
+
+INSERT INTO `facturas_saas` (`factura_saas_id`, `cuenta_id`, `serie`, `numero`, `fecha_emision`, `fecha_vencimiento`, `concepto`, `plan_suscripcion`, `base_imponible`, `tipo_iva`, `cuota_iva`, `total`, `estado`, `metodo_pago`, `notas`, `fecha_creacion`) VALUES
+(1, 1, 'SAAS', 1, '2026-08-01', '2026-08-15', 'Suscripción Mensual Velion SaaS - Plan Profesional', 'Profesional', 79.00, 21.00, 16.59, 95.59, 'Pagada', 'Tarjeta', 'Pago procesado automáticamente mediante pasarela de pago.', '2026-08-23 11:18:22');
 
 -- --------------------------------------------------------
 
@@ -339,37 +420,6 @@ CREATE TABLE `gastos` (
   `categoria` enum('Alquileres','Suministros','Personal','Servicios profesionales','Bienes de inversiÃ³n','Otros') NOT NULL DEFAULT 'Otros',
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Volcado de datos para la tabla `gastos`
---
-
-INSERT INTO `gastos` (`gasto_id`, `cuenta_id`, `nif_proveedor`, `nombre_proveedor`, `numero_factura`, `fecha_emision`, `concepto`, `base_imponible`, `tipo_iva`, `cuota_iva`, `retencion_irpf`, `cuota_irpf`, `total`, `categoria`, `fecha_creacion`) VALUES
-(1, 1, 'A95075578', 'Iberdrola Clientes S.A.U.', 'BANC-20260609-97', '2026-06-09', 'Conciliación bancaria: PAGO CON TARJETA IBERDROLA', 118.60, 21.00, 24.91, 0.00, 0.00, 143.51, 'Suministros', '2026-06-10 15:44:20'),
-(2, 1, 'B82345678', 'Gestoría Rivas S.L.', 'BANC-20260607-38', '2026-06-07', 'Conciliación bancaria: RECIBO GESTORIA RIVAS CUOTA', 85.61, 21.00, 17.98, 15.00, 12.84, 90.75, 'Servicios profesionales', '2026-06-10 15:44:20'),
-(3, 1, 'F91122334', 'Patrimonial Centro Histórico S.A.', 'BANC-20260605-31', '2026-06-05', 'Conciliación bancaria: TRANSFERENCIA ALQUILER LOCAL JUNIO', 1423.53, 21.00, 298.94, 19.00, 270.47, 1452.00, 'Alquileres', '2026-06-10 15:44:20'),
-(4, 1, 'TGSS0001', 'Tesorería General de la S.S.', 'BANC-20260604-56', '2026-06-04', 'Conciliación bancaria: TRANSFERENCIA SEGUROS SOCIALES TGSS', 450.00, 0.00, 0.00, 0.00, 0.00, 450.00, 'Personal', '2026-06-10 15:44:20'),
-(5, 1, 'B99221100', 'FisioDistribuciones España S.L.', 'BANC-20260531-13', '2026-05-31', 'Conciliación bancaria: COMPRA MATERIAL SANITARIO FISIODIST', 145.50, 21.00, 30.56, 0.00, 0.00, 176.06, 'Otros', '2026-06-10 15:44:20'),
-(6, 1, 'A95075578', 'Iberdrola Clientes S.A.U.', 'BANC-20260609-75', '2026-06-09', 'Conciliación bancaria: PAGO CON TARJETA IBERDROLA', 118.60, 21.00, 24.91, 0.00, 0.00, 143.51, 'Suministros', '2026-06-10 15:44:32'),
-(7, 1, 'B82345678', 'Gestoría Rivas S.L.', 'BANC-20260607-57', '2026-06-07', 'Conciliación bancaria: RECIBO GESTORIA RIVAS CUOTA', 85.61, 21.00, 17.98, 15.00, 12.84, 90.75, 'Servicios profesionales', '2026-06-10 15:44:32'),
-(8, 1, 'F91122334', 'Patrimonial Centro Histórico S.A.', 'BANC-20260605-75', '2026-06-05', 'Conciliación bancaria: TRANSFERENCIA ALQUILER LOCAL JUNIO', 1423.53, 21.00, 298.94, 19.00, 270.47, 1452.00, 'Alquileres', '2026-06-10 15:44:32'),
-(9, 1, 'TGSS0001', 'Tesorería General de la S.S.', 'BANC-20260604-90', '2026-06-04', 'Conciliación bancaria: TRANSFERENCIA SEGUROS SOCIALES TGSS', 450.00, 0.00, 0.00, 0.00, 0.00, 450.00, 'Personal', '2026-06-10 15:44:32'),
-(10, 1, 'B99221100', 'FisioDistribuciones España S.L.', 'BANC-20260531-19', '2026-05-31', 'Conciliación bancaria: COMPRA MATERIAL SANITARIO FISIODIST', 145.50, 21.00, 30.56, 0.00, 0.00, 176.06, 'Otros', '2026-06-10 15:44:32'),
-(11, 1, 'A95075578', 'Iberdrola Clientes S.A.U.', 'BANC-20260609-14', '2026-06-09', 'Conciliación bancaria: PAGO CON TARJETA IBERDROLA', 118.60, 21.00, 24.91, 0.00, 0.00, 143.51, 'Suministros', '2026-06-10 15:46:02'),
-(12, 1, 'B82345678', 'Gestoría Rivas S.L.', 'BANC-20260607-32', '2026-06-07', 'Conciliación bancaria: RECIBO GESTORIA RIVAS CUOTA', 85.61, 21.00, 17.98, 15.00, 12.84, 90.75, 'Servicios profesionales', '2026-06-10 15:46:02'),
-(13, 1, 'F91122334', 'Patrimonial Centro Histórico S.A.', 'BANC-20260605-45', '2026-06-05', 'Conciliación bancaria: TRANSFERENCIA ALQUILER LOCAL JUNIO', 1423.53, 21.00, 298.94, 19.00, 270.47, 1452.00, 'Alquileres', '2026-06-10 15:46:02'),
-(14, 1, 'TGSS0001', 'Tesorería General de la S.S.', 'BANC-20260604-21', '2026-06-04', 'Conciliación bancaria: TRANSFERENCIA SEGUROS SOCIALES TGSS', 450.00, 0.00, 0.00, 0.00, 0.00, 450.00, 'Personal', '2026-06-10 15:46:02'),
-(15, 1, 'B99221100', 'FisioDistribuciones España S.L.', 'BANC-20260531-70', '2026-05-31', 'Conciliación bancaria: COMPRA MATERIAL SANITARIO FISIODIST', 145.50, 21.00, 30.56, 0.00, 0.00, 176.06, 'Otros', '2026-06-10 15:46:02'),
-(16, 1, 'A95075578', 'Iberdrola Clientes S.A.U.', 'BANC-20260609-68', '2026-06-09', 'Conciliación bancaria: PAGO CON TARJETA IBERDROLA', 118.60, 21.00, 24.91, 0.00, 0.00, 143.51, 'Suministros', '2026-06-10 15:46:06'),
-(17, 1, 'B82345678', 'Gestoría Rivas S.L.', 'BANC-20260607-69', '2026-06-07', 'Conciliación bancaria: RECIBO GESTORIA RIVAS CUOTA', 85.61, 21.00, 17.98, 15.00, 12.84, 90.75, 'Servicios profesionales', '2026-06-10 15:46:06'),
-(18, 1, 'F91122334', 'Patrimonial Centro Histórico S.A.', 'BANC-20260605-95', '2026-06-05', 'Conciliación bancaria: TRANSFERENCIA ALQUILER LOCAL JUNIO', 1423.53, 21.00, 298.94, 19.00, 270.47, 1452.00, 'Alquileres', '2026-06-10 15:46:06'),
-(19, 1, 'TGSS0001', 'Tesorería General de la S.S.', 'BANC-20260604-77', '2026-06-04', 'Conciliación bancaria: TRANSFERENCIA SEGUROS SOCIALES TGSS', 450.00, 0.00, 0.00, 0.00, 0.00, 450.00, 'Personal', '2026-06-10 15:46:06'),
-(20, 1, 'B99221100', 'FisioDistribuciones España S.L.', 'BANC-20260531-52', '2026-05-31', 'Conciliación bancaria: COMPRA MATERIAL SANITARIO FISIODIST', 145.50, 21.00, 30.56, 0.00, 0.00, 176.06, 'Otros', '2026-06-10 15:46:06'),
-(21, 1, 'A95075578', 'Iberdrola Clientes S.A.U.', 'BANC-20260609-32', '2026-06-09', 'Conciliación bancaria: PAGO CON TARJETA IBERDROLA', 118.60, 21.00, 24.91, 0.00, 0.00, 143.51, 'Suministros', '2026-06-10 15:46:23'),
-(22, 1, 'B82345678', 'Gestoría Rivas S.L.', 'BANC-20260607-34', '2026-06-07', 'Conciliación bancaria: RECIBO GESTORIA RIVAS CUOTA', 85.61, 21.00, 17.98, 15.00, 12.84, 90.75, 'Servicios profesionales', '2026-06-10 15:46:23'),
-(23, 1, 'F91122334', 'Patrimonial Centro Histórico S.A.', 'BANC-20260605-97', '2026-06-05', 'Conciliación bancaria: TRANSFERENCIA ALQUILER LOCAL JUNIO', 1423.53, 21.00, 298.94, 19.00, 270.47, 1452.00, 'Alquileres', '2026-06-10 15:46:23'),
-(24, 1, 'TGSS0001', 'Tesorería General de la S.S.', 'BANC-20260604-68', '2026-06-04', 'Conciliación bancaria: TRANSFERENCIA SEGUROS SOCIALES TGSS', 450.00, 0.00, 0.00, 0.00, 0.00, 450.00, 'Personal', '2026-06-10 15:46:23'),
-(25, 1, 'B99221100', 'FisioDistribuciones España S.L.', 'BANC-20260531-71', '2026-05-31', 'Conciliación bancaria: COMPRA MATERIAL SANITARIO FISIODIST', 145.50, 21.00, 30.56, 0.00, 0.00, 176.06, 'Otros', '2026-06-10 15:46:23');
 
 -- --------------------------------------------------------
 
@@ -520,6 +570,86 @@ CREATE TABLE `password_resets` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `planes_suscripcion`
+--
+
+CREATE TABLE `planes_suscripcion` (
+  `plan_id` int NOT NULL,
+  `codigo` enum('Basico','Profesional','Premium') NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `descripcion` text,
+  `precio_mensual` decimal(10,2) NOT NULL,
+  `precio_anual` decimal(10,2) DEFAULT NULL,
+  `max_fisioterapeutas` int DEFAULT NULL COMMENT 'NULL o 0 = ilimitado',
+  `incluye_verifactu` tinyint(1) NOT NULL DEFAULT '1',
+  `incluye_nominas` tinyint(1) NOT NULL DEFAULT '1',
+  `soporte_prioritario` tinyint(1) NOT NULL DEFAULT '0',
+  `estado` enum('Activo','Inactivo') NOT NULL DEFAULT 'Activo',
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `planes_suscripcion`
+--
+
+INSERT INTO `planes_suscripcion` (`plan_id`, `codigo`, `nombre`, `descripcion`, `precio_mensual`, `precio_anual`, `max_fisioterapeutas`, `incluye_verifactu`, `incluye_nominas`, `soporte_prioritario`, `estado`, `fecha_creacion`, `fecha_modificacion`) VALUES
+(1, 'Basico', 'Plan Inicial Clínicas', 'Diseñado para fisioterapeutas autónomos y pequeñas consultas.', 29.00, 290.00, 1, 0, 0, 0, 'Activo', '2026-08-23 11:34:08', NULL),
+(2, 'Profesional', 'Plan Clínica Multidisciplinar', 'Para clínicas en crecimiento con varios terapeutas y control fiscal Verifactu.', 79.00, 790.00, 5, 1, 1, 0, 'Activo', '2026-08-23 11:34:08', NULL),
+(3, 'Premium', 'Plan Red de Clínicas / Franquicias', 'Capacidad ilimitada, integraciones dedicadas y soporte prioritario 24/7.', 199.00, 1990.00, NULL, 1, 1, 1, 'Activo', '2026-08-23 11:34:08', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `registro_horario`
+--
+
+CREATE TABLE `registro_horario` (
+  `registro_id` int NOT NULL,
+  `cuenta_id` int NOT NULL DEFAULT '1',
+  `usuario_id` varchar(9) NOT NULL,
+  `fecha` date NOT NULL,
+  `entrada` datetime NOT NULL,
+  `salida` datetime DEFAULT NULL,
+  `notas` varchar(255) DEFAULT NULL,
+  `creado_por` varchar(9) DEFAULT NULL,
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `modificado_por` varchar(9) DEFAULT NULL,
+  `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipos_citas`
+--
+
+CREATE TABLE `tipos_citas` (
+  `tipo_cita_id` int NOT NULL,
+  `cuenta_id` int NOT NULL DEFAULT '1',
+  `nombre` varchar(150) NOT NULL,
+  `descripcion` text,
+  `duracion_minutos` int NOT NULL DEFAULT '60',
+  `precio` decimal(10,2) DEFAULT '0.00',
+  `color` varchar(20) DEFAULT '#3b82f6',
+  `estado` enum('Activo','Inactivo') DEFAULT 'Activo',
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `tipos_citas`
+--
+
+INSERT INTO `tipos_citas` (`tipo_cita_id`, `cuenta_id`, `nombre`, `descripcion`, `duracion_minutos`, `precio`, `color`, `estado`, `fecha_creacion`) VALUES
+(1, 1, 'Valoracion Inicial', 'Evaluacion completa y diagnostico inicial del paciente.', 60, 50.00, '#3b82f6', 'Activo', '2026-08-24 07:24:15'),
+(2, 1, 'Tratamiento General de Fisioterapia', 'Sesion estandar de terapia manual y tratamiento.', 45, 40.00, '#10b981', 'Activo', '2026-08-24 07:24:15'),
+(3, 1, 'Sesion de Fisioterapia Deportiva', 'Tratamiento enfocado en lesiones deportivas y rendimiento.', 60, 45.00, '#f59e0b', 'Activo', '2026-08-24 07:24:15'),
+(4, 1, 'Rehabilitacion Post-Quirurgica', 'Sesion intensiva de recuperacion postoperatoria.', 60, 55.00, '#ef4444', 'Activo', '2026-08-24 07:24:15'),
+(5, 1, 'Sesion Corta / Revision', 'Revision rapida de evolucion y ajustes puntuales.', 30, 25.00, '#8b5cf6', 'Activo', '2026-08-24 07:24:15');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usuarios`
 --
 
@@ -540,7 +670,7 @@ CREATE TABLE `usuarios` (
   `rol` enum('SuperAdmin','Administrador','Fisioterapeuta','Secretario','Paciente') NOT NULL DEFAULT 'Paciente',
   `rgpd_aceptado` tinyint(1) NOT NULL DEFAULT '0',
   `fecha_consentimiento` datetime DEFAULT NULL,
-  `firma_paciente` longtext DEFAULT NULL,
+  `firma_paciente` longtext,
   `creado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `modificado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
@@ -551,11 +681,11 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`usuario_id`, `cuenta_id`, `nombre`, `apellidos`, `telefono`, `fecha_nacimiento`, `direccion`, `provincia`, `municipio`, `cp`, `email`, `pass`, `genero`, `rol`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
-('000000000', 1, 'Super', 'Admin', '600000000', '1980-01-01', 'SaaS HQ', 'Madrid', 'Madrid', '28001', 'superadmin@tervion.es', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Hombre', 'SuperAdmin', NULL, '2026-05-01 08:00:00', NULL, NULL),
-('123456789', 1, 'Juan', 'Perez', '123456789', '1990-01-01', 'Calle 123', 'Provincia 1', 'Ciudad 1', '12345', 'patient@example.com', '$2y$12$bIEopyzNCTfMkRN7b/W.EOf22V1.Ss/n9bDOYE6pew9w5oX4ciseC', 'Hombre', 'Paciente', NULL, '2026-05-04 17:30:03', NULL, '2026-06-09 17:16:00'),
-('234567890', 1, 'Maria', 'Lopez', '234567890', '1995-05-05', 'Avenida 456', 'Provincia 2', 'Ciudad 2', '23456', 'fisio@example.com', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Mujer', 'Fisioterapeuta', NULL, '2026-05-04 17:30:03', NULL, '2026-06-12 20:07:40'),
-('345678901', 1, 'Pedro', 'Gomez', '345678901', '1985-10-10', 'Plaza 789', 'Provincia 3', 'Ciudad 3', '34567', 'admin@example.com', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Hombre', 'Administrador', NULL, '2026-05-04 17:30:03', NULL, '2026-06-12 20:07:40');
+INSERT INTO `usuarios` (`usuario_id`, `cuenta_id`, `nombre`, `apellidos`, `telefono`, `fecha_nacimiento`, `direccion`, `provincia`, `municipio`, `cp`, `email`, `pass`, `genero`, `rol`, `rgpd_aceptado`, `fecha_consentimiento`, `firma_paciente`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
+('000000000', 1, 'Super', 'Admin', '600000000', '1980-01-01', 'SaaS HQ', 'Madrid', 'Madrid', '28001', 'superadmin@tervion.es', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Hombre', 'SuperAdmin', 0, NULL, NULL, NULL, '2026-05-01 08:00:00', NULL, NULL),
+('123456789', 1, 'Juan', 'Perez', '123456789', '1990-01-01', 'Calle 123', 'Provincia 1', 'Ciudad 1', '12345', 'patient@example.com', '$2y$12$bIEopyzNCTfMkRN7b/W.EOf22V1.Ss/n9bDOYE6pew9w5oX4ciseC', 'Hombre', 'Paciente', 0, NULL, NULL, NULL, '2026-05-04 17:30:03', NULL, '2026-06-09 17:16:00'),
+('234567890', 1, 'Maria', 'Lopez', '234567890', '1995-05-05', 'Avenida 456', 'Provincia 2', 'Ciudad 2', '23456', 'fisio@example.com', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Mujer', 'Fisioterapeuta', 0, NULL, NULL, NULL, '2026-05-04 17:30:03', NULL, '2026-06-12 20:07:40'),
+('345678901', 1, 'Pedro', 'Gomez', '345678901', '1985-10-10', 'Plaza 789', 'Provincia 3', 'Ciudad 3', '34567', 'admin@example.com', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Hombre', 'Administrador', 0, NULL, NULL, NULL, '2026-05-04 17:30:03', NULL, '2026-06-12 20:07:40');
 
 --
 -- Índices para tablas volcadas
@@ -601,15 +731,27 @@ ALTER TABLE `citas`
   ADD KEY `fisioterapeuta_id` (`fisioterapeuta_id`),
   ADD KEY `fk_citas_creador` (`creado_por`),
   ADD KEY `fk_citas_modificador` (`modificado_por`),
-  ADD KEY `fk_citas_bono` (`bono_paciente_id`);
+  ADD KEY `fk_citas_bono` (`bono_paciente_id`),
+  ADD KEY `fk_citas_tipos_citas` (`tipo_cita_id`);
 
 --
 -- Indices de la tabla `clinicas`
 --
 ALTER TABLE `clinicas`
   ADD PRIMARY KEY (`id_clinica`),
-  ADD KEY `idx_clinicas_cuenta` (`cuenta_id`),
-  ADD UNIQUE KEY `email_contacto` (`email_contacto`);
+  ADD UNIQUE KEY `email_contacto` (`email_contacto`),
+  ADD KEY `idx_clinicas_cuenta` (`cuenta_id`);
+
+--
+-- Indices de la tabla `codigos_descuento`
+--
+ALTER TABLE `codigos_descuento`
+  ADD PRIMARY KEY (`codigo_id`),
+  ADD UNIQUE KEY `uk_cuenta_codigo` (`cuenta_id`,`codigo`),
+  ADD KEY `idx_codigo_cuenta` (`cuenta_id`),
+  ADD KEY `idx_codigo_estado` (`estado`),
+  ADD KEY `fk_codigos_creador` (`creado_por`),
+  ADD KEY `fk_codigos_modificador` (`modificado_por`);
 
 --
 -- Indices de la tabla `contratos`
@@ -629,6 +771,21 @@ ALTER TABLE `cuentas_clientes`
   ADD UNIQUE KEY `uk_email_admin` (`email_admin`);
 
 --
+-- Indices de la tabla `documentos`
+--
+ALTER TABLE `documentos`
+  ADD PRIMARY KEY (`documento_id`);
+
+--
+-- Indices de la tabla `documentos_pacientes`
+--
+ALTER TABLE `documentos_pacientes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_docpac_cuenta` (`cuenta_id`),
+  ADD KEY `idx_docpac_paciente` (`paciente_id`),
+  ADD KEY `idx_docpac_documento` (`documento_id`);
+
+--
 -- Indices de la tabla `empleados`
 --
 ALTER TABLE `empleados`
@@ -645,6 +802,14 @@ ALTER TABLE `facturas`
   ADD KEY `paciente_id` (`paciente_id`),
   ADD KEY `fk_facturas_creador` (`creado_por`),
   ADD KEY `fk_facturas_modificador` (`modificado_por`);
+
+--
+-- Indices de la tabla `facturas_saas`
+--
+ALTER TABLE `facturas_saas`
+  ADD PRIMARY KEY (`factura_saas_id`),
+  ADD UNIQUE KEY `uk_saas_serie_numero` (`serie`,`numero`),
+  ADD KEY `idx_saas_cuenta` (`cuenta_id`);
 
 --
 -- Indices de la tabla `gastos`
@@ -710,6 +875,30 @@ ALTER TABLE `password_resets`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `planes_suscripcion`
+--
+ALTER TABLE `planes_suscripcion`
+  ADD PRIMARY KEY (`plan_id`),
+  ADD UNIQUE KEY `uk_plan_codigo` (`codigo`);
+
+--
+-- Indices de la tabla `registro_horario`
+--
+ALTER TABLE `registro_horario`
+  ADD PRIMARY KEY (`registro_id`),
+  ADD KEY `idx_registro_cuenta` (`cuenta_id`),
+  ADD KEY `idx_registro_usuario` (`usuario_id`),
+  ADD KEY `idx_registro_fecha` (`fecha`),
+  ADD KEY `fk_registro_creador` (`creado_por`),
+  ADD KEY `fk_registro_modificador` (`modificado_por`);
+
+--
+-- Indices de la tabla `tipos_citas`
+--
+ALTER TABLE `tipos_citas`
+  ADD PRIMARY KEY (`tipo_cita_id`);
+
+--
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -746,13 +935,19 @@ ALTER TABLE `bonos_pacientes`
 -- AUTO_INCREMENT de la tabla `citas`
 --
 ALTER TABLE `citas`
-  MODIFY `cita_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `cita_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `clinicas`
 --
 ALTER TABLE `clinicas`
   MODIFY `id_clinica` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `codigos_descuento`
+--
+ALTER TABLE `codigos_descuento`
+  MODIFY `codigo_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `contratos`
@@ -767,10 +962,28 @@ ALTER TABLE `cuentas_clientes`
   MODIFY `cuenta_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT de la tabla `documentos`
+--
+ALTER TABLE `documentos`
+  MODIFY `documento_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `documentos_pacientes`
+--
+ALTER TABLE `documentos_pacientes`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `facturas`
 --
 ALTER TABLE `facturas`
   MODIFY `factura_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `facturas_saas`
+--
+ALTER TABLE `facturas_saas`
+  MODIFY `factura_saas_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `gastos`
@@ -815,6 +1028,24 @@ ALTER TABLE `password_resets`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT de la tabla `planes_suscripcion`
+--
+ALTER TABLE `planes_suscripcion`
+  MODIFY `plan_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `registro_horario`
+--
+ALTER TABLE `registro_horario`
+  MODIFY `registro_id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `tipos_citas`
+--
+ALTER TABLE `tipos_citas`
+  MODIFY `tipo_cita_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- Restricciones para tablas volcadas
 --
 
@@ -822,8 +1053,8 @@ ALTER TABLE `password_resets`
 -- Filtros para la tabla `ausencias_terapeutas`
 --
 ALTER TABLE `ausencias_terapeutas`
-  ADD CONSTRAINT `fk_ausencia_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_ausencia_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ausencia_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_ausencia_fisio` FOREIGN KEY (`fisioterapeuta_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_ausencia_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
@@ -831,30 +1062,31 @@ ALTER TABLE `ausencias_terapeutas`
 -- Filtros para la tabla `bonos`
 --
 ALTER TABLE `bonos`
-  ADD CONSTRAINT `fk_bonos_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_bonos_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_bonos_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_bonos_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `bonos_pacientes`
 --
 ALTER TABLE `bonos_pacientes`
-  ADD CONSTRAINT `fk_bp_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_bonopaciente_bono` FOREIGN KEY (`bono_id`) REFERENCES `bonos` (`bono_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_bonopaciente_paciente` FOREIGN KEY (`paciente_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_bp_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_bp_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_bp_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `citas`
 --
 ALTER TABLE `citas`
-  ADD CONSTRAINT `fk_citas_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `citas_ibfk_1` FOREIGN KEY (`paciente_id`) REFERENCES `usuarios` (`usuario_id`),
   ADD CONSTRAINT `citas_ibfk_2` FOREIGN KEY (`fisioterapeuta_id`) REFERENCES `usuarios` (`usuario_id`),
   ADD CONSTRAINT `fk_citas_bono` FOREIGN KEY (`bono_paciente_id`) REFERENCES `bonos_pacientes` (`bono_paciente_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_citas_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_citas_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_citas_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_citas_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_citas_tipos_citas` FOREIGN KEY (`tipo_cita_id`) REFERENCES `tipos_citas` (`tipo_cita_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `clinicas`
@@ -863,27 +1095,41 @@ ALTER TABLE `clinicas`
   ADD CONSTRAINT `fk_clinicas_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `codigos_descuento`
+--
+ALTER TABLE `codigos_descuento`
+  ADD CONSTRAINT `fk_codigos_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_codigos_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_codigos_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `contratos`
 --
 ALTER TABLE `contratos`
-  ADD CONSTRAINT `fk_contratos_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_contrato_usuario_link` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_contrato_usuario_link` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_contratos_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `empleados`
 --
 ALTER TABLE `empleados`
-  ADD CONSTRAINT `fk_empleados_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_empleado_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_empleado_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_empleados_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `facturas`
 --
 ALTER TABLE `facturas`
-  ADD CONSTRAINT `fk_facturas_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `facturas_ibfk_1` FOREIGN KEY (`paciente_id`) REFERENCES `usuarios` (`usuario_id`),
   ADD CONSTRAINT `fk_facturas_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_facturas_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_facturas_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `facturas_saas`
+--
+ALTER TABLE `facturas_saas`
+  ADD CONSTRAINT `fk_saas_facturas_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `gastos`
@@ -895,8 +1141,8 @@ ALTER TABLE `gastos`
 -- Filtros para la tabla `historiales_medicos`
 --
 ALTER TABLE `historiales_medicos`
-  ADD CONSTRAINT `fk_hm_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_hm_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_hm_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_hm_fisio` FOREIGN KEY (`fisioterapeuta_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_hm_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_hm_paciente` FOREIGN KEY (`paciente_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -905,180 +1151,53 @@ ALTER TABLE `historiales_medicos`
 -- Filtros para la tabla `horarios_terapeutas`
 --
 ALTER TABLE `horarios_terapeutas`
-  ADD CONSTRAINT `fk_horarios_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_horario_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_horario_fisio` FOREIGN KEY (`fisioterapeuta_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_horario_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_horario_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_horarios_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `metodos_pago`
 --
 ALTER TABLE `metodos_pago`
-  ADD CONSTRAINT `fk_metodos_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_metodo_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_metodos_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_metodos_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_metodos_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `nominas`
 --
 ALTER TABLE `nominas`
-  ADD CONSTRAINT `fk_nominas_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_nomina_contrato_link` FOREIGN KEY (`contrato_id`) REFERENCES `contratos` (`contrato_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_nomina_contrato_link` FOREIGN KEY (`contrato_id`) REFERENCES `contratos` (`contrato_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_nominas_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `pagos`
 --
 ALTER TABLE `pagos`
-  ADD CONSTRAINT `fk_pagos_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_pagos_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_pagos_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_pagos_factura` FOREIGN KEY (`factura_id`) REFERENCES `facturas` (`factura_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_pagos_metodo_pago` FOREIGN KEY (`metodo_pago_id`) REFERENCES `metodos_pago` (`metodo_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_pagos_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `registro_horario`
+--
+ALTER TABLE `registro_horario`
+  ADD CONSTRAINT `fk_registro_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_registro_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_registro_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_registro_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD CONSTRAINT `fk_usuarios_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_usuarios_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuarios_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_usuarios_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Estructura de tabla para la tabla `registro_horario`
---
-CREATE TABLE `registro_horario` (
-  `registro_id` int NOT NULL AUTO_INCREMENT,
-  `cuenta_id` int NOT NULL DEFAULT '1',
-  `usuario_id` varchar(9) NOT NULL,
-  `fecha` date NOT NULL,
-  `entrada` datetime NOT NULL,
-  `salida` datetime DEFAULT NULL,
-  `notas` varchar(255) DEFAULT NULL,
-  `creado_por` varchar(9) DEFAULT NULL,
-  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `modificado_por` varchar(9) DEFAULT NULL,
-  `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`registro_id`),
-  KEY `idx_registro_cuenta` (`cuenta_id`),
-  KEY `idx_registro_usuario` (`usuario_id`),
-  KEY `idx_registro_fecha` (`fecha`),
-  CONSTRAINT `fk_registro_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_registro_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_registro_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `fk_registro_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Estructura de tabla para la tabla `codigos_descuento`
---
-CREATE TABLE `codigos_descuento` (
-  `codigo_id` int NOT NULL AUTO_INCREMENT,
-  `cuenta_id` int NOT NULL DEFAULT '1',
-  `codigo` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `descripcion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `tipo_descuento` enum('porcentaje','fijo') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'porcentaje',
-  `valor` decimal(10,2) NOT NULL,
-  `monto_minimo` decimal(10,2) DEFAULT '0.00',
-  `usos_maximos` int DEFAULT NULL,
-  `usos_actuales` int NOT NULL DEFAULT '0',
-  `fecha_inicio` datetime DEFAULT NULL,
-  `fecha_fin` datetime DEFAULT NULL,
-  `estado` enum('Activo','Inactivo') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'Activo',
-  `creado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `modificado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`codigo_id`),
-  UNIQUE KEY `uk_cuenta_codigo` (`cuenta_id`, `codigo`),
-  KEY `idx_codigo_cuenta` (`cuenta_id`),
-  KEY `idx_codigo_estado` (`estado`),
-  CONSTRAINT `fk_codigos_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_codigos_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `fk_codigos_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE
---
--- Estructura de tabla para la tabla `facturas_saas` (Facturación B2B a Clínicas/Clientes)
---
-CREATE TABLE `facturas_saas` (
-  `factura_saas_id` int NOT NULL AUTO_INCREMENT,
-  `cuenta_id` int NOT NULL,
-  `serie` varchar(10) NOT NULL DEFAULT 'SAAS',
-  `numero` int NOT NULL,
-  `fecha_emision` date NOT NULL,
-  `fecha_vencimiento` date DEFAULT NULL,
-  `concepto` varchar(255) NOT NULL COMMENT 'Ej: Suscripción Plan Profesional - Agosto 2026',
-  `plan_suscripcion` enum('Basico','Profesional','Premium') NOT NULL DEFAULT 'Profesional',
-  `base_imponible` decimal(10,2) NOT NULL,
-  `tipo_iva` decimal(5,2) NOT NULL DEFAULT '21.00',
-  `cuota_iva` decimal(10,2) NOT NULL,
-  `total` decimal(10,2) NOT NULL,
-  `estado` enum('Pendiente','Pagada','Vencida','Cancelada') NOT NULL DEFAULT 'Pendiente',
-  `metodo_pago` varchar(50) DEFAULT 'Tarjeta',
-  `notas` text DEFAULT NULL,
-  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`factura_saas_id`),
-  UNIQUE KEY `uk_saas_serie_numero` (`serie`, `numero`),
-  KEY `idx_saas_cuenta` (`cuenta_id`),
-  CONSTRAINT `fk_saas_facturas_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Estructura de tabla para la tabla `planes_suscripcion` (Gestión de Planes SaaS)
---
-CREATE TABLE `planes_suscripcion` (
-  `plan_id` int NOT NULL AUTO_INCREMENT,
-  `codigo` enum('Basico','Profesional','Premium') NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `descripcion` text DEFAULT NULL,
-  `precio_mensual` decimal(10,2) NOT NULL,
-  `precio_anual` decimal(10,2) DEFAULT NULL,
-  `max_fisioterapeutas` int DEFAULT NULL COMMENT 'NULL o 0 = ilimitado',
-  `incluye_verifactu` tinyint(1) NOT NULL DEFAULT '1',
-  `incluye_nominas` tinyint(1) NOT NULL DEFAULT '1',
-  `soporte_prioritario` tinyint(1) NOT NULL DEFAULT '0',
-  `estado` enum('Activo','Inactivo') NOT NULL DEFAULT 'Activo',
-  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`plan_id`),
-  UNIQUE KEY `uk_plan_codigo` (`codigo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Volcado de datos para la tabla `planes_suscripcion`
---
-INSERT INTO `planes_suscripcion` (`plan_id`, `codigo`, `nombre`, `descripcion`, `precio_mensual`, `precio_anual`, `max_fisioterapeutas`, `incluye_verifactu`, `incluye_nominas`, `soporte_prioritario`, `estado`) VALUES
-(1, 'Basico', 'Plan Inicial Clínicas', 'Diseñado para fisioterapeutas autónomos y pequeñas consultas.', 29.00, 290.00, 1, 0, 0, 0, 'Activo'),
-(2, 'Profesional', 'Plan Clínica Multidisciplinar', 'Para clínicas en crecimiento con varios terapeutas y control fiscal Verifactu.', 79.00, 790.00, 5, 1, 1, 0, 'Activo'),
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `documentos`
---
-
-CREATE TABLE IF NOT EXISTS `documentos` (
-  `documento_id` int NOT NULL AUTO_INCREMENT,
-  `cuenta_id` int NOT NULL DEFAULT '1',
-  `titulo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `descripcion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `contenido` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `creado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `modificado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`documento_id`),
-  KEY `idx_documentos_cuenta` (`cuenta_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Volcado de datos para la tabla `documentos`
---
-
-INSERT INTO `documentos` (`documento_id`, `cuenta_id`, `titulo`, `descripcion`, `contenido`, `creado_por`, `fecha_creacion`) VALUES
-(1, 1, 'Consentimiento Informado para Fisioterapia General', 'Autorización general del paciente para la realización de terapia manual, ejercicios terapéuticos y electroterapia.', '<h2>CONSENTIMIENTO INFORMADO DE FISIOTERAPIA</h2><p>Mediante el presente documento, el paciente declara haber sido informado satisfactoriamente sobre los <strong>tratamientos de fisioterapia</strong> que le serán aplicados en la clínica.</p><h3>Objetivo del tratamiento</h3><p>El tratamiento tiene como finalidad la disminución del dolor, la mejora de la movilidad articular y la recuperación funcional mediante técnicas manuales, ejercicio terapéutico y aparatología especializada.</p><h3>Posibles efectos secundarios</h3><ul><li>Molestias musculares o agujetas tras la sesión (24-48 horas).</li><li>Leve enrojecimiento de la piel en caso de termoterapia o electroterapia.</li></ul><p>El paciente consiente expresamente la realización de las técnicas prescritas por el fisioterapeuta colegiado.</p>', '123456789', '2026-05-15 10:00:00'),
-(2, 1, 'Cláusula de Protección de Datos Personales (RGPD)', 'Consentimiento expreso del tratamiento de datos de salud conforme al Reglamento General de Protección de Datos.', '<h2>INFORMACIÓN SOBRE PROTECCIÓN DE DATOS (RGPD / LOPDGDD)</h2><p>En cumplimiento del Reglamento (UE) 2016/679, le informamos de que sus datos personales de salud serán tratados bajo la responsabilidad de <strong>Clínica Tervion</strong>.</p><h3>Finalidad del tratamiento</h3><p>Gestión de su historia clínica, programación de citas, facturación y prestación de servicios sanitarios de fisioterapia y rehabilitación.</p><h3>Derechos del usuario</h3><p>Usted puede ejercer en cualquier momento sus derechos de <strong>acceso, rectificación, supresión, oposición y portabilidad</strong> de sus datos dirigiéndose por escrito a la clínica o mediante correo electrónico.</p>', '123456789', '2026-05-20 11:30:00'),
-(3, 1, 'Consentimiento Informado para Punción Seca', 'Consentimiento específico detallando riesgos, contraindicaciones y beneficios del tratamiento invasivo miofascial.', '<h2>CONSENTIMIENTO INFORMADO: PUNCIÓN SECA</h2><p>La <strong>Punción Seca</strong> es una técnica invasiva utilizada en fisioterapia para el tratamiento de los puntos gatillo miofasciales mediante el uso de agujas de acupuntura.</p><h3>Beneficios esperados</h3><p>Relajación inmediata del músculo afectado, alivio del dolor referido y restauración del rango de movimiento habitual.</p><h3>Riesgos y efectos secundarios informados</h3><ul><li>Dolor post-punción durante 24 a 72 horas.</li><li>Aparición de pequeños hematomas locales.</li><li>Neumotórax (riesgo extremadamente bajo en zonas torácicas/escapulares, minimizado mediante ecografía y técnica adecuada).</li></ul><p>Declaró no presentar alergia a metales ni alteraciones graves de la coagulación.</p>', '234567890', '2026-06-01 09:15:00'),
-(4, 1, 'Informe de Alta de Tratamiento y Pauta Domiciliaria', 'Plantilla normalizada para emitir el informe final de alta del paciente con recomendaciones de ejercicios domiciliarios.', '<h2>INFORME DE ALTA DE FISIOTERAPIA</h2><p>Se emite el presente informe tras haber completado satisfactoriamente el plan de tratamiento prescrito.</p><table border="1" style="width:100%; border-collapse: collapse; text-align: left;"><thead><tr style="background-color: #f1f5f9;"><th>Parámetro</th><th>Evaluación Inicial</th><th>Estado al Alta</th></tr></thead><tbody><tr><td>Dolor (Escala EVA)</td><td>8 / 10</td><td>1 / 10</td></tr><tr><td>Balance Articular</td><td>Limitación moderada</td><td>Completo sin restricción</td></tr><tr><td>Autonomía Funcional</td><td>Parcial</td><td>100% Autónomo</td></tr></tbody></table><h3>Recomendaciones al Alta</h3><ol><li>Realizar estiramientos diarios según la pauta entregada.</li><li>Mantener hidratación adecuada e higiene postural en el puesto de trabajo.</li><li>Revisión preventiva en 6 meses o ante reaparición de síntomas.</li></ol>', '123456789', '2026-06-10 16:45:00');
-
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

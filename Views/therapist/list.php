@@ -118,7 +118,7 @@ $trabajadoresPaginados = array_slice($trabajadores_filtrados, $iniciar, $articul
             <table class="w-full text-left text-xs">
                 <thead>
                     <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
-                        <th class="py-3 px-4 font-semibold">DNI / ID</th>
+                        <th class="py-3 px-4 font-semibold">DNI</th>
                         <th class="py-3 px-4 font-semibold">Nombre Completo</th>
                         <th class="py-3 px-4 font-semibold">Rol / Cargo</th>
                         <th class="py-3 px-4 font-semibold">Email</th>

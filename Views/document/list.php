@@ -78,7 +78,6 @@ $documentosPaginados = array_slice($documentos_filtrados, $iniciar, $articulos_x
             <table class="w-full text-left text-xs">
                 <thead>
                     <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
-                        <th class="py-3 px-4 font-semibold">ID</th>
                         <th class="py-3 px-4 font-semibold">Título de la Plantilla</th>
                         <th class="py-3 px-4 font-semibold">Descripción</th>
                         <th class="py-3 px-4 font-semibold">Fecha de Creación</th>
@@ -89,7 +88,6 @@ $documentosPaginados = array_slice($documentos_filtrados, $iniciar, $articulos_x
                     <?php if (!empty($documentosPaginados)) : ?>
                         <?php foreach ($documentosPaginados as $doc) : ?>
                             <tr class="hover:bg-gray-50/80 transition-colors">
-                                <td class="py-4 px-4 font-bold text-gray-400">#<?= htmlspecialchars($doc['documento_id']) ?></td>
                                 <td class="py-4 px-4">
                                     <div class="flex items-center gap-2.5">
                                         <div class="h-8 w-8 rounded-xl bg-primary-50 flex items-center justify-center text-primary-600 font-bold text-sm shrink-0">
@@ -97,9 +95,6 @@ $documentosPaginados = array_slice($documentos_filtrados, $iniciar, $articulos_x
                                         </div>
                                         <div>
                                             <div class="font-bold text-gray-900 text-sm"><?= htmlspecialchars($doc['titulo']) ?></div>
-                                            <?php if (!empty($doc['creador_nombre'])): ?>
-                                                <div class="text-[11px] text-gray-400">Creado por: <?= htmlspecialchars($doc['creador_nombre'] . ' ' . ($doc['creador_apellidos'] ?? '')) ?></div>
-                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </td>
@@ -186,6 +181,7 @@ $documentosPaginados = array_slice($documentos_filtrados, $iniciar, $articulos_x
             opacity: 0;
             transform: translateY(10px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);

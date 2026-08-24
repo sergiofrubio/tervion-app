@@ -145,12 +145,10 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
             <table class="w-full text-left text-xs">
                 <thead>
                     <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
-                        <th class="py-3 px-4 font-semibold">ID Pac.</th>
+                        <th class="py-3 px-4 font-semibold">Paciente</th>
                         <th class="py-3 px-4 font-semibold">Fecha</th>
                         <th class="py-3 px-4 font-semibold">Tipo</th>
-                        <th class="py-3 px-4 font-semibold">Paciente</th>
-                        <th class="py-3 px-4 font-semibold">Contacto</th>
-                        <th class="py-3 px-4 font-semibold">Fis. Asoc.</th>
+                        <th class="py-3 px-4 font-semibold">Terapeuta</th>
                         <th class="py-3 px-4 font-semibold">Estado</th>
                         <th class="py-3 px-4 font-semibold text-right">Acciones</th>
                     </tr>
@@ -159,7 +157,9 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
                     <?php if (!empty($citasPaginadas)) : ?>
                         <?php foreach ($citasPaginadas as $cita) : ?>
                             <tr class="hover:bg-gray-50/80 transition-colors">
-                                <td class="py-4 px-4 font-bold text-gray-400">#<?= htmlspecialchars($cita['paciente_id'] ?? $cita['cita_id'] ?? '') ?></td>
+                                <td class="py-4 px-4 font-bold text-gray-900 text-sm">
+                                    <?= htmlspecialchars(trim(($cita['paciente_nombre'] ?? '') . " " . ($cita['paciente_apellidos'] ?? ''))) ?>
+                                </td>
                                 <td class="py-4 px-4 font-semibold text-gray-900">
                                     <div class="flex items-center gap-1.5">
                                         <i class="bi bi-calendar2 text-gray-400 text-xs"></i>
@@ -176,14 +176,7 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
                                         <span class="text-gray-400 font-normal italic">Estándar</span>
                                     <?php endif; ?>
                                 </td>
-                                <td class="py-4 px-4 font-bold text-gray-900 text-sm">
-                                    <?= htmlspecialchars(trim(($cita['paciente_nombre'] ?? '') . " " . ($cita['paciente_apellidos'] ?? ''))) ?>
-                                </td>
-                                <td class="py-4 px-4 text-gray-600 font-medium">
-                                    <a href="tel:<?= htmlspecialchars($cita['paciente_telefono'] ?? '') ?>" class="hover:text-primary-600 transition-colors">
-                                        <?= htmlspecialchars($cita['paciente_telefono'] ?? '') ?>
-                                    </a>
-                                </td>
+
                                 <td class="py-4 px-4 text-gray-600 font-medium">
                                     <div class="flex items-center gap-2">
                                         <div class="w-6 h-6 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center text-[10px] font-bold">

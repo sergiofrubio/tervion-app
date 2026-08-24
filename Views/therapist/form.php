@@ -9,7 +9,7 @@ include TEMPLATE_DIR . 'header.php';
     <!-- Header -->
     <div class="mb-8 flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900 tracking-tight"><?= $isEdit ? "Editar Facultativo / Empleado" : "Nuevo Facultativo / Empleado" ?></h1>
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight"><?= $isEdit ? "Editar Facultativo / Empleado" : "Nuevo Facultativo" ?></h1>
             <p class="mt-1 text-sm text-gray-500"><?= $isEdit ? "Modifica los datos personales y laborales del especialista." : "Registra un nuevo especialista o miembro del personal en el sistema." ?></p>
         </div>
         <a href="<?= PROJECT_ROOT ?>/terapeutas" class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-primary-600 transition-colors">

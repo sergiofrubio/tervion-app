@@ -264,19 +264,19 @@ class PatientController extends Controller
         $pdf->SetFont('Arial', 'B', 11);
         $pdf->SetFillColor(245, 247, 250);
         $pdf->Cell(0, 8, iconv('UTF-8', 'windows-1252', '  Datos del Paciente'), 1, 1, 'L', true);
-        
+
         $pdf->SetFont('Arial', '', 10);
         $fechaNac = !empty($usuario['fecha_nacimiento']) ? date('d/m/Y', strtotime($usuario['fecha_nacimiento'])) : '-';
-        
+
         $pdf->Cell(90, 7, iconv('UTF-8', 'windows-1252', '  Nombre: ' . ($usuario['nombre'] ?? '') . ' ' . ($usuario['apellidos'] ?? '')), 'L', 0);
-        $pdf->Cell(90, 7, iconv('UTF-8', 'windows-1252', 'DNI / Identificador: ' . ($usuario['usuario_id'] ?? '')), 'R', 1);
-        
+        $pdf->Cell(90, 7, iconv('UTF-8', 'windows-1252', 'DNIentificador: ' . ($usuario['usuario_id'] ?? '')), 'R', 1);
+
         $pdf->Cell(90, 7, iconv('UTF-8', 'windows-1252', '  Teléfono: ' . ($usuario['telefono'] ?? '-')), 'L', 0);
         $pdf->Cell(90, 7, iconv('UTF-8', 'windows-1252', 'Email: ' . ($usuario['email'] ?? '-')), 'R', 1);
 
         $pdf->Cell(90, 7, iconv('UTF-8', 'windows-1252', '  Fecha de Nacimiento: ' . $fechaNac), 'L', 0);
         $pdf->Cell(90, 7, iconv('UTF-8', 'windows-1252', 'Dirección: ' . ($usuario['direccion'] ?? '-') . ' (' . ($usuario['cp'] ?? '') . ')'), 'R', 1);
-        
+
         $pdf->Cell(180, 2, '', 'LBR', 1);
         $pdf->Ln(6);
 
@@ -284,7 +284,7 @@ class PatientController extends Controller
         $pdf->SetFont('Arial', 'B', 11);
         $pdf->Cell(0, 7, iconv('UTF-8', 'windows-1252', 'Información sobre Protección de Datos (RGPD / LOPD-GDD)'), 0, 1, 'L');
         $pdf->SetFont('Arial', '', 9);
-        
+
         $textoLegal = "De conformidad con el Reglamento General de Protección de Datos (RGPD UE 2016/679) y la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD):\n\n"
             . "1. RESPONSABLE DEL TRATAMIENTO: Tervion / Velion Clinique.\n"
             . "2. FINALIDAD: Gestión de la historia clínica, prestación de servicios sanitarios de fisioterapia y salud, citación y facturación.\n"
@@ -299,7 +299,7 @@ class PatientController extends Controller
 
         // Firma y fecha
         $fechaConsent = !empty($usuario['fecha_consentimiento']) ? date('d/m/Y H:i', strtotime($usuario['fecha_consentimiento'])) : date('d/m/Y H:i');
-        
+
         $pdf->SetFont('Arial', 'B', 10);
         $estadoStr = !empty($usuario['rgpd_aceptado']) ? 'ACEPTADO Y FIRMADO' : 'PENDIENTE DE FIRMA';
         $pdf->Cell(0, 6, iconv('UTF-8', 'windows-1252', 'Estado del Consentimiento: ' . $estadoStr), 0, 1, 'L');

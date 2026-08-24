@@ -97,11 +97,11 @@ $isAnyConfigActive = ($isFacultativosActive || $isContabilidadActive || $isDocum
                         <span>Fichajes</span>
                     </a>
 
-                    <!-- <a href="<?= PROJECT_ROOT ?>/historial/crear"
+                    <a href="<?= PROJECT_ROOT ?>/historial/crear"
                         class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 <?= $isHistoriasActive ? 'bg-primary-600 text-white shadow-md' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
                         <i class="bi bi-file-earmark-medical text-sm"></i>
                         <span>Historias</span>
-                    </a> -->
+                    </a>
 
                     <!-- Desplegable Rueda Configuración -->
                     <div class="relative" @click.away="configMenuOpen = false">
@@ -191,15 +191,15 @@ $isAnyConfigActive = ($isFacultativosActive || $isContabilidadActive || $isDocum
                 <span>Fichajes</span>
             </a>
 
-            <!-- <a href="<?= PROJECT_ROOT ?>/historial/crear" @click="mobileMenuOpen = false"
+            <a href="<?= PROJECT_ROOT ?>/historial/crear" @click="mobileMenuOpen = false"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors <?= $isHistoriasActive ? 'bg-primary-600 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
                 <i class="bi bi-file-earmark-medical text-base"></i>
                 <span>Historias</span>
-            </a> -->
+            </a>
 
             <div class="pt-2 border-t border-gray-800 space-y-1">
                 <div class="px-3 py-1 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Configuración</div>
-                <a href="<?= PROJECT_ROOT ?>/nominas" @click="mobileMenuOpen = false"
+                <a href="<?= PROJECT_ROOT ?>/terapeutas" @click="mobileMenuOpen = false"
                     class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition-colors <?= $isFacultativosActive ? 'bg-primary-600 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
                     <i class="bi bi-person-badge text-base"></i>
                     <span>Facultativos</span>

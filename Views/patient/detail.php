@@ -225,7 +225,7 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                     <div x-show="activeTab === 'history'" x-cloak>
                         <div class="flex items-center justify-between mb-6">
                             <div>
-                                <h3 class="text-base font-bold text-gray-900">Evolutivos e Informes Clínicos</h3>
+                                <h3 class="text-base font-bold text-gray-900">Informes Clínicos</h3>
                                 <p class="text-xs text-gray-500 mt-0.5">Historial cronológico de consultas, diagnósticos y tratamientos.</p>
                             </div>
                             <?php if ($rol !== "Paciente") : ?>
@@ -304,7 +304,7 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                     <div x-show="activeTab === 'appointments'" x-cloak>
                         <div class="flex items-center justify-between mb-6">
                             <div>
-                                <h3 class="text-base font-bold text-gray-900">Citas Programadas y Pasadas</h3>
+                                <h3 class="text-base font-bold text-gray-900">Próximas Citas</h3>
                                 <p class="text-xs text-gray-500 mt-0.5">Listado de sesiones de tratamiento y revisiones del paciente.</p>
                             </div>
                             <?php if ($rol !== "Paciente") : ?>

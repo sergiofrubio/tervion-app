@@ -123,7 +123,7 @@ $isAnyConfigActive = ($isFacultativosActive || $isContabilidadActive || $isConfi
                             x-transition:leave-end="opacity-0 scale-95"
                             class="absolute right-0 mt-1.5 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-1.5 z-50 overflow-hidden text-slate-800">
 
-                            <a href="<?= PROJECT_ROOT ?>/nominas"
+                            <a href="<?= PROJECT_ROOT ?>/terapeutas"
                                 class="flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold hover:bg-slate-50 transition-colors <?= $isFacultativosActive ? 'text-primary-600 bg-primary-50/50' : 'text-slate-700 hover:text-primary-600' ?>">
                                 <i class="bi bi-person-badge text-sm text-gray-400"></i>
                                 <span>Facultativos</span>

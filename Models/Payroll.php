@@ -59,14 +59,33 @@ class Payroll
 
     public function createPayroll($data)
     {
-        $query = "INSERT INTO nominas (contrato_id, mes, anio, fecha_emision, devengos_base, devengos_complementos, devengos_total_bruto, 
-                                      deduccion_seguridad_social_trabajador, deduccion_irpf, deducciones_total, liquido_a_percibir, 
-                                      coste_seguridad_social_empresa, estado) 
-                  VALUES (:contrato_id, :mes, :anio, :fecha_emision, :devengos_base, :devengos_complementos, :devengos_total_bruto, 
-                          :deduccion_seguridad_social_trabajador, :deduccion_irpf, :deducciones_total, :liquido_a_percibir, 
-                          :coste_seguridad_social_empresa, :estado)";
+        $query = "INSERT INTO nominas (contrato_id, mes, anio, liquido_percepcion, bruto, deduccion_ss, deduccion_irpf, coste_empresa_ss, pagada) 
+                  VALUES (:contrato_id, :mes, :anio, :liquido_percepcion, :bruto, :deduccion_ss, :deduccion_irpf, :coste_empresa_ss, :pagada)";
         $stmt = $this->db->prepare($query);
-        return $stmt->execute($data);
+        $stmt->bindParam(':contrato_id', $data['contrato_id']);
+        $stmt->bindParam(':mes', $data['mes']);
+        $stmt->bindParam(':anio', $data['anio']);
+        $stmt->bindParam(':liquido_percepcion', $data['liquido_percepcion']);
+        $stmt->bindParam(':bruto', $data['bruto']);
+        $stmt->bindParam(':deduccion_ss', $data['deduccion_ss']);
+        $stmt->bindParam(':deduccion_irpf', $data['deduccion_irpf']);
+        $stmt->bindParam(':coste_empresa_ss', $data['coste_empresa_ss']);
+        $stmt->bindParam(':pagada', $data['pagada'], PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function getPayrollsByWorker($usuario_id)
+    {
+        $query = "SELECT n.*, u.nombre, u.apellidos, c.tipo_contrato 
+                  FROM nominas n 
+                  JOIN contratos c ON n.contrato_id = c.contrato_id 
+                  JOIN usuarios u ON c.usuario_id = u.usuario_id
+                  WHERE u.usuario_id = :usuario_id
+                  ORDER BY n.anio DESC, n.mes DESC";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':usuario_id', $usuario_id);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function deletePayroll($nomina_id)

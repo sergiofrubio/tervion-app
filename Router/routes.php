@@ -107,6 +107,15 @@ $router->add('GET', '/facturas/pdf', 'InvoiceController@pdf', true, array_merge(
 $router->add('GET', '/facturas/reenviar', 'InvoiceController@reenviarVerifactu', true, $staffRoles);
 $router->add('POST', '/facturas/reenviar', 'InvoiceController@reenviarVerifactu', true, $staffRoles);
 
+// Rutas de Facultativos y Personal
+$router->add('GET', '/terapeutas', 'TherapistController@list', true, $staffRoles);
+$router->add('GET', '/terapeutas/crear', 'TherapistController@create', true, ['Administrador']);
+$router->add('POST', '/terapeutas/crear', 'TherapistController@create', true, ['Administrador']);
+$router->add('GET', '/terapeutas/detalle', 'TherapistController@detail', true, $staffRoles);
+$router->add('GET', '/terapeutas/editar', 'TherapistController@edit', true, ['Administrador']);
+$router->add('POST', '/terapeutas/editar', 'TherapistController@edit', true, ['Administrador']);
+$router->add('POST', '/terapeutas/eliminar', 'TherapistController@delete', true, ['Administrador']);
+
 $router->add('GET', '/nominas', 'PayrollController@list', true, ['Administrador']);
 $router->add('GET', '/nominas/contratos', 'ContractController@list', true, ['Administrador']);
 $router->add('GET', '/nominas/contratos/crear', 'ContractController@create', true, ['Administrador']);

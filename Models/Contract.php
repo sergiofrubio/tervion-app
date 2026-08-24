@@ -82,6 +82,11 @@ class Contract
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getContractByWorker($usuario_id)
+    {
+        return $this->getActiveContract($usuario_id);
+    }
+
     public function saveContract($data)
     {
         if (isset($data['contrato_id'])) {

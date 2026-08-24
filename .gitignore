@@ -11,3 +11,4 @@ docs/verifactu/
 storage/
 node_modules/
 .env
+public/vendor*

@@ -1049,7 +1049,35 @@ CREATE TABLE `planes_suscripcion` (
 INSERT INTO `planes_suscripcion` (`plan_id`, `codigo`, `nombre`, `descripcion`, `precio_mensual`, `precio_anual`, `max_fisioterapeutas`, `incluye_verifactu`, `incluye_nominas`, `soporte_prioritario`, `estado`) VALUES
 (1, 'Basico', 'Plan Inicial Clínicas', 'Diseñado para fisioterapeutas autónomos y pequeñas consultas.', 29.00, 290.00, 1, 0, 0, 0, 'Activo'),
 (2, 'Profesional', 'Plan Clínica Multidisciplinar', 'Para clínicas en crecimiento con varios terapeutas y control fiscal Verifactu.', 79.00, 790.00, 5, 1, 1, 0, 'Activo'),
-(3, 'Premium', 'Plan Red de Clínicas / Franquicias', 'Capacidad ilimitada, integraciones dedicadas y soporte prioritario 24/7.', 199.00, 1990.00, NULL, 1, 1, 1, 'Activo');
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `documentos`
+--
+
+CREATE TABLE IF NOT EXISTS `documentos` (
+  `documento_id` int NOT NULL AUTO_INCREMENT,
+  `cuenta_id` int NOT NULL DEFAULT '1',
+  `titulo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `descripcion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `contenido` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `creado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `modificado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`documento_id`),
+  KEY `idx_documentos_cuenta` (`cuenta_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `documentos`
+--
+
+INSERT INTO `documentos` (`documento_id`, `cuenta_id`, `titulo`, `descripcion`, `contenido`, `creado_por`, `fecha_creacion`) VALUES
+(1, 1, 'Consentimiento Informado para Fisioterapia General', 'Autorización general del paciente para la realización de terapia manual, ejercicios terapéuticos y electroterapia.', '<h2>CONSENTIMIENTO INFORMADO DE FISIOTERAPIA</h2><p>Mediante el presente documento, el paciente declara haber sido informado satisfactoriamente sobre los <strong>tratamientos de fisioterapia</strong> que le serán aplicados en la clínica.</p><h3>Objetivo del tratamiento</h3><p>El tratamiento tiene como finalidad la disminución del dolor, la mejora de la movilidad articular y la recuperación funcional mediante técnicas manuales, ejercicio terapéutico y aparatología especializada.</p><h3>Posibles efectos secundarios</h3><ul><li>Molestias musculares o agujetas tras la sesión (24-48 horas).</li><li>Leve enrojecimiento de la piel en caso de termoterapia o electroterapia.</li></ul><p>El paciente consiente expresamente la realización de las técnicas prescritas por el fisioterapeuta colegiado.</p>', '123456789', '2026-05-15 10:00:00'),
+(2, 1, 'Cláusula de Protección de Datos Personales (RGPD)', 'Consentimiento expreso del tratamiento de datos de salud conforme al Reglamento General de Protección de Datos.', '<h2>INFORMACIÓN SOBRE PROTECCIÓN DE DATOS (RGPD / LOPDGDD)</h2><p>En cumplimiento del Reglamento (UE) 2016/679, le informamos de que sus datos personales de salud serán tratados bajo la responsabilidad de <strong>Clínica Tervion</strong>.</p><h3>Finalidad del tratamiento</h3><p>Gestión de su historia clínica, programación de citas, facturación y prestación de servicios sanitarios de fisioterapia y rehabilitación.</p><h3>Derechos del usuario</h3><p>Usted puede ejercer en cualquier momento sus derechos de <strong>acceso, rectificación, supresión, oposición y portabilidad</strong> de sus datos dirigiéndose por escrito a la clínica o mediante correo electrónico.</p>', '123456789', '2026-05-20 11:30:00'),
+(3, 1, 'Consentimiento Informado para Punción Seca', 'Consentimiento específico detallando riesgos, contraindicaciones y beneficios del tratamiento invasivo miofascial.', '<h2>CONSENTIMIENTO INFORMADO: PUNCIÓN SECA</h2><p>La <strong>Punción Seca</strong> es una técnica invasiva utilizada en fisioterapia para el tratamiento de los puntos gatillo miofasciales mediante el uso de agujas de acupuntura.</p><h3>Beneficios esperados</h3><p>Relajación inmediata del músculo afectado, alivio del dolor referido y restauración del rango de movimiento habitual.</p><h3>Riesgos y efectos secundarios informados</h3><ul><li>Dolor post-punción durante 24 a 72 horas.</li><li>Aparición de pequeños hematomas locales.</li><li>Neumotórax (riesgo extremadamente bajo en zonas torácicas/escapulares, minimizado mediante ecografía y técnica adecuada).</li></ul><p>Declaró no presentar alergia a metales ni alteraciones graves de la coagulación.</p>', '234567890', '2026-06-01 09:15:00'),
+(4, 1, 'Informe de Alta de Tratamiento y Pauta Domiciliaria', 'Plantilla normalizada para emitir el informe final de alta del paciente con recomendaciones de ejercicios domiciliarios.', '<h2>INFORME DE ALTA DE FISIOTERAPIA</h2><p>Se emite el presente informe tras haber completado satisfactoriamente el plan de tratamiento prescrito.</p><table border="1" style="width:100%; border-collapse: collapse; text-align: left;"><thead><tr style="background-color: #f1f5f9;"><th>Parámetro</th><th>Evaluación Inicial</th><th>Estado al Alta</th></tr></thead><tbody><tr><td>Dolor (Escala EVA)</td><td>8 / 10</td><td>1 / 10</td></tr><tr><td>Balance Articular</td><td>Limitación moderada</td><td>Completo sin restricción</td></tr><tr><td>Autonomía Funcional</td><td>Parcial</td><td>100% Autónomo</td></tr></tbody></table><h3>Recomendaciones al Alta</h3><ol><li>Realizar estiramientos diarios según la pauta entregada.</li><li>Mantener hidratación adecuada e higiene postural en el puesto de trabajo.</li><li>Revisión preventiva en 6 meses o ante reaparición de síntomas.</li></ol>', '123456789', '2026-06-10 16:45:00');
 
 COMMIT;
 

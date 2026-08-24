@@ -54,9 +54,10 @@ $isHistoriasActive   = ($cleanUri === '/historial' || strpos($cleanUri, '/histor
 
 $isFacultativosActive = ($cleanUri === '/nominas' || strpos($cleanUri, '/nominas/') === 0 || strpos($cleanUri, '/trabajadores') === 0);
 $isContabilidadActive = ($cleanUri === '/contabilidad' || strpos($cleanUri, '/contabilidad/') === 0 || strpos($cleanUri, '/facturas') === 0);
+$isDocumentosActive   = ($cleanUri === '/documentos' || strpos($cleanUri, '/documentos/') === 0);
 $isConfiguracionActive = ($cleanUri === '/configuracion' || strpos($cleanUri, '/configuracion/') === 0);
 
-$isAnyConfigActive = ($isFacultativosActive || $isContabilidadActive || $isConfiguracionActive);
+$isAnyConfigActive = ($isFacultativosActive || $isContabilidadActive || $isDocumentosActive || $isConfiguracionActive);
 ?>
 
 <body class="h-full flex flex-col font-sans antialiased text-slate-900 bg-slate-50 <?= $hasSystemAlert ? 'pt-7' : '' ?>"
@@ -135,6 +136,12 @@ $isAnyConfigActive = ($isFacultativosActive || $isContabilidadActive || $isConfi
                                 <span>Contabilidad</span>
                             </a>
 
+                            <a href="<?= PROJECT_ROOT ?>/documentos"
+                                class="flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold hover:bg-slate-50 transition-colors <?= $isDocumentosActive ? 'text-primary-600 bg-primary-50/50' : 'text-slate-700 hover:text-primary-600' ?>">
+                                <i class="bi bi-file-earmark-text text-sm text-gray-400"></i>
+                                <span>Documentos</span>
+                            </a>
+
                             <div class="my-1 border-t border-gray-100"></div>
 
                             <a href="<?= PROJECT_ROOT ?>/configuracion"
@@ -201,6 +208,11 @@ $isAnyConfigActive = ($isFacultativosActive || $isContabilidadActive || $isConfi
                     class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition-colors <?= $isContabilidadActive ? 'bg-primary-600 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
                     <i class="bi bi-cash-stack text-base"></i>
                     <span>Contabilidad</span>
+                </a>
+                <a href="<?= PROJECT_ROOT ?>/documentos" @click="mobileMenuOpen = false"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition-colors <?= $isDocumentosActive ? 'bg-primary-600 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">
+                    <i class="bi bi-file-earmark-text text-base"></i>
+                    <span>Documentos</span>
                 </a>
                 <a href="<?= PROJECT_ROOT ?>/configuracion" @click="mobileMenuOpen = false"
                     class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition-colors <?= $isConfiguracionActive ? 'bg-primary-600 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' ?>">

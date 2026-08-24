@@ -116,6 +116,14 @@ $router->add('GET', '/terapeutas/editar', 'TherapistController@edit', true, ['Ad
 $router->add('POST', '/terapeutas/editar', 'TherapistController@edit', true, ['Administrador']);
 $router->add('POST', '/terapeutas/eliminar', 'TherapistController@delete', true, ['Administrador']);
 
+// Rutas de Documentos y Plantillas
+$router->add('GET', '/documentos', 'DocumentController@list', true, $staffRoles);
+$router->add('GET', '/documentos/crear', 'DocumentController@create', true, $staffRoles);
+$router->add('POST', '/documentos/crear', 'DocumentController@create', true, $staffRoles);
+$router->add('GET', '/documentos/editar', 'DocumentController@edit', true, $staffRoles);
+$router->add('POST', '/documentos/editar', 'DocumentController@edit', true, $staffRoles);
+$router->add('POST', '/documentos/eliminar', 'DocumentController@delete', true, $staffRoles);
+
 $router->add('GET', '/nominas', 'PayrollController@list', true, ['Administrador']);
 $router->add('GET', '/nominas/contratos', 'ContractController@list', true, ['Administrador']);
 $router->add('GET', '/nominas/contratos/crear', 'ContractController@create', true, ['Administrador']);

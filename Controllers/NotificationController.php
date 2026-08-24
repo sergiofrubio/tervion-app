@@ -68,4 +68,106 @@ class NotificationController extends Controller
             return false;
         }
     }
+
+    /**
+     * Envía un mensaje de texto o plantilla por WhatsApp utilizando la API Cloud de Meta (Graph API).
+     *
+     * @param string $to Número de teléfono del destinatario en formato internacional (E.164 sin +, ej: 34600112233).
+     * @param string $message Texto del mensaje (si no es plantilla).
+     * @param array|null $template Opcional. Estructura de plantilla ['name' => 'nombre_plantilla', 'language' => ['code' => 'es'], 'components' => [...]]
+     * @return array ['success' => bool, 'response' => array|string|null, 'error' => string|null, 'http_code' => int]
+     */
+    public function sendWhatsAppMessage($to, $message = '', ?array $template = null)
+    {
+        $apiUrl = rtrim(getenv('WHATSAPP_API_URL') ?: 'https://graph.facebook.com/v20.0', '/');
+        $phoneNumberId = getenv('WHATSAPP_PHONE_NUMBER_ID');
+        $accessToken = getenv('WHATSAPP_ACCESS_TOKEN');
+
+        if (empty($phoneNumberId) || empty($accessToken)) {
+            $errorMsg = 'Configuración de WhatsApp incompleta: WHATSAPP_PHONE_NUMBER_ID o WHATSAPP_ACCESS_TOKEN no definidos.';
+            error_log($errorMsg);
+            return [
+                'success' => false,
+                'error' => $errorMsg,
+                'response' => null,
+                'http_code' => 0
+            ];
+        }
+
+        // Limpiar el número de teléfono (dejar solo dígitos)
+        $cleanTo = preg_replace('/\D+/', '', $to);
+
+        $endpoint = "{$apiUrl}/{$phoneNumberId}/messages";
+
+        $payload = [
+            'messaging_product' => 'whatsapp',
+            'recipient_type' => 'individual',
+            'to' => $cleanTo,
+        ];
+
+        if ($template !== null) {
+            $payload['type'] = 'template';
+            $payload['template'] = $template;
+        } else {
+            $payload['type'] = 'text';
+            $payload['text'] = [
+                'preview_url' => false,
+                'body' => $message
+            ];
+        }
+
+        $ch = curl_init($endpoint);
+        curl_setopt_array($ch, [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($payload),
+            CURLOPT_HTTPHEADER => [
+                'Authorization: Bearer ' . $accessToken,
+                'Content-Type: application/json'
+            ],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_SSL_VERIFYPEER => true
+        ]);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($ch);
+        curl_close($ch);
+
+        if ($response === false || !empty($curlError)) {
+            $errorMsg = "Error cURL al conectar con Meta WhatsApp API: " . $curlError;
+            error_log($errorMsg);
+            return [
+                'success' => false,
+                'error' => $errorMsg,
+                'response' => null,
+                'http_code' => $httpCode
+            ];
+        }
+
+        $decodedResponse = json_decode($response, true);
+
+        // Los códigos de éxito de Meta suelen ser 200 OK o 201 Created
+        if ($httpCode >= 200 && $httpCode < 300) {
+            return [
+                'success' => true,
+                'response' => $decodedResponse ?? $response,
+                'error' => null,
+                'http_code' => $httpCode
+            ];
+        }
+
+        $errorMessage = isset($decodedResponse['error']['message'])
+            ? $decodedResponse['error']['message']
+            : "HTTP {$httpCode}: " . $response;
+
+        error_log("Error de Meta WhatsApp API ({$httpCode}): " . $errorMessage);
+
+        return [
+            'success' => false,
+            'error' => $errorMessage,
+            'response' => $decodedResponse ?? $response,
+            'http_code' => $httpCode
+        ];
+    }
 }

@@ -14,4 +14,15 @@ class NotificationControllerTest extends ControllerTestCase
         $result = $controller->sendEmail('invalid-email-format', 'Test', 'Body');
         $this->assertIsBool($result);
     }
+
+    public function testSendWhatsAppMessageReturnsArray()
+    {
+        $controller = new NotificationController();
+        $result = $controller->sendWhatsAppMessage('34600000000', 'Test message');
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('success', $result);
+        $this->assertArrayHasKey('response', $result);
+        $this->assertArrayHasKey('error', $result);
+        $this->assertArrayHasKey('http_code', $result);
+    }
 }

@@ -6,7 +6,7 @@ include TEMPLATE_DIR . 'header.php';
 <div class="max-w-4xl mx-auto space-y-6 animate-fade-in-up">
     <!-- Header -->
     <div class="flex items-center gap-4">
-        <a href="<?= PROJECT_ROOT ?>/facturas" class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-all">
+        <a href="<?= PROJECT_ROOT ?>/facturas" onclick="if (history.length > 1) { history.back(); return false; }" class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-all">
             <i class="bi bi-arrow-left text-xl"></i>
         </a>
         <div>

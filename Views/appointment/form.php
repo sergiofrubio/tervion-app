@@ -12,9 +12,9 @@ include TEMPLATE_DIR . 'header.php';
             <h1 class="text-2xl font-bold text-gray-900 tracking-tight"><?= $isEdit ? "Editar Cita" : "Nueva Cita" ?></h1>
             <p class="mt-1 text-sm text-gray-500"><?= $isEdit ? "Modifica los detalles de la sesión programada." : "Programa una nueva sesión para un paciente." ?></p>
         </div>
-        <a href="<?= PROJECT_ROOT ?>/citas" class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-primary-600 transition-colors">
+        <a href="<?= PROJECT_ROOT ?>/citas" onclick="if (history.length > 1) { history.back(); return false; }" class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-primary-600 transition-colors">
             <i class="bi bi-arrow-left"></i>
-            Volver al listado
+            Volver
         </a>
     </div>
 

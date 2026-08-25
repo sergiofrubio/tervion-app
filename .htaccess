@@ -1,8 +1,9 @@
 RewriteEngine On
 
-RewriteCond %{REQUEST_URI} !^/public/
-RewriteRule ^(.*)$ public/$1 [L]
+# Si el archivo físico solicitado existe (ej. /public/custom/css/app.css), servirlo directamente
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
 
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^public/(.*)$ public/index.php [L]
+# Si no es un archivo físico existente, pasar la petición a public/index.php
+RewriteRule ^ public/index.php [L,QSA]
+

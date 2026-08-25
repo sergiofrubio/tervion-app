@@ -27,7 +27,8 @@ try {
     }
 
     $gastoModel = new Gasto($db);
-    $merchant = Merchant::initWithApiKey(REDSYS_API_KEY);
+    $redsysApiKey = getenv('REDSYS_API_KEY') ?: '';
+    $merchant = Merchant::initWithApiKey($redsysApiKey);
 
     foreach ($cuentas as $cuenta) {
         echo "Procesando cuenta ID {$cuenta['cuenta_id']} ({$cuenta['nombre_empresa']})...\n";
@@ -82,7 +83,7 @@ try {
                 $cobroExitoso = true;
             } else {
                 // En pruebas locales, si no hay internet o el servidor Redsys falla, simulamos éxito
-                if (strpos(REDSYS_API_KEY, 'TEST_') === 0) {
+                if (strpos($redsysApiKey, 'TEST_') === 0) {
                     $cobroExitoso = true;
                     echo " [SIMULACIÓN] Cobro simulado con éxito en entorno de pruebas.\n";
                 } else {
@@ -91,7 +92,7 @@ try {
             }
         } catch (\Exception $e) {
             // Fallback para pruebas de desarrollo local sin conexión
-            if (strpos(REDSYS_API_KEY, 'TEST_') === 0) {
+            if (strpos($redsysApiKey, 'TEST_') === 0) {
                 $cobroExitoso = true;
                 echo " [SIMULACIÓN/FALLBACK] Simulación de cobro activada por error de conexión: " . $e->getMessage() . "\n";
             } else {

@@ -83,8 +83,9 @@ class ShopController extends Controller
             $usuario_id = $_SESSION['usuario_id'];
             $order = time(); // Genera un ID de pedido único y numérico de 10 dígitos
 
-            // Inicializar Merchant desde la clave API en config.php
-            $merchant = Merchant::initWithApiKey(REDSYS_API_KEY);
+            // Inicializar Merchant desde la variable de entorno
+            $redsysApiKey = getenv('REDSYS_API_KEY') ?: '';
+            $merchant = Merchant::initWithApiKey($redsysApiKey);
             
             // Construir los parámetros del pago
             $params = new Parameters();
@@ -119,7 +120,8 @@ class ShopController extends Controller
         $receivedParams = array_merge($_GET, $_POST, json_decode(file_get_contents('php://input'), true) ?: []);
 
         try {
-            $merchant = Merchant::initWithApiKey(REDSYS_API_KEY);
+            $redsysApiKey = getenv('REDSYS_API_KEY') ?: '';
+            $merchant = Merchant::initWithApiKey($redsysApiKey);
             $params = Parameters::digest($merchant, $receivedParams);
             
             $responseCode = (int)$params->response;

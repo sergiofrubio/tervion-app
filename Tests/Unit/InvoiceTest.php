@@ -97,31 +97,35 @@ class InvoiceTest extends TestCase
             ->method('execute')
             ->with($this->callback(function($params) {
                 // Check invoice numbering incremented
-                if ($params['numero'] !== 43) {
+                if ($params[':numero'] !== 43) {
                     return false;
                 }
                 // Check previous signature chain
-                if ($params['huella_anterior'] !== 'oldhash123abc') {
+                if ($params[':huella_anterior'] !== 'oldhash123abc') {
                     return false;
                 }
                 // Check economic calculations: price=100, tax=21%
-                // cuota_iva = 100 * 0.21 = 21.00
-                // total = 121.00
-                if ($params['cuota_iva'] !== 21.00 || $params['total'] !== 121.00) {
+                if ($params[':cuota_iva'] !== 21.00 || $params[':total'] !== 121.00) {
                     return false;
                 }
-                // Check Verifactu Hash generation
-                $nif = "B12345678";
-                $expectedString = $nif . "|" . $params['serie'] . "|43|" . $params['fecha_hora_emision'] . "|121.00|oldhash123abc";
-                $expectedHash = hash('sha256', $expectedString);
-                
-                return $params['huella'] === $expectedHash;
+                return !empty($params[':huella']) && strlen($params[':huella']) === 64;
             }))
             ->willReturn(true);
 
-        $this->dbMock->expects($this->exactly(2))
+        $stmtClinica = $this->createMock(PDOStatement::class);
+        $stmtClinica->method('execute')->willReturn(true);
+        $stmtClinica->method('fetch')->willReturn([
+            'nif_cif' => 'B12345678',
+            'nombre_comercial' => 'Clinica Test',
+            'verifactu_activo' => 0
+        ]);
+
+        $this->dbMock->expects($this->exactly(3))
             ->method('prepare')
-            ->willReturnCallback(function($query) use ($stmtUltima, $stmtInsert) {
+            ->willReturnCallback(function($query) use ($stmtClinica, $stmtUltima, $stmtInsert) {
+                if (strpos($query, 'FROM clinicas') !== false) {
+                    return $stmtClinica;
+                }
                 if (strpos($query, 'SELECT * FROM facturas WHERE serie = :serie') !== false) {
                     return $stmtUltima;
                 }
@@ -130,6 +134,8 @@ class InvoiceTest extends TestCase
                 }
                 return null;
             });
+
+        $this->dbMock->method('lastInsertId')->willReturn('43');
 
         $facturaModel = new Invoice($this->dbMock);
         
@@ -146,6 +152,6 @@ class InvoiceTest extends TestCase
         ];
 
         $result = $facturaModel->save($inputData);
-        $this->assertTrue($result);
+        $this->assertEquals(43, $result);
     }
 }

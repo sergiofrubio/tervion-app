@@ -27,7 +27,7 @@ class DashboardTest extends TestCase
 
         $this->dbMock->expects($this->once())
             ->method('query')
-            ->with($this->stringContains('SELECT COUNT(*) as total FROM pacientes'))
+            ->with($this->stringContains('SELECT COUNT(*) as total FROM usuarios WHERE rol = \'Paciente\''))
             ->willReturn($this->stmtMock);
 
         $dashboardModel = new Dashboard($this->dbMock);

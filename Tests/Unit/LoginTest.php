@@ -42,7 +42,7 @@ class LoginTest extends TestCase
 
         $this->dbMock->expects($this->once())
             ->method('prepare')
-            ->with($this->stringContains('SELECT u.*'))
+            ->with($this->stringContains('SELECT * FROM usuarios WHERE email = :email'))
             ->willReturn($this->stmtMock);
 
         $loginModel = new Login($this->dbMock);

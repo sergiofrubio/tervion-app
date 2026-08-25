@@ -220,11 +220,25 @@ class PatientControllerTest extends ControllerTestCase
             ->getMock();
         $appointmentMock->method('getByPatient')->willReturn([]);
 
+        $documentMock = $this->getMockBuilder(\App\Models\Document::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getByPacienteWithTemplates'])
+            ->getMock();
+        $documentMock->method('getByPacienteWithTemplates')->willReturn([]);
+
+        $invoiceMock = $this->getMockBuilder(\App\Models\Invoice::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getAll'])
+            ->getMock();
+        $invoiceMock->method('getAll')->willReturn([]);
+
         $controller = $this->getControllerMock(PatientController::class);
         $controller->method('model')->willReturnMap([
             ['User', $userModelMock],
             ['MedicalReport', $historyMock],
-            ['Appointment', $appointmentMock]
+            ['Appointment', $appointmentMock],
+            ['Document', $documentMock],
+            ['Invoice', $invoiceMock]
         ]);
 
         $controller->expects($this->once())

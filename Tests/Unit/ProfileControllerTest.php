@@ -68,8 +68,19 @@ class ProfileControllerTest extends ControllerTestCase
 
         $userModelMock = $this->getMockBuilder(User::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['update'])
+            ->onlyMethods(['update', 'getByusuario_id'])
             ->getMock();
+        $userModelMock->method('getByusuario_id')->with('U123')->willReturn([
+            'usuario_id' => 'U123',
+            'nombre' => 'John',
+            'apellidos' => 'Doe',
+            'telefono' => '123456789',
+            'direccion' => 'Calle 1',
+            'provincia' => 'Madrid',
+            'municipio' => 'Madrid',
+            'cp' => '28001',
+            'email' => 'john@test.com'
+        ]);
         $userModelMock->method('update')->with('U123', $this->callback(function ($data) {
             return $data['nombre'] === 'Johnny';
         }))->willReturn(true);

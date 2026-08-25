@@ -69,32 +69,32 @@ class RegisterController extends Controller
 
         // Validaciones básicas
         if (empty($usuario_id) || strlen($usuario_id) !== 9) {
-            $this->view('register/register', ['error' => 'El NIF/DNI debe tener exactamente 9 caracteres.', 'data' => $_POST]);
+            $this->view('landing/registro', ['error' => 'El NIF/DNI debe tener exactamente 9 caracteres.', 'data' => $_POST]);
             return;
         }
 
         if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $this->view('register/register', ['error' => 'El formato del correo electrónico del administrador no es válido.', 'data' => $_POST]);
+            $this->view('landing/registro', ['error' => 'El formato del correo electrónico del administrador no es válido.', 'data' => $_POST]);
             return;
         }
 
         if (strlen($pass) < 8) {
-            $this->view('register/register', ['error' => 'La contraseña debe tener al menos 8 caracteres.', 'data' => $_POST]);
+            $this->view('landing/registro', ['error' => 'La contraseña debe tener al menos 8 caracteres.', 'data' => $_POST]);
             return;
         }
 
         if ($pass !== $confirm_pass) {
-            $this->view('register/register', ['error' => 'Las contraseñas del administrador no coinciden.', 'data' => $_POST]);
+            $this->view('landing/registro', ['error' => 'Las contraseñas del administrador no coinciden.', 'data' => $_POST]);
             return;
         }
 
         if (empty($nombre) || empty($apellidos) || empty($fecha_nacimiento)) {
-            $this->view('register/register', ['error' => 'Por favor, rellene todos los campos obligatorios del administrador.', 'data' => $_POST]);
+            $this->view('landing/registro', ['error' => 'Por favor, rellene todos los campos obligatorios del administrador.', 'data' => $_POST]);
             return;
         }
 
         if (empty($nombre_comercial) || empty($direccion_calle) || empty($ciudad) || empty($telefono_contacto)) {
-            $this->view('register/register', ['error' => 'Por favor, rellene todos los campos obligatorios de la clínica.', 'data' => $_POST]);
+            $this->view('landing/registro', ['error' => 'Por favor, rellene todos los campos obligatorios de la clínica.', 'data' => $_POST]);
             return;
         }
 

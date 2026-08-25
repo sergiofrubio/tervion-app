@@ -58,8 +58,10 @@ class AppointmentTest extends TestCase
 
     public function testSave()
     {
-        $this->stmtMock->expects($this->exactly(6))
+        $this->stmtMock->expects($this->exactly(4))
             ->method('bindParam');
+        $this->stmtMock->expects($this->once())
+            ->method('bindValue');
 
         $this->stmtMock->expects($this->once())
             ->method('execute')
@@ -71,7 +73,7 @@ class AppointmentTest extends TestCase
             ->willReturn($this->stmtMock);
 
         $appointmentModel = new Appointment($this->dbMock);
-        $result = $appointmentModel->save('P123', 'F456', '2026-05-22 10:00:00', 'Programada', 1, null);
+        $result = $appointmentModel->save('P123', 'F456', '2026-05-22 10:00:00', 'Programada', 1);
 
         $this->assertTrue($result);
     }

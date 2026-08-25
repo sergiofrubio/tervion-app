@@ -9,16 +9,20 @@ class SettingControllerTest extends ControllerTestCase
 {
     public function testIndexSuccess()
     {
+        $_SESSION['usuario_id'] = 'ADM123';
+        $_SESSION['email'] = 'admin@example.com';
+
         $settingMock = $this->getMockBuilder(Setting::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getHorariosFisios', 'getAusenciasFisios', 'getEspecialidades', 'getBonos', 'getClinica'])
+            ->onlyMethods(['getHorariosFisios', 'getAusenciasFisios', 'getBonos', 'getClinica', 'getMetodoPagoByUsuario', 'getCuentaClienteByEmail'])
             ->getMock();
         
         $settingMock->method('getHorariosFisios')->willReturn([]);
         $settingMock->method('getAusenciasFisios')->willReturn([]);
-        $settingMock->method('getEspecialidades')->willReturn([]);
         $settingMock->method('getBonos')->willReturn([]);
         $settingMock->method('getClinica')->willReturn([]);
+        $settingMock->method('getMetodoPagoByUsuario')->willReturn(false);
+        $settingMock->method('getCuentaClienteByEmail')->willReturn(false);
 
         $controller = $this->getControllerMock(SettingController::class);
         $controller->method('model')->with('Setting')->willReturn($settingMock);
@@ -28,9 +32,10 @@ class SettingControllerTest extends ControllerTestCase
             ->with('setting/index', [
                 'horarios' => [],
                 'ausencias' => [],
-                'especialidades' => [],
                 'bonos' => [],
-                'clinica' => []
+                'clinica' => [],
+                'tarjeta' => false,
+                'cuenta' => false
             ]);
 
         $controller->index();
@@ -116,24 +121,6 @@ class SettingControllerTest extends ControllerTestCase
 
         $this->expectException(TestExitException::class);
         $controller->createAusencia();
-    }
-
-    public function testCreateEspecialidadPostSuccess()
-    {
-        $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['descripcion'] = 'Traumatology';
-
-        $settingMock = $this->getMockBuilder(Setting::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['saveEspecialidad'])
-            ->getMock();
-        $settingMock->method('saveEspecialidad')->with('Traumatology')->willReturn(true);
-
-        $controller = $this->getControllerMock(SettingController::class);
-        $controller->method('model')->with('Setting')->willReturn($settingMock);
-
-        $this->expectException(TestExitException::class);
-        $controller->createEspecialidad();
     }
 
     public function testCreateBonoGet()
@@ -273,46 +260,6 @@ class SettingControllerTest extends ControllerTestCase
 
         $this->expectException(TestExitException::class);
         $controller->editAusencia();
-    }
-
-    public function testEditEspecialidadGet()
-    {
-        $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_GET['id'] = 2;
-
-        $settingMock = $this->getMockBuilder(Setting::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getEspecialidadById'])
-            ->getMock();
-        $settingMock->method('getEspecialidadById')->with(2)->willReturn(['id' => 2]);
-
-        $controller = $this->getControllerMock(SettingController::class);
-        $controller->method('model')->with('Setting')->willReturn($settingMock);
-
-        $controller->expects($this->once())
-            ->method('view')
-            ->with('setting/especialidades_form', ['especialidad' => ['id' => 2]]);
-
-        $controller->editEspecialidad();
-    }
-
-    public function testEditEspecialidadPost()
-    {
-        $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['especialidad_id'] = 2;
-        $_POST['descripcion'] = 'Cardiology';
-
-        $settingMock = $this->getMockBuilder(Setting::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['updateEspecialidad'])
-            ->getMock();
-        $settingMock->method('updateEspecialidad')->with(2, 'Cardiology')->willReturn(true);
-
-        $controller = $this->getControllerMock(SettingController::class);
-        $controller->method('model')->with('Setting')->willReturn($settingMock);
-
-        $this->expectException(TestExitException::class);
-        $controller->editEspecialidad();
     }
 
     public function testEditBonoGet()

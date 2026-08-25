@@ -77,14 +77,12 @@ class PatientTest extends TestCase
         $this->dbMock->expects($this->once())->method('beginTransaction');
         $this->dbMock->expects($this->once())->method('commit');
 
-        // We expect two prepare statements: 
-        // 1. Insert into usuarios
-        // 2. Insert into pacientes
-        $this->dbMock->expects($this->exactly(2))
+        // Solo se inserta en usuarios para rol Paciente
+        $this->dbMock->expects($this->once())
             ->method('prepare')
             ->willReturn($this->stmtMock);
 
-        $this->stmtMock->expects($this->exactly(2))
+        $this->stmtMock->expects($this->once())
             ->method('execute')
             ->willReturn(true);
 
@@ -112,22 +110,18 @@ class PatientTest extends TestCase
             'rol' => 'Fisioterapeuta',
             'nss' => '123456789012',
             'iban' => 'ES1234567890123456789012',
-            'grupo_cotizacion' => 2,
-            'especialidad' => 1
+            'grupo_cotizacion' => 2
         ];
 
         $this->dbMock->expects($this->once())->method('beginTransaction');
         $this->dbMock->expects($this->once())->method('commit');
 
-        // We expect three prepare statements:
-        // 1. Insert into usuarios
-        // 2. Insert into empleados
-        // 3. Insert into fisioterapeutas
-        $this->dbMock->expects($this->exactly(3))
+        // Se inserta en usuarios y en empleados
+        $this->dbMock->expects($this->exactly(2))
             ->method('prepare')
             ->willReturn($this->stmtMock);
 
-        $this->stmtMock->expects($this->exactly(3))
+        $this->stmtMock->expects($this->exactly(2))
             ->method('execute')
             ->willReturn(true);
 
@@ -187,7 +181,7 @@ class PatientTest extends TestCase
 
         $this->dbMock->expects($this->once())
             ->method('prepare')
-            ->with($this->stringContains('JOIN pacientes'))
+            ->with($this->stringContains('SELECT u.* FROM usuarios u WHERE u.rol = :rol'))
             ->willReturn($this->stmtMock);
 
         $this->stmtMock->expects($this->once())
@@ -212,12 +206,11 @@ class PatientTest extends TestCase
 
         $this->dbMock->expects($this->once())
             ->method('prepare')
-            ->with($this->stringContains('WHERE (u.nombre LIKE :q'))
+            ->with($this->stringContains('SELECT u.usuario_id, u.nombre, u.apellidos'))
             ->willReturn($this->stmtMock);
 
-        $this->stmtMock->expects($this->once())
-            ->method('bindParam')
-            ->with(':q', '%John%');
+        $this->stmtMock->expects($this->exactly(2))
+            ->method('bindParam');
 
         $this->stmtMock->expects($this->once())
             ->method('execute')

@@ -12,7 +12,7 @@ namespace App\Controllers {
 namespace Tests\Unit {
 
     use PHPUnit\Framework\TestCase;
-    use App\Routes\Router;
+    use App\Router\Router;
     use App\Controllers\MockController;
 
     class RouterTest extends TestCase

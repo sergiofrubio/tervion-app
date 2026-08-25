@@ -65,17 +65,15 @@ class MedicalReportControllerTest extends ControllerTestCase
         $controller = $this->getControllerMock(MedicalReportController::class);
         $controller->method('model')->with('MedicalReport')->willReturn($reportMock);
 
-        ob_start();
+        $this->expectException(TestExitException::class);
         $controller->detail();
-        $output = ob_get_clean();
-
-        $this->assertStringContainsString('Informe no encontrado.', $output);
     }
 
     public function testDetailSuccess()
     {
         $_GET['id'] = 1;
-        $report = ['id' => 1, 'diagnostico' => 'Ok'];
+        $report = ['id' => 1, 'paciente_id' => 'P123', 'diagnostico' => 'Ok'];
+        $paciente = ['usuario_id' => 'P123', 'nombre' => 'John'];
 
         $reportMock = $this->getMockBuilder(MedicalReport::class)
             ->disableOriginalConstructor()
@@ -83,12 +81,24 @@ class MedicalReportControllerTest extends ControllerTestCase
             ->getMock();
         $reportMock->method('getById')->with(1)->willReturn($report);
 
+        $userMock = $this->getMockBuilder(\App\Models\User::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getByusuario_id'])
+            ->getMock();
+        $userMock->method('getByusuario_id')->with('P123')->willReturn($paciente);
+
         $controller = $this->getControllerMock(MedicalReportController::class);
-        $controller->method('model')->with('MedicalReport')->willReturn($reportMock);
+        $controller->method('model')->willReturnMap([
+            ['MedicalReport', $reportMock],
+            ['User', $userMock]
+        ]);
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('medical-report/detail', ['report' => $report]);
+            ->with('medical-report/detail', [
+                'report' => $report,
+                'paciente' => $paciente
+            ]);
 
         $controller->detail();
     }

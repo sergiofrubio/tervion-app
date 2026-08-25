@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
+         bootstrap="Tests/bootstrap.php"
          colors="true">
     <testsuites>
         <testsuite name="Application Test Suite">
@@ -13,10 +13,11 @@
     </php>
     <source>
         <include>
-            <directory suffix=".php">Controllers</directory>
-            <directory suffix=".php">Core</directory>
-            <directory suffix=".php">Models</directory>
-            <directory suffix=".php">Routes</directory>
+            <directory suffix=".php">src/Controllers</directory>
+            <directory suffix=".php">src/Core</directory>
+            <directory suffix=".php">src/Models</directory>
+            <directory suffix=".php">src/Router</directory>
+            <directory suffix=".php">src/Services</directory>
         </include>
     </source>
 </phpunit>

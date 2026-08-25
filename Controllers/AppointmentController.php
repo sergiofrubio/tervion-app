@@ -106,6 +106,31 @@ class AppointmentController extends Controller
     }
 
     /**
+     * Actualiza el estado de una cita rápidamente desde el listado.
+     *
+     * @return void
+     */
+    public function updateStatus()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $appointment = $this->model('Appointment');
+            $id = $_POST['cita_id'] ?? '';
+            $estado = $_POST['estado'] ?? '';
+
+            $estadosValidos = ['Programada', 'Confirmada', 'Pendiente', 'Realizada', 'Cancelada'];
+            if (!empty($id) && in_array($estado, $estadosValidos, true)) {
+                if ($appointment->updateStatus($id, $estado)) {
+                    header('Location: ' . PROJECT_ROOT . '/citas?alert=success&message=Estado de la cita actualizado a ' . $estado);
+                    $this->exitApp();
+                }
+            }
+
+            header('Location: ' . PROJECT_ROOT . '/citas?alert=danger&message=Error al actualizar el estado de la cita');
+            $this->exitApp();
+        }
+    }
+
+    /**
      * Edita una cita existente.
      *
      * Si la petición es POST, actualiza los datos de la cita tras validar los permisos (para pacientes).

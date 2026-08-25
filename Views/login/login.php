@@ -30,34 +30,53 @@ $hasSystemAlert = $systemAlertMessage !== '';
     <?php include TEMPLATE_DIR . 'system-alert.php'; ?>
 
     <!-- Login Container -->
+
+    <?php
+    // Verificar si hay una alerta de usuario
+    if (isset($_GET['alert']) && isset($_GET['message'])) {
+        $alertColor = 'bg-white border-blue-100 text-slate-800 shadow-xl shadow-blue-500/10';
+        $iconClass = 'bi-info-circle-fill text-blue-500 bg-blue-50';
+
+        if ($_GET['alert'] === 'danger' || $_GET['alert'] === 'error') {
+            $alertColor = 'bg-white border-rose-100 text-slate-800 shadow-xl shadow-rose-500/10';
+            $iconClass = 'bi-exclamation-triangle-fill text-rose-500 bg-rose-50';
+        } elseif ($_GET['alert'] === 'success') {
+            $alertColor = 'bg-white border-emerald-100 text-slate-800 shadow-xl shadow-emerald-500/10';
+            $iconClass = 'bi-check-circle-fill text-emerald-500 bg-emerald-50';
+        }
+
+        echo '<div class="fixed top-5 right-5 z-50 max-w-sm w-full transition-all duration-300 pointer-events-auto"
+                   x-data="{ show: true }"
+                   x-show="show"
+                   x-transition:enter="transform ease-out duration-300 transition"
+                   x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+                   x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
+                   x-transition:leave="transition ease-in duration-200"
+                   x-transition:leave-start="opacity-100 sm:translate-x-0"
+                   x-transition:leave-end="opacity-0 sm:translate-x-2"
+                   role="alert">
+                <div class="rounded-2xl border p-4 backdrop-blur-md ' . $alertColor . ' flex items-start gap-3">
+                    <div class="p-2 rounded-xl shrink-0 ' . $iconClass . '"></div>
+                    <div class="flex-1 pt-0.5">
+                        <p class="text-xs font-semibold text-slate-900 leading-snug">' . htmlspecialchars($_GET['message']) . '</p>
+                    </div>
+                    <button @click="show = false" type="button" class="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-1.5 rounded-lg transition-colors focus:outline-none">
+                        <i class="bi bi-x-lg text-xs"></i>
+                    </button>
+                </div>
+            </div>';
+    }
+    ?>
+
     <div class="relative z-10 w-full max-w-md px-6">
         <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 p-8 sm:p-10 transition-all">
-
             <div class="text-center mb-8">
-                <!-- <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="w-24 mx-auto rounded-2xl shadow-sm mb-4"> -->
                 <a href="<?= PROJECT_ROOT ?>/" class="w-24 mx-auto flex items-center mb-4">
                     <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-9 object-contain">
                 </a>
                 <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Bienvenido de nuevo</h2>
                 <p class="text-sm text-gray-500 mt-1">Inicia sesión en tu cuenta</p>
             </div>
-
-            <?php
-            // Verificar si hay una alerta de usuario
-            if (isset($_GET['alert']) && isset($_GET['message'])) {
-                $alert_type = $_GET['alert'] === 'danger' ? 'bg-red-50 text-red-800 border-red-200' : ($_GET['alert'] === 'success' ? 'bg-green-50 text-green-800 border-green-200' :
-                    'bg-blue-50 text-blue-800 border-blue-200');
-
-                echo '<div class="rounded-xl border p-4 mb-6 ' . $alert_type . '" role="alert" x-data="{ show: true }" x-show="show">
-                    <div class="flex justify-between items-start">
-                        <div class="text-sm font-medium">' . htmlspecialchars($_GET['message']) . '</div>
-                        <button @click="show = false" class="text-current opacity-70 hover:opacity-100 ml-3 focus:outline-none">
-                            <i class="bi bi-x-lg text-sm"></i>
-                        </button>
-                    </div>
-                </div>';
-            }
-            ?>
 
             <form action="<?= PROJECT_ROOT . '/login' ?>" method="post" class="space-y-5">
                 <input type="hidden" id="actionType" name="action" value="iniciar_sesion">

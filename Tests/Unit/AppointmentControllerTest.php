@@ -224,6 +224,28 @@ class AppointmentControllerTest extends ControllerTestCase
         $controller->edit();
     }
 
+    public function testUpdateStatusSuccess()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST['cita_id'] = 1;
+        $_POST['estado'] = 'Realizada';
+
+        $appointmentMock = $this->getMockBuilder(Appointment::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['updateStatus'])
+            ->getMock();
+        $appointmentMock->expects($this->once())
+            ->method('updateStatus')
+            ->with(1, 'Realizada')
+            ->willReturn(true);
+
+        $controller = $this->getControllerMock(AppointmentController::class);
+        $controller->method('model')->with('Appointment')->willReturn($appointmentMock);
+
+        $this->expectException(TestExitException::class);
+        $controller->updateStatus();
+    }
+
     public function testGetSlotsEmptyParams()
     {
         $_GET['fisio_id'] = '';

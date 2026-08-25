@@ -84,10 +84,13 @@ class TherapistController extends Controller
         $payrollModel = $this->model('Payroll');
         $contractModel = $this->model('Contract');
         $appointmentModel = $this->model('Appointment');
+        $settingModel = $this->model('Setting');
 
         $nominas = $payrollModel->getPayrollsByWorker($id);
         $contrato = $contractModel->getContractByWorker($id);
         $citas = $appointmentModel->getAll();
+        $horarios = $settingModel->getHorariosByFisio($id);
+        $ausencias = $settingModel->getAusenciasByFisio($id);
         
         // Filtrar citas del fisioterapeuta
         $citasFisio = array_filter($citas, function($c) use ($id) {
@@ -98,7 +101,9 @@ class TherapistController extends Controller
             'therapist' => $therapist,
             'nominas' => $nominas,
             'contrato' => $contrato,
-            'citas' => array_values($citasFisio)
+            'citas' => array_values($citasFisio),
+            'horarios' => $horarios,
+            'ausencias' => $ausencias
         ];
 
         $this->view('therapist/detail', $data);

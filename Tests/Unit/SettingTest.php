@@ -64,27 +64,48 @@ class SettingTest extends TestCase
         $this->assertTrue($result);
     }
 
-    public function testSaveEspecialidad()
+    public function testGetHorariosByFisio()
     {
-        $descripcion = 'Pediatría';
-
-        $this->stmtMock->expects($this->once())
-            ->method('bindParam')
-            ->with(':descripcion', $descripcion);
-
         $this->stmtMock->expects($this->once())
             ->method('execute')
+            ->with([':fisioterapeuta_id' => 'F1'])
             ->willReturn(true);
+
+        $this->stmtMock->expects($this->once())
+            ->method('fetchAll')
+            ->willReturn([['horario_id' => 1, 'fisioterapeuta_id' => 'F1', 'dia_semana' => 'Lunes']]);
 
         $this->dbMock->expects($this->once())
             ->method('prepare')
-            ->with($this->stringContains('INSERT INTO especialidades'))
+            ->with($this->stringContains('WHERE h.fisioterapeuta_id = :fisioterapeuta_id'))
             ->willReturn($this->stmtMock);
 
         $settingModel = new Setting($this->dbMock);
-        $result = $settingModel->saveEspecialidad($descripcion);
+        $result = $settingModel->getHorariosByFisio('F1');
 
-        $this->assertTrue($result);
+        $this->assertCount(1, $result);
+    }
+
+    public function testGetAusenciasByFisio()
+    {
+        $this->stmtMock->expects($this->once())
+            ->method('execute')
+            ->with([':fisioterapeuta_id' => 'F1'])
+            ->willReturn(true);
+
+        $this->stmtMock->expects($this->once())
+            ->method('fetchAll')
+            ->willReturn([['ausencia_id' => 1, 'fisioterapeuta_id' => 'F1', 'motivo' => 'Vacaciones']]);
+
+        $this->dbMock->expects($this->once())
+            ->method('prepare')
+            ->with($this->stringContains('WHERE a.fisioterapeuta_id = :fisioterapeuta_id'))
+            ->willReturn($this->stmtMock);
+
+        $settingModel = new Setting($this->dbMock);
+        $result = $settingModel->getAusenciasByFisio('F1');
+
+        $this->assertCount(1, $result);
     }
 
     public function testGetClinica()

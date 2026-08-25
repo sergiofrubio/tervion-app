@@ -188,23 +188,25 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
                                 <td class="py-4 px-4">
                                     <?php
                                     $estado = $cita['estado'];
-                                    if ($estado == 'Realizada'): ?>
-                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Realizada
-                                        </span>
-                                    <?php elseif ($estado == 'Cancelada'): ?>
-                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200">
-                                            <span class="w-2 h-2 rounded-full bg-rose-500"></span> Cancelada
-                                        </span>
-                                    <?php elseif ($estado == 'Programada'): ?>
-                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                                            <span class="w-2 h-2 rounded-full bg-amber-500"></span> Programada
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
-                                            <span class="w-2 h-2 rounded-full bg-blue-500"></span> Pendiente
-                                        </span>
-                                    <?php endif; ?>
+                                    $estadoClasses = [
+                                        'Realizada'   => 'bg-emerald-50 text-emerald-700 border-emerald-200 focus:ring-emerald-500/20',
+                                        'Confirmada'  => 'bg-teal-50 text-teal-700 border-teal-200 focus:ring-teal-500/20',
+                                        'Programada'  => 'bg-amber-50 text-amber-700 border-amber-200 focus:ring-amber-500/20',
+                                        'Pendiente'   => 'bg-blue-50 text-blue-700 border-blue-200 focus:ring-blue-500/20',
+                                        'Cancelada'   => 'bg-rose-50 text-rose-700 border-rose-200 focus:ring-rose-500/20'
+                                    ];
+                                    $currentClass = $estadoClasses[$estado] ?? 'bg-gray-50 text-gray-700 border-gray-200 focus:ring-gray-500/20';
+                                    ?>
+                                    <form action="<?= PROJECT_ROOT ?>/citas/estado" method="POST" class="inline-flex items-center m-0">
+                                        <input type="hidden" name="cita_id" value="<?= $cita['cita_id'] ?>">
+                                        <select name="estado" onchange="this.form.submit()" class="text-xs font-bold rounded-full px-2.5 py-1 border transition-all cursor-pointer shadow-xs focus:outline-none focus:ring-2 <?= $currentClass ?>">
+                                            <option value="Programada" <?= $estado === 'Programada' ? 'selected' : '' ?>>• Programada</option>
+                                            <option value="Confirmada" <?= $estado === 'Confirmada' ? 'selected' : '' ?>>• Confirmada</option>
+                                            <option value="Pendiente" <?= $estado === 'Pendiente' ? 'selected' : '' ?>>• Pendiente</option>
+                                            <option value="Realizada" <?= $estado === 'Realizada' ? 'selected' : '' ?>>• Realizada</option>
+                                            <option value="Cancelada" <?= $estado === 'Cancelada' ? 'selected' : '' ?>>• Cancelada</option>
+                                        </select>
+                                    </form>
                                 </td>
                                 <td class="py-4 px-4 text-right">
                                     <div class="flex items-center justify-end gap-1">

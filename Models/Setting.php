@@ -25,6 +25,18 @@ class Setting
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getHorariosByFisio($fisioterapeuta_id)
+    {
+        $query = "SELECT h.*, u.nombre, u.apellidos 
+                  FROM horarios_terapeutas h 
+                  JOIN usuarios u ON h.fisioterapeuta_id = u.usuario_id 
+                  WHERE h.fisioterapeuta_id = :fisioterapeuta_id
+                  ORDER BY FIELD(h.dia_semana, 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'), h.hora_inicio";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([':fisioterapeuta_id' => $fisioterapeuta_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // Ausencias
     public function getAusenciasFisios()
     {
@@ -34,6 +46,18 @@ class Setting
                   ORDER BY a.fecha_inicio DESC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAusenciasByFisio($fisioterapeuta_id)
+    {
+        $query = "SELECT a.*, u.nombre, u.apellidos 
+                  FROM ausencias_terapeutas a 
+                  JOIN usuarios u ON a.fisioterapeuta_id = u.usuario_id 
+                  WHERE a.fisioterapeuta_id = :fisioterapeuta_id
+                  ORDER BY a.fecha_inicio DESC";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([':fisioterapeuta_id' => $fisioterapeuta_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

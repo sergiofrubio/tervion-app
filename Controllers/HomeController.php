@@ -21,8 +21,9 @@ class HomeController extends Controller
         }
 
         if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'SuperAdmin') {
-            $data = [];
-            $this->view('saas-admin/index', $data);
+            $saasAdminController = new SaasAdminController();
+            $saasAdminController->dashboard();
+            return;
         }
 
         if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Paciente') {

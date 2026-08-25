@@ -68,6 +68,7 @@ $router->add('GET', '/citas', 'AppointmentController@list', true, $staffRoles);
 $router->add('GET', '/citas/crear', 'AppointmentController@create', true, $staffRoles);
 $router->add('POST', '/citas/crear', 'AppointmentController@create', true, $staffRoles);
 $router->add('POST', '/citas/eliminar', 'AppointmentController@delete', true, $staffRoles);
+$router->add('POST', '/citas/estado', 'AppointmentController@updateStatus', true, $staffRoles);
 $router->add('POST', '/citas/editar', 'AppointmentController@edit', true, $staffRoles);
 $router->add('GET', '/citas/editar', 'AppointmentController@edit', true, $staffRoles);
 $router->add('GET', '/citas/slots', 'AppointmentController@getSlots', true, ['Administrador', 'Fisioterapeuta', 'Secretario', 'Paciente']);
@@ -95,9 +96,9 @@ $router->add('POST', '/configuracion/tarjeta/actualizar', 'SettingController@upd
 $router->add('POST', '/configuracion/suscripcion/actualizar', 'SettingController@updatePlan', true, ['Administrador']);
 $router->add('POST', '/configuracion/suscripcion/cancel-downgrade', 'SettingController@cancelPlanDowngrade', true, ['Administrador']);
 
+$router->add('GET', '/historial', 'MedicalReportController@list', true, $staffRoles);
 $router->add('GET', '/historial/crear', 'MedicalReportController@create', true, $staffRoles);
 $router->add('POST', '/historial/crear', 'MedicalReportController@create', true, $staffRoles);
-$router->add('GET', '/historial/detalle', 'MedicalReportController@detail', true, $staffRoles);
 $router->add('GET', '/historial/pdf', 'MedicalReportController@pdf', true, $staffRoles);
 
 $router->add('GET', '/facturas', 'InvoiceController@list', true, $staffRoles);

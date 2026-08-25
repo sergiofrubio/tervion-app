@@ -72,6 +72,15 @@ class Appointment
         $stmt->bindParam(':fecha_hora', $fecha_hora);
         return $stmt->execute();
     }
+
+    public function updateStatus($cita_id, $estado)
+    {
+        $query = "UPDATE citas SET estado = :estado WHERE cita_id = :cita_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':estado', $estado);
+        $stmt->bindParam(':cita_id', $cita_id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
     public function getByPatient($paciente_id)
     {
         $query = "SELECT c.*, f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos 

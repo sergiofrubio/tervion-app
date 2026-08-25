@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Core\Controller;
 use Fpdf\Fpdf;
 
@@ -17,7 +19,7 @@ class MedicalReportController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $historyModel = $this->model('MedicalReport');
-            
+
             $data = [
                 'paciente_id' => $_POST['paciente_id'],
                 'fisioterapeuta_id' => $_SESSION['usuario_id'], // El fisio logueado
@@ -39,7 +41,7 @@ class MedicalReportController extends Controller
             $paciente_id = $_GET['paciente_id'] ?? null;
             $userModel = $this->model('User');
             $paciente = $userModel->getByusuario_id($paciente_id);
-            
+
             $this->view('medical-report/create', ['paciente' => $paciente]);
         }
     }
@@ -49,18 +51,34 @@ class MedicalReportController extends Controller
      *
      * @return void
      */
-    public function detail()
+    public function list()
     {
-        $id = $_GET['id'] ?? null;
+        $paciente_id = $_GET['paciente_id'] ?? ($_GET['id'] ?? null);
+        $userModel = $this->model('User');
         $historyModel = $this->model('MedicalReport');
-        $report = $historyModel->getById($id);
+        $appointmentModel = $this->model('Appointment');
 
-        if (!$report) {
-            echo "Informe no encontrado.";
-            return;
+        $paciente = null;
+        $informes = [];
+        $citas = [];
+        $totalPacientes = 0;
+
+        if ($paciente_id) {
+            $paciente = $userModel->getByusuario_id($paciente_id);
+            if ($paciente && ($paciente['rol'] ?? '') === 'Paciente') {
+                $informes = $historyModel->getByPaciente($paciente_id);
+                $citas = $appointmentModel->getByPatient($paciente_id);
+            } else {
+                $paciente = null;
+            }
         }
 
-        $this->view('medical-report/detail', ['report' => $report]);
+        $this->view('medical-report/list', [
+            'paciente' => $paciente,
+            'informes' => $informes,
+            'citas' => $citas,
+            'paciente_id' => $paciente_id
+        ]);
     }
 
     /**

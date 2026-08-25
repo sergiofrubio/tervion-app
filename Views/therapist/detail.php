@@ -1,6 +1,6 @@
 <?php
 $t = $therapist ?? [];
-$pageTitle = "Expediente Facultativo — " . ($t['nombre'] . ' ' . $t['apellidos']);
+$pageTitle = "Datos del Facultativo — " . ($t['nombre'] . ' ' . $t['apellidos']);
 include TEMPLATE_DIR . 'header.php';
 
 $avatarId = (intval(preg_replace('/[^0-9]/', '', $t['usuario_id'])) % 70) + 1;
@@ -10,6 +10,8 @@ $avatarUrl = (isset($t['genero']) && $t['genero'] === 'Mujer')
 
 $totalNominas = count($nominas ?? []);
 $totalCitas = count($citas ?? []);
+$totalHorarios = count($horarios ?? []);
+$totalAusencias = count($ausencias ?? []);
 ?>
 
 <div class="space-y-6 animate-fade-in" x-data="{ activeTab: 'nominas' }">
@@ -22,7 +24,7 @@ $totalCitas = count($citas ?? []);
                 <span>Volver a Facultativos</span>
             </a>
             <div class="h-4 w-px bg-gray-300 hidden sm:block"></div>
-            <span class="text-xs font-medium text-gray-400 hidden sm:inline-block">Ficha Profesional & Laboral</span>
+            <span class="text-xs font-medium text-gray-400 hidden sm:inline-block">Ficha Profesional</span>
         </div>
 
         <div class="flex items-center gap-3">
@@ -87,19 +89,27 @@ $totalCitas = count($citas ?? []);
 
     <!-- Navigation Tabs -->
     <div class="border-b border-gray-200">
-        <nav class="-mb-px flex gap-6" aria-label="Tabs">
-            <button @click="activeTab = 'nominas'" :class="{ 'border-primary-600 text-primary-600 font-bold': activeTab === 'nominas', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium': activeTab !== 'nominas' }" class="py-3 px-1 border-b-2 text-xs transition-colors flex items-center gap-2 cursor-pointer">
+        <nav class="-mb-px flex gap-6 overflow-x-auto" aria-label="Tabs">
+            <button @click="activeTab = 'nominas'" :class="{ 'border-primary-600 text-primary-600 font-bold': activeTab === 'nominas', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium': activeTab !== 'nominas' }" class="py-3 px-1 border-b-2 text-xs transition-colors flex items-center gap-2 cursor-pointer whitespace-nowrap">
                 <i class="bi bi-file-earmark-spreadsheet text-base"></i>
                 <span>Nóminas (<?= $totalNominas ?>)</span>
             </button>
-            <button @click="activeTab = 'contrato'" :class="{ 'border-primary-600 text-primary-600 font-bold': activeTab === 'contrato', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium': activeTab !== 'contrato' }" class="py-3 px-1 border-b-2 text-xs transition-colors flex items-center gap-2 cursor-pointer">
+            <button @click="activeTab = 'horarios'" :class="{ 'border-primary-600 text-primary-600 font-bold': activeTab === 'horarios', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium': activeTab !== 'horarios' }" class="py-3 px-1 border-b-2 text-xs transition-colors flex items-center gap-2 cursor-pointer whitespace-nowrap">
+                <i class="bi bi-clock text-base"></i>
+                <span>Horarios (<?= $totalHorarios ?>)</span>
+            </button>
+            <button @click="activeTab = 'ausencias'" :class="{ 'border-primary-600 text-primary-600 font-bold': activeTab === 'ausencias', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium': activeTab !== 'ausencias' }" class="py-3 px-1 border-b-2 text-xs transition-colors flex items-center gap-2 cursor-pointer whitespace-nowrap">
+                <i class="bi bi-calendar-x text-base"></i>
+                <span>Ausencias (<?= $totalAusencias ?>)</span>
+            </button>
+            <button @click="activeTab = 'contrato'" :class="{ 'border-primary-600 text-primary-600 font-bold': activeTab === 'contrato', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium': activeTab !== 'contrato' }" class="py-3 px-1 border-b-2 text-xs transition-colors flex items-center gap-2 cursor-pointer whitespace-nowrap">
                 <i class="bi bi-file-earmark-text text-base"></i>
                 <span>Datos Laborales</span>
             </button>
-            <button @click="activeTab = 'citas'" :class="{ 'border-primary-600 text-primary-600 font-bold': activeTab === 'citas', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium': activeTab !== 'citas' }" class="py-3 px-1 border-b-2 text-xs transition-colors flex items-center gap-2 cursor-pointer">
+            <!-- <button @click="activeTab = 'citas'" :class="{ 'border-primary-600 text-primary-600 font-bold': activeTab === 'citas', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium': activeTab !== 'citas' }" class="py-3 px-1 border-b-2 text-xs transition-colors flex items-center gap-2 cursor-pointer whitespace-nowrap">
                 <i class="bi bi-calendar-event text-base"></i>
                 <span>Citas del Especialista (<?= $totalCitas ?>)</span>
-            </button>
+            </button> -->
         </nav>
     </div>
 
@@ -165,6 +175,127 @@ $totalCitas = count($citas ?? []);
                                 <td colspan="6" class="py-12 text-center text-gray-400 italic">
                                     <i class="bi bi-receipt text-3xl block mb-2 text-gray-300"></i>
                                     No hay nóminas registradas para este facultativo.
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab Content: Horarios de Atención -->
+    <div x-show="activeTab === 'horarios'" class="space-y-6">
+        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-gray-900">Horarios de Atención</h3>
+                    <p class="text-xs text-gray-500 mt-0.5">Franjas horarias y días de consulta configurados para este facultativo.</p>
+                </div>
+                <a href="<?= PROJECT_ROOT ?>/configuracion/horarios/crear" class="inline-flex items-center gap-1.5 rounded-xl bg-primary-600 px-3.5 py-2 text-xs font-semibold text-white shadow-sm hover:bg-primary-700 transition-all">
+                    <i class="bi bi-plus-circle"></i>
+                    <span>Nuevo Horario</span>
+                </a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
+                            <th class="py-3 px-4 font-semibold">Día de la semana</th>
+                            <th class="py-3 px-4 font-semibold">Hora Inicio</th>
+                            <th class="py-3 px-4 font-semibold">Hora Fin</th>
+                            <th class="py-3 px-4 font-semibold text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <?php if (!empty($horarios)): ?>
+                            <?php foreach ($horarios as $h): ?>
+                                <tr class="hover:bg-gray-50/80 transition-colors">
+                                    <td class="py-4 px-4 font-bold text-gray-900">
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-primary-50 text-primary-700 border border-primary-100">
+                                            <i class="bi bi-calendar3 text-xs"></i>
+                                            <?= htmlspecialchars($h['dia_semana']) ?>
+                                        </span>
+                                    </td>
+                                    <td class="py-4 px-4 font-medium text-gray-700">
+                                        <?= date('H:i', strtotime($h['hora_inicio'])) ?>
+                                    </td>
+                                    <td class="py-4 px-4 font-medium text-gray-700">
+                                        <?= date('H:i', strtotime($h['hora_fin'])) ?>
+                                    </td>
+                                    <td class="py-4 px-4 text-right">
+                                        <a href="<?= PROJECT_ROOT ?>/configuracion/horarios/editar?id=<?= $h['horario_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-1.5 rounded-lg transition-all inline-block" title="Editar">
+                                            <i class="bi bi-pencil text-sm"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="4" class="py-12 text-center text-gray-400 italic">
+                                    <i class="bi bi-clock-history text-3xl block mb-2 text-gray-300"></i>
+                                    No hay horarios registrados para este facultativo.
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab Content: Ausencias -->
+    <div x-show="activeTab === 'ausencias'" class="space-y-6">
+        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-gray-900">Ausencias y Vacaciones</h3>
+                    <p class="text-xs text-gray-500 mt-0.5">Periodos de inactividad, bajas médicas o vacaciones de este facultativo.</p>
+                </div>
+                <a href="<?= PROJECT_ROOT ?>/configuracion/ausencias/crear" class="inline-flex items-center gap-1.5 rounded-xl bg-primary-600 px-3.5 py-2 text-xs font-semibold text-white shadow-sm hover:bg-primary-700 transition-all">
+                    <i class="bi bi-plus-circle"></i>
+                    <span>Registrar Ausencia</span>
+                </a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
+                            <th class="py-3 px-4 font-semibold">Fecha Inicio</th>
+                            <th class="py-3 px-4 font-semibold">Fecha Fin</th>
+                            <th class="py-3 px-4 font-semibold">Motivo</th>
+                            <th class="py-3 px-4 font-semibold text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <?php if (!empty($ausencias)): ?>
+                            <?php foreach ($ausencias as $a): ?>
+                                <tr class="hover:bg-gray-50/80 transition-colors">
+                                    <td class="py-4 px-4 font-semibold text-gray-900">
+                                        <?= date('d/m/Y', strtotime($a['fecha_inicio'])) ?>
+                                    </td>
+                                    <td class="py-4 px-4 font-semibold text-gray-900">
+                                        <?= date('d/m/Y', strtotime($a['fecha_fin'])) ?>
+                                    </td>
+                                    <td class="py-4 px-4 text-gray-600 font-medium">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-gray-100 text-gray-700">
+                                            <?= htmlspecialchars($a['motivo'] ?: 'Sin especificar') ?>
+                                        </span>
+                                    </td>
+                                    <td class="py-4 px-4 text-right">
+                                        <a href="<?= PROJECT_ROOT ?>/configuracion/ausencias/editar?id=<?= $a['ausencia_id'] ?>" class="text-gray-400 hover:text-amber-500 hover:bg-amber-50 p-1.5 rounded-lg transition-all inline-block" title="Editar">
+                                            <i class="bi bi-pencil text-sm"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="4" class="py-12 text-center text-gray-400 italic">
+                                    <i class="bi bi-calendar-x text-3xl block mb-2 text-gray-300"></i>
+                                    No hay ausencias registradas para este facultativo.
                                 </td>
                             </tr>
                         <?php endif; ?>
@@ -263,7 +394,7 @@ $totalCitas = count($citas ?? []);
     </div>
 
     <!-- Tab Content: Citas del Especialista -->
-    <div x-show="activeTab === 'citas'" class="space-y-6">
+    <!-- <div x-show="activeTab === 'citas'" class="space-y-6">
         <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
             <div class="p-6 border-b border-gray-100">
                 <h3 class="text-base font-bold text-gray-900">Agenda & Citas del Especialista</h3>
@@ -331,7 +462,7 @@ $totalCitas = count($citas ?? []);
                 </table>
             </div>
         </div>
-    </div>
+    </div> -->
 
 </div>
 

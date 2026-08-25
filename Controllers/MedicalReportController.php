@@ -47,7 +47,32 @@ class MedicalReportController extends Controller
     }
 
     /**
-     * Muestra el detalle de un informe médico específico.
+     * Muestra la vista de detalle de un informe médico específico en formato Document Studio.
+     *
+     * @return void
+     */
+    public function detail()
+    {
+        $id = $_GET['id'] ?? ($_GET['historial_id'] ?? null);
+        $historyModel = $this->model('MedicalReport');
+        $report = $historyModel->getById($id);
+
+        if (!$report) {
+            header('Location: ' . PROJECT_ROOT . '/pacientes');
+            $this->exitApp();
+        }
+
+        $userModel = $this->model('User');
+        $paciente = $userModel->getByusuario_id($report['paciente_id']);
+
+        $this->view('medical-report/detail', [
+            'report' => $report,
+            'paciente' => $paciente
+        ]);
+    }
+
+    /**
+     * Muestra el listado de informes médicos de un paciente.
      *
      * @return void
      */

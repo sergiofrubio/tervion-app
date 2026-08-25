@@ -256,6 +256,12 @@ $proximaCita = null;
                                     </span>
                                 </div>
                                 <div class="flex items-center gap-2 self-end sm:self-auto">
+                                    <a href="<?= PROJECT_ROOT ?>/historial/detalle?id=<?= $inf['historial_id'] ?>"
+                                        class="inline-flex items-center gap-1 text-[11px] font-semibold text-primary-700 hover:text-primary-800 bg-primary-50 hover:bg-primary-100 border border-primary-200 px-2.5 py-1 rounded-md transition-colors"
+                                        title="Ver en Document Studio">
+                                        <i class="bi bi-file-earmark-text text-primary-600"></i>
+                                        Ver Informe
+                                    </a>
                                     <a href="<?= PROJECT_ROOT ?>/historial/pdf?id=<?= $inf['historial_id'] ?>"
                                         target="_blank"
                                         class="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-md transition-colors"

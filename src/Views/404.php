@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Error 404 - Página no encontrada - Tervion</title>
-  <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" type="image/jpeg">
+  <link rel="icon" href="<?= PROJECT_ROOT ?>/public/img/icono-tervion-sin-fondo.png" type="image/jpeg">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
   <!-- Compiled CSS (Tailwind + SCSS) -->
-  <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/custom/css/app.css">
+  <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/css/app.css">
 </head>
 
 <?php
@@ -24,7 +24,7 @@ $systemAlertMessage = trim((string)($systemAlertMessage ?? ($GLOBALS['systemAler
 $hasSystemAlert = $systemAlertMessage !== '';
 ?>
 
-<body class="min-h-screen flex flex-col justify-between font-sans antialiased text-gray-900 bg-cover bg-center bg-no-repeat <?= $hasSystemAlert ? 'pt-7' : '' ?>" style="background-image: url('<?= PROJECT_ROOT ?>/public/custom/img/fondo.jpg');">
+<body class="min-h-screen flex flex-col justify-between font-sans antialiased text-gray-900 bg-cover bg-center bg-no-repeat <?= $hasSystemAlert ? 'pt-7' : '' ?>" style="background-image: url('<?= PROJECT_ROOT ?>/public/img/fondo.jpg');">
 
   <?php include TEMPLATE_DIR . 'system-alert.php'; ?>
 
@@ -32,7 +32,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
   <header class="border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <a href="<?= PROJECT_ROOT ?>/" class="flex items-center">
-        <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-9 object-contain">
+        <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-9 object-contain">
       </a>
       <div class="flex items-center gap-3">
         <a href="<?= PROJECT_ROOT ?>/" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900 border border-gray-200/80 shadow-2xs transition-all">
@@ -49,7 +49,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
 
       <!-- Dog Image (Friendly Touch) -->
       <div class="mx-auto mb-6 h-52 max-w-xs overflow-hidden rounded-2xl">
-        <img src="<?= PROJECT_ROOT ?>/public/custom/img/dog.jpg" alt="Perro buscando la página" class="w-full object-contain hover:scale-105 transition-transform duration-300">
+        <img src="<?= PROJECT_ROOT ?>/public/img/dog.jpg" alt="Perro buscando la página" class="w-full object-contain hover:scale-105 transition-transform duration-300">
       </div>
 
       <!-- Error Message -->
@@ -76,7 +76,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
       <p class="w-full sm:w-1/3 text-center sm:text-left text-sm">© 2026 Tervion Ibérica SLU</p>
 
       <a href="<?= PROJECT_ROOT ?>/" class="w-full sm:w-1/3 flex items-center justify-center">
-        <img src="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" alt="Tervion Logo" class="h-8 object-contain rounded-md p-1 shadow-sm">
+        <img src="<?= PROJECT_ROOT ?>/public/img/icono-tervion-sin-fondo.png" alt="Tervion Logo" class="h-8 object-contain rounded-md p-1 shadow-sm">
       </a>
 
       <div class="w-full sm:w-1/3 flex items-center justify-center sm:justify-end gap-6 text-gray-400">

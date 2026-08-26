@@ -4,11 +4,11 @@
   "description": "Frontend build tools for Tervion ERP using Tailwind CSS and Sass",
   "main": "index.js",
   "scripts": {
-    "build:sass": "sass public/custom/scss/app.scss public/custom/css/app.tmp.css",
-    "build:tailwind": "tailwindcss -i public/custom/css/app.tmp.css -o public/custom/css/app.css --minify",
+    "build:sass": "sass public/scss/app.scss public/css/app.tmp.css",
+    "build:tailwind": "tailwindcss -i public/css/app.tmp.css -o public/css/app.css --minify",
     "build": "npm run build:sass && npm run build:tailwind",
-    "watch:sass": "sass --watch public/custom/scss/app.scss public/custom/css/app.tmp.css",
-    "watch:tailwind": "tailwindcss -i public/custom/css/app.tmp.css -o public/custom/css/app.css --watch",
+    "watch:sass": "sass --watch public/scss/app.scss public/css/app.tmp.css",
+    "watch:tailwind": "tailwindcss -i public/css/app.tmp.css -o public/css/app.css --watch",
     "dev": "npm run build && npm run watch:tailwind"
   },
   "devDependencies": {

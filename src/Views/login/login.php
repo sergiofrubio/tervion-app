@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Inicio de sesión - Tervion</title>
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" type="image/jpeg">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/img/icono-tervion-sin-fondo.png" type="image/jpeg">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Compiled CSS (Tailwind + SCSS) -->
-    <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/custom/css/app.css">
+    <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/css/app.css">
 
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -72,7 +72,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
         <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 p-8 sm:p-10 transition-all">
             <div class="text-center mb-8">
                 <a href="<?= PROJECT_ROOT ?>/" class="w-24 mx-auto flex items-center mb-4">
-                    <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-9 object-contain">
+                    <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-9 object-contain">
                 </a>
                 <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Bienvenido de nuevo</h2>
                 <p class="text-sm text-gray-500 mt-1">Inicia sesión en tu cuenta</p>

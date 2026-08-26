@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Registro de Cliente - Tervion</title>
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" type="image/jpeg">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/img/icono-tervion-sin-fondo.png" type="image/jpeg">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Compiled CSS (Tailwind + SCSS) -->
-    <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/custom/css/app.css">
+    <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/css/app.css">
 
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -34,7 +34,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
     <header class="border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <a href="<?= PROJECT_ROOT ?>/" class="flex items-center">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-9 object-contain">
+                <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-9 object-contain">
             </a>
             <div class="flex items-center gap-3">
                 <span class="text-xs sm:text-sm font-medium text-gray-500">¿Ya tienes cuenta?</span>
@@ -566,7 +566,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
             <p class="w-full sm:w-1/3 text-center sm:text-left text-sm">© 2026 Tervion Ibérica SLU</p>
 
             <a href="<?= PROJECT_ROOT ?>/" class="w-full sm:w-1/3 flex items-center justify-center">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" alt="Tervion Logo" class="h-8 object-contain rounded-md p-1 shadow-sm">
+                <img src="<?= PROJECT_ROOT ?>/public/img/icono-tervion-sin-fondo.png" alt="Tervion Logo" class="h-8 object-contain rounded-md p-1 shadow-sm">
             </a>
 
             <div class="w-full sm:w-1/3 flex items-center justify-center sm:justify-end gap-6 text-gray-400">

@@ -16,16 +16,16 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Tervion — Automatización y Gestión Integral de Clínicas">
     <meta property="og:description" content="Menos administración, más tiempo para tus pacientes. Centraliza y conecta todos los procesos de tu clínica en un único lugar.">
-    <meta property="og:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png">
+    <meta property="og:image" content="<?= PROJECT_ROOT ?>/public/img/logo-tervion-sin-fondo.png">
     <meta property="og:url" content="https://tervion-app.com/">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Tervion — Tu clínica, tu gestión, tu libertad">
     <meta name="twitter:description" content="La plataforma SaaS que automatiza la gestión empresarial de clínicas y profesionales sanitarios.">
-    <meta name="twitter:image" content="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png">
+    <meta name="twitter:image" content="<?= PROJECT_ROOT ?>/public/img/logo-tervion-sin-fondo.png">
 
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" type="image/jpeg">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/img/icono-tervion-sin-fondo.png" type="image/jpeg">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,7 +33,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Compiled CSS (Tailwind + SCSS) -->
-    <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/custom/css/app.css">
+    <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/css/app.css">
 </head>
 
 <?php
@@ -50,7 +50,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
             <!-- Logo -->
             <a href="<?= PROJECT_ROOT ?>/" class="flex items-center">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-8 sm:h-9 object-contain">
+                <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-8 sm:h-9 object-contain">
             </a>
 
             <!-- Nav Links (Desktop) -->
@@ -175,7 +175,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                                 <div class="space-y-4 flex flex-col items-center">
                                     <!-- Logo Icon -->
                                     <div class="w-8 h-8 rounded-xl bg-gray-800 border border-gray-700 p-1 flex items-center justify-center shadow-inner">
-                                        <img src="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" alt="Tervion" class="w-full h-full object-contain rounded-md">
+                                        <img src="<?= PROJECT_ROOT ?>/public/img/icono-tervion-sin-fondo.png" alt="Tervion" class="w-full h-full object-contain rounded-md">
                                     </div>
 
                                     <!-- Nav Icons -->
@@ -944,7 +944,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                 <!-- Columna 1: Logo y Redes Sociales -->
                 <div class="flex flex-col items-start gap-4">
                     <a href="<?= PROJECT_ROOT ?>/" class="inline-block">
-                        <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-claro-sin-fondo.png" alt="Tervion Logo" class="h-8 object-contain">
+                        <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-claro-sin-fondo.png" alt="Tervion Logo" class="h-8 object-contain">
                     </a>
                     <p class="text-xs text-gray-400 leading-relaxed">
                         Automatización y gestión integral para clínicas y profesionales sanitarios.

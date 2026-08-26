@@ -1,60 +1,51 @@
 /**
- * Tervion Dynamic SPA Navigation Engine
- * Permite la navegación fluida y sin recargas en el Dashboard interceptando
- * enlaces internos, actualizando el contenedor principal (#contenido),
- * el título, breadcrumbs y re-ejecutando scripts necesarios de forma reactiva.
+ * Tervion SPA Navigation Engine
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Escuchar clics globales para interceptar navegación interna
+export function initDynamicNav(options = {}) {
+    const containerId = options.containerId || 'contenido';
+
+    // Interceptar navegación por enlaces internos
     document.addEventListener('click', (e) => {
         const link = e.target.closest('a');
         if (!link) return;
 
-        // Comprobar si es un enlace elegible para navegación dinámica
         if (shouldIntercept(link)) {
             e.preventDefault();
-            const targetUrl = link.href;
-            navigateTo(targetUrl);
+            navigateTo(link.href, containerId);
         }
     });
 
-    // Manejar botones Atrás / Adelante del navegador
+    // Manejar historial (Atrás / Adelante)
     window.addEventListener('popstate', (e) => {
         if (e.state && e.state.url) {
-            loadContent(e.state.url, false);
+            loadContent(e.state.url, false, containerId);
         } else {
-            loadContent(window.location.href, false);
+            loadContent(window.location.href, false, containerId);
         }
     });
 
-    // Guardar el estado inicial en el history
+    // Guardar estado inicial
     if (!history.state) {
         history.replaceState({ url: window.location.href, title: document.title }, document.title, window.location.href);
     }
-});
+}
 
-/**
- * Determina si el enlace debe cargarse por AJAX o dejar la navegación por defecto
- */
 function shouldIntercept(link) {
     const href = link.getAttribute('href');
     if (!href || href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('tel:')) {
         return false;
     }
 
-    // Excluir enlaces con target="_blank", atributos de descarga o explícitamente no dinámicos
     if (link.target === '_blank' || link.hasAttribute('download') || link.dataset.noDynamic !== undefined) {
         return false;
     }
 
-    // Comprobar que pertenece al mismo origen
     const url = new URL(link.href, window.location.origin);
     if (url.origin !== window.location.origin) {
         return false;
     }
 
-    // Excluir logout o descargas de pdf
     if (url.pathname.includes('/logout') || url.pathname.includes('/pdf') || url.pathname.includes('/login')) {
         return false;
     }
@@ -62,25 +53,18 @@ function shouldIntercept(link) {
     return true;
 }
 
-/**
- * Transición y carga de una nueva URL
- */
-async function navigateTo(url) {
-    await loadContent(url, true);
+export async function navigateTo(url, containerId = 'contenido') {
+    await loadContent(url, true, containerId);
 }
 
-/**
- * Carga el contenido de la URL mediante fetch y actualiza el DOM
- */
-async function loadContent(url, pushToHistory = true) {
-    const mainContainer = document.getElementById('contenido');
+async function loadContent(url, pushToHistory = true, containerId = 'contenido') {
+    const mainContainer = document.getElementById(containerId);
     if (!mainContainer) {
         window.location.href = url;
         return;
     }
 
-    // Indicador visual de carga sutil
-    showLoadingState(mainContainer);
+    mainContainer.classList.add('transition-opacity', 'duration-150', 'opacity-40');
 
     try {
         const response = await fetch(url, {
@@ -90,7 +74,6 @@ async function loadContent(url, pushToHistory = true) {
         });
 
         if (!response.ok) {
-            // Si hay redirección a login u error HTTP severo, navegar normalmente
             window.location.href = url;
             return;
         }
@@ -99,39 +82,32 @@ async function loadContent(url, pushToHistory = true) {
         const parser = new DOMParser();
         const doc = parser.parseFromString(htmlText, 'text/html');
 
-        const newMain = doc.getElementById('contenido');
+        const newMain = doc.getElementById(containerId);
         if (!newMain) {
-            // Si la página de destino no tiene el layout (ej. pantalla login), recargar nativo
             window.location.href = url;
             return;
         }
 
-        // 1. Actualizar título de la página
         if (doc.title) {
             document.title = doc.title;
         }
 
-        // 2. Actualizar breadcrumb o título del header si existe
         const newBreadcrumb = doc.getElementById('header-breadcrumb');
         const currentBreadcrumb = document.getElementById('header-breadcrumb');
         if (newBreadcrumb && currentBreadcrumb) {
             currentBreadcrumb.innerHTML = newBreadcrumb.innerHTML;
         }
 
-        // 3. Actualizar contenido principal
         mainContainer.innerHTML = newMain.innerHTML;
         mainContainer.classList.remove('opacity-40', 'pointer-events-none');
         mainContainer.scrollTop = 0;
 
-        // 4. Actualizar estado activo en el Sidebar Navigation
         updateActiveSidebarLinks(url);
 
-        // 5. Gestionar el historial del navegador
         if (pushToHistory) {
             history.pushState({ url: url, title: doc.title }, doc.title, url);
         }
 
-        // 6. Cerrar menús desplegables en móvil y desktop tras la navegación (Alpine integration)
         if (window.Alpine) {
             const bodyEl = document.querySelector('body[x-data]');
             if (bodyEl && bodyEl._x_dataStack && bodyEl._x_dataStack[0]) {
@@ -140,36 +116,22 @@ async function loadContent(url, pushToHistory = true) {
             }
         }
 
-        // 7. Re-evaluar scripts embebidos en el nuevo contenido
         executeNewScripts(newMain);
 
-        // 8. Re-inicializar componentes Alpine dentro de #contenido si aplica
         if (window.Alpine) {
-            Alpine.initTree(mainContainer);
+            window.Alpine.initTree(mainContainer);
         }
 
-        // 9. Disparar evento personalizado para extensiones
         window.dispatchEvent(new CustomEvent('tervion:navigated', { detail: { url } }));
 
     } catch (err) {
         console.error('Error cargando navegación dinámica:', err);
         window.location.href = url;
     } finally {
-        hideLoadingState(mainContainer);
+        mainContainer.classList.remove('opacity-40');
     }
 }
 
-function showLoadingState(container) {
-    container.classList.add('transition-opacity', 'duration-150', 'opacity-40');
-}
-
-function hideLoadingState(container) {
-    container.classList.remove('opacity-40');
-}
-
-/**
- * Actualiza las clases visuales de los links en el Topbar Superior
- */
 function updateActiveSidebarLinks(targetUrl) {
     const urlObj = new URL(targetUrl, window.location.origin);
     const pathname = urlObj.pathname;
@@ -179,8 +141,6 @@ function updateActiveSidebarLinks(targetUrl) {
 
     navLinks.forEach(link => {
         const linkUrl = new URL(link.href, window.location.origin);
-        
-        // Excluir botón de logout o inicio puro
         if (linkUrl.pathname.endsWith('/logout')) return;
 
         const isMatch = (linkUrl.pathname === pathname) ||
@@ -190,12 +150,10 @@ function updateActiveSidebarLinks(targetUrl) {
             link.classList.remove('text-gray-300', 'hover:bg-gray-800', 'hover:text-white', 'text-slate-700');
             link.classList.add('bg-primary-600', 'text-white', 'shadow-md');
             
-            // Si coincide con alguna subopción de configuración (facultativos, contabilidad, configuracion)
             if (['/nominas', '/contabilidad', '/configuracion'].some(p => linkUrl.pathname.startsWith(p))) {
                 configMatch = true;
             }
         } else {
-            // Solo quitar bg-primary-600 si no es una opción del desplegable interno
             if (!link.closest('[x-show="configMenuOpen"]')) {
                 link.classList.remove('bg-primary-600', 'text-white', 'shadow-md');
                 link.classList.add('text-gray-300', 'hover:bg-gray-800', 'hover:text-white');
@@ -206,7 +164,6 @@ function updateActiveSidebarLinks(targetUrl) {
         }
     });
 
-    // Actualizar botón de la rueda de configuración si corresponde
     const configBtn = document.querySelector('header nav div button');
     if (configBtn) {
         if (configMatch) {
@@ -219,10 +176,6 @@ function updateActiveSidebarLinks(targetUrl) {
     }
 }
 
-
-/**
- * Ejecuta scripts que vienen dentro del contenido nuevo (ej. formularios de citas, gráficos)
- */
 function executeNewScripts(container) {
     const scripts = container.querySelectorAll('script');
     scripts.forEach(oldScript => {
@@ -230,11 +183,9 @@ function executeNewScripts(container) {
         Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
         newScript.textContent = oldScript.textContent;
         document.body.appendChild(newScript);
-        // Limpieza tras ejecutar para no acumular etiquetas huérfanas
         setTimeout(() => newScript.remove(), 100);
     });
 
-    // Re-ejecutar eventos de validaciones si existen
     if (typeof window.initFormValidation === 'function') {
         window.initFormValidation();
     }

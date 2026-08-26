@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= isset($pageTitle) ? htmlspecialchars($pageTitle) . ' — Tervion' : 'Panel de Gestión — Tervion' ?></title>
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" type="image/jpeg">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/img/icono-tervion-sin-fondo.png" type="image/jpeg">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,18 +13,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Compiled CSS (Tailwind + SCSS) -->
-    <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/custom/css/app.css">
+    <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/css/app.css">
 
-    <script src="<?= PROJECT_ROOT ?>/public/custom/js/timeout.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="<?= PROJECT_ROOT ?>/public/custom/js/validaciones.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
-    <!-- Alpine.js for interactive UI -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <!-- Dynamic SPA Navigation without full page reloads -->
-    <script src="<?= PROJECT_ROOT ?>/public/custom/js/dynamic-nav.js" defer></script>
+    <!-- App Core JS (ES Module) -->
+    <script type="module" src="<?= PROJECT_ROOT ?>/public/js/app.js"></script>
 </head>
 
 <?php
@@ -79,7 +71,7 @@ $isSaasFacturasActive  = (strpos($cleanUri, '/superadmin/facturas') === 0);
                 <!-- Izquierda: Logo y Badge si es SuperAdmin -->
                 <div class="flex items-center gap-3 shrink-0">
                     <a href="<?= PROJECT_ROOT ?>/inicio" class="flex items-center gap-2 group">
-                        <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-claro-sin-fondo.png" alt="Tervion Logo" class="h-6 sm:h-7 w-auto object-contain transition-all duration-300">
+                        <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-claro-sin-fondo.png" alt="Tervion Logo" class="h-6 sm:h-7 w-auto object-contain transition-all duration-300">
                     </a>
                 </div>
 

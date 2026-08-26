@@ -187,7 +187,7 @@ class InvoiceController extends Controller
         $pdf->SetAutoPageBreak(true, 15);
 
         // Header - Logo & QR Code
-        $logoPath = public_path('custom/img/logo-tervion-sin-fondo.png');
+        $logoPath = public_path('img/logo-tervion-sin-fondo.png');
         if (file_exists($logoPath)) {
             $pdf->Image($logoPath, 10, 10, 45); // width 45mm, height auto
         } else {

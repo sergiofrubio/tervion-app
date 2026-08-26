@@ -11,11 +11,11 @@ $title = "Política de Privacidad — Tervion";
     <meta name="description" content="Política de Privacidad y protección de datos personales de Tervion Ibérica SLU.">
     <meta name="robots" content="index, follow">
 
-    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" type="image/jpeg">
+    <link rel="icon" href="<?= PROJECT_ROOT ?>/public/img/icono-tervion-sin-fondo.png" type="image/jpeg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/custom/css/app.css">
+    <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/css/app.css">
 </head>
 
 <body class="font-sans antialiased text-gray-900 bg-white min-h-screen flex flex-col justify-between">
@@ -24,7 +24,7 @@ $title = "Política de Privacidad — Tervion";
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
             <a href="<?= PROJECT_ROOT ?>/" class="flex items-center gap-2">
-                <img src="<?= PROJECT_ROOT ?>/public/custom/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-8 sm:h-9 object-contain">
+                <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-8 sm:h-9 object-contain">
             </a>
             <div class="flex items-center gap-4">
                 <a href="<?= PROJECT_ROOT ?>/" class="text-sm font-medium text-gray-600 hover:text-primary-500 transition-colors">Volver a Inicio</a>

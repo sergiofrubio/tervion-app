@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Confirmación de Asistencia - Tervion</title>
-  <link rel="icon" href="<?= PROJECT_ROOT ?>/public/custom/img/icono-tervion-sin-fondo.png" type="image/jpeg">
+  <link rel="icon" href="<?= PROJECT_ROOT ?>/public/img/icono-tervion-sin-fondo.png" type="image/jpeg">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Compiled CSS (Tailwind + SCSS) -->
-  <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/custom/css/app.css">
+  <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/css/app.css">
 </head>
 
 <?php
@@ -21,7 +21,7 @@ $systemAlertMessage = trim((string)($systemAlertMessage ?? ($GLOBALS['systemAler
 $hasSystemAlert = $systemAlertMessage !== '';
 ?>
 
-<body class="h-full font-sans antialiased text-gray-900 flex items-center justify-center bg-cover bg-center bg-no-repeat <?= $hasSystemAlert ? 'pt-7' : '' ?>" style="background-image: url('<?= PROJECT_ROOT ?>/public/custom/img/fondo.jpg');">
+<body class="h-full font-sans antialiased text-gray-900 flex items-center justify-center bg-cover bg-center bg-no-repeat <?= $hasSystemAlert ? 'pt-7' : '' ?>" style="background-image: url('<?= PROJECT_ROOT ?>/public/img/fondo.jpg');">
 
   <?php include TEMPLATE_DIR . 'system-alert.php'; ?>
 

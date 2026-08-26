@@ -179,11 +179,26 @@ function updateActiveSidebarLinks(targetUrl) {
 function executeNewScripts(container) {
     const scripts = container.querySelectorAll('script');
     scripts.forEach(oldScript => {
-        const newScript = document.createElement('script');
-        Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-        newScript.textContent = oldScript.textContent;
-        document.body.appendChild(newScript);
-        setTimeout(() => newScript.remove(), 100);
+        const isModule = oldScript.type === 'module';
+        const src = oldScript.getAttribute('src');
+
+        if (src) {
+            if (isModule) {
+                // Los ES Modules se importan dinámicamente
+                import(src + '?t=' + Date.now()).catch(err => console.error('Error cargando módulo dinámico:', src, err));
+            } else {
+                const newScript = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                document.body.appendChild(newScript);
+                setTimeout(() => newScript.remove(), 100);
+            }
+        } else {
+            const newScript = document.createElement('script');
+            Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+            newScript.textContent = oldScript.textContent;
+            document.body.appendChild(newScript);
+            setTimeout(() => newScript.remove(), 100);
+        }
     });
 
     if (typeof window.initFormValidation === 'function') {

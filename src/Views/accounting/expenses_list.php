@@ -231,16 +231,7 @@ include TEMPLATE_DIR . 'header.php';
     </div>
 </div>
 
-<script>
-    function toggleModal(show) {
-        const modal = document.getElementById('expenseModal');
-        if (show) {
-            modal.classList.remove('hidden');
-        } else {
-            modal.classList.add('hidden');
-        }
-    }
-</script>
+<script type="module" src="<?= PROJECT_ROOT ?>/public/js/modules/accounting/expenses.js"></script>
 
 <style>
     @keyframes fadeInUp {

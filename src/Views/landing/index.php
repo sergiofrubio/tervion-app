@@ -1049,39 +1049,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const banner = document.getElementById('cookie-banner');
-            const acceptBtn = document.getElementById('accept-cookies-btn');
-            const rejectBtn = document.getElementById('reject-cookies-btn');
-            const cookieConsent = localStorage.getItem('tervion_cookie_consent');
-
-            if (!cookieConsent) {
-                // Mostrar banner con animación si no hay decisión guardada
-                setTimeout(function() {
-                    banner.classList.remove('translate-y-full', 'opacity-0');
-                }, 400);
-            }
-
-            function hideBanner() {
-                banner.classList.add('translate-y-full', 'opacity-0');
-            }
-
-            if (acceptBtn) {
-                acceptBtn.addEventListener('click', function() {
-                    localStorage.setItem('tervion_cookie_consent', 'accepted');
-                    hideBanner();
-                });
-            }
-
-            if (rejectBtn) {
-                rejectBtn.addEventListener('click', function() {
-                    localStorage.setItem('tervion_cookie_consent', 'rejected');
-                    hideBanner();
-                });
-            }
-        });
-    </script>
+    <script type="module" src="<?= PROJECT_ROOT ?>/public/js/modules/landing/cookies.js"></script>
 </body>
 
 </html>

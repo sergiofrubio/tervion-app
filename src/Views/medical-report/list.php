@@ -312,41 +312,6 @@ $proximaCita = null;
 
 </div>
 
-<script>
-    function historiasClinicas() {
-        return {
-            searchQuery: '',
-            results: [],
-            isOpen: false,
-            isLoading: false,
-
-            async searchPatients() {
-                const q = this.searchQuery.trim();
-                if (q.length < 2) {
-                    this.results = [];
-                    this.isOpen = false;
-                    return;
-                }
-
-                this.isLoading = true;
-                this.isOpen = true;
-
-                try {
-                    const response = await fetch('<?= PROJECT_ROOT ?>/pacientes/buscar?q=' + encodeURIComponent(q));
-                    if (response.ok) {
-                        this.results = await response.json();
-                    } else {
-                        this.results = [];
-                    }
-                } catch (err) {
-                    console.error('Error al buscar pacientes:', err);
-                    this.results = [];
-                } finally {
-                    this.isLoading = false;
-                }
-            }
-        };
-    }
-</script>
+<script type="module" src="<?= PROJECT_ROOT ?>/public/js/modules/medical-report/report-list.js"></script>
 
 <?php include TEMPLATE_DIR . 'footer.php'; ?>

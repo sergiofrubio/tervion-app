@@ -104,15 +104,6 @@
     </form>
 </div>
 
-<script>
-    function calculateTotal() {
-        const base = parseFloat(document.getElementById('base_imponible').value) || 0;
-        const iva = parseFloat(document.getElementById('tipo_iva').value) || 0;
-        const cuotaIva = base * (iva / 100);
-        const total = base + cuotaIva;
-        document.getElementById('total_factura').value = total.toFixed(2) + ' €';
-    }
-    calculateTotal();
-</script>
+<script type="module" src="<?= PROJECT_ROOT ?>/public/js/modules/saas-admin/invoice-form.js"></script>
 
 <?php include TEMPLATE_DIR . 'footer.php'; ?>

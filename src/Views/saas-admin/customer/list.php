@@ -127,17 +127,6 @@
     </div>
 </div>
 
-<script>
-    function filterTenants() {
-        const input = document.getElementById('tenantSearch');
-        const filter = input.value.toLowerCase();
-        const rows = document.querySelectorAll('.tenant-row');
-
-        rows.forEach(row => {
-            const text = row.innerText.toLowerCase();
-            row.style.display = text.includes(filter) ? '' : 'none';
-        });
-    }
-</script>
+<script type="module" src="<?= PROJECT_ROOT ?>/public/js/modules/saas-admin/customer-list.js"></script>
 
 <?php include TEMPLATE_DIR . 'footer.php'; ?>

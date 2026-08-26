@@ -186,26 +186,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
             </div>
         </div>
     </div>
+    <script type="module" src="<?= PROJECT_ROOT ?>/public/js/modules/auth/login.js"></script>
 </body>
 
 </html>
-
-<script>
-    (function() {
-        var form = document.querySelector('form[action="<?= PROJECT_ROOT . '\/login' ?>"]');
-        if (!form) form = document.querySelector('form');
-        var btn = document.getElementById('loginButton');
-        var spinner = document.getElementById('loginSpinner');
-        var btnText = document.getElementById('loginButtonText');
-
-        if (form && btn && spinner) {
-            form.addEventListener('submit', function(e) {
-                // Mostrar spinner, deshabilitar botón y conservar envío
-                spinner.classList.remove('hidden');
-                btn.classList.add('opacity-80');
-                btn.disabled = true;
-                if (btnText) btnText.textContent = 'Iniciando...';
-            });
-        }
-    })();
-</script>

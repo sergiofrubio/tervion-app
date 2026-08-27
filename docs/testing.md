@@ -6,7 +6,7 @@ Este documento explica cómo ejecutar las pruebas unitarias en el sistema y cóm
 
 ## 🧪 Pruebas Unitarias con PHPUnit
 
-El proyecto cuenta con **PHPUnit** como dependencia de desarrollo integrada. Las pruebas se ubican en el directorio `Tests/`.
+El proyecto cuenta con **PHPUnit** como dependencia de desarrollo integrada. Las pruebas se ubican en el directorio `tests/`.
 
 ### Ejecutar Pruebas en el Contenedor
 Dado que la aplicación corre dentro de Docker, las pruebas deben ser ejecutadas en el runtime del contenedor de Apache para que dispongan de las extensiones y la conexión a la base de datos de test correctas.

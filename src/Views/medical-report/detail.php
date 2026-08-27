@@ -37,31 +37,41 @@ include TEMPLATE_DIR . 'header.php';
         width: 6px;
         height: 6px;
     }
+
     .custom-scrollbar::-webkit-scrollbar-track {
         background: #f1f5f9;
     }
+
     .custom-scrollbar::-webkit-scrollbar-thumb {
         background: #cbd5e1;
         border-radius: 9999px;
     }
+
     .custom-scrollbar::-webkit-scrollbar-thumb:hover {
         background: #94a3b8;
     }
 
     /* Impresión limpia del folio */
     @media print {
-        header, .studio-toolbar, #system-alert-container, .no-print {
+
+        header,
+        .studio-toolbar,
+        #system-alert-container,
+        .no-print {
             display: none !important;
         }
+
         #contenido {
             height: auto !important;
             overflow: visible !important;
         }
+
         .studio-viewport {
             background: white !important;
             padding: 0 !important;
             overflow: visible !important;
         }
+
         .folio-report-sheet {
             box-shadow: none !important;
             margin: 0 !important;
@@ -80,7 +90,7 @@ include TEMPLATE_DIR . 'header.php';
 
     <!-- 1. BARRA SUPERIOR / STUDIO TOPBAR -->
     <header class="h-14 bg-white border-b border-slate-200 px-4 flex items-center justify-between shrink-0 z-30 shadow-xs studio-toolbar">
-        
+
         <!-- Izquierda: Volver & Título -->
         <div class="flex items-center gap-3">
             <a href="<?= PROJECT_ROOT ?>/pacientes/detalle?usuario_id=<?= urlencode($report['paciente_id']) ?>"
@@ -106,10 +116,10 @@ include TEMPLATE_DIR . 'header.php';
                 </div>
             </div>
 
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <!-- <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                 <i class="bi bi-shield-check text-emerald-600"></i>
                 Registrado
-            </span>
+            </span> -->
         </div>
 
         <!-- Centro: Controles de Zoom del Folio -->
@@ -132,11 +142,11 @@ include TEMPLATE_DIR . 'header.php';
 
         <!-- Derecha: Acciones de Impresión, Exportación y Nuevo Informe -->
         <div class="flex items-center gap-2">
-            
-            <button type="button" id="btnPrintReport" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all border border-slate-200 shadow-xs" title="Imprimir informe médico">
+
+            <!-- <button type="button" id="btnPrintReport" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all border border-slate-200 shadow-xs" title="Imprimir informe médico">
                 <i class="bi bi-printer text-xs text-slate-600"></i>
                 <span class="hidden md:inline">Imprimir</span>
-            </button>
+            </button> -->
 
             <button type="button" id="btnDownloadReportPdf" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all border border-slate-200 shadow-xs" title="Descargar Informe en PDF">
                 <i class="bi bi-file-earmark-pdf text-xs text-rose-600"></i>
@@ -153,10 +163,10 @@ include TEMPLATE_DIR . 'header.php';
 
     <!-- 2. WORKSPACE PRINCIPAL: VISOR EN FORMATO FOLIO A4 -->
     <main class="flex-1 bg-slate-100/90 overflow-auto p-4 sm:p-8 flex justify-center items-start custom-scrollbar studio-viewport relative select-text" id="reportStudioViewport">
-        
+
         <!-- CONTENEDOR ESCALABLE CON ZOOM -->
         <div id="folioReportWrapper" class="transition-transform duration-100 ease-out origin-top my-auto sm:my-4">
-            
+
             <!-- HOJA FOLIO A4 DIGITAL / DOCUMENT STUDIO -->
             <div id="printableReportFolioSheet" class="folio-report-sheet text-slate-900 rounded-sm select-text">
 
@@ -180,9 +190,9 @@ include TEMPLATE_DIR . 'header.php';
                     </div>
 
                     <div class="text-right">
-                        <span class="inline-block px-3 py-1 bg-slate-900 text-white font-mono text-xs font-bold rounded">
+                        <!-- <span class="inline-block px-3 py-1 bg-slate-900 text-white font-mono text-xs font-bold rounded">
                             REF-INF-<?= str_pad((string)$report['historial_id'], 5, '0', STR_PAD_LEFT) ?>
-                        </span>
+                        </span> -->
                         <div class="text-[11px] text-slate-600 mt-1.5 font-medium">
                             <span>Fecha Consulta:</span> <strong class="text-slate-900 font-mono"><?= $fechaConsulta ?> <?= $horaConsulta ?></strong>
                         </div>
@@ -214,7 +224,7 @@ include TEMPLATE_DIR . 'header.php';
                         <span>Datos Identificativos del Paciente</span>
                         <span class="text-[10px] text-slate-400 font-mono">NHC: #<?= htmlspecialchars($report['paciente_id']) ?></span>
                     </div>
-                    
+
                     <div class="grid grid-cols-2 gap-y-1.5 gap-x-4 text-slate-700">
                         <div><strong class="text-slate-900">Paciente:</strong> <?= htmlspecialchars($report['paciente_nombre'] . ' ' . $report['paciente_apellidos']) ?></div>
                         <div><strong class="text-slate-900">DNI / NIE:</strong> <span class="font-mono"><?= htmlspecialchars($report['paciente_id']) ?></span></div>
@@ -234,7 +244,7 @@ include TEMPLATE_DIR . 'header.php';
                 </section>
 
                 <!-- 4. CONTENIDO CLÍNICO DEL INFORME -->
-                
+
                 <!-- Sección 1: Diagnóstico / Evaluación -->
                 <div class="my-5">
                     <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b border-slate-200 pb-1 mb-2 flex items-center gap-1.5">
@@ -276,13 +286,13 @@ include TEMPLATE_DIR . 'header.php';
                         <div class="text-xs text-slate-700 space-y-1">
                             <p>En <strong class="text-slate-900">Madrid</strong>, a <strong class="text-slate-900"><?= $fechaConsulta ?></strong></p>
                             <p class="text-[10px] text-slate-500">Documento expedido y firmado en el Sistema de Gestión Clínica</p>
-                            <div class="p-2 bg-slate-50 border border-slate-200 rounded text-[10px] text-slate-500 mt-2 space-y-0.5">
+                            <!-- <div class="p-2 bg-slate-50 border border-slate-200 rounded text-[10px] text-slate-500 mt-2 space-y-0.5">
                                 <div class="flex items-center gap-1 text-slate-700 font-semibold">
                                     <i class="bi bi-shield-check text-emerald-600"></i>
                                     <span>Certificación de Integridad Clínica</span>
                                 </div>
                                 <p>Hash de Verificación: <span class="font-mono text-[9px]"><?= strtoupper(substr(md5($report['historial_id'] . $report['paciente_id'] . $report['fecha_consulta']), 0, 16)) ?></span></p>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="text-center">

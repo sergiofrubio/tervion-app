@@ -103,7 +103,7 @@ class RegisterController extends Controller
             $stmt = $db->prepare("SELECT usuario_id FROM usuarios WHERE usuario_id = :id OR email = :email LIMIT 1");
             $stmt->execute([':id' => $usuario_id, ':email' => $email]);
             if ($stmt->fetch()) {
-                $this->view('register/register', ['error' => 'El NIF/DNI o el correo electrónico del administrador ya se encuentra registrado.', 'data' => $_POST]);
+                $this->view('landing/registro', ['error' => 'El NIF/DNI o el correo electrónico del administrador ya se encuentra registrado.', 'data' => $_POST]);
                 return;
             }
 
@@ -112,7 +112,7 @@ class RegisterController extends Controller
                 $stmt = $db->prepare("SELECT id_clinica FROM clinicas WHERE email_contacto = :email LIMIT 1");
                 $stmt->execute([':email' => $email_contacto]);
                 if ($stmt->fetch()) {
-                    $this->view('register/register', ['error' => 'El correo electrónico de la clínica ya se encuentra registrado.', 'data' => $_POST]);
+                    $this->view('landing/registro', ['error' => 'El correo electrónico de la clínica ya se encuentra registrado.', 'data' => $_POST]);
                     return;
                 }
             }
@@ -205,7 +205,7 @@ class RegisterController extends Controller
             if ($db->inTransaction()) {
                 $db->rollBack();
             }
-            $this->view('register/register', ['error' => 'Ocurrió un error inesperado al procesar el registro: ' . $e->getMessage(), 'data' => $_POST]);
+            $this->view('landing/registro', ['error' => 'Ocurrió un error inesperado al procesar el registro: ' . $e->getMessage(), 'data' => $_POST]);
         }
     }
 }

@@ -287,13 +287,13 @@ include TEMPLATE_DIR . 'header.php';
                 <?php endif; ?>
             </div>
 
-            <div class="bg-gradient-to-br from-indigo-900 to-indigo-950 rounded-3xl p-6 text-white shadow-md relative overflow-hidden">
+            <!-- <div class="bg-gradient-to-br from-indigo-900 to-indigo-950 rounded-3xl p-6 text-white shadow-md relative overflow-hidden">
                 <h4 class="font-bold mb-2">Información Contable</h4>
                 <p class="text-xs leading-relaxed opacity-85">
                     Como S.L., estás obligado a depositar las <strong>Cuentas Anuales</strong> (Balance y P&L) en el Registro Mercantil.
                     Si eres Autónomo, debes registrar todas las operaciones en los <strong>Libros Registro Oficiales de la AEAT</strong> y declarar trimestralmente el pago fraccionado del IRPF (Modelo 130).
                 </p>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

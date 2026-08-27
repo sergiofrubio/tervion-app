@@ -134,46 +134,44 @@ async function loadContent(url, pushToHistory = true, containerId = 'contenido')
 
 function updateActiveSidebarLinks(targetUrl) {
     const urlObj = new URL(targetUrl, window.location.origin);
-    const pathname = urlObj.pathname;
+    const pathname = rtrimSlash(urlObj.pathname);
 
-    const navLinks = document.querySelectorAll('header nav a, header .md\\:hidden a');
-    let configMatch = false;
+    // Selecciona todos los enlaces de navegación del Sidebar Desktop y Móvil
+    const navLinks = document.querySelectorAll('aside a, [x-show="mobileMenuOpen"] a');
 
     navLinks.forEach(link => {
         const linkUrl = new URL(link.href, window.location.origin);
-        if (linkUrl.pathname.endsWith('/logout')) return;
+        const linkPath = rtrimSlash(linkUrl.pathname);
+        if (linkPath.endsWith('/logout')) return;
 
-        const isMatch = (linkUrl.pathname === pathname) ||
-            (linkUrl.pathname !== '/' && linkUrl.pathname.length > 1 && pathname.startsWith(linkUrl.pathname));
+        // Comprobación exacta o por prefijo de ruta activa
+        const isMatch = (linkPath === pathname) ||
+            (linkPath !== '/' && linkPath.length > 1 && pathname.startsWith(linkPath));
+
+        const icon = link.querySelector('i');
 
         if (isMatch) {
-            link.classList.remove('text-gray-300', 'hover:bg-gray-800', 'hover:text-white', 'text-slate-700');
-            link.classList.add('bg-primary-600', 'text-white', 'shadow-md');
-            
-            if (['/nominas', '/contabilidad', '/configuracion'].some(p => linkUrl.pathname.startsWith(p))) {
-                configMatch = true;
+            // Estilo Activo (Teal MedServ Pill)
+            link.classList.remove('text-slate-600', 'hover:bg-slate-50', 'hover:text-slate-900');
+            link.classList.add('bg-primary-50', 'text-primary-700', 'ring-1', 'ring-primary-500/20');
+            if (icon) {
+                icon.classList.remove('text-slate-400', 'group-hover:text-slate-600');
+                icon.classList.add('text-primary-600');
             }
         } else {
-            if (!link.closest('[x-show="configMenuOpen"]')) {
-                link.classList.remove('bg-primary-600', 'text-white', 'shadow-md');
-                link.classList.add('text-gray-300', 'hover:bg-gray-800', 'hover:text-white');
-            } else {
-                link.classList.remove('bg-primary-600', 'text-white', 'shadow-md');
-                link.classList.add('text-slate-700');
+            // Estilo Inactivo
+            link.classList.remove('bg-primary-50', 'text-primary-700', 'ring-1', 'ring-primary-500/20');
+            link.classList.add('text-slate-600', 'hover:bg-slate-50', 'hover:text-slate-900');
+            if (icon) {
+                icon.classList.remove('text-primary-600');
+                icon.classList.add('text-slate-400', 'group-hover:text-slate-600');
             }
         }
     });
+}
 
-    const configBtn = document.querySelector('header nav div button');
-    if (configBtn) {
-        if (configMatch) {
-            configBtn.classList.remove('text-gray-300', 'hover:bg-gray-800');
-            configBtn.classList.add('bg-primary-600', 'text-white', 'shadow-md');
-        } else {
-            configBtn.classList.remove('bg-primary-600', 'text-white', 'shadow-md');
-            configBtn.classList.add('text-gray-300', 'hover:bg-gray-800');
-        }
-    }
+function rtrimSlash(str) {
+    return str.endsWith('/') && str.length > 1 ? str.slice(0, -1) : str;
 }
 
 function executeNewScripts(container) {

@@ -41,33 +41,60 @@ if (!empty($appointments)) {
 }
 
 
-$articulos_x_pagina = 5;
-$pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-if ($pagina < 1) $pagina = 1;
-
 $total_citas = count($citas_filtradas);
-$n_botones_paginacion = ceil($total_citas / $articulos_x_pagina);
 
-if ($pagina > $n_botones_paginacion && $n_botones_paginacion > 0) {
-    $pagina = 1;
+// Prepare events for FullCalendar
+$calendarEvents = [];
+if (!empty($citas_filtradas)) {
+    foreach ($citas_filtradas as $cita) {
+        $estado = $cita['estado'] ?? 'Programada';
+        $bgColor = '#3b82f6'; // blue-500 default (Pendiente)
+        if ($estado === 'Realizada') $bgColor = '#10b981'; // emerald-500
+        elseif ($estado === 'Confirmada') $bgColor = '#14b8a6'; // teal-500
+        elseif ($estado === 'Programada') $bgColor = '#f59e0b'; // amber-500
+        elseif ($estado === 'Cancelada') $bgColor = '#f43f5e'; // rose-500
+        
+        if (!empty($cita['tipo_cita_color'])) {
+            $bgColor = $cita['tipo_cita_color'];
+        }
+
+        $start = $cita['fecha_hora'];
+        // Assume 1 hour duration by default
+        $end = date('Y-m-d H:i:s', strtotime($start . ' +1 hour'));
+        
+        $calendarEvents[] = [
+            'id' => $cita['cita_id'],
+            'title' => trim(($cita['paciente_nombre'] ?? '') . ' ' . ($cita['paciente_apellidos'] ?? '')),
+            'start' => $start,
+            'end' => $end,
+            'backgroundColor' => $bgColor,
+            'borderColor' => $bgColor,
+            'extendedProps' => [
+                'fisioterapeuta' => trim(($cita['fisioterapeuta_nombre'] ?? '') . ' ' . ($cita['fisioterapeuta_apellidos'] ?? '')),
+                'estado' => $estado,
+                'paciente_id' => $cita['paciente_id']
+            ]
+        ];
+    }
 }
-
-$iniciar = ($pagina - 1) * $articulos_x_pagina;
-$citasPaginadas = array_slice($citas_filtradas, $iniciar, $articulos_x_pagina);
-
-$params = $_GET;
-unset($params['pagina']);
-$queryString = !empty($params) ? '&' . http_build_query($params) : '';
 ?>
 
-<div class="space-y-6 animate-fade-in-up">
+<div class="space-y-6 animate-fade-in-up" x-data="appointmentCalendar()">
     <!-- Title & Action Bar -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">Citas</h1>
-            <p class="text-gray-500 text-sm mt-0.5">Gestiona las citas programadas de los pacientes.</p>
+            <p class="text-gray-500 text-sm mt-0.5">Gestiona las citas programadas de los pacientes en formato semanal.</p>
         </div>
-        <div>
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1.5 rounded-xl shadow-sm">
+                <label for="slot_duration" class="text-xs font-semibold text-gray-600">Intervalo:</label>
+                <select id="slot_duration" x-model="slotDuration" @change="updateCalendarConfig()" class="text-xs bg-transparent focus:outline-none font-bold text-gray-900 cursor-pointer">
+                    <template x-for="interval in [10, 15, 20, 30, 40, 45, 50, 60]">
+                        <option :value="interval + ':00'" x-text="interval + ' min'"></option>
+                    </template>
+                </select>
+            </div>
             <a href="<?= PROJECT_ROOT ?>/citas/crear" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-2xl font-semibold text-sm shadow-md transition-all cursor-pointer">
                 <i class="bi bi-plus-lg"></i>
                 <span>Asignar Cita</span>
@@ -103,196 +130,156 @@ $queryString = !empty($params) ? '&' . http_build_query($params) : '';
         </div>
     <?php endif; ?>
 
-    <!-- Appointments Table Card -->
-    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-        <!-- Table Card Header & Filters -->
-        <div class="p-4 sm:p-6 border-b border-gray-100">
-            <form action="<?= PROJECT_ROOT ?>/citas" method="GET" class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1 max-w-3xl">
-                    <input type="date" id="fecha_hora" name="fecha_hora" value="<?= htmlspecialchars($filtro_fecha_hora) ?>" onchange="this.form.submit()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
-                    <select id="fisioterapeuta_id" name="fisioterapeuta_id" onchange="this.form.submit()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer">
-                        <option value="" <?= $filtro_fisioterapeuta === '' ? 'selected' : '' ?>>Todas las agendas</option>
-                        <?php if (!empty($fisioterapeutas)): ?>
-                            <?php foreach ($fisioterapeutas as $fisio): ?>
-                                <option value="<?= htmlspecialchars($fisio['usuario_id']) ?>" <?= (string)$filtro_fisioterapeuta === (string)$fisio['usuario_id'] ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars(($fisio['nombre'] ?? '') . ' ' . ($fisio['apellidos'] ?? '')) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </select>
-                    <select id="estado" name="estado" onchange="this.form.submit()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer">
-                        <option value="" <?= $filtro_estado === '' ? 'selected' : '' ?>>Todos los estados</option>
-                        <option value="Programada" <?= $filtro_estado === 'Programada' ? 'selected' : '' ?>>Programada</option>
-                        <option value="Realizada" <?= $filtro_estado === 'Realizada' ? 'selected' : '' ?>>Realizada</option>
-                        <option value="Cancelada" <?= $filtro_estado === 'Cancelada' ? 'selected' : '' ?>>Cancelada</option>
-                        <option value="Pendiente" <?= $filtro_estado === 'Pendiente' ? 'selected' : '' ?>>Pendiente</option>
-                    </select>
-                </div>
-                <div class="flex items-center gap-2">
-                    <?php if ($filtro_fecha_hora !== '' || $filtro_estado !== '' || $filtro_fisioterapeuta !== ''): ?>
-                        <a href="<?= PROJECT_ROOT ?>/citas" class="p-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-xs transition-colors shrink-0" title="Limpiar filtros">
-                            <i class="bi bi-x-lg"></i>
-                        </a>
+    <!-- Calendar Container & Filters -->
+    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col min-h-[600px]">
+        <!-- Top Toolbar / Filters -->
+        <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <form action="<?= PROJECT_ROOT ?>/citas" method="GET" class="flex flex-col sm:flex-row items-center gap-3">
+                <select name="fisioterapeuta_id" onchange="this.form.submit()" class="px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer min-w-[200px] shadow-sm">
+                    <option value="" <?= $filtro_fisioterapeuta === '' ? 'selected' : '' ?>>Todas las agendas</option>
+                    <?php if (!empty($fisioterapeutas)): ?>
+                        <?php foreach ($fisioterapeutas as $fisio): ?>
+                            <option value="<?= htmlspecialchars($fisio['usuario_id']) ?>" <?= (string)$filtro_fisioterapeuta === (string)$fisio['usuario_id'] ? 'selected' : '' ?>>
+                                <?= htmlspecialchars(($fisio['nombre'] ?? '') . ' ' . ($fisio['apellidos'] ?? '')) ?>
+                            </option>
+                        <?php endforeach; ?>
                     <?php endif; ?>
-                    <div class="text-xs text-gray-500 font-medium whitespace-nowrap">
-                        Total: <span class="font-bold text-gray-900"><?= $total_citas ?></span> citas
-                    </div>
+                </select>
+                <div class="text-xs text-gray-500 font-medium whitespace-nowrap">
+                    Total: <span class="font-bold text-gray-900"><?= $total_citas ?></span> citas
                 </div>
             </form>
-        </div>
-
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs">
-                <thead>
-                    <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
-                        <th class="py-3 px-4 font-semibold">Paciente</th>
-                        <th class="py-3 px-4 font-semibold">Fecha</th>
-                        <th class="py-3 px-4 font-semibold">Tipo</th>
-                        <th class="py-3 px-4 font-semibold">Terapeuta</th>
-                        <th class="py-3 px-4 font-semibold">Estado</th>
-                        <th class="py-3 px-4 font-semibold text-right">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100">
-                    <?php if (!empty($citasPaginadas)) : ?>
-                        <?php foreach ($citasPaginadas as $cita) : ?>
-                            <tr class="hover:bg-gray-50/80 transition-colors">
-                                <td class="py-4 px-4 font-bold text-gray-900 text-sm">
-                                    <?= htmlspecialchars(trim(($cita['paciente_nombre'] ?? '') . " " . ($cita['paciente_apellidos'] ?? ''))) ?>
-                                </td>
-                                <td class="py-4 px-4 font-semibold text-gray-900">
-                                    <div class="flex items-center gap-1.5">
-                                        <i class="bi bi-calendar2 text-gray-400 text-xs"></i>
-                                        <?= !empty($cita['fecha_hora']) ? date('d/m/Y H:i', strtotime($cita['fecha_hora'])) : '' ?>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-4 font-medium text-xs">
-                                    <?php if (!empty($cita['tipo_cita_nombre'])): ?>
-                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-gray-700 bg-gray-100 border border-gray-200">
-                                            <span class="w-2 h-2 rounded-full" style="background-color: <?= htmlspecialchars($cita['tipo_cita_color'] ?? '#3b82f6') ?>"></span>
-                                            <?= htmlspecialchars($cita['tipo_cita_nombre']) ?>
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="text-gray-400 font-normal italic">Estándar</span>
-                                    <?php endif; ?>
-                                </td>
-
-                                <td class="py-4 px-4 text-gray-600 font-medium">
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-6 h-6 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center text-[10px] font-bold">
-                                            <?= htmlspecialchars(substr($cita['fisioterapeuta_nombre'] ?? '', 0, 1)) ?>
-                                        </div>
-                                        <span><?= htmlspecialchars(trim(($cita['fisioterapeuta_nombre'] ?? '') . " " . substr($cita['fisioterapeuta_apellidos'] ?? '', 0, 1) . ".")) ?></span>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-4">
-                                    <?php
-                                    $estado = $cita['estado'];
-                                    $estadoClasses = [
-                                        'Realizada'   => 'bg-emerald-50 text-emerald-700 border-emerald-200 focus:ring-emerald-500/20',
-                                        'Confirmada'  => 'bg-teal-50 text-teal-700 border-teal-200 focus:ring-teal-500/20',
-                                        'Programada'  => 'bg-amber-50 text-amber-700 border-amber-200 focus:ring-amber-500/20',
-                                        'Pendiente'   => 'bg-blue-50 text-blue-700 border-blue-200 focus:ring-blue-500/20',
-                                        'Cancelada'   => 'bg-rose-50 text-rose-700 border-rose-200 focus:ring-rose-500/20'
-                                    ];
-                                    $currentClass = $estadoClasses[$estado] ?? 'bg-gray-50 text-gray-700 border-gray-200 focus:ring-gray-500/20';
-                                    ?>
-                                    <form action="<?= PROJECT_ROOT ?>/citas/estado" method="POST" class="inline-flex items-center m-0">
-                                        <input type="hidden" name="cita_id" value="<?= $cita['cita_id'] ?>">
-                                        <select name="estado" onchange="this.form.submit()" class="text-xs font-bold rounded-full px-2.5 py-1 border transition-all cursor-pointer shadow-xs focus:outline-none focus:ring-2 <?= $currentClass ?>">
-                                            <option value="Programada" <?= $estado === 'Programada' ? 'selected' : '' ?>>• Programada</option>
-                                            <option value="Confirmada" <?= $estado === 'Confirmada' ? 'selected' : '' ?>>• Confirmada</option>
-                                            <option value="Pendiente" <?= $estado === 'Pendiente' ? 'selected' : '' ?>>• Pendiente</option>
-                                            <option value="Realizada" <?= $estado === 'Realizada' ? 'selected' : '' ?>>• Realizada</option>
-                                            <option value="Cancelada" <?= $estado === 'Cancelada' ? 'selected' : '' ?>>• Cancelada</option>
-                                        </select>
-                                    </form>
-                                </td>
-                                <td class="py-4 px-4 text-right">
-                                    <div class="flex items-center justify-end gap-1">
-                                        <?php if (!($cita['estado'] == 'Programada' || $cita['estado'] == 'Pendiente' || $cita['estado'] == 'Cancelada')): ?>
-                                            <button onclick="window.location='<?= PROJECT_ROOT ?>/historial?usuario_id=<?= $cita['paciente_id'] ?>'" class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Historial Médico">
-                                                <i class="bi bi-journal-medical text-sm"></i>
-                                            </button>
-                                        <?php endif; ?>
-
-                                        <?php if (!($cita['estado'] == 'Realizada' || $cita['estado'] == 'Cancelada')): ?>
-                                            <a href="<?= PROJECT_ROOT ?>/citas/editar?id=<?= $cita['cita_id'] ?>" class="p-1.5 text-gray-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-all" title="Editar">
-                                                <i class="bi bi-pencil-square text-sm"></i>
-                                            </a>
-                                            <form action="<?= PROJECT_ROOT ?>/citas/eliminar" method="POST" class="inline-block m-0" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta cita?');">
-                                                <input type="hidden" name="id" value="<?= $cita['cita_id'] ?>">
-                                                <button type="submit" class="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all cursor-pointer" title="Eliminar">
-                                                    <i class="bi bi-trash3 text-sm"></i>
-                                                </button>
-                                            </form>
-                                        <?php endif; ?>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else : ?>
-                        <tr>
-                            <td colspan="7" class="py-12 text-center">
-                                <div class="flex flex-col items-center justify-center">
-                                    <div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mb-3 text-gray-400">
-                                        <i class="bi bi-calendar-x text-xl"></i>
-                                    </div>
-                                    <h3 class="text-xs font-bold text-gray-900">No hay citas</h3>
-                                    <p class="mt-0.5 text-xs text-gray-500">No se encontraron citas con los filtros aplicados.</p>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Pagination -->
-        <?php if ($n_botones_paginacion > 1): ?>
-            <div class="px-4 py-3 border-t border-gray-100 flex items-center justify-between">
-                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                    <div>
-                        <p class="text-xs text-gray-500 font-medium">
-                            Mostrando <span class="font-bold text-gray-900"><?= min($iniciar + 1, $total_citas) ?></span> a <span class="font-bold text-gray-900"><?= min($iniciar + $articulos_x_pagina, $total_citas) ?></span> de <span class="font-bold text-gray-900"><?= $total_citas ?></span> citas
-                        </p>
-                    </div>
-                    <div>
-                        <nav class="relative z-0 inline-flex rounded-xl shadow-sm -space-x-px" aria-label="Pagination">
-                            <a href="?pagina=<?= max(1, $pagina - 1) . $queryString ?>" class="relative inline-flex items-center px-3 py-2 rounded-l-xl border border-gray-200 bg-white text-xs font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina <= 1 ? 'pointer-events-none opacity-50' : '' ?>">
-                                <i class="bi bi-chevron-left text-xs"></i>
-                            </a>
-                            <?php for ($i = 0; $i < $n_botones_paginacion; $i++) : ?>
-                                <a href="?pagina=<?= ($i + 1) . $queryString ?>" aria-current="<?= $pagina == $i + 1 ? 'page' : 'false' ?>" class="relative inline-flex items-center px-3 py-2 border text-xs font-semibold transition-colors <?= $pagina == $i + 1 ? 'z-10 bg-primary-50 border-primary-500 text-primary-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' ?>">
-                                    <?= $i + 1 ?>
-                                </a>
-                            <?php endfor; ?>
-                            <a href="?pagina=<?= min($n_botones_paginacion, $pagina + 1) . $queryString ?>" class="relative inline-flex items-center px-3 py-2 rounded-r-xl border border-gray-200 bg-white text-xs font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina >= $n_botones_paginacion ? 'pointer-events-none opacity-50' : '' ?>">
-                                <i class="bi bi-chevron-right text-xs"></i>
-                            </a>
-                        </nav>
-                    </div>
+            
+            <div class="flex items-center gap-2 text-xs">
+                <!-- Copied indicator -->
+                <div x-show="copiedEvent" x-cloak class="px-3 py-1.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg flex items-center gap-2 font-medium animate-pulse">
+                    <i class="bi bi-clipboard-check"></i>
+                    <span>Cita en portapapeles</span>
+                    <button @click="copiedEvent = null; cutMode = false" class="hover:text-blue-900 ml-1"><i class="bi bi-x"></i></button>
                 </div>
             </div>
-        <?php endif; ?>
+        </div>
+        
+        <!-- FullCalendar Element -->
+        <div class="p-4 sm:p-6 flex-1">
+            <div id="calendar" class="h-full min-h-[600px] text-sm" data-events="<?= htmlspecialchars(json_encode($calendarEvents), ENT_QUOTES, 'UTF-8') ?>"></div>
+        </div>
+    </div>
+
+    <!-- Modal Detalles Cita -->
+    <div x-show="selectedEvent" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity" @click="selectedEvent = null" x-show="selectedEvent" x-transition.opacity></div>
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md relative z-[101] overflow-hidden transform transition-all" x-show="selectedEvent" x-transition.scale.origin.bottom>
+            <div class="p-5 border-b border-gray-100 flex items-start justify-between bg-gray-50/50">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900" x-text="selectedEvent ? selectedEvent.title : ''"></h3>
+                    <p class="text-xs text-gray-500 font-medium mt-1 flex items-center gap-1.5">
+                        <i class="bi bi-calendar-event"></i>
+                        <span x-text="selectedEvent ? formatDateTime(selectedEvent.start) : ''"></span>
+                    </p>
+                </div>
+                <button @click="selectedEvent = null" class="text-gray-400 hover:text-gray-700 bg-white shadow-sm p-1.5 rounded-lg border border-gray-200"><i class="bi bi-x-lg"></i></button>
+            </div>
+            
+            <div class="p-5 space-y-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-gray-500 w-24">Estado:</span>
+                    <form action="<?= PROJECT_ROOT ?>/citas/estado" method="POST" class="flex-1 m-0">
+                        <input type="hidden" name="cita_id" :value="selectedEvent ? selectedEvent.id : ''">
+                        <select name="estado" onchange="this.form.submit()" class="w-full text-xs font-bold rounded-lg px-2.5 py-1.5 border border-gray-200 focus:ring-2 focus:ring-primary-500/20 outline-none cursor-pointer">
+                            <option value="Programada" :selected="selectedEvent?.extendedProps.estado === 'Programada'">Programada</option>
+                            <option value="Confirmada" :selected="selectedEvent?.extendedProps.estado === 'Confirmada'">Confirmada</option>
+                            <option value="Pendiente" :selected="selectedEvent?.extendedProps.estado === 'Pendiente'">Pendiente</option>
+                            <option value="Realizada" :selected="selectedEvent?.extendedProps.estado === 'Realizada'">Realizada</option>
+                            <option value="Cancelada" :selected="selectedEvent?.extendedProps.estado === 'Cancelada'">Cancelada</option>
+                        </select>
+                    </form>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-gray-500 w-24">Terapeuta:</span>
+                    <span class="text-sm font-medium text-gray-900" x-text="selectedEvent?.extendedProps.fisioterapeuta || 'N/D'"></span>
+                </div>
+            </div>
+
+            <div class="p-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
+                <form action="<?= PROJECT_ROOT ?>/citas/eliminar" method="POST" class="m-0" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta cita?');">
+                    <input type="hidden" name="id" :value="selectedEvent ? selectedEvent.id : ''">
+                    <button type="submit" class="text-xs font-semibold text-rose-600 hover:text-rose-700 hover:underline flex items-center gap-1.5 cursor-pointer">
+                        <i class="bi bi-trash3"></i> Eliminar
+                    </button>
+                </form>
+                <div class="flex items-center gap-2">
+                    <a :href="selectedEvent ? '<?= PROJECT_ROOT ?>/historial?usuario_id=' + selectedEvent.extendedProps.paciente_id : '#'" 
+                       class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-700 text-xs font-semibold shadow-sm hover:bg-gray-50">
+                        Historial
+                    </a>
+                    <a :href="selectedEvent ? '<?= PROJECT_ROOT ?>/citas/editar?id=' + selectedEvent.id : '#'" 
+                       class="px-3 py-1.5 rounded-lg bg-primary-600 text-white text-xs font-semibold shadow-sm hover:bg-primary-700">
+                        Editar
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
+<!-- FullCalendar Dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+<script type="module" src="<?= PROJECT_ROOT ?>/public/js/modules/appointment/appointment-list.js"></script>
+
 <style>
     @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-
     .animate-fade-in-up {
         animation: fadeInUp 0.4s ease-out forwards;
+    }
+
+    /* Customize FullCalendar aesthetics to match Tailwind theme */
+    .fc {
+        --fc-border-color: #f3f4f6; /* gray-100 */
+        --fc-button-text-color: #4b5563; /* gray-600 */
+        --fc-button-bg-color: #ffffff;
+        --fc-button-border-color: #e5e7eb; /* gray-200 */
+        --fc-button-hover-bg-color: #f9fafb; /* gray-50 */
+        --fc-button-hover-border-color: #d1d5db;
+        --fc-button-active-bg-color: #f3f4f6;
+        --fc-event-border-color: rgba(0,0,0,0.1);
+        --fc-today-bg-color: rgba(59, 130, 246, 0.05); /* primary-50 */
+    }
+    .fc .fc-button-primary {
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        border-radius: 0.5rem;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+    .fc .fc-toolbar-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #111827; /* gray-900 */
+        text-transform: capitalize;
+    }
+    .fc-theme-standard th {
+        border-color: #f3f4f6;
+        padding: 0.5rem 0;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.65rem;
+        letter-spacing: 0.05em;
+        color: #6b7280;
+    }
+    .fc-event {
+        border-radius: 6px;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        padding: 2px 4px;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: transform 0.1s ease;
+    }
+    .fc-event:hover {
+        transform: scale(1.02);
     }
 </style>
 

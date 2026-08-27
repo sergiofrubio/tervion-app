@@ -8,7 +8,7 @@ $title = "Política de Privacidad — Tervion";
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= $title ?></title>
-    <meta name="description" content="Política de Privacidad y protección de datos personales de Tervion Ibérica SLU.">
+    <meta name="description" content="Política de Privacidad y protección de datos personales de Tervion.">
     <meta name="robots" content="index, follow">
 
     <link rel="icon" href="<?= PROJECT_ROOT ?>/public/img/icono-tervion-sin-fondo.png" type="image/jpeg">
@@ -24,7 +24,7 @@ $title = "Política de Privacidad — Tervion";
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
             <a href="<?= PROJECT_ROOT ?>/" class="flex items-center gap-2">
-                <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-8 sm:h-9 object-contain">
+                <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-azul-sin-fondo.svg" alt="Tervion Logo" class="h-8 sm:h-9 object-contain">
             </a>
             <div class="flex items-center gap-4">
                 <a href="<?= PROJECT_ROOT ?>/" class="text-sm font-medium text-gray-600 hover:text-primary-500 transition-colors">Volver a Inicio</a>
@@ -41,7 +41,7 @@ $title = "Política de Privacidad — Tervion";
         <div class="prose prose-blue max-w-none text-gray-600 space-y-6 text-sm leading-relaxed">
             <section class="space-y-3">
                 <h2 class="text-xl font-bold text-gray-800">1. Responsable del Tratamiento</h2>
-                <p><strong>Tervion Ibérica SLU</strong> (en adelante, "Tervion"), con domicilio social en España, es responsable del tratamiento de los datos personales recogidos a través de nuestra plataforma SaaS y sitio web corporativo, cumpliendo estrictamente con el Reglamento General de Protección de Datos (RGPD UE 2016/679) y la Ley Orgánica 3/2018 (LOPDGDD).</p>
+                <p><strong>Tervion</strong> (en adelante, "Tervion"), con domicilio social en España, es responsable del tratamiento de los datos personales recogidos a través de nuestra plataforma SaaS y sitio web corporativo, cumpliendo estrictamente con el Reglamento General de Protección de Datos (RGPD UE 2016/679) y la Ley Orgánica 3/2018 (LOPDGDD).</p>
             </section>
 
             <section class="space-y-3">
@@ -80,9 +80,10 @@ $title = "Política de Privacidad — Tervion";
     <!-- Footer -->
     <footer class="bg-gray-900 text-gray-400 py-6 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-6 text-center text-xs">
-            <p>® 2026 Tervion Ibérica SLU. Todos los derechos reservados.</p>
+            <p>® 2026 Tervion. Todos los derechos reservados.</p>
         </div>
     </footer>
 
 </body>
+
 </html>

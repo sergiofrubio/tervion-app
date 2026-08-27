@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./src/Views/**/*.php",
     "./src/Templates/**/*.php",
+    "./public/js/**/*.js",
   ],
   theme: {
     extend: {
@@ -11,28 +12,29 @@ module.exports = {
       },
       colors: {
         primary: {
-          50: '#f0f5ff',
-          100: '#d9e6ff',
-          200: '#bacfff',
-          300: '#91b1ff',
-          400: '#5e88ff',
-          500: '#0052d9', // Royal Blue (from logo)
-          600: '#0040b3',
-          700: '#00308c',
-          800: '#002266',
-          900: '#001640',
+          50: '#f0f9fa',
+          100: '#d7eff2',
+          200: '#b2e0e6',
+          300: '#7ecad6',
+          400: '#3fabbe',
+          500: '#177a8d', // Tervion Teal/Petrol Blue (Exact brand logo core)
+          600: '#136778',
+          700: '#115463',
+          800: '#124552',
+          900: '#133a44',
+          950: '#09242c',
         },
         indigo: {
-          50: '#ecf9ff',
-          100: '#d9f1ff',
-          200: '#bde7ff',
-          300: '#8fd7ff',
-          400: '#4cbaff',
-          500: '#009eff', // Cyan/Light Blue (from logo)
-          600: '#007ee6',
-          700: '#0063b8',
-          800: '#004f99',
-          900: '#004280',
+          50: '#f0f9fa',
+          100: '#d7eff2',
+          200: '#b2e0e6',
+          300: '#7ecad6',
+          400: '#3fabbe',
+          500: '#177a8d',
+          600: '#136778',
+          700: '#115463',
+          800: '#124552',
+          900: '#133a44',
         },
         purple: {
           50: '#f0fdf4',   // Emerald 50

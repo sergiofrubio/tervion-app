@@ -45,11 +45,13 @@ include TEMPLATE_DIR . 'header.php';
         transition: all 0.15s ease;
         outline: none;
     }
+
     .doc-inline-input:focus {
         background-color: #ffffff;
         border-color: #2563eb;
         box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
     }
+
     .doc-inline-input:read-only {
         background-color: transparent;
         border-color: transparent;
@@ -62,31 +64,41 @@ include TEMPLATE_DIR . 'header.php';
         width: 6px;
         height: 6px;
     }
+
     .custom-scrollbar::-webkit-scrollbar-track {
         background: #f1f5f9;
     }
+
     .custom-scrollbar::-webkit-scrollbar-thumb {
         background: #cbd5e1;
         border-radius: 9999px;
     }
+
     .custom-scrollbar::-webkit-scrollbar-thumb:hover {
         background: #94a3b8;
     }
 
     /* Impresión limpia del folio */
     @media print {
-        header, .studio-toolbar, #system-alert-container, .no-print {
+
+        header,
+        .studio-toolbar,
+        #system-alert-container,
+        .no-print {
             display: none !important;
         }
+
         #contenido {
             height: auto !important;
             overflow: visible !important;
         }
+
         .folio-viewport {
             background: white !important;
             padding: 0 !important;
             overflow: visible !important;
         }
+
         .folio-document {
             box-shadow: none !important;
             margin: 0 !important;
@@ -95,6 +107,7 @@ include TEMPLATE_DIR . 'header.php';
             min-height: auto !important;
             transform: none !important;
         }
+
         .doc-inline-input {
             border: none !important;
             background: transparent !important;
@@ -111,7 +124,7 @@ include TEMPLATE_DIR . 'header.php';
 
     <!-- BARRA SUPERIOR / STUDIO TOPBAR -->
     <header class="h-14 bg-white border-b border-slate-200 px-4 flex items-center justify-between shrink-0 z-30 shadow-xs studio-toolbar">
-        
+
         <!-- Izquierda: Volver & Título -->
         <div class="flex items-center gap-3">
             <a href="<?= PROJECT_ROOT ?>/pacientes/detalle?usuario_id=<?= urlencode($paciente['usuario_id']) ?>"
@@ -170,11 +183,11 @@ include TEMPLATE_DIR . 'header.php';
 
         <!-- Derecha: Acciones de Impresión, Exportación y Guardado -->
         <div class="flex items-center gap-2">
-            
-            <button type="button" id="btnPrintFolio" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all border border-slate-200 shadow-xs" title="Imprimir documento">
+
+            <!-- <button type="button" id="btnPrintFolio" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all border border-slate-200 shadow-xs" title="Imprimir documento">
                 <i class="bi bi-printer text-xs text-slate-600"></i>
                 <span class="hidden md:inline">Imprimir</span>
-            </button>
+            </button> -->
 
             <button type="button" id="btnDownloadFolioPdf" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all border border-slate-200 shadow-xs" title="Descargar en PDF">
                 <i class="bi bi-file-earmark-pdf text-xs text-rose-600"></i>
@@ -198,7 +211,7 @@ include TEMPLATE_DIR . 'header.php';
 
     <!-- WORKSPACE PRINCIPAL: VISOR DEL DOCUMENTO EN FORMATO FOLIO -->
     <main class="flex-1 bg-slate-100/90 overflow-auto p-4 sm:p-8 flex justify-center items-start custom-scrollbar folio-viewport relative select-text" id="folioViewport">
-        
+
         <!-- Formulario Maestro que envuelve los datos del folio -->
         <form id="folioDocumentForm" action="<?= PROJECT_ROOT ?>/pacientes/documentos/firmar" method="POST">
             <input type="hidden" name="paciente_id" value="<?= htmlspecialchars($paciente['usuario_id'] ?? '') ?>">
@@ -208,7 +221,7 @@ include TEMPLATE_DIR . 'header.php';
 
             <!-- CONTENEDOR ESCALABLE CON ZOOM -->
             <div id="folioWrapper" class="transition-transform duration-100 ease-out origin-top my-auto sm:my-4">
-                
+
                 <!-- HOJA FOLIO A4 / DOCUMENT STUDIO -->
                 <div id="printableFolioSheet" class="folio-document text-slate-900 rounded-sm select-text">
 
@@ -232,9 +245,9 @@ include TEMPLATE_DIR . 'header.php';
                         </div>
 
                         <div class="text-right">
-                            <span class="inline-block px-3 py-1 bg-slate-100 text-slate-800 font-mono text-xs font-bold rounded border border-slate-300">
+                            <!-- <span class="inline-block px-3 py-1 bg-slate-100 text-slate-800 font-mono text-xs font-bold rounded border border-slate-300">
                                 DOC-<?= str_pad((string)($plantilla['documento_id'] ?? '1'), 5, '0', STR_PAD_LEFT) ?>
-                            </span>
+                            </span> -->
                             <div class="text-[11px] text-slate-500 mt-1.5 flex items-center justify-end gap-1 font-medium">
                                 <span>Fecha:</span>
                                 <?php if (!$isReadOnly): ?>
@@ -264,9 +277,9 @@ include TEMPLATE_DIR . 'header.php';
                             <span>Datos Identificativos del Paciente</span>
                             <span class="text-[10px] text-slate-400 font-normal">Campos cumplimentables</span>
                         </div>
-                        
+
                         <div class="grid grid-cols-2 gap-y-2.5 gap-x-4 text-slate-700">
-                            
+
                             <!-- Nombre -->
                             <div class="flex items-center gap-2">
                                 <span class="font-semibold text-slate-900 shrink-0 w-16">Nombre:</span>
@@ -332,7 +345,7 @@ include TEMPLATE_DIR . 'header.php';
                         </p>
 
                         <div class="grid grid-cols-2 gap-6 items-end mt-4">
-                            
+
                             <!-- Columna Izquierda: Lugar, Fecha y Sello de Garantía -->
                             <div class="text-xs text-slate-700 space-y-2">
                                 <div class="flex items-center gap-1.5">
@@ -344,27 +357,27 @@ include TEMPLATE_DIR . 'header.php';
                                     <?php endif; ?>
                                     <span>, a <strong id="doc_display_fecha" class="text-slate-900"><?= htmlspecialchars($fechaHoy) ?></strong></span>
                                 </div>
-                                
+
                                 <p class="text-[10px] text-slate-500">Formalización de firma digitalizada con valor legal</p>
-                                
-                                <div class="mt-4 p-2 bg-slate-50 border border-slate-200 rounded text-[10px] text-slate-500 space-y-0.5">
+
+                                <!-- <div class="mt-4 p-2 bg-slate-50 border border-slate-200 rounded text-[10px] text-slate-500 space-y-0.5">
                                     <div class="flex items-center gap-1 text-slate-700 font-semibold">
                                         <i class="bi bi-shield-check text-emerald-600"></i>
                                         <span>Garantía de Integridad Digital</span>
                                     </div>
                                     <p>Hash de verificación: <span class="font-mono text-[9px]"><?= strtoupper(substr(md5(($paciente['usuario_id'] ?? '') . ($plantilla['documento_id'] ?? '')), 0, 16)) ?></span></p>
-                                </div>
+                                </div> -->
                             </div>
 
                             <!-- Columna Derecha: Recuadro interactivo de Firma sobre el Folio (Fondo Gris Claro) -->
                             <div class="flex flex-col items-center">
-                                
+
                                 <div class="w-full relative bg-slate-100 rounded-xl border-2 border-dashed border-slate-300 p-1.5 shadow-inner hover:border-primary-400 transition-colors group">
-                                    
+
                                     <?php if (!$isReadOnly): ?>
                                         <!-- Canvas Interactivo con SignaturePad -->
                                         <canvas id="folioSignatureCanvas" width="460" height="150" class="w-full h-32 touch-none cursor-crosshair rounded-lg bg-slate-100"></canvas>
-                                        
+
                                         <!-- Herramientas flotantes de firma -->
                                         <div class="flex items-center justify-between mt-1 px-1.5 no-print">
                                             <div class="flex items-center gap-2">

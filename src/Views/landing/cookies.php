@@ -24,7 +24,7 @@ $title = "Política de Cookies — Tervion";
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
             <a href="<?= PROJECT_ROOT ?>/" class="flex items-center gap-2">
-                <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-8 sm:h-9 object-contain">
+                <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-azul-sin-fondo.svg" alt="Tervion Logo" class="h-8 sm:h-9 object-contain">
             </a>
             <div class="flex items-center gap-4">
                 <a href="<?= PROJECT_ROOT ?>/" class="text-sm font-medium text-gray-600 hover:text-primary-500 transition-colors">Volver a Inicio</a>
@@ -63,9 +63,10 @@ $title = "Política de Cookies — Tervion";
     <!-- Footer -->
     <footer class="bg-gray-900 text-gray-400 py-6 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-6 text-center text-xs">
-            <p>® 2026 Tervion Ibérica SLU. Todos los derechos reservados.</p>
+            <p>® 2026 Tervion. Todos los derechos reservados.</p>
         </div>
     </footer>
 
 </body>
+
 </html>

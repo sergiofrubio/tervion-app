@@ -32,7 +32,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
   <header class="border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <a href="<?= PROJECT_ROOT ?>/" class="flex items-center">
-        <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-9 object-contain">
+        <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-azul-sin-fondo.svg" alt="Tervion Logo" class="h-9 object-contain">
       </a>
       <div class="flex items-center gap-3">
         <a href="<?= PROJECT_ROOT ?>/" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900 border border-gray-200/80 shadow-2xs transition-all">
@@ -73,7 +73,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
   <!-- Footer -->
   <footer class="bg-gray-900 text-gray-400 py-8 border-t border-gray-800">
     <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-4">
-      <p class="w-full sm:w-1/3 text-center sm:text-left text-sm">© 2026 Tervion Ibérica SLU</p>
+      <p class="w-full sm:w-1/3 text-center sm:text-left text-sm">© 2026 Tervion</p>
 
       <a href="<?= PROJECT_ROOT ?>/" class="w-full sm:w-1/3 flex items-center justify-center">
         <img src="<?= PROJECT_ROOT ?>/public/img/icono-tervion-sin-fondo.png" alt="Tervion Logo" class="h-8 object-contain rounded-md p-1 shadow-sm">

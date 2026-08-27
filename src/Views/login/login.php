@@ -72,7 +72,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
         <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 p-8 sm:p-10 transition-all">
             <div class="text-center mb-8">
                 <a href="<?= PROJECT_ROOT ?>/" class="w-24 mx-auto flex items-center mb-4">
-                    <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-9 object-contain">
+                    <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-azul-sin-fondo.svg" alt="Tervion Logo" class="h-9 object-contain">
                 </a>
                 <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Bienvenido de nuevo</h2>
                 <p class="text-sm text-gray-500 mt-1">Inicia sesión en tu cuenta</p>

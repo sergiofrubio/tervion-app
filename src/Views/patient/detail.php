@@ -58,112 +58,127 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
         </div>
     </div>
 
-    <!-- Clinical Profile Card (Header Clínico Principal) -->
-    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm relative overflow-hidden">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <!-- Main Patient Profile Layout (Vertical Summary Sidebar + Main Clinical Tabs) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-            <!-- Patient Identity -->
-            <div class="flex items-start sm:items-center gap-3">
-                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gray-900 text-white flex items-center justify-center font-bold text-xl sm:text-2xl shrink-0 shadow-md">
-                    <?= $iniciales ?: 'P' ?>
-                </div>
-                <div class="space-y-1.5">
-                    <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-                        <h1 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
-                            <?= htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellidos']) ?>
-                        </h1>
-                    </div>
-                    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 gap-1 text-xs text-gray-500 font-medium">
-                        <span><strong class="text-gray-700">NHC:</strong> #<?= htmlspecialchars($usuario['usuario_id']) ?></span>
-                        <span>•</span>
-                        <span><strong class="text-gray-700">Género:</strong> <?= htmlspecialchars($usuario['genero'] ?? 'No especificado') ?></span>
-                        <span>•</span>
-                        <span><strong class="text-gray-700">Edad:</strong> <?= $edadCalculada !== 'N/D' ? $edadCalculada . ' años' : 'N/D' ?></span>
-                    </div>
-                </div>
-            </div>
+        <!-- Sidebar / Vertical Patient Summary Card (#177a8d) -->
+        <div class="lg:col-span-4 xl:col-span-3 space-y-6">
+            <div class="bg-[#177a8d] text-white rounded-3xl p-6 sm:p-7 shadow-xl shadow-[#177a8d]/15 relative overflow-hidden flex flex-col justify-between border border-[#136778]/50">
+                <!-- Background ambient decorative glow -->
+                <div class="absolute -top-12 -right-12 w-44 h-44 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute -bottom-12 -left-12 w-36 h-36 bg-[#09242c]/20 rounded-full blur-xl pointer-events-none"></div>
 
-            <!-- Quick Stat Counters -->
-            <div class="flex items-center gap-3 sm:gap-6 pt-4 md:pt-0 border-t md:border-t-0 border-gray-100">
-                <div class="text-left md:text-right">
-                    <span class="block text-[11px] uppercase tracking-wider font-bold text-gray-400">Total Consultas</span>
-                    <span class="text-2xl font-light text-gray-900"><?= $totalInformes ?></span>
-                </div>
-                <div class="h-8 w-px bg-gray-200"></div>
-                <div class="text-left md:text-right">
-                    <span class="block text-[11px] uppercase tracking-wider font-bold text-gray-400">Citas Totales</span>
-                    <span class="text-2xl font-light text-gray-900"><?= $totalCitas ?></span>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- Main Grid Layout -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-        <!-- Left Column: Patient Details & Administrative Info -->
-        <div class="space-y-6">
-
-            <!-- Administrative Contact Card -->
-            <div class="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-5">
-                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-                    <h3 class="text-sm font-bold uppercase tracking-wider text-gray-900 flex items-center gap-2">
-                        <i class="bi bi-person-lines-fill text-primary-600"></i>
-                        Datos de Contacto
-                    </h3>
-                    <a href="<?= PROJECT_ROOT ?>/pacientes/editar?id=<?= $usuario['usuario_id'] ?>" class="text-xs font-semibold text-primary-600 hover:text-primary-700">
-                        Editar
-                    </a>
-                </div>
-
-                <div class="space-y-4 text-xs">
-                    <div>
-                        <span class="block font-bold text-gray-400 uppercase tracking-wider text-[10px] mb-1">Teléfono</span>
-                        <?php if (!empty($usuario['telefono'])): ?>
-                            <a href="tel:<?= htmlspecialchars($usuario['telefono']) ?>" class="font-medium text-sm text-gray-900 hover:text-primary-600 inline-flex items-center gap-1.5">
-                                <i class="bi bi-telephone text-gray-400"></i>
-                                <?= htmlspecialchars($usuario['telefono']) ?>
-                            </a>
-                        <?php else: ?>
-                            <span class="text-gray-400 italic">No registrado</span>
-                        <?php endif; ?>
-                    </div>
-
-                    <div>
-                        <span class="block font-bold text-gray-400 uppercase tracking-wider text-[10px] mb-1">Correo Electrónico</span>
-                        <a href="mailto:<?= htmlspecialchars($usuario['email']) ?>" class="font-medium text-sm text-primary-600 hover:text-primary-700 break-all inline-flex items-center gap-1.5">
-                            <i class="bi bi-envelope text-gray-400"></i>
-                            <?= htmlspecialchars($usuario['email']) ?>
-                        </a>
-                    </div>
-
-                    <div>
-                        <span class="block font-bold text-gray-400 uppercase tracking-wider text-[10px] mb-1">Dirección Postal</span>
-                        <div class="text-gray-700 text-sm leading-relaxed">
-                            <?= !empty($usuario['direccion']) ? htmlspecialchars($usuario['direccion']) : 'Sin dirección especificada' ?>
-                            <?php if (!empty($usuario['cp']) || !empty($usuario['municipio'])): ?>
-                                <br><span class="text-gray-500 text-xs"><?= htmlspecialchars(($usuario['cp'] ?? '') . ' ' . ($usuario['municipio'] ?? '')) ?></span>
-                            <?php endif; ?>
-                            <?php if (!empty($usuario['provincia'])): ?>
-                                <br><span class="text-gray-500 text-xs"><?= htmlspecialchars($usuario['provincia']) ?></span>
-                            <?php endif; ?>
+                <div class="relative z-10 space-y-6">
+                    <!-- Avatar & Primary Name Header (Vertical Layout) -->
+                    <div class="flex flex-col items-center text-center space-y-3 pb-6 border-b border-white/15">
+                        <div class="w-20 h-20 rounded-2xl bg-white/15 backdrop-blur-md text-white flex items-center justify-center font-bold text-2xl shadow-inner border border-white/25">
+                            <?= $iniciales ?: 'P' ?>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold tracking-tight text-white leading-snug">
+                                <?= htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellidos']) ?>
+                            </h1>
+                            <div class="inline-flex items-center gap-1.5 mt-2 px-3 py-1 rounded-full bg-white/15 text-xs font-semibold text-white/95 border border-white/20">
+                                <span>NHC: #<?= htmlspecialchars($usuario['usuario_id']) ?></span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="pt-3 border-t border-gray-100 flex items-center justify-between text-gray-400 text-[11px]">
-                        <span>Registro en clínica:</span>
-                        <span class="font-semibold text-gray-700">
-                            <?= !empty($usuario['fecha_creacion']) ? date('d/m/Y', strtotime($usuario['fecha_creacion'])) : '—' ?>
-                        </span>
+                    <!-- Key Clinical Tags / Meta in Vertical Pill Group -->
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="bg-white/10 rounded-2xl p-3 border border-white/10 text-center">
+                            <span class="block text-[10px] uppercase tracking-wider text-white/70 font-semibold mb-0.5">Género</span>
+                            <span class="font-bold text-sm text-white"><?= htmlspecialchars($usuario['genero'] ?? 'N/D') ?></span>
+                        </div>
+                        <div class="bg-white/10 rounded-2xl p-3 border border-white/10 text-center">
+                            <span class="block text-[10px] uppercase tracking-wider text-white/70 font-semibold mb-0.5">Edad</span>
+                            <span class="font-bold text-sm text-white"><?= $edadCalculada !== 'N/D' ? $edadCalculada . ' años' : 'N/D' ?></span>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stat Counters (Vertical Summary) -->
+                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/15 divide-y divide-white/10">
+                        <div class="flex items-center justify-between pb-2.5">
+                            <span class="text-xs text-white/80 font-medium flex items-center gap-1.5">
+                                <i class="bi bi-journal-medical text-white/90"></i>
+                                Total Consultas
+                            </span>
+                            <span class="text-lg font-bold text-white"><?= $totalInformes ?></span>
+                        </div>
+                        <div class="flex items-center justify-between pt-2.5">
+                            <span class="text-xs text-white/80 font-medium flex items-center gap-1.5">
+                                <i class="bi bi-calendar3 text-white/90"></i>
+                                Citas Totales
+                            </span>
+                            <span class="text-lg font-bold text-white"><?= $totalCitas ?></span>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Contact Information -->
+                    <div class="space-y-4 pt-2 text-xs">
+                        <div class="flex items-center justify-between pb-2 border-b border-white/15">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-white/80">Información de Contacto</span>
+                            <a href="<?= PROJECT_ROOT ?>/pacientes/editar?id=<?= $usuario['usuario_id'] ?>" 
+                               class="inline-flex items-center gap-1 text-[11px] font-semibold text-white/90 hover:text-white bg-white/15 hover:bg-white/25 px-2.5 py-1 rounded-lg transition-colors">
+                                <i class="bi bi-pencil"></i>
+                                Editar
+                            </a>
+                        </div>
+
+                        <!-- Phone -->
+                        <div>
+                            <span class="block text-[10px] font-bold uppercase tracking-wider text-white/70 mb-1">Teléfono</span>
+                            <?php if (!empty($usuario['telefono'])): ?>
+                                <a href="tel:<?= htmlspecialchars($usuario['telefono']) ?>" class="font-medium text-sm text-white hover:underline inline-flex items-center gap-2">
+                                    <i class="bi bi-telephone text-white/80"></i>
+                                    <?= htmlspecialchars($usuario['telefono']) ?>
+                                </a>
+                            <?php else: ?>
+                                <span class="text-white/60 italic">No registrado</span>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <span class="block text-[10px] font-bold uppercase tracking-wider text-white/70 mb-1">Correo Electrónico</span>
+                            <a href="mailto:<?= htmlspecialchars($usuario['email']) ?>" class="font-medium text-sm text-white hover:underline break-all inline-flex items-center gap-2">
+                                <i class="bi bi-envelope text-white/80"></i>
+                                <?= htmlspecialchars($usuario['email']) ?>
+                            </a>
+                        </div>
+
+                        <!-- Address -->
+                        <div>
+                            <span class="block text-[10px] font-bold uppercase tracking-wider text-white/70 mb-1">Dirección</span>
+                            <div class="text-white/95 text-xs leading-relaxed flex items-start gap-2">
+                                <i class="bi bi-geo-alt text-white/80 shrink-0 mt-0.5"></i>
+                                <div>
+                                    <?= !empty($usuario['direccion']) ? htmlspecialchars($usuario['direccion']) : 'Sin dirección especificada' ?>
+                                    <?php if (!empty($usuario['cp']) || !empty($usuario['municipio'])): ?>
+                                        <div class="text-white/75 text-[11px] mt-0.5"><?= htmlspecialchars(($usuario['cp'] ?? '') . ' ' . ($usuario['municipio'] ?? '')) ?></div>
+                                    <?php endif; ?>
+                                    <?php if (!empty($usuario['provincia'])): ?>
+                                        <div class="text-white/75 text-[11px]"><?= htmlspecialchars($usuario['provincia']) ?></div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Registration Date -->
+                        <div class="pt-4 border-t border-white/15 flex items-center justify-between text-[11px] text-white/75">
+                            <span>Alta en clínica:</span>
+                            <span class="font-semibold text-white">
+                                <?= !empty($usuario['fecha_creacion']) ? date('d/m/Y', strtotime($usuario['fecha_creacion'])) : '—' ?>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Right Column: Tabs (Historial Médico / Citas) -->
-        <div class="lg:col-span-2">
-            <div class="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden flex flex-col min-h-[480px]">
+        <!-- Main Content Area: Tabs & Clinical Modules -->
+        <div class="lg:col-span-8 xl:col-span-9">
+            <div class="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden flex flex-col min-h-[580px]">
 
                 <!-- Modern Tab Navigation -->
                 <div class="border-b border-gray-200 bg-gray-50/60 px-6 pt-3">

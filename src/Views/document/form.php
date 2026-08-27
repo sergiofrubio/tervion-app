@@ -48,6 +48,7 @@ include TEMPLATE_DIR . 'header.php';
         transition: all 0.2s ease;
         outline: none;
     }
+
     .folio-title-input:focus {
         border-bottom-color: #2563eb;
         background-color: #f8fafc;
@@ -67,6 +68,7 @@ include TEMPLATE_DIR . 'header.php';
         transition: all 0.2s ease;
         outline: none;
     }
+
     .folio-desc-input:focus {
         border-bottom-color: #2563eb;
         background-color: #f8fafc;
@@ -79,6 +81,7 @@ include TEMPLATE_DIR . 'header.php';
         border-radius: 8px !important;
         box-shadow: none !important;
     }
+
     .tox-editor-header {
         background-color: #f8fafc !important;
         border-bottom: 1px solid #e2e8f0 !important;
@@ -89,31 +92,42 @@ include TEMPLATE_DIR . 'header.php';
         width: 6px;
         height: 6px;
     }
+
     .custom-scrollbar::-webkit-scrollbar-track {
         background: #f1f5f9;
     }
+
     .custom-scrollbar::-webkit-scrollbar-thumb {
         background: #cbd5e1;
         border-radius: 9999px;
     }
+
     .custom-scrollbar::-webkit-scrollbar-thumb:hover {
         background: #94a3b8;
     }
 
     /* Impresión limpia */
     @media print {
-        header, .studio-toolbar, .studio-ribbon, #system-alert-container, .no-print {
+
+        header,
+        .studio-toolbar,
+        .studio-ribbon,
+        #system-alert-container,
+        .no-print {
             display: none !important;
         }
+
         #contenido {
             height: auto !important;
             overflow: visible !important;
         }
+
         .studio-viewport {
             background: white !important;
             padding: 0 !important;
             overflow: visible !important;
         }
+
         .folio-template-sheet {
             box-shadow: none !important;
             margin: 0 !important;
@@ -122,7 +136,9 @@ include TEMPLATE_DIR . 'header.php';
             min-height: auto !important;
             transform: none !important;
         }
-        .folio-title-input, .folio-desc-input {
+
+        .folio-title-input,
+        .folio-desc-input {
             border: none !important;
             background: transparent !important;
         }
@@ -137,7 +153,7 @@ include TEMPLATE_DIR . 'header.php';
 
     <!-- 1. BARRA SUPERIOR / STUDIO TOPBAR -->
     <header class="h-14 bg-white border-b border-slate-200 px-4 flex items-center justify-between shrink-0 z-30 shadow-xs studio-toolbar">
-        
+
         <!-- Izquierda: Volver & Título -->
         <div class="flex items-center gap-3">
             <a href="<?= PROJECT_ROOT ?>/documentos"
@@ -189,11 +205,11 @@ include TEMPLATE_DIR . 'header.php';
 
         <!-- Derecha: Acciones de Guardado, Impresión y Cancelación -->
         <div class="flex items-center gap-2">
-            
-            <button type="button" id="btnPrintTemplate" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all border border-slate-200 shadow-xs" title="Imprimir modelo">
+
+            <!-- <button type="button" id="btnPrintTemplate" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all border border-slate-200 shadow-xs" title="Imprimir modelo">
                 <i class="bi bi-printer text-xs text-slate-600"></i>
                 <span class="hidden md:inline">Imprimir</span>
-            </button>
+            </button> -->
 
             <button type="button" id="btnDownloadTemplatePdf" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all border border-slate-200 shadow-xs" title="Descargar en PDF">
                 <i class="bi bi-file-earmark-pdf text-xs text-rose-600"></i>
@@ -254,7 +270,7 @@ include TEMPLATE_DIR . 'header.php';
 
     <!-- 3. WORKSPACE PRINCIPAL: VISOR Y EDITOR EN FORMATO FOLIO A4 -->
     <main class="flex-1 bg-slate-100/90 overflow-auto p-4 sm:p-8 flex justify-center items-start custom-scrollbar studio-viewport relative select-text" id="templateStudioViewport">
-        
+
         <!-- Formulario Maestro para persistencia -->
         <form id="formTemplateFolioStudio" action="<?= PROJECT_ROOT ?>/documentos/<?= $isEdit ? 'editar' : 'crear' ?>" method="POST">
             <?php if ($isEdit): ?>
@@ -266,7 +282,7 @@ include TEMPLATE_DIR . 'header.php';
 
             <!-- CONTENEDOR ESCALABLE CON ZOOM -->
             <div id="folioTemplateWrapper" class="transition-transform duration-100 ease-out origin-top my-auto sm:my-4">
-                
+
                 <!-- HOJA FOLIO A4 DIGITAL / DOCUMENT STUDIO -->
                 <div id="printableTemplateFolioSheet" class="folio-template-sheet text-slate-900 rounded-sm select-text">
 
@@ -290,9 +306,9 @@ include TEMPLATE_DIR . 'header.php';
                         </div>
 
                         <div class="text-right">
-                            <span class="inline-block px-3 py-1 bg-slate-100 text-slate-800 font-mono text-xs font-bold rounded border border-slate-300">
+                            <!-- <span class="inline-block px-3 py-1 bg-slate-100 text-slate-800 font-mono text-xs font-bold rounded border border-slate-300">
                                 <?= $isEdit ? 'DOC-' . str_pad((string)$document['documento_id'], 5, '0', STR_PAD_LEFT) : 'NUEVO-DOC' ?>
-                            </span>
+                            </span> -->
                             <div class="text-[11px] text-slate-500 mt-1.5 font-medium">
                                 <span>Fecha:</span> <span class="font-bold text-slate-800"><?= $fechaHoy ?></span>
                             </div>

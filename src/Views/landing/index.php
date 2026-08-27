@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-white">
+<html lang="es" class="h-full scroll-smooth">
 
 <head>
     <meta charset="utf-8">
@@ -14,26 +14,69 @@
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Tervion — Automatización y Gestión Integral de Clínicas">
+    <meta property="og:title" content="Tervion — Tu clínica, tu gestión, tu libertad">
     <meta property="og:description" content="Menos administración, más tiempo para tus pacientes. Centraliza y conecta todos los procesos de tu clínica en un único lugar.">
-    <meta property="og:image" content="<?= PROJECT_ROOT ?>/public/img/logo-tervion-sin-fondo.png">
+    <meta property="og:image" content="<?= PROJECT_ROOT ?>/public/img/logo-tervion-claro-sin-fondo.png">
     <meta property="og:url" content="https://tervion-app.com/">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Tervion — Tu clínica, tu gestión, tu libertad">
+    <meta name="twitter:title" content="Tervion — Automatización y Gestión Integral de Clínicas">
     <meta name="twitter:description" content="La plataforma SaaS que automatiza la gestión empresarial de clínicas y profesionales sanitarios.">
-    <meta name="twitter:image" content="<?= PROJECT_ROOT ?>/public/img/logo-tervion-sin-fondo.png">
+    <meta name="twitter:image" content="<?= PROJECT_ROOT ?>/public/img/logo-tervion-claro-sin-fondo.png">
 
     <link rel="icon" href="<?= PROJECT_ROOT ?>/public/img/icono-tervion-sin-fondo.png" type="image/jpeg">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- Compiled CSS (Tailwind + SCSS) -->
     <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/css/app.css">
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .font-heading {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .hero-arch-mask {
+            border-top-left-radius: 120px;
+            border-top-right-radius: 120px;
+            border-bottom-left-radius: 28px;
+            border-bottom-right-radius: 28px;
+        }
+
+        .service-card {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .team-card {
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-4px);
+        }
+    </style>
 </head>
 
 <?php
@@ -41,290 +84,150 @@ $systemAlertMessage = trim((string)($systemAlertMessage ?? ($GLOBALS['systemAler
 $hasSystemAlert = $systemAlertMessage !== '';
 ?>
 
-<body class="font-sans antialiased text-gray-900 bg-white <?= $hasSystemAlert ? 'pt-7' : '' ?>">
+<body class="bg-white text-slate-800 font-sans antialiased selection:bg-primary-500 selection:text-white <?= $hasSystemAlert ? 'pt-7' : '' ?>" x-data="{ mobileMenuOpen: false }">
 
     <?php include TEMPLATE_DIR . 'system-alert.php'; ?>
 
-    <!-- Header / Navbar -->
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100" x-data="{ mobileMenuOpen: false }">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
-            <!-- Logo -->
-            <a href="<?= PROJECT_ROOT ?>/" class="flex items-center">
-                <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-sin-fondo.png" alt="Tervion Logo" class="h-8 sm:h-9 object-contain">
-            </a>
-
-            <!-- Nav Links (Desktop) -->
-            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-                <a href="#caracteristicas" class="hover:text-primary-500 transition-colors">Características</a>
-                <a href="#como-funciona" class="hover:text-primary-500 transition-colors">Cómo funciona</a>
-                <a href="#precios" class="hover:text-primary-500 transition-colors">Precios</a>
-                <a href="#soporte" class="hover:text-primary-500 transition-colors">Soporte</a>
-            </nav>
-
-            <!-- Actions (Desktop) -->
-            <div class="hidden sm:flex items-center gap-3 md:gap-4">
-                <a href="<?= PROJECT_ROOT ?>/login" class="text-sm font-semibold text-gray-700 hover:text-primary-500 transition-colors px-3 py-2">
-                    Iniciar sesión
+    <!-- ========================================================================= -->
+    <!-- 1. NAVBAR (TOP NAVIGATION) -->
+    <!-- ========================================================================= -->
+    <header class="relative z-30 bg-slate-900 border-b border-slate-800/80">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <!-- Logo -->
+                <a href="<?= PROJECT_ROOT ?>/" class="flex items-center gap-3 group">
+                    <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-claro-sin-fondo.png" alt="Tervion" class="h-7 sm:h-8 w-auto object-contain transition-transform group-hover:scale-105" onerror="this.onerror=null; this.src='<?= PROJECT_ROOT ?>/public/img/nuevo-logo/logo-tervion-claro-sin-fondo.png';">
                 </a>
-                <a href="<?= PROJECT_ROOT ?>/registro" class="rounded-full bg-primary-500 hover:bg-primary-600 px-5 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm transition-all hover:scale-105">
-                    Solicitar ahora
-                </a>
-            </div>
 
-            <!-- Hamburger Button (Mobile) -->
-            <div class="flex items-center md:hidden">
-                <button type="button"
-                    @click="mobileMenuOpen = !mobileMenuOpen"
-                    onclick="const menu = document.getElementById('mobile-menu'); if(menu) menu.classList.toggle('hidden')"
-                    class="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    aria-controls="mobile-menu"
-                    aria-expanded="false">
-                    <span class="sr-only">Abrir menú principal</span>
-                    <!-- Icon Hamburger -->
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- Mobile menu -->
-        <div class="hidden md:hidden border-b border-gray-200 bg-white px-4 pt-2 pb-6 space-y-4 shadow-lg transition-all" id="mobile-menu">
-            <nav class="flex flex-col space-y-3 font-medium text-gray-600 pt-2">
-                <a href="#como-funciona" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="px-3 py-2 rounded-md hover:bg-gray-50 hover:text-primary-500 transition-colors">Cómo funciona</a>
-                <a href="#caracteristicas" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="px-3 py-2 rounded-md hover:bg-gray-50 hover:text-primary-500 transition-colors">Solución</a>
-                <a href="#precios" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="px-3 py-2 rounded-md hover:bg-gray-50 hover:text-primary-500 transition-colors">Precios</a>
-                <a href="#soporte" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="px-3 py-2 rounded-md hover:bg-gray-50 hover:text-primary-500 transition-colors">Soporte</a>
-            </nav>
-            <div class="pt-4 border-t border-gray-100 flex flex-col space-y-2">
-                <a href="<?= PROJECT_ROOT ?>/login" class="w-full text-center px-4 py-2.5 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition-colors border border-gray-200 text-sm">
-                    Iniciar sesión
-                </a>
-                <a href="<?= PROJECT_ROOT ?>/registro" class="w-full text-center px-4 py-2.5 rounded-full font-semibold text-white bg-primary-500 hover:bg-primary-600 transition-colors text-sm shadow-sm">
-                    Solicitar ahora
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="relative pt-12 pb-20 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
-            <!-- Hero Left -->
-            <div class="space-y-8 max-w-xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-50 text-primary-600 text-xs font-semibold tracking-wide">
-                    <span class="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></span>
-                    Automatización integral para clínicas y profesionales
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                    <a href="#inicio" class="text-white hover:text-indigo-400 transition-colors">Inicio</a>
+                    <a href="#soluciones" class="hover:text-indigo-400 transition-colors">Soluciones</a>
+                    <a href="#ventajas" class="hover:text-indigo-400 transition-colors">Ventajas</a>
+                    <a href="#caracteristicas" class="hover:text-indigo-400 transition-colors">Funcionalidades</a>
+                    <a href="#precios" class="hover:text-indigo-400 transition-colors">Precios</a>
+                    <!-- <a href="#testimonios" class="hover:text-indigo-400 transition-colors">Opiniones</a>
+                    <a href="<?= PROJECT_ROOT ?>/login" class="hover:text-indigo-400 transition-colors">Acceso</a> -->
                 </div>
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-light text-primary-500 leading-tight tracking-tight">
-                    Menos administración,<br>
-                    más tiempo para<br>
-                    <span class="font-normal text-primary-600">tus pacientes</span>
-                </h1>
-                <p class="text-lg sm:text-xl text-gray-600 leading-relaxed font-light">
-                    Gestionar una clínica no debería significar pasar horas entre citas, facturas, nóminas y tareas administrativas. Centraliza y automatiza toda la operativa de tu negocio desde un único lugar.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#como-funciona" class="rounded-full bg-gray-100 hover:bg-gray-200 px-8 py-3.5 text-sm font-semibold text-gray-800 transition-all">
-                        Descubrir plataforma
-                    </a>
-                    <a href="<?= PROJECT_ROOT ?>/registro" class="rounded-full bg-primary-500 hover:bg-primary-600 px-8 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:scale-105">
-                        Empezar ahora
+
+                <!-- Action Button -->
+                <div class="hidden md:flex items-center gap-4">
+                    <a href="<?= PROJECT_ROOT ?>/login" class="px-6 py-2.5 rounded-full text-xs font-bold tracking-wide uppercase bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/25 transition-all transform hover:-translate-y-0.5">
+                        Iniciar Sesión
                     </a>
                 </div>
-                <!-- <div class="pt-4 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-gray-500 font-medium tracking-wide">
-                    <span>🔒 Cumplimiento VERI*FACTU</span>
-                    <span>📑 Comunicaciones Contrat@</span>
-                    <span>⚡ 100% en la Nube</span>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="text-slate-300 hover:text-white p-2 focus:outline-none" aria-label="Abrir menú">
+                        <i class="bi" :class="mobileMenuOpen ? 'bi-x-lg text-2xl' : 'bi-list text-2xl'"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Dropdown Menu -->
+            <div x-show="mobileMenuOpen"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 -translate-y-4"
+                x-transition:enter-end="opacity-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 translate-y-0"
+                x-transition:leave-end="opacity-0 -translate-y-4"
+                @click.away="mobileMenuOpen = false"
+                class="md:hidden pt-2 pb-6 px-4 bg-slate-800 rounded-2xl border border-slate-700/50 shadow-2xl space-y-4 mb-4">
+                <a href="#inicio" @click="mobileMenuOpen = false" class="block text-white hover:text-indigo-400 font-medium">Inicio</a>
+                <a href="#soluciones" @click="mobileMenuOpen = false" class="block text-slate-300 hover:text-indigo-400 font-medium">Soluciones</a>
+                <a href="#ventajas" @click="mobileMenuOpen = false" class="block text-slate-300 hover:text-indigo-400 font-medium">Ventajas</a>
+                <a href="#caracteristicas" @click="mobileMenuOpen = false" class="block text-slate-300 hover:text-indigo-400 font-medium">Funcionalidades</a>
+                <a href="#precios" @click="mobileMenuOpen = false" class="block text-slate-300 hover:text-indigo-400 font-medium">Precios</a>
+                <!-- <a href="#testimonios" @click="mobileMenuOpen = false" class="block text-slate-300 hover:text-indigo-400 font-medium">Opiniones</a>
+                <div class="pt-2 border-t border-slate-700 flex flex-col gap-2">
+                    <a href="<?= PROJECT_ROOT ?>/login" class="text-center w-full py-3 rounded-full text-xs font-bold uppercase bg-primary-500 hover:bg-primary-600 text-white">
+                        Iniciar Sesión
+                    </a>
                 </div> -->
             </div>
+        </nav>
+    </header>
 
-            <!-- Hero Right -->
-            <div class="relative flex justify-center lg:justify-end">
-                <div class="relative w-full max-w-xl">
-                    <!-- Glow effect behind mockup -->
-                    <div class="absolute -inset-2 bg-gradient-to-tr from-primary-500/25 via-indigo-500/20 to-purple-500/15 rounded-3xl blur-2xl pointer-events-none"></div>
+    <!-- ========================================================================= -->
+    <!-- HERO SECTION (DARK NAVY / PRIMARY-900 PALETTE) -->
+    <!-- ========================================================================= -->
+    <section class="bg-slate-900 relative overflow-hidden text-white pt-10 pb-20 lg:pb-28">
+        <!-- Subtle background gradient and glow from primary/indigo -->
+        <div class="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-[600px] h-[600px] bg-primary-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/4 w-[500px] h-[500px] bg-primary-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
-                    <!-- Application Window Mockup -->
-                    <div class="relative bg-gray-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-800 overflow-hidden text-gray-800">
+        <!-- Hero Content Grid -->
+        <div id="inicio" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 lg:pt-20 pb-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+                <!-- Left Column (Copy & Actions) -->
+                <div class="lg:col-span-6 space-y-6 lg:pr-4">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-primary-500/20 text-indigo-300 border border-indigo-400/30">
+                        <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+                        Gestión Clínica Inteligente
+                    </div>
 
-                        <!-- Top Window Title Bar -->
-                        <div class="bg-gray-900/95 px-4 py-2.5 border-b border-gray-800 flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <div class="flex items-center gap-1.5">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block"></span>
-                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block"></span>
-                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block"></span>
-                                </div>
-                                <span class="text-[11px] font-medium text-gray-400 ml-2 hidden sm:inline-block">app.tervion.es / panel</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <!-- <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                                    <span>VERI*FACTU Activo</span>
-                                </span> -->
-                            </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-[56px] font-extrabold tracking-tight text-white leading-[1.12]">
+                        Construye, Gestiona y Haz Crecer Tu Clínica Online.
+                    </h1>
+
+                    <p class="text-slate-300 text-base sm:text-lg leading-relaxed max-w-xl font-normal">
+                        La plataforma SaaS integral que simplifica el día a día de profesionales y centros sanitarios: agenda online, recordatorios por WhatsApp, historial clínico seguro, facturación Verifactu y control laboral en un solo lugar.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-4 pt-2">
+                        <a href="<?= PROJECT_ROOT ?>/login" class="px-7 py-3.5 rounded-full text-sm font-bold tracking-wide uppercase bg-primary-500 hover:bg-primary-600 text-white inline-flex items-center gap-2 shadow-xl shadow-primary-500/30 transition-all transform hover:-translate-y-0.5">
+                            <span>Comenzar Ahora</span>
+                            <i class="bi bi-arrow-right font-bold"></i>
+                        </a>
+                        <a href="#soluciones" class="px-7 py-3.5 rounded-full text-sm font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all inline-flex items-center gap-2 backdrop-blur-sm">
+                            <i class="bi bi-play-circle text-indigo-400 text-base"></i>
+                            <span>Ver Demostración</span>
+                        </a>
+                    </div>
+
+                    <div class="pt-6 flex items-center gap-6 text-xs text-slate-400 border-t border-white/10">
+                        <div class="flex items-center gap-2">
+                            <i class="bi bi-shield-check text-indigo-400 text-base"></i>
+                            <span>Cumplimiento RGPD & Verifactu</span>
                         </div>
+                        <div class="flex items-center gap-2">
+                            <i class="bi bi-lightning-charge-fill text-indigo-400 text-base"></i>
+                            <span>Puesta en marcha en 5 min</span>
+                        </div>
+                    </div>
+                </div>
 
-                        <!-- App Layout (Sidebar + Main View) -->
-                        <div class="flex bg-slate-50 min-h-[380px] sm:min-h-[420px]">
+                <!-- Right Column (Hero Featured Image with Arch Mask) -->
+                <div class="lg:col-span-6 flex justify-center lg:justify-end relative">
+                    <div class="relative w-full max-w-[480px]">
+                        <!-- Decorative Frame Behind -->
+                        <div class="absolute inset-0 bg-gradient-to-tr from-primary-600/30 to-indigo-500/20 hero-arch-mask transform translate-x-3 translate-y-3 -z-10 blur-sm"></div>
 
-                            <!-- Mini App Sidebar -->
-                            <div class="w-14 sm:w-16 bg-gray-900 border-r border-gray-800 flex flex-col items-center py-4 justify-between shrink-0 select-none">
-                                <div class="space-y-4 flex flex-col items-center">
-                                    <!-- Logo Icon -->
-                                    <div class="w-8 h-8 rounded-xl bg-gray-800 border border-gray-700 p-1 flex items-center justify-center shadow-inner">
-                                        <img src="<?= PROJECT_ROOT ?>/public/img/icono-tervion-sin-fondo.png" alt="Tervion" class="w-full h-full object-contain rounded-md">
+                        <!-- Main Image Container with Distinctive Arch Curve -->
+                        <div class="hero-arch-mask overflow-hidden border-2 border-indigo-500/30 shadow-2xl bg-slate-800 aspect-[4/5] relative group">
+                            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1200&auto=format&fit=crop"
+                                alt="Profesionales médicos y sanitarios gestionando clínica"
+                                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700">
+
+                            <!-- Bottom Gradient Overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+
+                            <!-- Floating Metric Card -->
+                            <div class="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-md rounded-2xl p-4 text-slate-900 shadow-xl border border-white/60">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-primary-50 flex items-center justify-center text-primary-600">
+                                            <i class="bi bi-calendar-check-fill text-lg"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Citas Confirmadas</div>
+                                            <div class="text-base font-extrabold text-slate-900">+98.4% Asistencia</div>
+                                        </div>
                                     </div>
-
-                                    <!-- Nav Icons -->
-                                    <div class="space-y-2 pt-2 flex flex-col items-center">
-                                        <div class="w-9 h-9 rounded-xl bg-primary-600 text-white flex items-center justify-center text-sm shadow-md" title="Panel de Control">
-                                            <i class="bi bi-grid-1x2"></i>
-                                        </div>
-                                        <div class="w-9 h-9 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 flex items-center justify-center text-sm transition-colors" title="Agenda / Citas">
-                                            <i class="bi bi-calendar-week"></i>
-                                        </div>
-                                        <div class="w-9 h-9 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 flex items-center justify-center text-sm transition-colors" title="Pacientes">
-                                            <i class="bi bi-people"></i>
-                                        </div>
-                                        <div class="w-9 h-9 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 flex items-center justify-center text-sm transition-colors" title="Facturación">
-                                            <i class="bi bi-receipt"></i>
-                                        </div>
-                                        <div class="w-9 h-9 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 flex items-center justify-center text-sm transition-colors" title="Nóminas">
-                                            <i class="bi bi-briefcase"></i>
-                                        </div>
-                                    </div>
+                                    <span class="px-2.5 py-1 bg-indigo-100 text-indigo-800 text-[11px] font-bold rounded-full">WhatsApp AI</span>
                                 </div>
-
-                                <!-- User Avatar in Sidebar -->
-                                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-primary-600 to-indigo-500 text-white text-[11px] font-bold flex items-center justify-center shadow-sm">
-                                    SR
-                                </div>
-                            </div>
-
-                            <!-- Main Dashboard Area -->
-                            <div class="flex-1 p-3.5 sm:p-5 space-y-3 sm:space-y-4 overflow-hidden flex flex-col justify-between">
-
-                                <!-- Welcome / Header Banner -->
-                                <div class="bg-white rounded-2xl p-3 sm:p-4 border border-gray-200/80 shadow-sm flex items-center justify-between gap-2">
-                                    <div>
-                                        <div class="inline-flex items-center gap-1.5 text-[10px] font-semibold text-primary-600">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse"></span>
-                                            <span>Resumen del Centro</span>
-                                        </div>
-                                        <h3 class="text-xs sm:text-sm font-bold text-gray-900 mt-0.5">
-                                            Bienvenido, <span class="text-primary-600">Dr. Rubio</span>
-                                        </h3>
-                                    </div>
-                                    <span class="rounded-full bg-primary-600 px-3 py-1.5 text-[10px] sm:text-xs font-semibold text-white shadow-sm flex items-center gap-1 shrink-0">
-                                        <i class="bi bi-plus-lg text-[10px]"></i>
-                                        <span>Nueva Cita</span>
-                                    </span>
-                                </div>
-
-                                <!-- KPI Metric Cards -->
-                                <div class="grid grid-cols-3 gap-2 sm:gap-3">
-                                    <!-- Card 1: Pacientes -->
-                                    <div class="bg-white rounded-xl sm:rounded-2xl p-2.5 sm:p-3 border border-gray-200/80 shadow-sm">
-                                        <div class="flex items-center justify-between text-gray-400 mb-1">
-                                            <span class="text-[9px] font-bold uppercase tracking-wider">Pacientes</span>
-                                            <i class="bi bi-people text-xs text-primary-500"></i>
-                                        </div>
-                                        <div class="text-sm sm:text-lg font-bold text-gray-900 leading-none">1.420</div>
-                                        <div class="text-[9px] text-emerald-600 font-semibold mt-1 flex items-center gap-0.5">
-                                            <i class="bi bi-arrow-up-short"></i> +12 este mes
-                                        </div>
-                                    </div>
-
-                                    <!-- Card 2: Facturación -->
-                                    <div class="bg-white rounded-xl sm:rounded-2xl p-2.5 sm:p-3 border border-gray-200/80 shadow-sm">
-                                        <div class="flex items-center justify-between text-gray-400 mb-1">
-                                            <span class="text-[9px] font-bold uppercase tracking-wider">Facturado</span>
-                                            <i class="bi bi-shield-check text-xs text-emerald-500"></i>
-                                        </div>
-                                        <div class="text-sm sm:text-lg font-bold text-gray-900 leading-none">18.450 €</div>
-                                        <div class="text-[9px] text-emerald-600 font-semibold mt-1 truncate">
-                                            ✓ AEAT OK
-                                        </div>
-                                    </div>
-
-                                    <!-- Card 3: Agenda Hoy -->
-                                    <div class="bg-white rounded-xl sm:rounded-2xl p-2.5 sm:p-3 border border-gray-200/80 shadow-sm">
-                                        <div class="flex items-center justify-between text-gray-400 mb-1">
-                                            <span class="text-[9px] font-bold uppercase tracking-wider">Agenda Hoy</span>
-                                            <i class="bi bi-calendar-check text-xs text-amber-500"></i>
-                                        </div>
-                                        <div class="text-sm sm:text-lg font-bold text-gray-900 leading-none">8 citas</div>
-                                        <div class="text-[9px] text-primary-600 font-semibold mt-1 truncate">
-                                            ● 2 pendientes
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Appointments List Preview -->
-                                <div class="bg-white rounded-xl sm:rounded-2xl border border-gray-200/80 shadow-sm overflow-hidden">
-                                    <div class="px-3 py-2 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
-                                        <span class="text-[10px] font-bold text-gray-700 uppercase tracking-wider">Próximas Citas</span>
-                                        <span class="text-[10px] font-semibold text-primary-600">Ver todas</span>
-                                    </div>
-                                    <div class="divide-y divide-gray-100 text-xs">
-                                        <!-- Cita 1 -->
-                                        <div class="p-2 sm:p-2.5 flex items-center justify-between gap-2 hover:bg-gray-50/70 transition-colors">
-                                            <div class="flex items-center gap-2 min-w-0">
-                                                <span class="text-[11px] font-bold text-gray-900 bg-gray-100 px-1.5 py-0.5 rounded-md shrink-0">09:30</span>
-                                                <div class="min-w-0">
-                                                    <div class="text-[11px] font-bold text-gray-900 truncate">Laura Sánchez</div>
-                                                    <div class="text-[9px] text-gray-500 truncate">Fisioterapia · Sesión 3</div>
-                                                </div>
-                                            </div>
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100 shrink-0">
-                                                Realizada
-                                            </span>
-                                        </div>
-
-                                        <!-- Cita 2 -->
-                                        <div class="p-2 sm:p-2.5 flex items-center justify-between gap-2 hover:bg-gray-50/70 transition-colors">
-                                            <div class="flex items-center gap-2 min-w-0">
-                                                <span class="text-[11px] font-bold text-primary-700 bg-primary-50 px-1.5 py-0.5 rounded-md shrink-0">11:00</span>
-                                                <div class="min-w-0">
-                                                    <div class="text-[11px] font-bold text-gray-900 truncate">Carlos Morales</div>
-                                                    <div class="text-[9px] text-gray-500 truncate">Revisión General</div>
-                                                </div>
-                                            </div>
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-semibold bg-blue-50 text-blue-700 border border-blue-100 shrink-0">
-                                                En consulta
-                                            </span>
-                                        </div>
-
-                                        <!-- Cita 3 -->
-                                        <div class="p-2 sm:p-2.5 flex items-center justify-between gap-2 hover:bg-gray-50/70 transition-colors">
-                                            <div class="flex items-center gap-2 min-w-0">
-                                                <span class="text-[11px] font-bold text-gray-900 bg-gray-100 px-1.5 py-0.5 rounded-md shrink-0">12:30</span>
-                                                <div class="min-w-0">
-                                                    <div class="text-[11px] font-bold text-gray-900 truncate">Dra. Carmen Vega</div>
-                                                    <div class="text-[9px] text-gray-500 truncate">Primera Visita</div>
-                                                </div>
-                                            </div>
-                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-green-50 text-green-700 border border-green-200 shrink-0">
-                                                <i class="bi bi-whatsapp text-[9px]"></i> Confirmada
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Floating Live Notification Toast -->
-                                <div class="bg-gray-900 text-white rounded-xl p-2 sm:p-2.5 shadow-lg flex items-center justify-between gap-2 border border-gray-800 text-[10px]">
-                                    <div class="flex items-center gap-2 min-w-0">
-                                        <div class="w-5 h-5 rounded-lg bg-green-500/20 text-green-400 flex items-center justify-center text-xs shrink-0">
-                                            <i class="bi bi-whatsapp"></i>
-                                        </div>
-                                        <span class="truncate opacity-90">Recordatorio 12:30 confirmado por WhatsApp</span>
-                                    </div>
-                                    <span class="text-green-400 font-semibold shrink-0 text-[9px]">0% no-show</span>
-                                </div>
-
                             </div>
                         </div>
                     </div>
@@ -333,723 +236,807 @@ $hasSystemAlert = $systemAlertMessage !== '';
         </div>
     </section>
 
-    <!-- Value Pillars / Automation Grid Section -->
-    <section id="caracteristicas" class="py-20 bg-gray-50 border-t border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
-                <span class="text-xs uppercase tracking-widest text-primary-600 font-bold">Todo lo que tu negocio necesita</span>
-                <h2 class="text-3xl font-light text-primary-500">Centraliza y conecta los procesos de tu clínica</h2>
-                <p class="text-sm text-gray-500 leading-relaxed font-light">
-                    Diseñado para que sepas qué ocurre en tu centro sin perseguir datos, sin tareas repetitivas y sin depender de múltiples aplicaciones desconectadas.
-                </p>
-            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-                <!-- Feature 1: Citas y Agenda -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
-                    <div class="space-y-4">
-                        <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center text-xl">
-                            <i class="bi bi-calendar-check"></i>
+    <!-- ========================================================================= -->
+    <!-- 2. SECTION: WE HELP AMBITIOUS CLINICS GROW (LIGHT BACKGROUND) -->
+    <!-- ========================================================================= -->
+    <section id="ventajas" class="py-20 lg:py-28 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+                <!-- Left: Team/Clinic Image with Rounded Rectangle Mask -->
+                <div class="lg:col-span-6 order-2 lg:order-1">
+                    <div class="relative max-w-[500px] mx-auto">
+                        <div class="rounded-3xl overflow-hidden shadow-2xl border border-slate-100 aspect-[4/3] sm:aspect-[1/1] relative group">
+                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop"
+                                alt="Equipo de trabajo y gestión clínica"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900">Citas y Agenda Inteligente</h3>
-                        <p class="text-sm text-gray-500 leading-relaxed font-light">
-                            Organiza la actividad de tu centro, reduce el trabajo manual de recepción y optimiza la disponibilidad de cada profesional sanitario en tiempo real.
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-gray-50 flex items-center text-xs font-semibold text-primary-500">
-                        <span>Menos fricción operativa</span>
-                    </div>
-                </div>
-
-                <!-- Feature 2: Recordatorios Automáticos -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
-                    <div class="space-y-4">
-                        <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center text-xl">
-                            <i class="bi bi-chat-dots"></i>
+                        <!-- Floating Badge -->
+                        <div class="absolute -bottom-6 -right-6 hidden sm:flex items-center gap-3 bg-slate-900 text-white px-5 py-4 rounded-2xl shadow-xl border border-slate-800">
+                            <i class="bi bi-graph-up-arrow text-2xl text-indigo-400"></i>
+                            <div>
+                                <div class="text-xs text-slate-300 font-medium">Ahorro Administrativo</div>
+                                <div class="text-lg font-bold text-white">-15 horas/semana</div>
+                            </div>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900">Recordatorios automáticos vía WhatsApp</h3>
-                        <p class="text-sm text-gray-500 leading-relaxed font-light">
-                            Mantén informados a tus pacientes de manera 100% desatendida. Minimiza los olvidos y reduce radicalmente las ausencias en consulta.
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-gray-50 flex items-center text-xs font-semibold text-primary-500">
-                        <span>Comunicación sin esfuerzo</span>
                     </div>
                 </div>
 
-                <!-- Feature 3: Historia Clínica y Pacientes -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
-                    <div class="space-y-4">
-                        <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center text-xl">
-                            <i class="bi bi-file-earmark-medical"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-900">Historia Clínica</h3>
-                        <p class="text-sm text-gray-500 leading-relaxed font-light">
-                            Toda la información médica y de contacto centralizada, organizada y accesible al instante desde cualquier lugar con total privacidad.
-                        </p>
+                <!-- Right: Copy & Bullet Points -->
+                <div class="lg:col-span-6 order-1 lg:order-2 space-y-6">
+                    <div class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold bg-primary-50 text-primary-600 border border-primary-100">
+                        SOBRE TERVION
                     </div>
-                    <div class="mt-6 pt-4 border-t border-gray-50 flex items-center text-xs font-semibold text-primary-500">
-                        <span>Información siempre a mano</span>
-                    </div>
-                </div>
 
-                <!-- Feature 4: Facturación y Cobros -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
-                    <div class="space-y-4">
-                        <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center text-xl">
-                            <i class="bi bi-credit-card-2-front"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-900">Facturación y Cobros</h3>
-                        <p class="text-sm text-gray-500 leading-relaxed font-light">
-                            Mantén bajo control la actividad económica de tu clínica con cobros online mediante tarjeta y emisión instantánea de facturas vinculadas a citas y bonos.
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-gray-50 flex items-center text-xs font-semibold text-primary-500">
-                        <span>Control financiero continuo</span>
-                    </div>
-                </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                        Ayudamos a clínicas y profesionales sanitarios a crecer con soluciones digitales innovadoras.
+                    </h2>
 
-                <!-- Feature 5: Gestión Laboral -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
-                    <div class="space-y-4">
-                        <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center text-xl">
-                            <i class="bi bi-people"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-900">Gestión Laboral de Equipo</h3>
-                        <p class="text-sm text-gray-500 leading-relaxed font-light">
-                            Facilita y agiliza los procesos vinculados a tus profesionales: turnos, ausencias, cálculo automatizado de nóminas y comunicaciones laborales.
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-gray-50 flex items-center text-xs font-semibold text-primary-500">
-                        <span>Cero líos con tu personal</span>
-                    </div>
-                </div>
-
-                <!-- Feature 6: Cumplimiento Normativo -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
-                    <div class="space-y-4">
-                        <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-500 flex items-center justify-center text-xl">
-                            <i class="bi bi-shield-lock"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-900">Cumplimiento Normativo</h3>
-                        <p class="text-sm text-gray-500 leading-relaxed font-light">
-                            Incorpora las obligaciones legales que afectan a tu negocio: normativa fiscal VERI*FACTU de la AEAT y comunicaciones laborales mediante Contrat@.
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-gray-50 flex items-center text-xs font-semibold text-primary-500">
-                        <span>Tranquilidad jurídica absoluta</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Vision & Beyond: El Centro de Gestión Empresarial -->
-    <section class="py-20">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div class="space-y-6">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 text-primary-600 text-xs font-semibold">
-                    Visión Integral
-                </div>
-                <h2 class="text-3xl sm:text-4xl font-light text-primary-500 leading-tight">
-                    Una clínica es mucho más que pacientes y citas.
-                </h2>
-                <div class="text-gray-600 space-y-4 font-light leading-relaxed">
-                    <p>
-                        Tu clínica también es facturación, gastos, trabajadores, impuestos, documentación y decisiones económicas clave.
-                    </p>
-                    <p>
-                        Por eso, en Tervion no nos conformamos con ofrecer una simple agenda médica. Estamos construyendo la plataforma definitiva para convertirnos progresivamente en el <strong>centro de gestión empresarial</strong> de los profesionales sanitarios.
-                    </p>
-                    <p>
-                        Te ayudamos a saber con exactitud qué está pasando en tu negocio sin tener que perseguir datos, completar tareas manualmente o saltar entre múltiples aplicaciones incompatibles.
-                    </p>
-                </div>
-
-                <div class="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-medium text-gray-700">
-                    <div class="flex items-center gap-2">
-                        <i class="bi bi-check-circle-fill text-primary-500"></i>
-                        <span>Cero tareas manuales repetitivas</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <i class="bi bi-check-circle-fill text-primary-500"></i>
-                        <span>Toma de decisiones con datos reales</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <i class="bi bi-check-circle-fill text-primary-500"></i>
-                        <span>Todos tus procesos sincronizados</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <i class="bi bi-check-circle-fill text-primary-500"></i>
-                        <span>Enfoque total en tus pacientes</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex justify-center">
-                <div class="w-full max-w-md bg-gradient-to-br from-slate-50 to-primary-50/40 p-8 rounded-3xl border border-gray-200/80 shadow-sm space-y-6">
-                    <div class="flex items-center justify-between">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-primary-600">Próximamente en Tervion</h4>
-                        <span class="text-[10px] bg-primary-100 text-primary-700 px-2 py-0.5 rounded-full font-semibold">En evolución</span>
-                    </div>
-                    <p class="text-xs text-gray-500 leading-relaxed">
-                        Incorporamos continuamente nuevas herramientas de gestión financiera, contabilidad y fiscalidad para centralizar cada vez más procesos de autónomos y sociedades.
+                    <p class="text-slate-600 text-base leading-relaxed">
+                        Olvídate de programas dispersos y tareas manuales repetitivas. Tervion sincroniza toda la actividad asistencial y administrativa en un entorno seguro y fácil de usar para todo tu equipo.
                     </p>
 
+                    <!-- Feature Check Items -->
                     <div class="space-y-4 pt-2">
-                        <div class="flex gap-4 p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
-                            <div class="w-10 h-10 rounded-lg bg-primary-50 text-primary-500 flex items-center justify-center shrink-0">
-                                <i class="bi bi-graph-up-arrow text-lg"></i>
-                            </div>
-                            <div>
-                                <h5 class="text-sm font-bold text-gray-900">Control Financiero y Tesorería</h5>
-                                <p class="text-xs text-gray-500 mt-0.5">Visión global de ingresos, gastos previsibles y márgenes reales del negocio.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-4 p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
-                            <div class="w-10 h-10 rounded-lg bg-primary-50 text-primary-500 flex items-center justify-center shrink-0">
-                                <i class="bi bi-journal-check text-lg"></i>
-                            </div>
-                            <div>
-                                <h5 class="text-sm font-bold text-gray-900">Fiscalidad y Contabilidad</h5>
-                                <p class="text-xs text-gray-500 mt-0.5">Facilidad en el cumplimiento de obligaciones fiscales periódicas para autónomos y SLs.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-4 p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
-                            <div class="w-10 h-10 rounded-lg bg-primary-50 text-primary-500 flex items-center justify-center shrink-0">
-                                <i class="bi bi-cpu text-lg"></i>
-                            </div>
-                            <div>
-                                <h5 class="text-sm font-bold text-gray-900">Automatización de Procesos</h5>
-                                <p class="text-xs text-gray-500 mt-0.5">Conexión con agentes externos y flujos inteligentes que trabajan por ti.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Cómo Funciona Section (Pasos hacia la tranquilidad) -->
-    <section id="como-funciona" class="py-20 bg-gray-50 border-t border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="text-center max-w-xl mx-auto mb-16 space-y-2">
-                <span class="text-xs uppercase tracking-widest text-primary-600 font-bold">Simplicidad en 3 pasos</span>
-                <h2 class="text-3xl font-light text-primary-500">Cómo empezar a automatizar tu clínica</h2>
-                <p class="text-sm text-gray-500 leading-relaxed font-light">
-                    Una transición fluida diseñada para que ahorres horas de trabajo desde el primer día.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Step 1 -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between h-80 relative overflow-hidden group">
-                    <div>
-                        <span class="inline-block bg-primary-100 text-primary-700 text-xs font-bold px-3 py-1 rounded-full mb-6">
-                            Paso 1: Conecta tu actividad
-                        </span>
-                        <h3 class="text-xl font-bold text-gray-900">Configura tu centro</h3>
-                        <p class="text-sm text-gray-500 mt-3 leading-relaxed font-light">
-                            Da de alta tus especialidades, equipo de profesionales, tarifas y horarios de forma ágil y guiada.
-                        </p>
-                    </div>
-                    <div class="text-xs text-primary-500 font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                        <span>Puesta en marcha rápida</span> <i class="bi bi-arrow-right"></i>
-                    </div>
-                </div>
-
-                <!-- Step 2 -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between h-80 relative overflow-hidden group">
-                    <div>
-                        <span class="inline-block bg-primary-100 text-primary-700 text-xs font-bold px-3 py-1 rounded-full mb-6">
-                            Paso 2: Automatiza el día a día
-                        </span>
-                        <h3 class="text-xl font-bold text-gray-900">Deja que Tervion trabaje</h3>
-                        <p class="text-sm text-gray-500 mt-3 leading-relaxed font-light">
-                            Tus pacientes reciben recordatorios por WhatsApp/email, los cobros y facturas se generan solos y la agenda se actualiza al instante.
-                        </p>
-                    </div>
-                    <div class="text-xs text-primary-500 font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                        <span>Operativa sin fricción</span> <i class="bi bi-arrow-right"></i>
-                    </div>
-                </div>
-
-                <!-- Step 3 -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between h-80 relative overflow-hidden group">
-                    <div>
-                        <span class="inline-block bg-primary-100 text-primary-700 text-xs font-bold px-3 py-1 rounded-full mb-6">
-                            Paso 3: Tranquilidad absoluta
-                        </span>
-                        <h3 class="text-xl font-bold text-gray-900">Control y cumplimiento</h3>
-                        <p class="text-sm text-gray-500 mt-3 leading-relaxed font-light">
-                            Cumple automáticamente con VERI*FACTU y las obligaciones laborales mientras tienes visión global y clara de tu negocio.
-                        </p>
-                    </div>
-                    <div class="text-xs text-primary-500 font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                        <span>Cero preocupaciones</span> <i class="bi bi-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="py-16">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div>
-                <div class="text-5xl font-extralight text-primary-500">100%</div>
-                <p class="text-xs uppercase tracking-wider text-gray-400 font-bold mt-2">Tranquilidad Administrativa</p>
-            </div>
-            <div>
-                <div class="text-5xl font-extralight text-primary-500">+10h</div>
-                <p class="text-xs uppercase tracking-wider text-gray-400 font-bold mt-2">Ahorradas a la semana en gestión</p>
-            </div>
-            <div>
-                <div class="text-5xl font-extralight text-primary-500">0</div>
-                <p class="text-xs uppercase tracking-wider text-gray-400 font-bold mt-2">Tareas duplicadas o manuales</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="precios" class="py-20 bg-gray-50 border-t border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="text-center max-w-xl mx-auto mb-16">
-                <span class="text-xs uppercase tracking-widest text-primary-600 font-bold">Inversión transparente</span>
-                <h2 class="text-3xl font-light text-primary-500 mt-1">Planes a la medida de tu clínica</h2>
-                <p class="text-sm text-gray-500 mt-3 leading-relaxed font-light">Elige el plan ideal para automatizar tu negocio y ganar tranquilidad en tu día a día.</p>
-            </div>
-
-            <!-- Cards Container -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-
-                <!-- Plan Básico -->
-                <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition-shadow">
-                    <div>
-                        <div class="mb-4">
-                            <h3 class="text-xl font-bold text-gray-900">Básico</h3>
-                            <p class="text-xs text-gray-500 mt-1">Para profesionales independientes que están comenzando.</p>
-                        </div>
-                        <div class="mb-6">
-                            <span class="text-4xl font-extrabold text-gray-900">17,99€</span>
-                            <span class="text-xs font-normal text-gray-500">/mes</span>
-                        </div>
-                        <ul class="space-y-3.5 text-sm text-gray-600 mb-8">
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Agenda y gestión integral de citas</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Historia clínica y gestión de pacientes</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Cumplimiento normativo VERI*FACTU</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Recordatorios automáticos (WhatsApp/Email)</span>
-                            </li>
-                            <li class="flex items-center gap-3 text-gray-400 line-through">
-                                <i class="bi bi-x-circle text-gray-300 text-base shrink-0"></i>
-                                <span>Multi-usuario y gestión de equipo</span>
-                            </li>
-                            <li class="flex items-center gap-3 text-gray-400 line-through">
-                                <i class="bi bi-x-circle text-gray-300 text-base shrink-0"></i>
-                                <span>Gestión laboral y nóminas</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="<?= PROJECT_ROOT ?>/registro" class="w-full text-center rounded-xl bg-gray-50 hover:bg-gray-100 py-3 text-sm font-semibold text-gray-800 transition-all border border-gray-200">
-                        Empezar
-                    </a>
-                </div>
-
-                <!-- Plan Profesional (Destacado) -->
-                <div class="bg-white rounded-3xl p-8 shadow-lg border-2 border-primary-500 flex flex-col justify-between relative transform lg:-translate-y-2">
-                    <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-primary-500 text-white text-[11px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-sm">
-                        Más Popular
-                    </span>
-                    <div>
-                        <div class="mb-4">
-                            <h3 class="text-xl font-bold text-primary-600">Profesional</h3>
-                            <p class="text-xs text-gray-500 mt-1">La opción idónea para clínicas en crecimiento activo.</p>
-                        </div>
-                        <div class="mb-6">
-                            <span class="text-4xl font-extrabold text-gray-900">29,99€</span>
-                            <span class="text-xs font-normal text-gray-500">/mes</span>
-                        </div>
-                        <ul class="space-y-3.5 text-sm text-gray-600 mb-8">
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Agenda y gestión integral de citas</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Historia clínica y gestión de pacientes</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Cumplimiento normativo VERI*FACTU</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Recordatorios automáticos (WhatsApp/Email)</span>
-                            </li>
-                            <li class="flex items-center gap-3 text-gray-400 line-through">
-                                <i class="bi bi-x-circle text-gray-300 text-base shrink-0"></i>
-                                <span>Multi-usuario y gestión de equipo</span>
-                            </li>
-                            <li class="flex items-center gap-3 text-gray-400 line-through">
-                                <i class="bi bi-x-circle text-gray-300 text-base shrink-0"></i>
-                                <span>Gestión laboral y nóminas</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="<?= PROJECT_ROOT ?>/registro" class="w-full text-center rounded-xl bg-primary-500 hover:bg-primary-600 py-3 text-sm font-semibold text-white transition-all shadow-md">
-                        Empezar ahora
-                    </a>
-                </div>
-
-                <!-- Plan Premium -->
-                <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition-shadow">
-                    <div>
-                        <div class="mb-4">
-                            <h3 class="text-xl font-bold text-gray-900">Premium</h3>
-                            <p class="text-xs text-gray-500 mt-1">Gestión integral completa para clínicas avanzadas.</p>
-                        </div>
-                        <div class="mb-6">
-                            <span class="text-4xl font-extrabold text-gray-900">79,99€</span>
-                            <span class="text-xs font-normal text-gray-500">/mes</span>
-                        </div>
-                        <ul class="space-y-3.5 text-sm text-gray-600 mb-8">
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Agenda y gestión integral de citas</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Historia clínica y gestión de pacientes</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Cumplimiento normativo VERI*FACTU</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Recordatorios automáticos (WhatsApp/Email)</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Multi-usuario (Sanitarios y Recepción)</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Gestión laboral y nóminas automatizadas</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Pasarela de cobros online Redsys & TPV</span>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <i class="bi bi-check-circle-fill text-emerald-500 text-base shrink-0"></i>
-                                <span>Control financiero y conciliación</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="<?= PROJECT_ROOT ?>/registro" class="w-full text-center rounded-xl bg-gray-900 hover:bg-gray-800 py-3 text-sm font-semibold text-white transition-all shadow-sm">
-                        Solicitar plan
-                    </a>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="py-20">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Quote 1 -->
-                <div class="space-y-4">
-                    <p class="text-lg text-primary-600 font-light leading-relaxed italic">
-                        "Antes pasaba horas cuadrando facturas y enviando citas a mano. Tervion nos ha devuelto la tranquilidad y el tiempo para atender a nuestros pacientes."
-                    </p>
-                    <div>
-                        <h5 class="text-sm font-bold text-gray-900">Dra. Laura Morales</h5>
-                        <p class="text-xs text-gray-400">Directora de Clínica Aquiles</p>
-                    </div>
-                </div>
-                <!-- Quote 2 -->
-                <div class="space-y-4 border-t lg:border-t-0 lg:border-l border-gray-100 pt-8 lg:pt-0 lg:pl-8">
-                    <p class="text-lg text-primary-600 font-light leading-relaxed italic">
-                        "Los recordatorios automáticos por WhatsApp redujeron las ausencias de golpe. Y saber que VERI*FACTU está resuelto nos da paz absoluta."
-                    </p>
-                    <div>
-                        <h5 class="text-sm font-bold text-gray-900">Antonio G.</h5>
-                        <p class="text-xs text-gray-400">Fisioterapeuta y Gerente de Centro Jardín</p>
-                    </div>
-                </div>
-                <!-- Quote 3 -->
-                <div class="space-y-4 border-t lg:border-t-0 lg:border-l border-gray-100 pt-8 lg:pt-0 lg:pl-8">
-                    <p class="text-lg text-primary-600 font-light leading-relaxed italic">
-                        "Centralizar la parte laboral, el cobro y las citas en un solo lugar nos ha permitido crecer sin ahogarnos en papeleo ni datos dispersos."
-                    </p>
-                    <div>
-                        <h5 class="text-sm font-bold text-gray-900">Carlos R.</h5>
-                        <p class="text-xs text-gray-400">Gestor de Clínica Sanitaria CPT</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contacto" class="border-t border-gray-100 bg-gray-50 overflow-hidden">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2">
-
-            <!-- Left Contact Info -->
-            <div class="bg-primary-500 p-12 sm:p-16 lg:p-20 text-white flex flex-col justify-center relative overflow-hidden">
-                <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(0,158,255,0.25),transparent)]"></div>
-                <div class="relative space-y-8">
-                    <div class="space-y-3">
-                        <span class="text-xs uppercase tracking-widest opacity-75 font-semibold">Contacto Directo</span>
-                        <h2 class="text-3xl sm:text-4xl font-light leading-tight">
-                            ¿Hablamos sobre tu clínica?
-                        </h2>
-                        <p class="text-sm opacity-80 leading-relaxed font-light max-w-md">
-                            Nuestro equipo está a tu disposición para resolver cualquier duda, ofrecerte una demostración personalizada o asesorarte en la digitalización de tu centro sanitario.
-                        </p>
-                    </div>
-
-                    <div class="space-y-6 pt-2 text-sm font-light">
-                        <!-- Email -->
                         <div class="flex items-start gap-4">
-                            <div class="p-3 bg-white/10 rounded-xl backdrop-blur-sm shrink-0">
-                                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                                </svg>
+                            <div class="w-8 h-8 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="bi bi-check2 font-bold text-base"></i>
                             </div>
                             <div>
-                                <h4 class="text-xs uppercase tracking-wider opacity-75 font-bold mb-1">Correo electrónico</h4>
-                                <a href="mailto:soporte@tervion-app.com" class="hover:underline opacity-95">soporte@tervion-app.com</a>
+                                <h3 class="text-base font-bold text-slate-900">Automatización de Citas y Recordatorios</h3>
+                                <p class="text-sm text-slate-600">Envío programado de avisos por WhatsApp y correo para erradicar el absentismo de pacientes.</p>
                             </div>
                         </div>
 
-                        <!-- Phone -->
                         <div class="flex items-start gap-4">
-                            <div class="p-3 bg-white/10 rounded-xl backdrop-blur-sm shrink-0">
-                                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.499-5.234-3.837-6.733-6.733l1.293-.97c.362-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-                                </svg>
+                            <div class="w-8 h-8 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="bi bi-check2 font-bold text-base"></i>
                             </div>
                             <div>
-                                <h4 class="text-xs uppercase tracking-wider opacity-75 font-bold mb-1">Teléfono de atención</h4>
-                                <a href="tel:+34900000000" class="hover:underline opacity-95">+34 900 000 000</a>
+                                <h3 class="text-base font-bold text-slate-900">Historias Clínicas y Consentimientos Digitales</h3>
+                                <p class="text-sm text-slate-600">Evolutivos, plantillas personalizadas por especialidad y firma biométrica conforme al RGPD.</p>
                             </div>
                         </div>
 
-                        <!-- Location -->
                         <div class="flex items-start gap-4">
-                            <div class="p-3 bg-white/10 rounded-xl backdrop-blur-sm shrink-0">
-                                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                                </svg>
+                            <div class="w-8 h-8 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="bi bi-check2 font-bold text-base"></i>
                             </div>
                             <div>
-                                <h4 class="text-xs uppercase tracking-wider opacity-75 font-bold mb-1">Oficinas centrales</h4>
-                                <p class="opacity-95">Tervion Ibérica SLU — España</p>
+                                <h3 class="text-base font-bold text-slate-900">Cumplimiento Legal Verifactu & Facturación</h3>
+                                <p class="text-sm text-slate-600">Generación de facturas electrónicas encadenadas y exportación contable en un solo clic.</p>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Schedule -->
-                        <div class="flex items-start gap-4">
-                            <div class="p-3 bg-white/10 rounded-xl backdrop-blur-sm shrink-0">
-                                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="text-xs uppercase tracking-wider opacity-75 font-bold mb-1">Horario de atención</h4>
-                                <p class="opacity-95">Lunes a Viernes: 9:00 - 18:00 (CET)</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Contact Form -->
-            <div class="p-12 sm:p-16 lg:p-20 flex flex-col justify-center bg-white space-y-6">
-                <div class="space-y-2 mb-2">
-                    <h3 class="text-2xl font-bold text-gray-900">Envíanos un mensaje</h3>
-                    <p class="text-xs text-gray-500">Rellena el formulario y te responderemos en menos de 24 horas laborables.</p>
-                </div>
-                <form class="space-y-5" onsubmit="event.preventDefault(); alert('¡Gracias por contactarnos! Te responderemos muy pronto.');">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <div>
-                            <label for="nombre" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nombre completo</label>
-                            <input type="text" id="nombre" required placeholder="Tu nombre"
-                                class="w-full border-b border-gray-300 focus:border-primary-500 py-2.5 outline-none text-sm transition-colors bg-transparent">
-                        </div>
-                        <div>
-                            <label for="telefono" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Teléfono</label>
-                            <input type="tel" id="telefono" placeholder="+34 600 000 000"
-                                class="w-full border-b border-gray-300 focus:border-primary-500 py-2.5 outline-none text-sm transition-colors bg-transparent">
-                        </div>
-                    </div>
-                    <div>
-                        <label for="email" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Correo electrónico</label>
-                        <input type="email" id="email" required placeholder="tuemail@ejemplo.com"
-                            class="w-full border-b border-gray-300 focus:border-primary-500 py-2.5 outline-none text-sm transition-colors bg-transparent">
-                    </div>
-                    <div>
-                        <label for="perfil" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Perfil profesional</label>
-                        <select id="perfil" class="w-full border-b border-gray-300 focus:border-primary-500 py-2.5 outline-none text-sm transition-colors bg-transparent text-gray-600">
-                            <option value="">Selecciona tu perfil (opcional)</option>
-                            <option>Profesional sanitario independiente / Fisioterapeuta</option>
-                            <option>Director / Propietario de clínica médica</option>
-                            <option>Responsable de administración y gestión</option>
-                            <option>Otro perfil profesional</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="mensaje" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Mensaje</label>
-                        <textarea id="mensaje" rows="3" required placeholder="¿En qué podemos ayudarte?"
-                            class="w-full border-b border-gray-300 focus:border-primary-500 py-2.5 outline-none text-sm transition-colors bg-transparent resize-none"></textarea>
-                    </div>
                     <div class="pt-4">
-                        <button type="submit" class="rounded-full bg-primary-500 hover:bg-primary-600 px-8 py-3 text-sm font-semibold text-white shadow-md transition-all hover:scale-105">
-                            Enviar mensaje
-                        </button>
+                        <a href="<?= PROJECT_ROOT ?>/login" class="px-7 py-3.5 rounded-full text-sm font-bold uppercase tracking-wide bg-primary-500 hover:bg-primary-600 text-white inline-flex items-center gap-2 shadow-md transition-all">
+                            <span>Conoce Nuestra Plataforma</span>
+                            <i class="bi bi-arrow-right font-bold"></i>
+                        </a>
                     </div>
-                </form>
-                <p class="text-xs text-gray-400 leading-normal">
-                    Cumplimos estrictamente con la RGPD. Lee nuestra <a href="<?= PROJECT_ROOT ?>/privacidad" class="underline hover:text-primary-500">Política de privacidad</a>.
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- 3. SECTION: SERVICES GRID & DIGITAL SOLUTIONS -->
+    <!-- ========================================================================= -->
+    <section id="soluciones" class="py-20 lg:py-28 bg-slate-50 border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+
+                <!-- Left Title & Intro -->
+                <div class="lg:col-span-4 space-y-6 lg:sticky lg:top-28">
+                    <div class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold bg-primary-50 text-primary-600 border border-primary-100">
+                        SERVICIOS CLÍNICOS
+                    </div>
+
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                        Soluciones digitales adaptadas a tu clínica.
+                    </h2>
+
+                    <p class="text-slate-600 text-base leading-relaxed">
+                        Diseñado específicamente para centros de fisioterapia, clínicas médicas, psicología, odontología y estética que buscan excelencia y rapidez en cada consulta.
+                    </p>
+
+                    <div class="pt-2">
+                        <a href="<?= PROJECT_ROOT ?>/login" class="px-7 py-3.5 rounded-full text-sm font-bold uppercase tracking-wide bg-primary-500 hover:bg-primary-600 text-white inline-flex items-center gap-2 transition-all">
+                            <span>Ver Todas las Funciones</span>
+                            <i class="bi bi-arrow-right font-bold"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right: 2-Columns Grid with 6 Feature Cards -->
+                <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+                    <!-- Card 1 -->
+                    <div class="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md service-card space-y-4 hover:border-primary-200">
+                        <div class="w-12 h-12 rounded-full bg-primary-500 text-white flex items-center justify-center shadow-md">
+                            <i class="bi bi-calendar-week-fill text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">Agenda Médica Inteligente</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Gestión multi-terapeuta y multi-sala en tiempo real con sincronización de citas y bloqueo de festivos instantáneo.
+                        </p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md service-card space-y-4 hover:border-primary-200">
+                        <div class="w-12 h-12 rounded-full bg-primary-500 text-white flex items-center justify-center shadow-md">
+                            <i class="bi bi-whatsapp text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">Notificaciones WhatsApp</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Confirmaciones automáticas y recordatorios de cita directos al móvil del paciente con tasas de apertura del 98%.
+                        </p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md service-card space-y-4 hover:border-primary-200">
+                        <div class="w-12 h-12 rounded-full bg-primary-500 text-white flex items-center justify-center shadow-md">
+                            <i class="bi bi-file-earmark-medical-fill text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">Historial Clínico Seguro</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Fichas de paciente completas, anamnesis, informes clínicos, evolución de sesiones y adjuntos radiológicos cifrados.
+                        </p>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md service-card space-y-4 hover:border-primary-200">
+                        <div class="w-12 h-12 rounded-full bg-primary-500 text-white flex items-center justify-center shadow-md">
+                            <i class="bi bi-receipt-cutoff text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">Facturación Verifactu & AEAT</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Cumple al 100% la normativa legal española con facturación inalterable, códigos QR y exportación a tu gestor.
+                        </p>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md service-card space-y-4 hover:border-primary-200">
+                        <div class="w-12 h-12 rounded-full bg-primary-500 text-white flex items-center justify-center shadow-md">
+                            <i class="bi bi-person-badge-fill text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">Control Horario & Laboral</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Fichaje digital de terapeutas y personal de recepción, gestión de ausencias, vacaciones y cálculo de comisiones.
+                        </p>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md service-card space-y-4 hover:border-primary-200">
+                        <div class="w-12 h-12 rounded-full bg-primary-500 text-white flex items-center justify-center shadow-md">
+                            <i class="bi bi-bar-chart-fill text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">Analítica & Rendimiento</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Panel directivo con métricas de facturación, tasa de retención de pacientes y rentabilidad por tratamiento.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- 4. SECTION: TRUSTED PARTNER (DARK ACCORDION & METRICS) -->
+    <!-- ========================================================================= -->
+    <section id="caracteristicas" class="py-20 lg:py-28 bg-slate-900 text-white relative overflow-hidden" x-data="{ activeTab: 1 }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+                <!-- Left: Professional Sitting with Tablet Image -->
+                <div class="lg:col-span-5">
+                    <div class="rounded-3xl overflow-hidden shadow-2xl border border-slate-800 aspect-[4/5] bg-slate-800 relative group">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop"
+                            alt="Especialista sanitaria gestionando clínica con tablet"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                </div>
+
+                <!-- Right: Accordion & Description -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold bg-primary-500/20 text-indigo-300 border border-indigo-400/30">
+                        EFICIENCIA PROBADA
+                    </div>
+
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                        Tu socio de confianza para la transformación digital sanitaria.
+                    </h2>
+
+                    <p class="text-slate-300 text-base leading-relaxed">
+                        Acompañamos a clínicas en toda España a modernizar su operativa diaria, garantizando seguridad absoluta en el tratamiento de historiales y automatizando la relación con sus pacientes.
+                    </p>
+
+                    <!-- Interactive Accordion List -->
+                    <div class="space-y-3 pt-2">
+                        <!-- Item 1 -->
+                        <div class="border border-slate-800 bg-slate-850 rounded-xl overflow-hidden bg-slate-800/80">
+                            <button @click="activeTab = (activeTab === 1 ? null : 1)" type="button" class="w-full px-5 py-4 flex items-center justify-between text-left font-semibold text-white hover:text-indigo-400 transition-colors">
+                                <span class="flex items-center gap-3">
+                                    <i class="bi bi-shield-lock-fill text-indigo-400"></i>
+                                    Seguridad y Protección de Datos Sanitarios (RGPD)
+                                </span>
+                                <i class="bi" :class="activeTab === 1 ? 'bi-chevron-up text-indigo-400' : 'bi-chevron-down text-slate-400'"></i>
+                            </button>
+                            <div x-show="activeTab === 1" x-collapse class="px-5 pb-4 text-sm text-slate-300 border-t border-slate-700/60 pt-3">
+                                Cifrado de extremo a extremo, servidores ubicados en la Unión Europea y auditoría de accesos conforme a la legislación médica vigente.
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="border border-slate-800 bg-slate-850 rounded-xl overflow-hidden bg-slate-800/80">
+                            <button @click="activeTab = (activeTab === 2 ? null : 2)" type="button" class="w-full px-5 py-4 flex items-center justify-between text-left font-semibold text-white hover:text-indigo-400 transition-colors">
+                                <span class="flex items-center gap-3">
+                                    <i class="bi bi-phone-fill text-indigo-400"></i>
+                                    Portal del Paciente y Reserva Directa 24/7
+                                </span>
+                                <i class="bi" :class="activeTab === 2 ? 'bi-chevron-up text-indigo-400' : 'bi-chevron-down text-slate-400'"></i>
+                            </button>
+                            <div x-show="activeTab === 2" x-collapse class="px-5 pb-4 text-sm text-slate-300 border-t border-slate-700/60 pt-3">
+                                Permite que tus pacientes agenden sus tratamientos desde cualquier dispositivo sin llamadas ni intermediarios, sincronizado al instante con tu agenda.
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div class="border border-slate-800 bg-slate-850 rounded-xl overflow-hidden bg-slate-800/80">
+                            <button @click="activeTab = (activeTab === 3 ? null : 3)" type="button" class="w-full px-5 py-4 flex items-center justify-between text-left font-semibold text-white hover:text-indigo-400 transition-colors">
+                                <span class="flex items-center gap-3">
+                                    <i class="bi bi-headset text-indigo-400"></i>
+                                    Migración Gratuita y Soporte Humano Dedicado
+                                </span>
+                                <i class="bi" :class="activeTab === 3 ? 'bi-chevron-up text-indigo-400' : 'bi-chevron-down text-slate-400'"></i>
+                            </button>
+                            <div x-show="activeTab === 3" x-collapse class="px-5 pb-4 text-sm text-slate-300 border-t border-slate-700/60 pt-3">
+                                Nuestro equipo importa tus pacientes y citas de tu software actual sin interrupciones y forma a tu equipo de forma personalizada.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 pt-16 lg:pt-24 mt-12 border-t border-slate-800">
+                <div class="space-y-1">
+                    <div class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">250+</div>
+                    <div class="text-sm font-medium text-slate-400">Clínicas Activas</div>
+                </div>
+                <div class="space-y-1">
+                    <div class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">150k+</div>
+                    <div class="text-sm font-medium text-slate-400">Citas Gestionadas</div>
+                </div>
+                <div class="space-y-1">
+                    <div class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">20+</div>
+                    <div class="text-sm font-medium text-slate-400">Herramientas Conectadas</div>
+                </div>
+                <div class="space-y-1">
+                    <div class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">98%</div>
+                    <div class="text-sm font-medium text-slate-400">Satisfacción de Usuarios</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- 5. SECTION: SEE HOW OUR TEAM BOOSTS RESULTS (STRATEGY & TECH) -->
+    <!-- ========================================================================= -->
+    <section class="py-20 lg:py-28 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Section Header Centered -->
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <div class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold bg-primary-50 text-primary-600 border border-primary-100">
+                    MÉTODO TERVION
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                    Descubre cómo potenciamos los resultados de tu centro.
+                </h2>
+                <p class="text-slate-600 text-base">
+                    Una metodología clara orientada a maximizar el tiempo dedicado a la consulta médica y reducir a cero la fricción burocrática.
                 </p>
+            </div>
+
+            <!-- Strategy & Laptop Mockup Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-slate-50 rounded-3xl p-8 sm:p-12 border border-slate-200">
+                <div class="lg:col-span-6 space-y-6">
+                    <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold text-primary-700 bg-primary-100">
+                        ESTRATEGIA & AUTOMATIZACIÓN
+                    </div>
+                    <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900">
+                        Control total en tiempo real de tu clínica desde cualquier lugar.
+                    </h3>
+                    <p class="text-slate-600 text-base leading-relaxed">
+                        Visualiza los ingresos diarios, el estado de las facturas enviadas a Hacienda, los pacientes atendidos y la ocupación de salas con cuadros de mando claros y fáciles de entender.
+                    </p>
+                    <div class="pt-2">
+                        <a href="<?= PROJECT_ROOT ?>/login" class="px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wide bg-primary-500 hover:bg-primary-600 text-white inline-flex items-center gap-2 transition-all">
+                            <span>Solicitar Acceso</span>
+                            <i class="bi bi-arrow-right font-bold"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6">
+                    <div class="rounded-2xl overflow-hidden shadow-xl border border-slate-200 aspect-[16/10] bg-slate-900 relative group">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop"
+                            alt="Software de gestión clínica y analítica en pantalla"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- 6. SECTION: MEET THE TEAM / EXPERTS BEHIND (DARK PALETTE) -->
+    <!-- ========================================================================= -->
+    <section class="py-20 lg:py-28 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Section Header with CTA on right -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+                <div class="space-y-4 max-w-xl">
+                    <div class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold bg-primary-500/20 text-indigo-300 border border-indigo-400/30">
+                        EQUIPO & RESPALDO
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                        Conoce a los expertos detrás de cada funcionalidad.
+                    </h2>
+                </div>
+                <div>
+                    <a href="<?= PROJECT_ROOT ?>/login" class="px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wide bg-primary-500 hover:bg-primary-600 text-white inline-flex items-center gap-2 whitespace-nowrap shadow-lg shadow-primary-500/25 transition-all">
+                        <span>Ver Todo el Equipo</span>
+                        <i class="bi bi-arrow-right font-bold"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Team Grid (3 Columns) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <!-- Member 1 -->
+                <div class="bg-slate-800 rounded-2xl border border-slate-700/60 overflow-hidden team-card group">
+                    <div class="aspect-[4/5] overflow-hidden bg-slate-850">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop"
+                            alt="Director de Producto Sanitario"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-lg font-bold text-white">David Ruiz</h3>
+                        <p class="text-xs text-indigo-400 uppercase tracking-wider font-semibold mt-1">Director de Tecnología Clínica</p>
+                    </div>
+                </div>
+
+                <!-- Member 2 -->
+                <div class="bg-slate-800 rounded-2xl border border-slate-700/60 overflow-hidden team-card group">
+                    <div class="aspect-[4/5] overflow-hidden bg-slate-850">
+                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=800&auto=format&fit=crop"
+                            alt="Especialista en Experiencia Asistencial"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-lg font-bold text-white">Elena Martínez</h3>
+                        <p class="text-xs text-indigo-400 uppercase tracking-wider font-semibold mt-1">Especialista en Flujos Sanitarios</p>
+                    </div>
+                </div>
+
+                <!-- Member 3 -->
+                <div class="bg-slate-800 rounded-2xl border border-slate-700/60 overflow-hidden team-card group">
+                    <div class="aspect-[4/5] overflow-hidden bg-slate-850">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800&auto=format&fit=crop"
+                            alt="Consultor Legal y Verifactu"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-lg font-bold text-white">Carlos Romero</h3>
+                        <p class="text-xs text-indigo-400 uppercase tracking-wider font-semibold mt-1">Responsable Normativo & Verifactu</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- 7. SECTION: PRICING / PLANES Y PRECIOS -->
+    <!-- ========================================================================= -->
+    <section id="precios" class="py-20 lg:py-28 bg-white relative" x-data="{ billingAnnual: true }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Section Header Centered -->
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
+                <div class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold bg-primary-50 text-primary-600 border border-primary-100">
+                    PLANES TRANSPARENTES
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                    Invierte en el crecimiento de tu centro sin sorpresas.
+                </h2>
+                <p class="text-slate-600 text-base">
+                    Comienza con una prueba de 14 días gratis. Sin costes de instalación ni permanencia.
+                </p>
+
+                <!-- Billing Toggle -->
+                <div class="pt-4 flex items-center justify-center gap-4">
+                    <span class="text-sm font-medium" :class="!billingAnnual ? 'text-slate-900 font-bold' : 'text-slate-500'">Facturación Mensual</span>
+                    <button @click="billingAnnual = !billingAnnual"
+                        type="button"
+                        class="relative inline-flex h-7 w-14 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-slate-800"
+                        :class="billingAnnual ? 'bg-primary-500' : 'bg-slate-350 bg-slate-400'"
+                        role="switch"
+                        :aria-checked="billingAnnual">
+                        <span class="pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out"
+                            :class="billingAnnual ? 'translate-x-7' : 'translate-x-0'"></span>
+                    </button>
+                    <span class="text-sm font-medium flex items-center gap-2" :class="billingAnnual ? 'text-slate-900 font-bold' : 'text-slate-500'">
+                        Facturación Anual
+                        <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-indigo-100 text-indigo-800 uppercase tracking-wide">2 meses gratis</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Pricing Cards Grid (3 Columns) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch pt-4">
+
+                <!-- Plan 1: Profesional Autónomo -->
+                <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-900">Individual</h3>
+                            <p class="text-xs text-slate-500 mt-1">Ideal para profesionales sanitarios independientes.</p>
+                        </div>
+                        <div class="flex items-baseline gap-1 pt-2">
+                            <span class="text-4xl font-extrabold text-slate-900" x-text="billingAnnual ? '29€' : '35€'">29€</span>
+                            <span class="text-xs text-slate-500 font-medium">/ mes + IVA</span>
+                        </div>
+                        <p class="text-xs text-indigo-600 font-semibold" x-show="billingAnnual">Facturado anualmente (348€/año)</p>
+
+                        <ul class="space-y-3 text-xs text-slate-600 pt-4 border-t border-slate-100">
+                            <li class="flex items-center gap-2.5">
+                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
+                                <span>1 Usuario / Profesional sanitario</span>
+                            </li>
+                            <li class="flex items-center gap-2.5">
+                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
+                                <span>Agenda online & Citas ilimitadas</span>
+                            </li>
+                            <li class="flex items-center gap-2.5">
+                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
+                                <span>Historias clínicas y consentimientos</span>
+                            </li>
+                            <li class="flex items-center gap-2.5">
+                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
+                                <span>Facturación reglamentaria Verifactu</span>
+                            </li>
+                            <li class="flex items-center gap-2.5 text-slate-400">
+                                <i class="bi bi-dash-circle text-slate-300 text-sm"></i>
+                                <span>Recordatorios por WhatsApp automáticos</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <a href="<?= PROJECT_ROOT ?>/login" class="w-full block text-center py-3.5 px-6 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors">
+                            Empezar Gratis 14 Días
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Plan 2: Clínica / Centro (Destacado) -->
+                <div class="bg-slate-900 rounded-3xl p-8 border-2 border-primary-500 text-white shadow-2xl relative flex flex-col justify-between space-y-6 transform lg:-translate-y-2">
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-widest bg-primary-500 text-white shadow-md">
+                        MÁS POPULAR
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Clínica Estándar</h3>
+                            <p class="text-xs text-slate-300 mt-1">Para clínicas con equipo multidisciplinar y varias salas.</p>
+                        </div>
+                        <div class="flex items-baseline gap-1 pt-2">
+                            <span class="text-4xl font-extrabold text-white" x-text="billingAnnual ? '59€' : '69€'">59€</span>
+                            <span class="text-xs text-slate-300 font-medium">/ mes + IVA</span>
+                        </div>
+                        <p class="text-xs text-indigo-400 font-semibold" x-show="billingAnnual">Facturado anualmente (708€/año)</p>
+
+                        <ul class="space-y-3 text-xs text-slate-200 pt-4 border-t border-slate-800">
+                            <li class="flex items-center gap-2.5">
+                                <i class="bi bi-check-circle-fill text-indigo-400 text-sm"></i>
+                                <span>Hasta 5 Terapeutas / Usuarios</span>
+                            </li>
+                            <li class="flex items-center gap-2.5">
+                                <i class="bi bi-check-circle-fill text-indigo-400 text-sm"></i>
+                                <span>Recordatorios de Cita por WhatsApp</span>
+                            </li>
+                            <li class="flex items-center gap-2.5">
+                                <i class="bi bi-check-circle-fill text-indigo-400 text-sm"></i>
+                                <span>Gestión de salas y festivos en tiempo real</span>
+                            </li>
+                            <li class="flex items-center gap-2.5">
+                                <i class="bi bi-check-circle-fill text-indigo-400 text-sm"></i>
+                                <span>Control horario y fichaje de personal</span>
+                            </li>
+                            <li class="flex items-center gap-2.5">
+                                <i class="bi bi-check-circle-fill text-indigo-400 text-sm"></i>
+                                <span>Soporte prioritario y migración de datos</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <a href="<?= PROJECT_ROOT ?>/login" class="w-full block text-center py-3.5 px-6 rounded-full text-xs font-bold uppercase tracking-wider bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/30 transition-all">
+                            Empezar Prueba Gratuita
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Plan 3: Centro Avanzado / Policlínica -->
+                <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-900">Policlínica & Pro</h3>
+                            <p class="text-xs text-slate-500 mt-1">Para centros grandes con alta afluencia y múltiples sedes.</p>
+                        </div>
+                        <div class="flex items-baseline gap-1 pt-2">
+                            <span class="text-4xl font-extrabold text-slate-900" x-text="billingAnnual ? '99€' : '119€'">99€</span>
+                            <span class="text-xs text-slate-500 font-medium">/ mes + IVA</span>
+                        </div>
+                        <p class="text-xs text-indigo-600 font-semibold" x-show="billingAnnual">Facturado anualmente (1.188€/año)</p>
+
+                        <ul class="space-y-3 text-xs text-slate-600 pt-4 border-t border-slate-100">
+                            <li class="flex items-center gap-2.5">
+                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
+                                <span>Usuarios y terapeutas ilimitados</span>
+                            </li>
+                            <li class="flex items-center gap-2.5">
+                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
+                                <span>Multi-sede y centros agrupados</span>
+                            </li>
+                            <li class="flex items-center gap-2.5">
+                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
+                                <span>WhatsApp corporativo personalizado</span>
+                            </li>
+                            <li class="flex items-center gap-2.5">
+                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
+                                <span>Analítica avanzada de rentabilidad y comisiones</span>
+                            </li>
+                            <li class="flex items-center gap-2.5">
+                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
+                                <span>Gestor de cuenta y onboarding 1 a 1</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <a href="<?= PROJECT_ROOT ?>/login" class="w-full block text-center py-3.5 px-6 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors">
+                            Contactar con Asesor
+                        </a>
+                    </div>
+                </div>
+
             </div>
 
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 pt-12 pb-8 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                <!-- Columna 1: Logo y Redes Sociales -->
-                <div class="flex flex-col items-start gap-4">
-                    <a href="<?= PROJECT_ROOT ?>/" class="inline-block">
-                        <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-claro-sin-fondo.png" alt="Tervion Logo" class="h-8 object-contain">
-                    </a>
-                    <p class="text-xs text-gray-400 leading-relaxed">
-                        Automatización y gestión integral para clínicas y profesionales sanitarios.
-                    </p>
-                    <div class="flex items-center gap-4 text-gray-400 pt-2">
-                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" aria-label="Twitter">
-                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                            </svg>
-                        </a>
-                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" aria-label="LinkedIn">
-                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" aria-label="Instagram">
-                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-                            </svg>
-                        </a>
+
+    <!-- ========================================================================= -->
+    <!-- 8. SECTION: TESTIMONIALS (COMMUNITY OF USERS) -->
+    <!-- ========================================================================= -->
+    <section id="testimonios" class="py-20 lg:py-28 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Section Header Centered -->
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <div class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold bg-primary-50 text-primary-600 border border-primary-100">
+                    TESTIMONIOS REALES
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                    Confiado por una comunidad de +6,000 profesionales.
+                </h2>
+                <p class="text-slate-600 text-base">
+                    Descubre cómo clínicas de fisioterapia, centros médicos y especialistas han multiplicado su rentabilidad y fidelizado a sus pacientes con Tervion.
+                </p>
+            </div>
+
+            <!-- Testimonial Cards Grid (3 Columns) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-8 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between space-y-6 hover:shadow-md transition-shadow">
+                    <div class="space-y-4">
+                        <div class="flex text-amber-400 gap-1 text-sm">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="text-slate-700 text-sm leading-relaxed italic">
+                            "Tervion transformó la recepción de nuestra clínica. El absentismo de citas por olvido bajó un 85% gracias a las confirmaciones automáticas por WhatsApp."
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop"
+                            alt="Dra. Laura Morales"
+                            class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-900">Dra. Laura Morales</h4>
+                            <p class="text-xs text-slate-500">Directora Médica — Clínica Fisiovida</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Columna 2: Navegación de la página -->
-                <div>
-                    <h3 class="text-sm font-semibold text-white tracking-wider uppercase mb-4">Navegación</h3>
-                    <ul class="space-y-2.5 text-sm">
-                        <li><a href="#como-funciona" class="hover:text-white transition-colors">Cómo funciona</a></li>
-                        <li><a href="#caracteristicas" class="hover:text-white transition-colors">Solución</a></li>
-                        <li><a href="#precios" class="hover:text-white transition-colors">Precios</a></li>
-                        <li><a href="#soporte" class="hover:text-white transition-colors">Soporte</a></li>
-                    </ul>
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-8 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between space-y-6 hover:shadow-md transition-shadow">
+                    <div class="space-y-4">
+                        <div class="flex text-amber-400 gap-1 text-sm">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="text-slate-700 text-sm leading-relaxed italic">
+                            "La tranquilidad de estar 100% al día con Verifactu y no tener que preocuparme por cambios de la AEAT no tiene precio. Además, el soporte es rápido y muy profesional."
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop"
+                            alt="Marc Sender"
+                            class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-900">Marc Sender</h4>
+                            <p class="text-xs text-slate-500">Gerente — Centro Odontológico Sender</p>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Columna 3: Enlaces legales -->
-                <div>
-                    <h3 class="text-sm font-semibold text-white tracking-wider uppercase mb-4">Legal</h3>
-                    <ul class="space-y-2.5 text-sm">
-                        <li><a href="<?= PROJECT_ROOT ?>/privacidad" class="hover:text-white transition-colors">Política de Privacidad</a></li>
-                        <li><a href="<?= PROJECT_ROOT ?>/terminos" class="hover:text-white transition-colors">Términos de Servicio</a></li>
-                        <li><a href="<?= PROJECT_ROOT ?>/cookies" class="hover:text-white transition-colors">Política de Cookies</a></li>
-                    </ul>
+                <!-- Testimonial 3 -->
+                <div class="bg-white p-8 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between space-y-6 hover:shadow-md transition-shadow">
+                    <div class="space-y-4">
+                        <div class="flex text-amber-400 gap-1 text-sm">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="text-slate-700 text-sm leading-relaxed italic">
+                            "Manejar a nuestros 8 terapeutas, los fichajes diarios y las historias clínicas desde el iPad es comodísimo. El mejor cambio que hemos hecho en el centro."
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop"
+                            alt="Sara Domínguez"
+                            class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-900">Sara Domínguez</h4>
+                            <p class="text-xs text-slate-500">Coordinadora — Terapia & Salud Integral</p>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Columna 4: Suscripción Newsletter -->
-                <div>
-                    <h3 class="text-sm font-semibold text-white tracking-wider uppercase mb-4">Suscríbete</h3>
-                    <p class="text-xs text-gray-400 mb-3">Recibe las últimas novedades y consejos de gestión sanitaria en tu correo.</p>
-                    <form action="#" method="POST" class="relative flex items-center">
-                        <input type="email" placeholder="Tu correo electrónico" required class="w-full pl-3 pr-28 py-2.5 text-sm bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                        <button type="submit" class="absolute right-1.5 bg-primary-500 hover:bg-primary-600 text-white font-medium text-xs py-1.5 px-3.5 rounded-lg transition-colors shadow-sm inline-flex items-center gap-1.5">
-                            <!-- <span>Suscribirse</span> -->
-                            <i class="bi bi-arrow-right"></i>
-                        </button>
-                    </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- 8. FINAL CTA BANNER & FOOTER (SLATE & PRIMARY BRAND) -->
+    <!-- ========================================================================= -->
+    <footer class="bg-slate-900 text-slate-300 border-t border-slate-800 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Pre-Footer CTA Bar -->
+            <div class="bg-slate-800 rounded-3xl p-8 sm:p-12 border border-slate-700/60 mb-16 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="space-y-2 max-w-xl text-center md:text-left">
+                    <h3 class="text-2xl sm:text-3xl font-extrabold text-white">¿Listo para impulsar tu clínica?</h3>
+                    <p class="text-sm text-slate-300">Empieza hoy mismo y descubre por qué cientos de profesionales confían en Tervion.</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="<?= PROJECT_ROOT ?>/login" class="px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider bg-primary-500 hover:bg-primary-600 text-white shadow-xl shadow-primary-500/25 transition-all">
+                        Acceder a la plataforma
+                    </a>
                 </div>
             </div>
 
-            <div class="pt-8 border-t border-gray-800 text-center text-xs text-gray-500">
-                <p>® 2026 Tervion Ibérica SLU. Todos los derechos reservados.</p>
+            <!-- Footer Columns -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-slate-800">
+                <!-- Brand Info -->
+                <div class="space-y-4 md:col-span-1">
+                    <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-claro-sin-fondo.png" alt="Tervion" class="h-8 w-auto object-contain" onerror="this.onerror=null; this.src='<?= PROJECT_ROOT ?>/public/img/nuevo-logo/logo-tervion-claro-sin-fondo.png';">
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Plataforma SaaS integral de automatización y gestión empresarial para clínicas y profesionales sanitarios en España.
+                    </p>
+                </div>
+
+                <!-- Quick Navigation -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-white">Navegación</h4>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li><a href="#inicio" class="hover:text-indigo-400 transition-colors">Inicio</a></li>
+                        <li><a href="#soluciones" class="hover:text-indigo-400 transition-colors">Soluciones</a></li>
+                        <li><a href="#ventajas" class="hover:text-indigo-400 transition-colors">Ventajas</a></li>
+                        <li><a href="#caracteristicas" class="hover:text-indigo-400 transition-colors">Funcionalidades</a></li>
+                        <li><a href="#testimonios" class="hover:text-indigo-400 transition-colors">Testimonios</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal Links -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-white">Legal & Seguridad</h4>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li><a href="<?= PROJECT_ROOT ?>/privacidad" class="hover:text-indigo-400 transition-colors">Política de Privacidad</a></li>
+                        <li><a href="<?= PROJECT_ROOT ?>/terminos" class="hover:text-indigo-400 transition-colors">Términos de Servicio</a></li>
+                        <li><a href="<?= PROJECT_ROOT ?>/cookies" class="hover:text-indigo-400 transition-colors">Política de Cookies</a></li>
+                        <!-- <li><span class="text-indigo-400 flex items-center gap-1.5"><i class="bi bi-shield-lock-fill"></i> Cumplimiento RGPD</span></li> -->
+                    </ul>
+                </div>
+
+                <!-- Contact & Support -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-white">Contacto</h4>
+                    <p class="text-xs text-slate-400">
+                        Soporte técnico y comercial disponible de Lunes a Viernes de 9:00 a 19:00.
+                    </p>
+                    <div class="pt-2 text-xs text-slate-300 space-y-1">
+                        <div class="flex items-center gap-2">
+                            <i class="bi bi-envelope-fill text-indigo-400"></i>
+                            <span>soporte@tervion-app.com</span>
+                        </div>
+                    </div>
+                    <div class="pt-2 text-xs text-slate-300 space-y-1">
+                        <div class="flex items-center gap-2">
+                            <i class="bi bi-telephone-fill text-indigo-400"></i>
+                            <span>+34 600 000 000</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Bottom Copyright -->
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
+                <p>&copy; 2026 Tervion. Todos los derechos reservados.</p>
+                <div class="flex items-center gap-4">
+                    <a href="<?= PROJECT_ROOT ?>/privacidad" class="hover:text-slate-300">Privacidad</a>
+                    <span>•</span>
+                    <a href="<?= PROJECT_ROOT ?>/terminos" class="hover:text-slate-300">Términos</a>
+                    <span>•</span>
+                    <a href="<?= PROJECT_ROOT ?>/cookies" class="hover:text-slate-300">Cookies</a>
+                </div>
+            </div>
+
         </div>
     </footer>
 
-    <!-- Botón flotante de WhatsApp -->
-    <a href="https://wa.me/34600000000?text=Hola,%20me%20gustar%C3%ADa%20recibir%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Tervion"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 group focus:outline-none focus:ring-4 focus:ring-emerald-300"
-        aria-label="Contactar por WhatsApp">
-        <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24">
-            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
-        </svg>
-        <span class="absolute right-full mr-3 bg-gray-900 text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-            ¡Chatea con nosotros!
-        </span>
-    </a>
-
-    <!-- Banner de consentimiento de cookies -->
-    <div id="cookie-banner" class="fixed bottom-0 inset-x-0 z-50 p-4 sm:p-6 transition-all duration-500 transform translate-y-full opacity-0">
-        <div class="max-w-7xl mx-auto bg-gray-900/95 backdrop-blur-md text-white rounded-2xl p-5 sm:p-6 shadow-2xl border border-gray-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6">
-            <div class="space-y-1.5 max-w-3xl">
-                <div class="flex items-center gap-2 text-primary-400 font-semibold text-sm">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                    <span>Valoramos tu privacidad</span>
-                </div>
-                <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
-                    Utilizamos cookies propias y de terceros para analizar el uso del sitio web, personalizar contenidos y mejorar tu experiencia de navegación. Puedes aceptar todas las cookies o configurarlas. Más detalles en nuestra
-                    <a href="<?= PROJECT_ROOT ?>/cookies" class="text-primary-400 underline hover:text-primary-300 transition-colors">Política de Cookies</a>.
-                </p>
-            </div>
-            <div class="flex flex-wrap items-center gap-3 w-full md:w-auto shrink-0 justify-end">
-                <button type="button" id="reject-cookies-btn" class="flex-1 md:flex-none text-center px-4 py-2.5 rounded-xl border border-gray-700 text-xs sm:text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
-                    Rechazar
-                </button>
-                <button type="button" id="accept-cookies-btn" class="flex-1 md:flex-none text-center px-6 py-2.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-xs sm:text-sm font-semibold text-white shadow-md hover:shadow-lg transition-all hover:scale-105">
-                    Aceptar todas
-                </button>
-            </div>
-        </div>
+    <!-- Botón Volver Arriba (Sticky / Fixed en la esquina inferior derecha) -->
+    <div x-data="{ showScrollTop: false }"
+        @scroll.window="showScrollTop = (window.pageYOffset > 400)"
+        class="fixed bottom-6 right-6 z-50 pointer-events-none">
+        <button @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
+            x-show="showScrollTop"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 translate-y-4 scale-90"
+            x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+            x-transition:leave-end="opacity-0 translate-y-4 scale-90"
+            type="button"
+            class="pointer-events-auto w-12 h-12 rounded-full bg-primary-500 hover:bg-primary-600 text-white shadow-xl shadow-primary-500/30 flex items-center justify-center transition-all transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-slate-900"
+            aria-label="Volver arriba">
+            <i class="bi bi-chevron-up text-lg font-bold"></i>
+        </button>
     </div>
 
-    <script type="module" src="<?= PROJECT_ROOT ?>/public/js/modules/landing/cookies.js"></script>
 </body>
 
 </html>

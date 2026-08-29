@@ -4,9 +4,30 @@ namespace Tests\Unit;
 
 use App\Controllers\LoginController;
 use App\Models\Login;
+use App\Core\Csrf;
+use App\Core\Recaptcha;
 
 class LoginControllerTest extends ControllerTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        // Generar un token CSRF válido para las pruebas por defecto
+        $_SESSION['_csrf_token'] = 'valid_test_csrf_token';
+        $_POST['csrf_token'] = 'valid_test_csrf_token';
+        $_POST['g-recaptcha-response'] = 'valid_recaptcha_response';
+
+        Recaptcha::setClient(function () {
+            return true;
+        });
+    }
+
+    protected function tearDown(): void
+    {
+        Recaptcha::setClient(null);
+        parent::tearDown();
+    }
+
     private function setPrivateProperty($object, $propertyName, $value)
     {
         $ref = new \ReflectionClass(LoginController::class);
@@ -32,6 +53,33 @@ class LoginControllerTest extends ControllerTestCase
             ->with('login/login');
 
         $controller->index();
+    }
+
+    public function testIniciarSesionFailsWhenCsrfInvalid()
+    {
+        $_POST['csrf_token'] = 'invalid_csrf';
+        $_POST['email'] = 'user@example.com';
+        $_POST['pass'] = 'correctpass';
+
+        $controller = $this->getControllerMock(LoginController::class);
+
+        $this->expectException(TestExitException::class);
+        $controller->iniciarSesion();
+    }
+
+    public function testIniciarSesionFailsWhenRecaptchaInvalid()
+    {
+        Recaptcha::setClient(function () {
+            return false;
+        });
+
+        $_POST['email'] = 'user@example.com';
+        $_POST['pass'] = 'correctpass';
+
+        $controller = $this->getControllerMock(LoginController::class);
+
+        $this->expectException(TestExitException::class);
+        $controller->iniciarSesion();
     }
 
     public function testIniciarSesionMissingCredentials()
@@ -121,6 +169,17 @@ class LoginControllerTest extends ControllerTestCase
 
     public function testGeneratePasswordResetTokenMissingEmail()
     {
+        $controller = $this->getControllerMock(LoginController::class);
+
+        $this->expectException(TestExitException::class);
+        $controller->generatePasswordResetToken();
+    }
+
+    public function testGeneratePasswordResetTokenMissingOrInvalidCsrf()
+    {
+        $_POST['csrf_token'] = 'invalid_csrf';
+        $_POST['resetEmail'] = 'user@example.com';
+
         $controller = $this->getControllerMock(LoginController::class);
 
         $this->expectException(TestExitException::class);

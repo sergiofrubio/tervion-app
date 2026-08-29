@@ -47,6 +47,19 @@ class LoginController extends Controller
      */
     public function iniciarSesion()
     {
+        // 1. Validar token CSRF
+        $csrfToken = $_POST['csrf_token'] ?? null;
+        if (!\App\Core\Csrf::validateToken($csrfToken)) {
+            $this->redirectWithMessage("Petición no válida o sesión expirada. Inténtalo de nuevo.", 'danger');
+        }
+
+        // 2. Validar token reCAPTCHA
+        $recaptchaResponse = $_POST['g-recaptcha-response'] ?? null;
+        $remoteIp = $_SERVER['REMOTE_ADDR'] ?? null;
+        if (!\App\Core\Recaptcha::verify($recaptchaResponse, $remoteIp)) {
+            $this->redirectWithMessage("Por favor, completa la verificación reCAPTCHA para continuar.", 'warning');
+        }
+
         $email = $_POST['email'] ?? null;
         $pass = $_POST['pass'] ?? null;
 
@@ -55,6 +68,8 @@ class LoginController extends Controller
 
             if ($usuario) {
                 if (password_verify($pass, $usuario['pass'])) {
+                    // Regenerar token CSRF tras inicio de sesión exitoso
+                    \App\Core\Csrf::regenerateToken();
                     $this->startSession($usuario);
                 } else {
                     $this->redirectWithMessage("Contraseña incorrecta.", 'warning');
@@ -126,6 +141,11 @@ class LoginController extends Controller
      */
     public function generatePasswordResetToken()
     {
+        $csrfToken = $_POST['csrf_token'] ?? null;
+        if (!\App\Core\Csrf::validateToken($csrfToken)) {
+            $this->redirectWithMessage("Petición no válida o sesión expirada. Inténtalo de nuevo.", 'danger');
+        }
+
         $email = $_POST['resetEmail'] ?? null;
 
         if ($email) {

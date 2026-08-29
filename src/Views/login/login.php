@@ -15,6 +15,12 @@
     <!-- Compiled CSS (Tailwind + SCSS) -->
     <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/css/app.css">
 
+    <!-- Google reCAPTCHA API -->
+    <?php $recaptchaSiteKey = \App\Core\Recaptcha::getSiteKey(); ?>
+    <?php if (!empty($recaptchaSiteKey)) : ?>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <?php endif; ?>
+
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
@@ -80,6 +86,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
 
             <form action="<?= PROJECT_ROOT . '/login' ?>" method="post" class="space-y-5">
                 <input type="hidden" id="actionType" name="action" value="iniciar_sesion">
+                <input type="hidden" name="csrf_token" value="<?= \App\Core\Csrf::getToken() ?>">
 
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
@@ -109,6 +116,12 @@ $hasSystemAlert = $systemAlertMessage !== '';
                             placeholder="••••••••">
                     </div>
                 </div>
+
+                <?php if (!empty($recaptchaSiteKey)) : ?>
+                    <div class="flex justify-center my-2">
+                        <div class="g-recaptcha" data-sitekey="<?= htmlspecialchars($recaptchaSiteKey) ?>"></div>
+                    </div>
+                <?php endif; ?>
 
                 <div class="pt-2">
                     <button type="submit" id="loginButton" class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors">
@@ -166,6 +179,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     </div>
 
                     <form action="<?= PROJECT_ROOT . '/login/reset-password' ?>" method="post">
+                        <input type="hidden" name="csrf_token" value="<?= \App\Core\Csrf::getToken() ?>">
                         <div class="px-4 py-5 sm:p-6">
                             <label for="resetEmail" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
                             <input type="email" id="resetEmail" name="resetEmail" required

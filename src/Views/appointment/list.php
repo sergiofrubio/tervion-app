@@ -224,8 +224,6 @@ if (!empty($citas_filtradas)) {
     </div>
 </div>
 
-<!-- FullCalendar Dependencies -->
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 <script type="module" src="<?= PROJECT_ROOT ?>/public/js/modules/appointment/appointment-list.js"></script>
 
 <style>

@@ -5,30 +5,26 @@
 export function initAppointmentList(options = {}) {
     const root = options.rootUrl || window.PROJECT_ROOT || '';
     
-    // Función creadora del componente Alpine
+    // Definir componente Alpine appointmentCalendar
     window.appointmentCalendar = function() {
-        const calendarContainer = document.getElementById('calendar');
-        let initialEvents = [];
-        
-        if (calendarContainer && calendarContainer.dataset.events) {
-            try {
-                initialEvents = JSON.parse(calendarContainer.dataset.events);
-            } catch (e) {
-                console.error('Error al parsear eventos de citas:', e);
-                initialEvents = [];
-            }
-        }
-
         return {
             calendar: null,
             slotDuration: localStorage.getItem('calendar_slot_duration') || '30',
-            events: initialEvents,
             selectedEvent: null,
             copiedEvent: null,
             cutMode: false,
 
             init() {
                 this.renderCalendar();
+
+                // Re-renderizar o actualizar dimensiones si la navegación SPA o animación termina
+                this.$nextTick(() => {
+                    if (this.calendar) {
+                        this.calendar.updateSize();
+                    } else {
+                        this.renderCalendar();
+                    }
+                });
 
                 // Atajos globales de teclado para Copiar/Cortar/Pegar
                 window.addEventListener('keydown', (e) => {
@@ -49,6 +45,16 @@ export function initAppointmentList(options = {}) {
             renderCalendar() {
                 const calendarEl = document.getElementById('calendar');
                 if (!calendarEl || typeof FullCalendar === 'undefined') return;
+
+                let eventsList = [];
+                if (calendarEl.dataset.events) {
+                    try {
+                        eventsList = JSON.parse(calendarEl.dataset.events);
+                    } catch (e) {
+                        console.error('Error al parsear eventos de citas:', e);
+                        eventsList = [];
+                    }
+                }
 
                 if (this.calendar) {
                     this.calendar.destroy();
@@ -73,7 +79,7 @@ export function initAppointmentList(options = {}) {
                     slotMinTime: '07:00:00',
                     slotMaxTime: '22:00:00',
                     allDaySlot: false,
-                    events: this.events,
+                    events: eventsList,
                     editable: true,
                     droppable: true,
                     selectable: true,
@@ -113,6 +119,12 @@ export function initAppointmentList(options = {}) {
                 });
 
                 this.calendar.render();
+
+                setTimeout(() => {
+                    if (this.calendar) {
+                        this.calendar.updateSize();
+                    }
+                }, 100);
             },
 
             updateCalendarConfig() {
@@ -149,20 +161,22 @@ export function initAppointmentList(options = {}) {
         };
     };
 
-    // Si Alpine ya está disponible y el elemento existe en el DOM, inicializar árbol si no está ya
-    if (window.Alpine && document.getElementById('calendar')) {
-        const rootEl = document.querySelector('[x-data="appointmentCalendar()"]');
-        if (rootEl && !rootEl._x_dataStack) {
-            window.Alpine.initTree(rootEl);
+    // Registrar el componente Alpine de forma robusta
+    const registerAlpine = () => {
+        if (window.Alpine && typeof window.Alpine.data === 'function') {
+            window.Alpine.data('appointmentCalendar', window.appointmentCalendar);
         }
+    };
+
+    if (window.Alpine) {
+        registerAlpine();
+    } else {
+        document.addEventListener('alpine:init', registerAlpine);
     }
 }
 
-// Inicializar inmediatamente para que la función appointmentCalendar esté definida antes de que Alpine parse el DOM
+// Auto-ejecución inmediata para registrar el componente
 initAppointmentList({ rootUrl: window.PROJECT_ROOT || '' });
-
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => initAppointmentList({ rootUrl: window.PROJECT_ROOT || '' }));
-}
 window.addEventListener('tervion:navigated', () => initAppointmentList({ rootUrl: window.PROJECT_ROOT || '' }));
+
 

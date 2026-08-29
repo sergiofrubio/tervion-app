@@ -116,7 +116,7 @@ async function loadContent(url, pushToHistory = true, containerId = 'contenido')
             }
         }
 
-        executeNewScripts(newMain);
+        await executeNewScripts(newMain);
 
         if (window.Alpine) {
             window.Alpine.initTree(mainContainer);
@@ -174,21 +174,30 @@ function rtrimSlash(str) {
     return str.endsWith('/') && str.length > 1 ? str.slice(0, -1) : str;
 }
 
-function executeNewScripts(container) {
+async function executeNewScripts(container) {
     const scripts = container.querySelectorAll('script');
+    const promises = [];
+
     scripts.forEach(oldScript => {
         const isModule = oldScript.type === 'module';
         const src = oldScript.getAttribute('src');
 
         if (src) {
             if (isModule) {
-                // Los ES Modules se importan dinámicamente
-                import(src + '?t=' + Date.now()).catch(err => console.error('Error cargando módulo dinámico:', src, err));
+                // Los ES Modules se importan dinámicamente y se espera su resolución
+                promises.push(
+                    import(src + '?t=' + Date.now()).catch(err => console.error('Error cargando módulo dinámico:', src, err))
+                );
             } else {
-                const newScript = document.createElement('script');
-                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-                document.body.appendChild(newScript);
-                setTimeout(() => newScript.remove(), 100);
+                const scriptPromise = new Promise((resolve) => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                    newScript.onload = () => resolve();
+                    newScript.onerror = () => resolve();
+                    document.body.appendChild(newScript);
+                    setTimeout(() => newScript.remove(), 100);
+                });
+                promises.push(scriptPromise);
             }
         } else {
             const newScript = document.createElement('script');
@@ -198,6 +207,8 @@ function executeNewScripts(container) {
             setTimeout(() => newScript.remove(), 100);
         }
     });
+
+    await Promise.all(promises);
 
     if (typeof window.initFormValidation === 'function') {
         window.initFormValidation();

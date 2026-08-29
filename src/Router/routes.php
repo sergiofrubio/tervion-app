@@ -90,6 +90,18 @@ $router->add('POST', '/configuracion/bonos/crear', 'SettingController@createBono
 $router->add('GET', '/configuracion/bonos/editar', 'SettingController@editBono', true, ['Administrador']);
 $router->add('POST', '/configuracion/bonos/editar', 'SettingController@editBono', true, ['Administrador']);
 
+// Tipos de Citas
+$router->add('POST', '/configuracion/tipos-citas/guardar', 'SettingController@saveTipoCita', true, ['Administrador']);
+$router->add('POST', '/configuracion/tipos-citas/eliminar', 'SettingController@deleteTipoCita', true, ['Administrador']);
+
+// Despachos
+$router->add('POST', '/configuracion/despachos/guardar', 'SettingController@saveDespacho', true, ['Administrador']);
+$router->add('POST', '/configuracion/despachos/eliminar', 'SettingController@deleteDespacho', true, ['Administrador']);
+
+// Códigos de Descuento
+$router->add('POST', '/configuracion/descuentos/guardar', 'SettingController@saveDescuento', true, ['Administrador']);
+$router->add('POST', '/configuracion/descuentos/eliminar', 'SettingController@deleteDescuento', true, ['Administrador']);
+
 $router->add('POST', '/configuracion/clinica/actualizar', 'SettingController@saveClinica', true, ['Administrador']);
 $router->add('POST', '/configuracion/clinica/guardar', 'SettingController@saveClinica', true, ['Administrador']);
 $router->add('POST', '/configuracion/tarjeta/actualizar', 'SettingController@updateTarjeta', true, ['Administrador']);

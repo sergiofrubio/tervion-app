@@ -317,4 +317,173 @@ class Setting
             ':email' => $email_admin
         ]);
     }
+
+    // ==========================================
+    // TIPOS DE CITAS
+    // ==========================================
+    public function getTiposCitas()
+    {
+        $query = "SELECT * FROM tipos_citas ORDER BY nombre ASC";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTipoCitaById($id)
+    {
+        $query = "SELECT * FROM tipos_citas WHERE tipo_cita_id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function saveTipoCita($data)
+    {
+        $query = "INSERT INTO tipos_citas (nombre, descripcion, duracion_minutos, precio, color, estado) 
+                  VALUES (:nombre, :descripcion, :duracion_minutos, :precio, :color, :estado)";
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute($data);
+    }
+
+    public function updateTipoCita($id, $data)
+    {
+        $query = "UPDATE tipos_citas SET 
+                    nombre = :nombre, 
+                    descripcion = :descripcion, 
+                    duracion_minutos = :duracion_minutos, 
+                    precio = :precio, 
+                    color = :color, 
+                    estado = :estado 
+                  WHERE tipo_cita_id = :id";
+        $data['id'] = $id;
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute($data);
+    }
+
+    public function deleteTipoCita($id)
+    {
+        $query = "DELETE FROM tipos_citas WHERE tipo_cita_id = :id";
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute([':id' => $id]);
+    }
+
+    // ==========================================
+    // DESPACHOS / SALAS
+    // ==========================================
+    public function getDespachos()
+    {
+        // Creamos la tabla si aún no existiese en caliente
+        $this->db->exec("CREATE TABLE IF NOT EXISTS `despachos` (
+            `despacho_id` int NOT NULL AUTO_INCREMENT,
+            `cuenta_id` int NOT NULL DEFAULT '1',
+            `nombre` varchar(150) NOT NULL,
+            `ubicacion` varchar(255) DEFAULT NULL,
+            `capacidad` int NOT NULL DEFAULT '1',
+            `equipamiento` text DEFAULT NULL,
+            `color` varchar(20) DEFAULT '#6366f1',
+            `estado` enum('Activo','Inactivo') NOT NULL DEFAULT 'Activo',
+            `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+            `modificado_por` varchar(9) DEFAULT NULL,
+            `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (`despacho_id`),
+            KEY `idx_despachos_cuenta` (`cuenta_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+        $query = "SELECT * FROM despachos ORDER BY nombre ASC";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getDespachoById($id)
+    {
+        $query = "SELECT * FROM despachos WHERE despacho_id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function saveDespacho($data)
+    {
+        $this->getDespachos(); // asegura creación de tabla si es primera ejecución
+        $query = "INSERT INTO despachos (nombre, ubicacion, capacidad, equipamiento, color, estado) 
+                  VALUES (:nombre, :ubicacion, :capacidad, :equipamiento, :color, :estado)";
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute($data);
+    }
+
+    public function updateDespacho($id, $data)
+    {
+        $query = "UPDATE despachos SET 
+                    nombre = :nombre, 
+                    ubicacion = :ubicacion, 
+                    capacidad = :capacidad, 
+                    equipamiento = :equipamiento, 
+                    color = :color, 
+                    estado = :estado 
+                  WHERE despacho_id = :id";
+        $data['id'] = $id;
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute($data);
+    }
+
+    public function deleteDespacho($id)
+    {
+        $query = "DELETE FROM despachos WHERE despacho_id = :id";
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute([':id' => $id]);
+    }
+
+    // ==========================================
+    // CÓDIGOS DE DESCUENTO
+    // ==========================================
+    public function getCodigosDescuento()
+    {
+        $query = "SELECT * FROM codigos_descuento ORDER BY fecha_creacion DESC";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getCodigoDescuentoById($id)
+    {
+        $query = "SELECT * FROM codigos_descuento WHERE codigo_id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function saveCodigoDescuento($data)
+    {
+        $query = "INSERT INTO codigos_descuento (codigo, descripcion, tipo_descuento, valor, monto_minimo, usos_maximos, fecha_inicio, fecha_fin, estado) 
+                  VALUES (:codigo, :descripcion, :tipo_descuento, :valor, :monto_minimo, :usos_maximos, :fecha_inicio, :fecha_fin, :estado)";
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute($data);
+    }
+
+    public function updateCodigoDescuento($id, $data)
+    {
+        $query = "UPDATE codigos_descuento SET 
+                    codigo = :codigo, 
+                    descripcion = :descripcion, 
+                    tipo_descuento = :tipo_descuento, 
+                    valor = :valor, 
+                    monto_minimo = :monto_minimo, 
+                    usos_maximos = :usos_maximos, 
+                    fecha_inicio = :fecha_inicio, 
+                    fecha_fin = :fecha_fin, 
+                    estado = :estado 
+                  WHERE codigo_id = :id";
+        $data['id'] = $id;
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute($data);
+    }
+
+    public function deleteCodigoDescuento($id)
+    {
+        $query = "DELETE FROM codigos_descuento WHERE codigo_id = :id";
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute([':id' => $id]);
+    }
 }
+

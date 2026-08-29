@@ -22,7 +22,10 @@ class SettingController extends Controller
             'bonos' => $settingModel->getBonos(),
             'clinica' => $settingModel->getClinica(),
             'tarjeta' => $settingModel->getMetodoPagoByUsuario($usuario_id),
-            'cuenta' => $settingModel->getCuentaClienteByEmail($email_admin)
+            'cuenta' => $settingModel->getCuentaClienteByEmail($email_admin),
+            'tipos_citas' => $settingModel->getTiposCitas(),
+            'despachos' => $settingModel->getDespachos(),
+            'descuentos' => $settingModel->getCodigosDescuento()
         ];
         
         $this->view('setting/index', $data);
@@ -416,4 +419,189 @@ class SettingController extends Controller
         header('Location: ' . PROJECT_ROOT . '/configuracion');
         $this->exitApp();
     }
+
+    // ==========================================
+    // TIPOS DE CITAS
+    // ==========================================
+    public function saveTipoCita()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $settingModel = $this->model('Setting');
+            $id = !empty($_POST['tipo_cita_id']) ? (int)$_POST['tipo_cita_id'] : null;
+            
+            $data = [
+                'nombre' => trim(htmlspecialchars($_POST['nombre'] ?? '', ENT_QUOTES, 'UTF-8')),
+                'descripcion' => trim(htmlspecialchars($_POST['descripcion'] ?? '', ENT_QUOTES, 'UTF-8')),
+                'duracion_minutos' => (int)($_POST['duracion_minutos'] ?? 60),
+                'precio' => (float)($_POST['precio'] ?? 0.00),
+                'color' => htmlspecialchars($_POST['color'] ?? '#3b82f6', ENT_QUOTES, 'UTF-8'),
+                'estado' => in_array($_POST['estado'] ?? '', ['Activo', 'Inactivo']) ? $_POST['estado'] : 'Activo'
+            ];
+
+            if (empty($data['nombre'])) {
+                $_SESSION['error_message'] = "El nombre del tipo de cita es obligatorio.";
+            } else {
+                if ($id) {
+                    if ($settingModel->updateTipoCita($id, $data)) {
+                        $_SESSION['success_message'] = "Tipo de cita actualizado correctamente.";
+                    } else {
+                        $_SESSION['error_message'] = "Error al actualizar el tipo de cita.";
+                    }
+                } else {
+                    if ($settingModel->saveTipoCita($data)) {
+                        $_SESSION['success_message'] = "Tipo de cita creado con éxito.";
+                    } else {
+                        $_SESSION['error_message'] = "Error al registrar el tipo de cita.";
+                    }
+                }
+            }
+        }
+        header('Location: ' . PROJECT_ROOT . '/configuracion');
+        $this->exitApp();
+    }
+
+    public function deleteTipoCita()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = (int)($_POST['tipo_cita_id'] ?? 0);
+            if ($id > 0) {
+                $settingModel = $this->model('Setting');
+                if ($settingModel->deleteTipoCita($id)) {
+                    $_SESSION['success_message'] = "Tipo de cita eliminado correctamente.";
+                } else {
+                    $_SESSION['error_message'] = "No se pudo eliminar el tipo de cita.";
+                }
+            }
+        }
+        header('Location: ' . PROJECT_ROOT . '/configuracion');
+        $this->exitApp();
+    }
+
+    // ==========================================
+    // DESPACHOS
+    // ==========================================
+    public function saveDespacho()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $settingModel = $this->model('Setting');
+            $id = !empty($_POST['despacho_id']) ? (int)$_POST['despacho_id'] : null;
+
+            $data = [
+                'nombre' => trim(htmlspecialchars($_POST['nombre'] ?? '', ENT_QUOTES, 'UTF-8')),
+                'ubicacion' => trim(htmlspecialchars($_POST['ubicacion'] ?? '', ENT_QUOTES, 'UTF-8')),
+                'capacidad' => max(1, (int)($_POST['capacidad'] ?? 1)),
+                'equipamiento' => trim(htmlspecialchars($_POST['equipamiento'] ?? '', ENT_QUOTES, 'UTF-8')),
+                'color' => htmlspecialchars($_POST['color'] ?? '#6366f1', ENT_QUOTES, 'UTF-8'),
+                'estado' => in_array($_POST['estado'] ?? '', ['Activo', 'Inactivo']) ? $_POST['estado'] : 'Activo'
+            ];
+
+            if (empty($data['nombre'])) {
+                $_SESSION['error_message'] = "El nombre del despacho/sala es obligatorio.";
+            } else {
+                if ($id) {
+                    if ($settingModel->updateDespacho($id, $data)) {
+                        $_SESSION['success_message'] = "Despacho o sala actualizado correctamente.";
+                    } else {
+                        $_SESSION['error_message'] = "Error al actualizar el despacho.";
+                    }
+                } else {
+                    if ($settingModel->saveDespacho($data)) {
+                        $_SESSION['success_message'] = "Despacho o sala registrado correctamente.";
+                    } else {
+                        $_SESSION['error_message'] = "Error al crear el despacho.";
+                    }
+                }
+            }
+        }
+        header('Location: ' . PROJECT_ROOT . '/configuracion');
+        $this->exitApp();
+    }
+
+    public function deleteDespacho()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = (int)($_POST['despacho_id'] ?? 0);
+            if ($id > 0) {
+                $settingModel = $this->model('Setting');
+                if ($settingModel->deleteDespacho($id)) {
+                    $_SESSION['success_message'] = "Despacho eliminado correctamente.";
+                } else {
+                    $_SESSION['error_message'] = "No se pudo eliminar el despacho.";
+                }
+            }
+        }
+        header('Location: ' . PROJECT_ROOT . '/configuracion');
+        $this->exitApp();
+    }
+
+    // ==========================================
+    // CÓDIGOS DE DESCUENTO
+    // ==========================================
+    public function saveDescuento()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $settingModel = $this->model('Setting');
+            $id = !empty($_POST['codigo_id']) ? (int)$_POST['codigo_id'] : null;
+
+            $codigo = strtoupper(trim(preg_replace('/[^A-Za-z0-9_-]/', '', $_POST['codigo'] ?? '')));
+            $tipo_descuento = in_array($_POST['tipo_descuento'] ?? '', ['porcentaje', 'fijo']) ? $_POST['tipo_descuento'] : 'porcentaje';
+            $usos_ilimitados = isset($_POST['usos_ilimitados']) && $_POST['usos_ilimitados'] == '1';
+            $usos_maximos = $usos_ilimitados ? null : (!empty($_POST['usos_maximos']) ? (int)$_POST['usos_maximos'] : null);
+
+            $fecha_inicio = !empty($_POST['fecha_inicio']) ? date('Y-m-d H:i:s', strtotime($_POST['fecha_inicio'])) : null;
+            $fecha_fin = !empty($_POST['fecha_fin']) ? date('Y-m-d H:i:s', strtotime($_POST['fecha_fin'])) : null;
+
+            $data = [
+                'codigo' => $codigo,
+                'descripcion' => trim(htmlspecialchars($_POST['descripcion'] ?? '', ENT_QUOTES, 'UTF-8')),
+                'tipo_descuento' => $tipo_descuento,
+                'valor' => (float)($_POST['valor'] ?? 0.00),
+                'monto_minimo' => (float)($_POST['monto_minimo'] ?? 0.00),
+                'usos_maximos' => $usos_maximos,
+                'fecha_inicio' => $fecha_inicio,
+                'fecha_fin' => $fecha_fin,
+                'estado' => in_array($_POST['estado'] ?? '', ['Activo', 'Inactivo']) ? $_POST['estado'] : 'Activo'
+            ];
+
+            if (empty($data['codigo'])) {
+                $_SESSION['error_message'] = "El código de descuento es obligatorio.";
+            } elseif ($data['valor'] <= 0) {
+                $_SESSION['error_message'] = "El valor del descuento debe ser mayor a cero.";
+            } else {
+                if ($id) {
+                    if ($settingModel->updateCodigoDescuento($id, $data)) {
+                        $_SESSION['success_message'] = "Código de descuento actualizado correctamente.";
+                    } else {
+                        $_SESSION['error_message'] = "Error al actualizar el cupón de descuento.";
+                    }
+                } else {
+                    if ($settingModel->saveCodigoDescuento($data)) {
+                        $_SESSION['success_message'] = "Cupón de descuento creado con éxito.";
+                    } else {
+                        $_SESSION['error_message'] = "Error al registrar el cupón de descuento (comprueba que el código no exista).";
+                    }
+                }
+            }
+        }
+        header('Location: ' . PROJECT_ROOT . '/configuracion');
+        $this->exitApp();
+    }
+
+    public function deleteDescuento()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = (int)($_POST['codigo_id'] ?? 0);
+            if ($id > 0) {
+                $settingModel = $this->model('Setting');
+                if ($settingModel->deleteCodigoDescuento($id)) {
+                    $_SESSION['success_message'] = "Cupón de descuento eliminado correctamente.";
+                } else {
+                    $_SESSION['error_message'] = "No se pudo eliminar el cupón de descuento.";
+                }
+            }
+        }
+        header('Location: ' . PROJECT_ROOT . '/configuracion');
+        $this->exitApp();
+    }
 }
+

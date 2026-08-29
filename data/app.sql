@@ -192,6 +192,36 @@ CREATE TABLE `codigos_descuento` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `despachos`
+--
+
+CREATE TABLE `despachos` (
+  `despacho_id` int NOT NULL,
+  `cuenta_id` int NOT NULL DEFAULT '1',
+  `nombre` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `ubicacion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `capacidad` int NOT NULL DEFAULT '1',
+  `equipamiento` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `color` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '#6366f1',
+  `estado` enum('Activo','Inactivo') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'Activo',
+  `creado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `modificado_por` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `despachos`
+--
+
+INSERT INTO `despachos` (`despacho_id`, `cuenta_id`, `nombre`, `ubicacion`, `capacidad`, `equipamiento`, `color`, `estado`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
+(1, 1, 'Despacho Principal 1', 'Planta 1 - Puerta A', 1, 'Camilla eléctrica, ecógrafo de alta resolución, ordenador', '#3b82f6', 'Activo', NULL, '2026-08-29 18:00:00', NULL, NULL),
+(2, 1, 'Cabina de Electroterapia', 'Planta 1 - Puerta B', 1, 'Camilla fija, equipo de diatermia/tecarterapia y TENS', '#10b981', 'Activo', NULL, '2026-08-29 18:00:00', NULL, NULL),
+(3, 1, 'Sala de Readaptación', 'Planta Baja', 4, 'Pesas, elásticos, esterillas, bosu y poleas funcionales', '#f59e0b', 'Activo', NULL, '2026-08-29 18:00:00', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `contratos`
 --
 
@@ -754,6 +784,15 @@ ALTER TABLE `codigos_descuento`
   ADD KEY `fk_codigos_modificador` (`modificado_por`);
 
 --
+-- Indices de la tabla `despachos`
+--
+ALTER TABLE `despachos`
+  ADD PRIMARY KEY (`despacho_id`),
+  ADD KEY `idx_despachos_cuenta` (`cuenta_id`),
+  ADD KEY `fk_despachos_creador` (`creado_por`),
+  ADD KEY `fk_despachos_modificador` (`modificado_por`);
+
+--
 -- Indices de la tabla `contratos`
 --
 ALTER TABLE `contratos`
@@ -948,6 +987,12 @@ ALTER TABLE `clinicas`
 --
 ALTER TABLE `codigos_descuento`
   MODIFY `codigo_id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `despachos`
+--
+ALTER TABLE `despachos`
+  MODIFY `despacho_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `contratos`

@@ -10,6 +10,8 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
+    networks:
+      - app-network
     depends_on:
       - apache
 
@@ -20,29 +22,36 @@ services:
       target: production
     expose:
       - "80"
+    environment:
+      DB_HOST: db
+      DB_NAME: app
+      DB_USER: root
+      DB_PASS: root
+    networks:
+      - app-network
     depends_on:
       - db
     restart: always
 
   db:
-    image: mysql:8.0
+    image: mariadb:10.11
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: app
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: app
     volumes:
       - db_data:/var/lib/mysql
       - ./data/app.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
     restart: always
 
-  # redis:
-  #   image: redis:alpine
-  #   ports:
-  #     - "6379:6379"
-  #   volumes:
-  #     - redis_data:/data
-
 volumes:
-  db_data: # redis_data:
+  db_data:
   caddy_data:
   caddy_config:
+
+networks:
+  app-network:
+    driver: bridge
+
 

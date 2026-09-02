@@ -1,13 +1,28 @@
 services:
+  caddy:
+    image: caddy:2-alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - apache
+
   apache:
     build:
       context: .
       dockerfile: Dockerfile
       target: production
-    ports:
-      - "80:80"
+    expose:
+      - "80"
     depends_on:
       - db
+    restart: always
 
   db:
     image: mysql:8.0
@@ -19,6 +34,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./data/app.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
   # redis:
   #   image: redis:alpine
   #   ports:
@@ -28,3 +44,6 @@ services:
 
 volumes:
   db_data: # redis_data:
+  caddy_data:
+  caddy_config:
+

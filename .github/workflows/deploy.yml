@@ -12,8 +12,12 @@ jobs:
       - name: Descargar código
         uses: actions/checkout@v4
 
+      - name: Crear archivo .env desde Secrets
+        run: |
+          echo "${{ secrets.ENV_PRODUCTION }}" > .env
+
       - name: Levantar contenedor con Docker
         run: |
           docker compose -f compose.yml down
           docker compose -f compose.yml build --no-cache
-          docker compose -f compose.yml up -d
+          docker compose -f compose.yml up -d

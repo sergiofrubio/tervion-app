@@ -6,6 +6,8 @@ services:
       - "80:80"
     volumes:
       - .:/var/www/html
+    environment:
+      APP_ENV: local
     extra_hosts:
       - "host.docker.internal:host-gateway"
 

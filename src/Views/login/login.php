@@ -15,11 +15,6 @@
     <!-- Compiled CSS (Tailwind + SCSS) -->
     <link rel="stylesheet" href="<?= PROJECT_ROOT ?>/public/css/app.css">
 
-    <!-- Google reCAPTCHA API -->
-    <?php $recaptchaSiteKey = \App\Core\Recaptcha::getSiteKey(); ?>
-    <?php if (!empty($recaptchaSiteKey)) : ?>
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <?php endif; ?>
 
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -117,11 +112,6 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     </div>
                 </div>
 
-                <?php if (!empty($recaptchaSiteKey)) : ?>
-                    <div class="flex justify-center my-2">
-                        <div class="g-recaptcha" data-sitekey="<?= htmlspecialchars($recaptchaSiteKey) ?>"></div>
-                    </div>
-                <?php endif; ?>
 
                 <div class="pt-2">
                     <button type="submit" id="loginButton" class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors">

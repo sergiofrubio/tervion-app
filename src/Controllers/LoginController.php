@@ -53,13 +53,6 @@ class LoginController extends Controller
             $this->redirectWithMessage("Petición no válida o sesión expirada. Inténtalo de nuevo.", 'danger');
         }
 
-        // 2. Validar token reCAPTCHA
-        $recaptchaResponse = $_POST['g-recaptcha-response'] ?? null;
-        $remoteIp = $_SERVER['REMOTE_ADDR'] ?? null;
-        if (!\App\Core\Recaptcha::verify($recaptchaResponse, $remoteIp)) {
-            $this->redirectWithMessage("Por favor, completa la verificación reCAPTCHA para continuar.", 'warning');
-        }
-
         $email = $_POST['email'] ?? null;
         $pass = $_POST['pass'] ?? null;
 

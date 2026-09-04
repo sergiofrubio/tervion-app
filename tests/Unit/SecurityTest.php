@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Core\Csrf;
-use App\Core\Recaptcha;
 use PHPUnit\Framework\TestCase;
 
 class SecurityTest extends TestCase
@@ -34,17 +33,5 @@ class SecurityTest extends TestCase
         $this->assertNotEquals($token1, $token2);
         $this->assertTrue(Csrf::validateToken($token2));
         $this->assertFalse(Csrf::validateToken($token1));
-    }
-
-    public function testRecaptchaVerifyWithCustomClient()
-    {
-        Recaptcha::setClient(function ($token) {
-            return $token === 'valid_token';
-        });
-
-        $this->assertTrue(Recaptcha::verify('valid_token'));
-        $this->assertFalse(Recaptcha::verify('invalid_token'));
-
-        Recaptcha::setClient(null);
     }
 }

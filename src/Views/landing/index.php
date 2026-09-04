@@ -181,10 +181,15 @@ $hasSystemAlert = $systemAlertMessage !== '';
                             <span>Comenzar Ahora</span>
                             <i class="bi bi-arrow-right font-bold"></i>
                         </a>
-                        <a href="#soluciones" class="px-7 py-3.5 rounded-full text-sm font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all inline-flex items-center gap-2 backdrop-blur-sm">
-                            <i class="bi bi-play-circle text-indigo-400 text-base"></i>
-                            <span>Ver Demostración</span>
-                        </a>
+                        <form action="<?= PROJECT_ROOT ?>/login" method="post" class="inline">
+                            <input type="hidden" name="csrf_token" value="<?= \App\Core\Csrf::getToken() ?>">
+                            <input type="hidden" name="email" value="admin@example.com">
+                            <input type="hidden" name="pass" value="12345678">
+                            <button type="submit" class="px-7 py-3.5 rounded-full text-sm font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all inline-flex items-center gap-2 backdrop-blur-sm cursor-pointer">
+                                <i class="bi bi-play-circle text-indigo-400 text-base"></i>
+                                <span>Ver Demostración</span>
+                            </button>
+                        </form>
                     </div>
 
                     <div class="pt-6 flex items-center gap-6 text-xs text-slate-400 border-t border-white/10">

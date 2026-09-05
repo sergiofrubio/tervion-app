@@ -26,7 +26,8 @@
     <!-- App Core JS (ES Module) -->
     <script type="module" src="<?= PROJECT_ROOT ?>/public/js/app.js"></script>
 
-    <!-- Alpine.js MUST load after our ES modules so components are registered on 'alpine:init' before DOM parsing -->
+    <!-- Alpine.js Plugins & Core -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 

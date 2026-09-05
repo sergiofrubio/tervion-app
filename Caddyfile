@@ -2,6 +2,12 @@ localhost, tervion.es, www.tervion.es {
     root * /var/www/html/public
     encode zstd gzip
 
+    # Servir archivos estáticos solicitados con prefijo /public/...
+    handle_path /public/* {
+        root * /var/www/html/public
+        file_server
+    }
+
     php_fastcgi php:9000
 
     file_server

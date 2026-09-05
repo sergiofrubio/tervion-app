@@ -1,11 +1,10 @@
 # Etapa base: Instalación de extensiones comunes
-FROM php:apache AS base
+FROM php:8.4-fpm AS base
 RUN apt-get update && apt-get install -y \
     libzip-dev \
     unzip \
     && docker-php-ext-install mysqli pdo pdo_mysql zip \
     && rm -rf /var/lib/apt/lists/*
-RUN a2enmod rewrite
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 WORKDIR /var/www/html
@@ -14,8 +13,8 @@ WORKDIR /var/www/html
 FROM base AS development
 
 # Copiar Node.js y npm desde la imagen oficial de Node
-COPY --from=node:20-slim /usr/local/bin /usr/local/bin
-COPY --from=node:20-slim /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=node:22-slim /usr/local/bin /usr/local/bin
+COPY --from=node:22-slim /usr/local/lib/node_modules /usr/local/lib/node_modules
 
 RUN apt-get update && apt-get install -y \
     autoconf \
@@ -33,7 +32,7 @@ RUN echo "xdebug.mode=coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdeb
     && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 # Instala dependencias PHP al iniciar en desarrollo (útil con volumen bind mount)
-CMD ["sh", "-c", "if [ -f /var/www/html/composer.json ]; then composer install --no-interaction --prefer-dist; fi && apache2-foreground"]
+CMD ["sh", "-c", "if [ -f /var/www/html/composer.json ]; then composer install --no-interaction --prefer-dist; fi && php-fpm"]
 
 # Etapa de producción: Copia código y limpia
 FROM base AS production
@@ -54,5 +53,5 @@ RUN echo "0 0 * * * php /var/www/html/scripts/send_reminders.php >> /var/log/cro
     && crontab /etc/cron.d/app-cron \
     && touch /var/log/cron.log
 
-# Iniciar el demonio cron y Apache
-CMD cron && apache2-foreground
+# Iniciar el demonio cron y PHP-FPM
+CMD cron && php-fpm

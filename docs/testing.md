@@ -9,16 +9,16 @@ Este documento explica cómo ejecutar las pruebas unitarias en el sistema y cóm
 El proyecto cuenta con **PHPUnit** como dependencia de desarrollo integrada. Las pruebas se ubican en el directorio `tests/`.
 
 ### Ejecutar Pruebas en el Contenedor
-Dado que la aplicación corre dentro de Docker, las pruebas deben ser ejecutadas en el runtime del contenedor de Apache para que dispongan de las extensiones y la conexión a la base de datos de test correctas.
+Dado que la aplicación corre dentro de Docker, las pruebas deben ser ejecutadas en el runtime del contenedor de PHP (`php`) para que dispongan de las extensiones y la conexión a la base de datos de test correctas.
 
 Para ejecutar la suite completa de pruebas:
 ```bash
-docker compose exec apache vendor/bin/phpunit
+docker compose exec php vendor/bin/phpunit
 ```
 
-O si utilizas comandos directos del contenedor:
+Alternativamente, si no se utiliza compose directamente:
 ```bash
-docker exec -it <nombre-contenedor-apache> ./vendor/bin/phpunit
+docker exec -it <nombre-contenedor-php> ./vendor/bin/phpunit
 ```
 
 > [!TIP]
@@ -26,9 +26,9 @@ docker exec -it <nombre-contenedor-apache> ./vendor/bin/phpunit
 
 ---
 
-## 🔍 Depuración Interactiva con Xdebug
+## 🐞 Configuración de Xdebug
 
-El contenedor de desarrollo de Apache tiene **Xdebug** preinstalado y configurado automáticamente para permitir depuración por breakpoints paso a paso y análisis de cobertura de pruebas (`coverage`).
+El contenedor de desarrollo de PHP tiene **Xdebug** preinstalado y configurado automáticamente para permitir depuración por breakpoints paso a paso y análisis de cobertura de pruebas (`coverage`).
 
 ### Configuración del Servidor PHP (en Docker)
 Como se detalla en el [Dockerfile](file:///c:/Users/sergi/Documents/tervion-app/Dockerfile), Xdebug está parametrizado con los siguientes valores para desarrollo:

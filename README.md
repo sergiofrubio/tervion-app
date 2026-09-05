@@ -19,14 +19,14 @@ Para facilitar la incorporación de nuevos ingenieros al equipo, la documentaci�
 
 ## ⚡ Inicio Rápido (Quickstart)
 
-Para levantar el entorno completo con base de datos MySQL, servidor web Apache, Mailpit y PHPMyAdmin:
+Para levantar el entorno completo con base de datos MySQL, servidor web Caddy, PHP-FPM, Mailpit y PHPMyAdmin:
 
 ```bash
 # Levantar servicios
 docker compose up -d
 
 # Ejecutar tests para validar estado inicial
-docker compose exec apache vendor/bin/phpunit
+docker compose exec php vendor/bin/phpunit
 ```
 
 * **URL de Acceso:** [http://localhost](http://localhost)

@@ -1,8 +1,8 @@
 localhost, tervion.es, www.tervion.es {
-    reverse_proxy apache:80 {
-        header_up Host {host}
-        header_up X-Real-IP {remote_host}
-        header_up X-Forwarded-For {remote_host}
-        header_up X-Forwarded-Proto {scheme}
-    }
+    root * /var/www/html/public
+    encode zstd gzip
+
+    php_fastcgi php:9000
+
+    file_server
 }

@@ -10,8 +10,8 @@ Para levantar el entorno completo, tu máquina host debe disponer de:
 - **Docker Desktop** (versión 20.10+ recomendada)
 - **Docker Compose V2** (integrado de forma nativa en las versiones modernas de Docker)
 
-> [!NOTE]
-> No es estrictamente necesario tener PHP ni MySQL instalados a nivel de sistema operativo local en la máquina host, ya que el contenedor apache gestiona el runtime de ejecución de PHP con todas las extensiones necesarias y `db` provee MySQL.
+> [!TIP]
+> No es estrictamente necesario tener PHP ni MySQL instalados a nivel de sistema operativo local en la máquina host, ya que el contenedor `php` (PHP-FPM) gestiona el runtime de ejecución de PHP con todas las extensiones necesarias, `caddy` actúa como servidor web/SSL y `db` provee MySQL/MariaDB.
 
 ---
 
@@ -45,8 +45,9 @@ El entorno local consta de los siguientes contenedores definidos en `compose.yml
 
 | Contenedor | Imagen / Target | Puerto Host | Propósito |
 | :--- | :--- | :--- | :--- |
-| **apache** | `Dockerfile` (target: `development`) | `80:80` | Servidor Web Apache + PHP 8.1 + Xdebug habilitado. |
-| **db** | `mysql:8.0` | `3306:3306` | Servidor de base de datos MySQL. |
+| **caddy** | `caddy:2-alpine` | `80:80`, `443:443` | Servidor Web Caddy con SSL automático y entrega de estáticos. |
+| **php** | `Dockerfile` (target: `development`) | Interno `9000` | Intérprete PHP-FPM + extensiones + Xdebug. |
+| **db** | `mariadb:10.11` | Interno `3306` | Servidor de base de datos MariaDB. |
 | **phpmyadmin** | `phpmyadmin/phpmyadmin` | `8080:80` | Interfaz gráfica web para administración de base de datos. |
 | **mailpit** | `axllent/mailpit` | `8025` (Web UI), `1025` (SMTP) | Servidor SMTP simulado para atrapar correos salientes y debuggear notificaciones sin enviar emails reales. |
 
@@ -59,15 +60,16 @@ El sistema carga fixtures por defecto al iniciar la base de datos:
 - **Usuario Administrador:** `admin@example.com`
 - **Contraseña:** `12345678`
 
-### 2. Base de Datos (MySQL)
-Configuración de conexión interna en Docker:
-- **Host:** `db` (alias del servicio)
-- **Database:** `tervion`
-- **Usuario:** `root`
-- **Contraseña:** `root`
+### 2. Base de Datos (MySQL / MariaDB)
+- **Host:** `db` (o `127.0.0.1` si conectas desde el host)
 - **Puerto:** `3306`
+- **Base de datos:** `app`
+- **Usuario root:** `root`
+- **Contraseña:** `root`
 
-*(Las variables de entorno son inyectadas en tiempo de ejecución o leídas con fallbacks en [DataBase.php](file:///c:/Users/sergi/Documents/tervion-app/Core/DataBase.php))*
+### 3. Servicios Auxiliares
+- **Mailpit Web UI:** [http://localhost:8025](http://localhost:8025)
+- **phpMyAdmin Web UI:** [http://localhost:8080](http://localhost:8080)
 
 ---
 
@@ -86,12 +88,39 @@ El contenedor de base de datos (`db`) monta un volumen con el esquema SQL del pr
 
 ---
 
-## 🔍 Resolución de Problemas (Troubleshooting)
+## 🛠️ Comandos Frecuentes
 
-### Conflicto de Puertos
-Si el puerto `80` o `3306` ya está ocupado en tu máquina local:
-1. Abre `compose.override.yml`.
-2. Mapea el puerto a uno libre (ej. `"8081:80"` para apache).
+```bash
+# Ver estado de los contenedores
+docker compose ps
+
+# Ver logs en tiempo real
+docker compose logs -f
+
+# Ver logs únicamente de PHP
+docker compose logs -f php
+
+# Ver logs únicamente de Caddy
+docker compose logs -f caddy
+
+# Acceder al contenedor de PHP mediante shell interactivo
+docker compose exec php bash
+
+# Detener los contenedores sin borrar volúmenes
+docker compose down
+
+# Detener y borrar volúmenes (reinicia la BD desde cero)
+docker compose down -v
+```
+
+---
+
+## ⚠️ Solución de Problemas Comunes
+
+### 1. El puerto 80 o 443 ya está en uso en el host
+Si tienes un servicio local (como IIS o Skype) ocupando los puertos:
+1. Abre `compose.yml`.
+2. Mapea el puerto a uno libre en el servicio `caddy` (ej. `"8081:80"`).
 3. Reinicia los contenedores (`docker compose up -d`).
 
 ### Error al conectar con la base de datos

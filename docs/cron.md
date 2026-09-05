@@ -45,10 +45,10 @@ Si necesitas probar los scripts en tu entorno local sin esperar a que el cron de
 
 1. **Ejecutar Recordatorio de Citas:**
    ```bash
-   docker compose exec apache php /var/www/html/Scripts/send_reminders.php
+   docker compose exec php php /var/www/html/Scripts/send_reminders.php
    ```
 
 2. **Ejecutar Generador de Nóminas:**
    ```bash
-   docker compose exec apache php /var/www/html/Scripts/generate_payroll.php
+   docker compose exec php php /var/www/html/Scripts/generate_payroll.php
    ```

@@ -3,9 +3,9 @@ services:
     image: caddy:2-alpine
     restart: always
     expose:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
+      - "80"
+      - "443"
+      - "443/udp"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - ./public:/var/www/html/public:ro

@@ -14,6 +14,7 @@ services:
     depends_on:
       - php
     networks:
+      - default
       - proxy
 
   php:

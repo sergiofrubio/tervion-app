@@ -1,4 +1,4 @@
-localhost, tervion.es, www.tervion.es {
+:80 {
     root * /var/www/html/public
     encode zstd gzip
 

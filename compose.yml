@@ -13,6 +13,8 @@ services:
       - caddy_config:/config
     depends_on:
       - php
+    networks:
+      - proxy
 
   php:
     build:

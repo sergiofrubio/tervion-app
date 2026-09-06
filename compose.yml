@@ -14,6 +14,7 @@ services:
     depends_on:
       - php
     networks:
+      - default
       - proxy
 
   php:
@@ -33,6 +34,9 @@ services:
       DB_PASS: root
     depends_on:
       - db
+    networks:
+      - default
+      - proxy
     restart: always
 
   db:
@@ -51,5 +55,6 @@ volumes:
   caddy_config:
 
 networks:
+  default:
   proxy:
     external: true

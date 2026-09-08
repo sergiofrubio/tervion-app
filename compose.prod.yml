@@ -1,0 +1,18 @@
+services:
+  caddy:
+    restart: always
+    networks:
+      - default
+      - proxy
+
+  php:
+    restart: always
+    environment:
+      APP_ENV: production
+    networks:
+      - default
+      - proxy
+
+networks:
+  proxy:
+    external: true

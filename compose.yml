@@ -15,7 +15,6 @@ services:
       - php
     networks:
       - default
-      - proxy
 
   php:
     build:
@@ -36,7 +35,6 @@ services:
       - db
     networks:
       - default
-      - proxy
     restart: always
 
   db:
@@ -56,5 +54,3 @@ volumes:
 
 networks:
   default:
-  proxy:
-    external: true

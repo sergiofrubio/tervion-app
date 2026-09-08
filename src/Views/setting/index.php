@@ -331,64 +331,66 @@ include TEMPLATE_DIR . 'header.php';
                 </div>
 
                 <!-- Modal Tipo Cita -->
-                <div x-show="modalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                        <div x-show="modalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-900/50 backdrop-blur-xs transition-opacity" @click="modalOpen = false"></div>
-                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                        <div x-show="modalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-100">
-                            <form action="<?= PROJECT_ROOT ?>/configuracion/tipos-citas/guardar" method="POST" class="p-6 sm:p-8 space-y-5">
-                                <input type="hidden" name="tipo_cita_id" x-model="form.tipo_cita_id">
-                                <div class="flex items-center justify-between border-b border-gray-100 pb-4">
-                                    <h3 class="text-lg font-bold text-gray-900" x-text="isEditing ? 'Editar Tipo de Cita' : 'Nuevo Tipo de Cita'"></h3>
-                                    <button type="button" @click="modalOpen = false" class="text-gray-400 hover:text-gray-600 p-1 rounded-lg"><i class="bi bi-x-lg"></i></button>
-                                </div>
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nombre del Servicio *</label>
-                                        <input type="text" name="nombre" x-model="form.nombre" required placeholder="Ej. Fisioterapia Deportiva" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                <template x-teleport="body">
+                    <div x-show="modalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                            <div x-show="modalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-500/75 backdrop-blur-sm transition-opacity" @click="modalOpen = false"></div>
+                            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                            <div x-show="modalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="relative inline-block align-middle bg-white rounded-3xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full border border-gray-100">
+                                <form action="<?= PROJECT_ROOT ?>/configuracion/tipos-citas/guardar" method="POST" class="p-6 sm:p-8 space-y-5">
+                                    <input type="hidden" name="tipo_cita_id" x-model="form.tipo_cita_id">
+                                    <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                                        <h3 class="text-lg font-bold text-gray-900" x-text="isEditing ? 'Editar Tipo de Cita' : 'Nuevo Tipo de Cita'"></h3>
+                                        <button type="button" @click="modalOpen = false" class="text-gray-400 hover:text-gray-600 p-1 rounded-lg"><i class="bi bi-x-lg"></i></button>
                                     </div>
-                                    <div class="grid grid-cols-2 gap-4">
+                                    <div class="space-y-4">
                                         <div>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Duración (minutos) *</label>
-                                            <input type="number" name="duracion_minutos" x-model="form.duracion_minutos" min="5" step="5" required class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nombre del Servicio *</label>
+                                            <input type="text" name="nombre" x-model="form.nombre" required placeholder="Ej. Fisioterapia Deportiva" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
                                         </div>
-                                        <div>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Precio Tarifa (€)</label>
-                                            <input type="number" name="precio" x-model="form.precio" min="0" step="0.50" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Duración (minutos) *</label>
+                                                <input type="number" name="duracion_minutos" x-model="form.duracion_minutos" min="5" step="5" required class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Precio Tarifa (€)</label>
+                                                <input type="number" name="precio" x-model="form.precio" min="0" step="0.50" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Color de Agenda</label>
-                                            <div class="flex items-center gap-2">
-                                                <input type="color" name="color" x-model="form.color" class="h-10 w-14 rounded-xl border-gray-200 cursor-pointer p-0.5 bg-white">
-                                                <input type="text" x-model="form.color" class="w-full rounded-xl border-gray-200 text-xs font-mono uppercase focus:border-primary-500 focus:ring-primary-500">
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Color Distintivo</label>
+                                                <div class="flex items-center gap-2">
+                                                    <input type="color" name="color" x-model="form.color" class="h-10 w-14 rounded-xl border-gray-200 cursor-pointer p-0.5 bg-white">
+                                                    <input type="text" x-model="form.color" class="w-full rounded-xl border-gray-200 text-xs font-mono uppercase focus:border-primary-500 focus:ring-primary-500">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Estado</label>
+                                                <select name="estado" x-model="form.estado" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                                    <option value="Activo">Activo</option>
+                                                    <option value="Inactivo">Inactivo</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Estado</label>
-                                            <select name="estado" x-model="form.estado" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
-                                                <option value="Activo">Activo</option>
-                                                <option value="Inactivo">Inactivo</option>
-                                            </select>
+                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Descripción / Indicaciones</label>
+                                            <textarea name="descripcion" x-model="form.descripcion" rows="2" placeholder="Indicaciones para el paciente o el profesional..." class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500"></textarea>
                                         </div>
                                     </div>
-                                    <div>
-                                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Descripción / Notas</label>
-                                        <textarea name="descripcion" x-model="form.descripcion" rows="2" placeholder="Detalles o especificaciones del tratamiento..." class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500"></textarea>
+                                    <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
+                                        <button type="button" @click="modalOpen = false" class="px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50">Cancelar</button>
+                                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-semibold hover:bg-primary-700 shadow-sm inline-flex items-center gap-2">
+                                            <i class="bi bi-check-lg"></i>
+                                            <span x-text="isEditing ? 'Guardar Cambios' : 'Crear Tipo de Cita'"></span>
+                                        </button>
                                     </div>
-                                </div>
-                                <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
-                                    <button type="button" @click="modalOpen = false" class="px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50">Cancelar</button>
-                                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-semibold hover:bg-primary-700 shadow-sm inline-flex items-center gap-2">
-                                        <i class="bi bi-check-lg"></i>
-                                        <span x-text="isEditing ? 'Guardar Cambios' : 'Crear Tipo de Cita'"></span>
-                                    </button>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </template>
             </div>
 
             <!-- Despachos y Salas Tab -->
@@ -491,64 +493,66 @@ include TEMPLATE_DIR . 'header.php';
                 </div>
 
                 <!-- Modal Despacho -->
-                <div x-show="modalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                        <div x-show="modalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-900/50 backdrop-blur-xs transition-opacity" @click="modalOpen = false"></div>
-                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                        <div x-show="modalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-100">
-                            <form action="<?= PROJECT_ROOT ?>/configuracion/despachos/guardar" method="POST" class="p-6 sm:p-8 space-y-5">
-                                <input type="hidden" name="despacho_id" x-model="form.despacho_id">
-                                <div class="flex items-center justify-between border-b border-gray-100 pb-4">
-                                    <h3 class="text-lg font-bold text-gray-900" x-text="isEditing ? 'Editar Despacho / Sala' : 'Nuevo Despacho / Sala'"></h3>
-                                    <button type="button" @click="modalOpen = false" class="text-gray-400 hover:text-gray-600 p-1 rounded-lg"><i class="bi bi-x-lg"></i></button>
-                                </div>
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nombre de la Sala / Despacho *</label>
-                                        <input type="text" name="nombre" x-model="form.nombre" required placeholder="Ej. Despacho 2 / Cabina Diatermia" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                <template x-teleport="body">
+                    <div x-show="modalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                            <div x-show="modalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-500/75 backdrop-blur-sm transition-opacity" @click="modalOpen = false"></div>
+                            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                            <div x-show="modalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="relative inline-block align-middle bg-white rounded-3xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full border border-gray-100">
+                                <form action="<?= PROJECT_ROOT ?>/configuracion/despachos/guardar" method="POST" class="p-6 sm:p-8 space-y-5">
+                                    <input type="hidden" name="despacho_id" x-model="form.despacho_id">
+                                    <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                                        <h3 class="text-lg font-bold text-gray-900" x-text="isEditing ? 'Editar Despacho / Sala' : 'Nuevo Despacho / Sala'"></h3>
+                                        <button type="button" @click="modalOpen = false" class="text-gray-400 hover:text-gray-600 p-1 rounded-lg"><i class="bi bi-x-lg"></i></button>
                                     </div>
-                                    <div class="grid grid-cols-2 gap-4">
+                                    <div class="space-y-4">
                                         <div>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Ubicación / Planta</label>
-                                            <input type="text" name="ubicacion" x-model="form.ubicacion" placeholder="Ej. Planta 1 - Sala 3" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nombre de la Sala / Despacho *</label>
+                                            <input type="text" name="nombre" x-model="form.nombre" required placeholder="Ej. Despacho 2 / Cabina Diatermia" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
                                         </div>
-                                        <div>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Aforo / Capacidad *</label>
-                                            <input type="number" name="capacidad" x-model="form.capacidad" min="1" required class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Ubicación / Planta</label>
+                                                <input type="text" name="ubicacion" x-model="form.ubicacion" placeholder="Ej. Planta 1 - Sala 3" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Aforo / Capacidad *</label>
+                                                <input type="number" name="capacidad" x-model="form.capacidad" min="1" required class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Color de Distintivo</label>
-                                            <div class="flex items-center gap-2">
-                                                <input type="color" name="color" x-model="form.color" class="h-10 w-14 rounded-xl border-gray-200 cursor-pointer p-0.5 bg-white">
-                                                <input type="text" x-model="form.color" class="w-full rounded-xl border-gray-200 text-xs font-mono uppercase focus:border-primary-500 focus:ring-primary-500">
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Color de Distintivo</label>
+                                                <div class="flex items-center gap-2">
+                                                    <input type="color" name="color" x-model="form.color" class="h-10 w-14 rounded-xl border-gray-200 cursor-pointer p-0.5 bg-white">
+                                                    <input type="text" x-model="form.color" class="w-full rounded-xl border-gray-200 text-xs font-mono uppercase focus:border-primary-500 focus:ring-primary-500">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Estado</label>
+                                                <select name="estado" x-model="form.estado" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                                    <option value="Activo">Activo</option>
+                                                    <option value="Inactivo">Inactivo</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Estado</label>
-                                            <select name="estado" x-model="form.estado" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
-                                                <option value="Activo">Activo</option>
-                                                <option value="Inactivo">Inactivo</option>
-                                            </select>
+                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Equipamiento y Notas</label>
+                                            <textarea name="equipamiento" x-model="form.equipamiento" rows="2" placeholder="Camillas, ecógrafo, tecarterapia, etc..." class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500"></textarea>
                                         </div>
                                     </div>
-                                    <div>
-                                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Equipamiento y Notas</label>
-                                        <textarea name="equipamiento" x-model="form.equipamiento" rows="2" placeholder="Camillas, ecógrafo, tecarterapia, etc..." class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500"></textarea>
+                                    <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
+                                        <button type="button" @click="modalOpen = false" class="px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50">Cancelar</button>
+                                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-semibold hover:bg-primary-700 shadow-sm inline-flex items-center gap-2">
+                                            <i class="bi bi-check-lg"></i>
+                                            <span x-text="isEditing ? 'Guardar Cambios' : 'Crear Despacho'"></span>
+                                        </button>
                                     </div>
-                                </div>
-                                <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
-                                    <button type="button" @click="modalOpen = false" class="px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50">Cancelar</button>
-                                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-semibold hover:bg-primary-700 shadow-sm inline-flex items-center gap-2">
-                                        <i class="bi bi-check-lg"></i>
-                                        <span x-text="isEditing ? 'Guardar Cambios' : 'Crear Despacho'"></span>
-                                    </button>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </template>
             </div>
 
             <!-- Códigos de Descuento Tab -->
@@ -700,89 +704,91 @@ include TEMPLATE_DIR . 'header.php';
                 </div>
 
                 <!-- Modal Descuento -->
-                <div x-show="modalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                        <div x-show="modalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-900/50 backdrop-blur-xs transition-opacity" @click="modalOpen = false"></div>
-                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                        <div x-show="modalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-100">
-                            <form action="<?= PROJECT_ROOT ?>/configuracion/descuentos/guardar" method="POST" class="p-6 sm:p-8 space-y-5">
-                                <input type="hidden" name="codigo_id" x-model="form.codigo_id">
-                                <div class="flex items-center justify-between border-b border-gray-100 pb-4">
-                                    <h3 class="text-lg font-bold text-gray-900" x-text="isEditing ? 'Editar Cupón de Descuento' : 'Nuevo Cupón de Descuento'"></h3>
-                                    <button type="button" @click="modalOpen = false" class="text-gray-400 hover:text-gray-600 p-1 rounded-lg"><i class="bi bi-x-lg"></i></button>
-                                </div>
-                                <div class="space-y-4">
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Código Promocional *</label>
-                                            <input type="text" name="codigo" x-model="form.codigo" @input="form.codigo = form.codigo.toUpperCase().replace(/[^A-Z0-9_-]/g, '')" required placeholder="EJ: BIENVENIDA20" class="w-full rounded-xl border-gray-200 text-sm font-mono uppercase font-bold focus:border-primary-500 focus:ring-primary-500">
-                                        </div>
-                                        <div>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Tipo de Descuento *</label>
-                                            <select name="tipo_descuento" x-model="form.tipo_descuento" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
-                                                <option value="porcentaje">Porcentaje (%)</option>
-                                                <option value="fijo">Importe Fijo (€)</option>
-                                            </select>
-                                        </div>
+                <template x-teleport="body">
+                    <div x-show="modalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                            <div x-show="modalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-500/75 backdrop-blur-sm transition-opacity" @click="modalOpen = false"></div>
+                            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                            <div x-show="modalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="relative inline-block align-middle bg-white rounded-3xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full border border-gray-100">
+                                <form action="<?= PROJECT_ROOT ?>/configuracion/descuentos/guardar" method="POST" class="p-6 sm:p-8 space-y-5">
+                                    <input type="hidden" name="codigo_id" x-model="form.codigo_id">
+                                    <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                                        <h3 class="text-lg font-bold text-gray-900" x-text="isEditing ? 'Editar Cupón de Descuento' : 'Nuevo Cupón de Descuento'"></h3>
+                                        <button type="button" @click="modalOpen = false" class="text-gray-400 hover:text-gray-600 p-1 rounded-lg"><i class="bi bi-x-lg"></i></button>
                                     </div>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Valor *</label>
-                                            <div class="relative">
-                                                <input type="number" name="valor" x-model="form.valor" min="0.01" step="0.01" required class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
-                                                <span class="absolute right-3 top-2.5 text-xs text-gray-400 font-bold" x-text="form.tipo_descuento === 'porcentaje' ? '%' : '€'"></span>
+                                    <div class="space-y-4">
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Código Promocional *</label>
+                                                <input type="text" name="codigo" x-model="form.codigo" @input="form.codigo = form.codigo.toUpperCase().replace(/[^A-Z0-9_-]/g, '')" required placeholder="EJ: BIENVENIDA20" class="w-full rounded-xl border-gray-200 text-sm font-mono uppercase font-bold focus:border-primary-500 focus:ring-primary-500">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Tipo de Descuento *</label>
+                                                <select name="tipo_descuento" x-model="form.tipo_descuento" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                                    <option value="porcentaje">Porcentaje (%)</option>
+                                                    <option value="fijo">Importe Fijo (€)</option>
+                                                </select>
                                             </div>
                                         </div>
-                                        <div>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Gasto Mínimo (€)</label>
-                                            <input type="number" name="monto_minimo" x-model="form.monto_minimo" min="0" step="0.50" placeholder="0.00" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Valor *</label>
+                                                <div class="relative">
+                                                    <input type="number" name="valor" x-model="form.valor" min="0.01" step="0.01" required class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                                    <span class="absolute right-3 top-2.5 text-xs text-gray-400 font-bold" x-text="form.tipo_descuento === 'porcentaje' ? '%' : '€'"></span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Gasto Mínimo (€)</label>
+                                                <input type="number" name="monto_minimo" x-model="form.monto_minimo" min="0" step="0.50" placeholder="0.00" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                            </div>
+                                        </div>
+                                        <div class="p-3 bg-gray-50 rounded-xl space-y-2 border border-gray-100">
+                                            <label class="inline-flex items-center cursor-pointer gap-2.5">
+                                                <input type="checkbox" name="usos_ilimitados" value="1" x-model="form.usos_ilimitados" class="rounded text-primary-600 focus:ring-primary-500 h-4 w-4">
+                                                <span class="text-xs font-semibold text-gray-800">Usos Ilimitados (Sin tope de canjes)</span>
+                                            </label>
+                                            <div x-show="!form.usos_ilimitados" x-transition>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Número Máximo de Usos</label>
+                                                <input type="number" name="usos_maximos" x-model="form.usos_maximos" min="1" placeholder="Ej: 50" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 bg-white">
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Válido Desde</label>
+                                                <input type="date" name="fecha_inicio" x-model="form.fecha_inicio" class="w-full rounded-xl border-gray-200 text-xs focus:border-primary-500 focus:ring-primary-500">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Válido Hasta</label>
+                                                <input type="date" name="fecha_fin" x-model="form.fecha_fin" class="w-full rounded-xl border-gray-200 text-xs focus:border-primary-500 focus:ring-primary-500">
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div class="sm:col-span-2">
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nombre / Campaña</label>
+                                                <input type="text" name="descripcion" x-model="form.descripcion" placeholder="Ej. Campaña Black Friday 2026" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Estado</label>
+                                                <select name="estado" x-model="form.estado" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
+                                                    <option value="Activo">Activo</option>
+                                                    <option value="Inactivo">Inactivo</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="p-3 bg-gray-50 rounded-xl space-y-2 border border-gray-100">
-                                        <label class="inline-flex items-center cursor-pointer gap-2.5">
-                                            <input type="checkbox" name="usos_ilimitados" value="1" x-model="form.usos_ilimitados" class="rounded text-primary-600 focus:ring-primary-500 h-4 w-4">
-                                            <span class="text-xs font-semibold text-gray-800">Usos Ilimitados (Sin tope de canjes)</span>
-                                        </label>
-                                        <div x-show="!form.usos_ilimitados" x-transition>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Número Máximo de Usos</label>
-                                            <input type="number" name="usos_maximos" x-model="form.usos_maximos" min="1" placeholder="Ej: 50" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 bg-white">
-                                        </div>
+                                    <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
+                                        <button type="button" @click="modalOpen = false" class="px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50">Cancelar</button>
+                                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-semibold hover:bg-primary-700 shadow-sm inline-flex items-center gap-2">
+                                            <i class="bi bi-check-lg"></i>
+                                            <span x-text="isEditing ? 'Guardar Cambios' : 'Crear Cupón'"></span>
+                                        </button>
                                     </div>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Válido Desde</label>
-                                            <input type="date" name="fecha_inicio" x-model="form.fecha_inicio" class="w-full rounded-xl border-gray-200 text-xs focus:border-primary-500 focus:ring-primary-500">
-                                        </div>
-                                        <div>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Válido Hasta</label>
-                                            <input type="date" name="fecha_fin" x-model="form.fecha_fin" class="w-full rounded-xl border-gray-200 text-xs focus:border-primary-500 focus:ring-primary-500">
-                                        </div>
-                                    </div>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div class="sm:col-span-2">
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nombre / Campaña</label>
-                                            <input type="text" name="descripcion" x-model="form.descripcion" placeholder="Ej. Campaña Black Friday 2026" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
-                                        </div>
-                                        <div>
-                                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Estado</label>
-                                            <select name="estado" x-model="form.estado" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500">
-                                                <option value="Activo">Activo</option>
-                                                <option value="Inactivo">Inactivo</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
-                                    <button type="button" @click="modalOpen = false" class="px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50">Cancelar</button>
-                                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-semibold hover:bg-primary-700 shadow-sm inline-flex items-center gap-2">
-                                        <i class="bi bi-check-lg"></i>
-                                        <span x-text="isEditing ? 'Guardar Cambios' : 'Crear Cupón'"></span>
-                                    </button>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </template>
             </div>
 
             <!-- Bonos Tab -->

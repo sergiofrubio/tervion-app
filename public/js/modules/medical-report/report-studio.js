@@ -3,82 +3,23 @@
  */
 
 export function initReportStudio(options = {}) {
-    // 1. INICIALIZACIÓN DE TINYMCE
-    function initWriterEditors() {
-        if (typeof tinymce === 'undefined') {
-            setTimeout(initWriterEditors, 50);
-            return;
-        }
-
-        const editorConfig = {
-            license_key: 'gpl',
-            menubar: 'edit insert format table',
-            plugins: [
-                'advlist', 'autolink', 'lists', 'link', 'charmap', 'table', 
-                'searchreplace', 'visualblocks', 'code', 'insertdatetime', 'wordcount'
-            ],
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table link | removeformat',
-            toolbar_mode: 'sliding',
-            content_style: 'body { font-family: Inter, Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.6; color: #1e293b; padding: 6px; }',
-            branding: false,
-            promotion: false,
-            statusbar: false,
-            height: 160
-        };
-
-        if (document.getElementById('diag_editor')) {
-            tinymce.init({
-                ...editorConfig,
-                selector: '#diag_editor',
-                placeholder: 'Redacta aquí la anamnesis, palpación, balance articular y juicio diagnóstico...'
-            });
-        }
-
-        if (document.getElementById('trat_editor')) {
-            tinymce.init({
-                ...editorConfig,
-                selector: '#trat_editor',
-                placeholder: 'Terapia manual aplicada, vendajes, electroterapia, ejercicios prescritos y pauta...'
-            });
-        }
-
-        if (document.getElementById('obs_editor')) {
-            tinymce.init({
-                ...editorConfig,
-                selector: '#obs_editor',
-                height: 120,
-                placeholder: 'Anotaciones de control interno, próxima revisión recomendada, precauciones...'
-            });
-        }
-    }
-
-    initWriterEditors();
-
-    // 2. SNIPPETS CLÍNICOS
+    // 1. SNIPPETS CLÍNICOS DIRECTOS SOBRE TEXTAREAS
     document.querySelectorAll('.snippet-action-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const targetId = this.dataset.target;
             const textToAppend = this.dataset.text;
-            const editor = typeof tinymce !== 'undefined' ? tinymce.get(targetId) : null;
-
-            if (editor) {
-                const currentContent = editor.getContent({ format: 'text' }).trim();
-                if (currentContent.length > 0) {
-                    editor.insertContent('<p>' + textToAppend + '</p>');
-                } else {
-                    editor.setContent('<p>' + textToAppend + '</p>');
-                }
-                editor.focus();
-            } else {
-                const textarea = document.getElementById(targetId);
-                if (textarea) {
-                    textarea.value = (textarea.value ? textarea.value + '\n\n' : '') + textToAppend;
-                }
+            const textarea = document.getElementById(targetId);
+            if (textarea) {
+                const currentVal = textarea.value.trim();
+                textarea.value = currentVal ? `${currentVal}\n\n${textToAppend}` : textToAppend;
+                textarea.focus();
+                // Desplazar el cursor al final
+                textarea.scrollTop = textarea.scrollHeight;
             }
         });
     });
 
-    // 3. ZOOM
+    // 2. ZOOM
     const folioWrapper = document.getElementById('folioReportWrapper');
     const zoomText = document.getElementById('zoomLevelText');
     let currentZoom = 1.0;
@@ -105,12 +46,8 @@ export function initReportStudio(options = {}) {
         }
     });
 
-    // 4. DESCARGA PDF
+    // 3. DESCARGA PDF
     document.getElementById('btnDownloadReportPdf')?.addEventListener('click', function() {
-        if (typeof tinymce !== 'undefined') {
-            tinymce.triggerSave();
-        }
-
         const element = document.getElementById('printableReportFolioSheet');
         if (!element || typeof html2pdf === 'undefined') {
             if (options.pdfFallbackUrl) {
@@ -142,34 +79,27 @@ export function initReportStudio(options = {}) {
         });
     });
 
-    // 5. IMPRESIÓN DIRECTA
+    // 4. IMPRESIÓN DIRECTA
     document.getElementById('btnPrintReport')?.addEventListener('click', function() {
-        if (typeof tinymce !== 'undefined') {
-            tinymce.triggerSave();
-        }
         window.print();
     });
 
-    // 6. GUARDADO FORMULARIO
+    // 5. GUARDADO FORMULARIO
     document.getElementById('btnSubmitReportStudio')?.addEventListener('click', function() {
-        if (typeof tinymce !== 'undefined') {
-            tinymce.triggerSave();
-        }
-
         const motivoInput = document.getElementById('folio_motivo_consulta');
+        const diagTextarea = document.getElementById('diag_editor');
+        const tratTextarea = document.getElementById('trat_editor');
+        const obsTextarea = document.getElementById('obs_editor');
+
         const hiddenMotivo = document.getElementById('hidden_motivo_consulta');
         const hiddenDiag = document.getElementById('hidden_diagnostico');
         const hiddenTrat = document.getElementById('hidden_tratamiento');
         const hiddenObs = document.getElementById('hidden_observaciones');
 
-        const diagEditor = typeof tinymce !== 'undefined' ? tinymce.get('diag_editor') : null;
-        const tratEditor = typeof tinymce !== 'undefined' ? tinymce.get('trat_editor') : null;
-        const obsEditor = typeof tinymce !== 'undefined' ? tinymce.get('obs_editor') : null;
-
         const motivoVal = (motivoInput?.value || '').trim();
-        const diagVal = diagEditor ? diagEditor.getContent({ format: 'text' }).trim() : (document.getElementById('diag_editor')?.value || '').trim();
-        const tratVal = tratEditor ? tratEditor.getContent({ format: 'text' }).trim() : (document.getElementById('trat_editor')?.value || '').trim();
-        const obsVal = obsEditor ? obsEditor.getContent({ format: 'text' }).trim() : (document.getElementById('obs_editor')?.value || '').trim();
+        const diagVal = (diagTextarea?.value || '').trim();
+        const tratVal = (tratTextarea?.value || '').trim();
+        const obsVal = (obsTextarea?.value || '').trim();
 
         if (!motivoVal) {
             alert('Por favor, indica el motivo de la consulta.');
@@ -179,20 +109,20 @@ export function initReportStudio(options = {}) {
 
         if (!diagVal) {
             alert('Por favor, completa el diagnóstico o evaluación clínica.');
-            if (diagEditor) diagEditor.focus();
+            diagTextarea?.focus();
             return;
         }
 
         if (!tratVal) {
             alert('Por favor, completa el tratamiento realizado o prescripción.');
-            if (tratEditor) tratEditor.focus();
+            tratTextarea?.focus();
             return;
         }
 
         if (hiddenMotivo) hiddenMotivo.value = motivoVal;
-        if (hiddenDiag) hiddenDiag.value = diagEditor ? diagEditor.getContent() : diagVal;
-        if (hiddenTrat) hiddenTrat.value = tratEditor ? tratEditor.getContent() : tratVal;
-        if (hiddenObs) hiddenObs.value = obsEditor ? obsEditor.getContent() : obsVal;
+        if (hiddenDiag) hiddenDiag.value = diagVal;
+        if (hiddenTrat) hiddenTrat.value = tratVal;
+        if (hiddenObs) hiddenObs.value = obsVal;
 
         const form = document.getElementById('formMedicalReportFolio');
         if (form) form.submit();

@@ -70,18 +70,6 @@ include TEMPLATE_DIR . 'header.php';
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
     }
 
-    /* Personalización de la barra TinyMCE compacta tipo Writer */
-    .tox-tinymce {
-        border: 1px solid #cbd5e1 !important;
-        border-radius: 8px !important;
-        box-shadow: none !important;
-    }
-
-    .tox-editor-header {
-        background-color: #f8fafc !important;
-        border-bottom: 1px solid #e2e8f0 !important;
-    }
-
     /* Scrollbar personalizada para el visor */
     .custom-scrollbar::-webkit-scrollbar {
         width: 6px;
@@ -142,8 +130,7 @@ include TEMPLATE_DIR . 'header.php';
     }
 </style>
 
-<!-- Librería Open Source TinyMCE y html2pdf para generación de informes oficiales -->
-<script src="<?= PROJECT_ROOT ?>/public/vendor/tinymce/tinymce.min.js"></script>
+<!-- Librería html2pdf para generación de informes oficiales -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <div class="h-full w-full flex flex-col bg-white text-slate-800 overflow-hidden font-sans select-none" id="medical-report-studio">
@@ -349,7 +336,7 @@ include TEMPLATE_DIR . 'header.php';
                                 <i class="bi bi-clipboard-pulse text-primary-600"></i>
                                 1. Diagnóstico y Evaluación Clínica <span class="text-rose-500">*</span>
                             </label>
-                            <span class="text-[10px] text-slate-400 font-medium">Redacción enriquecida</span>
+                            <span class="text-[10px] text-slate-400 font-medium">Descripción clínica</span>
                         </div>
                         <textarea id="diag_editor" class="folio-editor-area w-full" rows="5" placeholder="Descripción detallada de la anamnesis, exploración física, balance articular, test ortopédicos y juicio diagnóstico..."></textarea>
                     </div>

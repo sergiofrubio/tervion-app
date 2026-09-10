@@ -193,6 +193,24 @@ export function initAppointmentForm(options = {}) {
                         btn.classList.remove('border-gray-100', 'text-gray-700');
                         btn.classList.add('border-primary-500', 'bg-primary-50', 'text-primary-600');
                         if (fechaHoraHidden) fechaHoraHidden.value = `${dateStr} ${slot}:00`;
+
+                        const fechaSesionInput = document.getElementById('fecha_sesion');
+                        const horaInicioInput = document.getElementById('hora_inicio');
+                        const horaFinInput = document.getElementById('hora_fin');
+
+                        if (fechaSesionInput) fechaSesionInput.value = dateStr;
+                        if (horaInicioInput) horaInicioInput.value = slot;
+
+                        if (horaFinInput && tipoCitaSelect) {
+                            const selectedOption = tipoCitaSelect.options[tipoCitaSelect.selectedIndex];
+                            const duracion = selectedOption ? parseInt(selectedOption.dataset.duracion || 60, 10) : 60;
+                            const [h, m] = slot.split(':').map(Number);
+                            const endDate = new Date();
+                            endDate.setHours(h, m + duracion, 0, 0);
+                            const endH = String(endDate.getHours()).padStart(2, '0');
+                            const endM = String(endDate.getMinutes()).padStart(2, '0');
+                            horaFinInput.value = `${endH}:${endM}`;
+                        }
                     };
 
                     btn.addEventListener('click', selectHour);
@@ -211,6 +229,25 @@ export function initAppointmentForm(options = {}) {
 
     if (tipoCitaSelect) {
         tipoCitaSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            if (selectedOption) {
+                const precioInput = document.getElementById('precio_sesion');
+                if (precioInput && selectedOption.dataset.precio) {
+                    precioInput.value = parseFloat(selectedOption.dataset.precio).toFixed(2);
+                }
+                const horaInicioInput = document.getElementById('hora_inicio');
+                const horaFinInput = document.getElementById('hora_fin');
+                if (horaInicioInput && horaInicioInput.value && horaFinInput) {
+                    const duracion = parseInt(selectedOption.dataset.duracion || 60, 10);
+                    const [h, m] = horaInicioInput.value.split(':').map(Number);
+                    const endDate = new Date();
+                    endDate.setHours(h, m + duracion, 0, 0);
+                    const endH = String(endDate.getHours()).padStart(2, '0');
+                    const endM = String(endDate.getMinutes()).padStart(2, '0');
+                    horaFinInput.value = `${endH}:${endM}`;
+                }
+            }
+
             if (hiddenFisioInput && hiddenFisioInput.value) {
                 loadAvailableDays(hiddenFisioInput.value);
             }

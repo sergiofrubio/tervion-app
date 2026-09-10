@@ -61,7 +61,7 @@ class RegisterController extends Controller
         $telefono_contacto = trim($_POST['telefono_contacto'] ?? '');
         $email_contacto = trim($_POST['email_contacto'] ?? '');
         $sitio_web = trim($_POST['sitio_web'] ?? '');
-        $direccion_calle = trim($_POST['direccion_calle'] ?? '');
+        $direccion = trim($_POST['direccion'] ?? '');
         $ciudad = trim($_POST['ciudad'] ?? '');
         $provincia_estado = trim($_POST['provincia_estado'] ?? '');
         $codigo_postal = trim($_POST['codigo_postal'] ?? '');
@@ -93,7 +93,7 @@ class RegisterController extends Controller
             return;
         }
 
-        if (empty($nombre_comercial) || empty($direccion_calle) || empty($ciudad) || empty($telefono_contacto)) {
+        if (empty($nombre_comercial) || empty($direccion) || empty($ciudad) || empty($telefono_contacto)) {
             $this->view('landing/registro', ['error' => 'Por favor, rellene todos los campos obligatorios de la clínica.', 'data' => $_POST]);
             return;
         }
@@ -109,7 +109,7 @@ class RegisterController extends Controller
 
             // Verificar si el correo de la clínica ya está registrado
             if (!empty($email_contacto)) {
-                $stmt = $db->prepare("SELECT id_clinica FROM clinicas WHERE email_contacto = :email LIMIT 1");
+                $stmt = $db->prepare("SELECT clinica_id FROM clinicas WHERE email_contacto = :email LIMIT 1");
                 $stmt->execute([':email' => $email_contacto]);
                 if ($stmt->fetch()) {
                     $this->view('landing/registro', ['error' => 'El correo electrónico de la clínica ya se encuentra registrado.', 'data' => $_POST]);
@@ -148,12 +148,12 @@ class RegisterController extends Controller
             ]);
 
             // 3. Insertar la clínica
-            $stmtClinica = $db->prepare("INSERT INTO clinicas (nombre_comercial, razon_social, direccion_calle, ciudad, provincia_estado, codigo_postal, pais, telefono_contacto, email_contacto, sitio_web, activo) 
-                                         VALUES (:nombre_comercial, :razon_social, :direccion_calle, :ciudad, :provincia_estado, :codigo_postal, :pais, :telefono_contacto, :email_contacto, :sitio_web, 1)");
+            $stmtClinica = $db->prepare("INSERT INTO clinicas (nombre_comercial, razon_social, direccion, ciudad, provincia_estado, codigo_postal, pais, telefono_contacto, email_contacto, sitio_web, activo) 
+                                         VALUES (:nombre_comercial, :razon_social, :direccion, :ciudad, :provincia_estado, :codigo_postal, :pais, :telefono_contacto, :email_contacto, :sitio_web, 1)");
             $stmtClinica->execute([
                 ':nombre_comercial' => $nombre_comercial,
                 ':razon_social' => $razon_social ?: null,
-                ':direccion_calle' => $direccion_calle,
+                ':direccion' => $direccion,
                 ':ciudad' => $ciudad,
                 ':provincia_estado' => $provincia_estado ?: null,
                 ':codigo_postal' => $codigo_postal ?: null,

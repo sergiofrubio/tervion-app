@@ -23,10 +23,10 @@ include TEMPLATE_DIR . 'header.php';
 
         <div class="grid grid-cols-1 gap-6">
             <div>
-                <label for="fisioterapeuta_id" class="block text-sm font-semibold text-gray-700 mb-2">Fisioterapeuta</label>
-                <select name="fisioterapeuta_id" id="fisioterapeuta_id" required class="block w-full rounded-xl border-gray-200 bg-gray-50/50 focus:border-primary-500 focus:ring-primary-500 transition-all sm:text-sm">
+                <label for="terapeuta_id" class="block text-sm font-semibold text-gray-700 mb-2">Fisioterapeuta</label>
+                <select name="terapeuta_id" id="terapeuta_id" required class="block w-full rounded-xl border-gray-200 bg-gray-50/50 focus:border-primary-500 focus:ring-primary-500 transition-all sm:text-sm">
                     <?php foreach ($fisios as $fisio): ?>
-                        <option value="<?= $fisio['usuario_id'] ?>" <?= ($h['fisioterapeuta_id'] ?? '') == $fisio['usuario_id'] ? 'selected' : '' ?>>
+                        <option value="<?= $fisio['usuario_id'] ?>" <?= ($h['terapeuta_id'] ?? '') == $fisio['usuario_id'] ? 'selected' : '' ?>>
                             <?= $fisio['nombre'] . ' ' . $fisio['apellidos'] ?>
                         </option>
                     <?php endforeach; ?>
@@ -36,9 +36,9 @@ include TEMPLATE_DIR . 'header.php';
             <div>
                 <label for="dia_semana" class="block text-sm font-semibold text-gray-700 mb-2">Día de la Semana</label>
                 <select name="dia_semana" id="dia_semana" required class="block w-full rounded-xl border-gray-200 bg-gray-50/50 focus:border-primary-500 focus:ring-primary-500 transition-all sm:text-sm">
-                    <?php 
+                    <?php
                     $dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-                    foreach ($dias as $dia): 
+                    foreach ($dias as $dia):
                     ?>
                         <option value="<?= $dia ?>" <?= ($h['dia_semana'] ?? '') === $dia ? 'selected' : '' ?>><?= $dia ?></option>
                     <?php endforeach; ?>
@@ -48,13 +48,13 @@ include TEMPLATE_DIR . 'header.php';
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label for="hora_inicio" class="block text-sm font-semibold text-gray-700 mb-2">Hora Inicio</label>
-                    <input type="time" name="hora_inicio" id="hora_inicio" required 
+                    <input type="time" name="hora_inicio" id="hora_inicio" required
                         value="<?= isset($h['hora_inicio']) ? date('H:i', strtotime($h['hora_inicio'])) : '' ?>"
                         class="block w-full rounded-xl border-gray-200 bg-gray-50/50 focus:border-primary-500 focus:ring-primary-500 transition-all sm:text-sm">
                 </div>
                 <div>
                     <label for="hora_fin" class="block text-sm font-semibold text-gray-700 mb-2">Hora Fin</label>
-                    <input type="time" name="hora_fin" id="hora_fin" required 
+                    <input type="time" name="hora_fin" id="hora_fin" required
                         value="<?= isset($h['hora_fin']) ? date('H:i', strtotime($h['hora_fin'])) : '' ?>"
                         class="block w-full rounded-xl border-gray-200 bg-gray-50/50 focus:border-primary-500 focus:ring-primary-500 transition-all sm:text-sm">
                 </div>

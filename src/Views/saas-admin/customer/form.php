@@ -77,7 +77,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
                 <div class="sm:col-span-2">
                     <label class="block text-xs font-semibold text-gray-700 mb-1">Dirección Calle</label>
-                    <input type="text" name="direccion_calle" placeholder="Ej: Calle Gran Vía, 42" class="w-full px-3.5 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:outline-none">
+                    <input type="text" name="direccion" placeholder="Ej: Calle Gran Vía, 42" class="w-full px-3.5 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:outline-none">
                 </div>
 
                 <div>

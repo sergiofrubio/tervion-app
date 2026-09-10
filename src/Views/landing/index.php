@@ -112,7 +112,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                 <!-- Action Button -->
                 <div class="hidden md:flex items-center gap-4">
                     <a href="<?= PROJECT_ROOT ?>/login" class="px-6 py-2.5 rounded-full text-xs font-bold tracking-wide uppercase bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/25 transition-all transform hover:-translate-y-0.5">
-                        Probar 14 Días Gratis
+                        Iniciar sesión
                     </a>
                 </div>
 

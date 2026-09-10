@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Core\DataBase;
@@ -152,15 +153,15 @@ class SaasAdmin
             $cuentaId = (int)$this->db->lastInsertId();
 
             // 2. Insertar clínica principal
-            $sqlClinic = "INSERT INTO clinicas (cuenta_id, nombre_comercial, razon_social, nif_cif, direccion_calle, ciudad, provincia_estado, codigo_postal, pais, telefono_contacto, email_contacto) 
-                          VALUES (:cuenta_id, :nombre_comercial, :razon_social, :nif_cif, :direccion_calle, :ciudad, :provincia_estado, :codigo_postal, :pais, :telefono_contacto, :email_contacto)";
+            $sqlClinic = "INSERT INTO clinicas (cuenta_id, nombre_comercial, razon_social, nif_cif, direccion, ciudad, provincia_estado, codigo_postal, pais, telefono_contacto, email_contacto) 
+                          VALUES (:cuenta_id, :nombre_comercial, :razon_social, :nif_cif, :direccion, :ciudad, :provincia_estado, :codigo_postal, :pais, :telefono_contacto, :email_contacto)";
             $stmtClinic = $this->db->prepare($sqlClinic);
             $stmtClinic->execute([
                 ':cuenta_id' => $cuentaId,
                 ':nombre_comercial' => $clinicData['nombre_comercial'],
                 ':razon_social' => $tenantData['nombre_empresa'],
                 ':nif_cif' => $tenantData['nif_cif'],
-                ':direccion_calle' => $clinicData['direccion_calle'] ?? 'Dirección por definir',
+                ':direccion' => $clinicData['direccion'] ?? 'Dirección por definir',
                 ':ciudad' => $clinicData['ciudad'] ?? 'Ciudad',
                 ':provincia_estado' => $clinicData['provincia'] ?? 'Provincia',
                 ':codigo_postal' => $clinicData['cp'] ?? '28001',
@@ -187,7 +188,6 @@ class SaasAdmin
 
             $this->db->commit();
             return $cuentaId;
-
         } catch (Exception $e) {
             $this->db->rollBack();
             throw $e;
@@ -271,7 +271,7 @@ class SaasAdmin
      */
     public function getSaasInvoiceById($id)
     {
-        $query = "SELECT fs.*, cc.nombre_empresa, cc.nif_cif, cc.email_admin, cl.nombre_comercial, cl.direccion_calle, cl.ciudad, cl.provincia_estado, cl.codigo_postal
+        $query = "SELECT fs.*, cc.nombre_empresa, cc.nif_cif, cc.email_admin, cl.nombre_comercial, cl.direccion, cl.ciudad, cl.provincia_estado, cl.codigo_postal
                   FROM facturas_saas fs
                   JOIN cuentas_clientes cc ON fs.cuenta_id = cc.cuenta_id
                   LEFT JOIN clinicas cl ON cl.cuenta_id = cc.cuenta_id
@@ -299,7 +299,7 @@ class SaasAdmin
 
         $sql = "INSERT INTO facturas_saas (cuenta_id, serie, numero, fecha_emision, fecha_vencimiento, concepto, plan_suscripcion, base_imponible, tipo_iva, cuota_iva, total, estado, metodo_pago, notas) 
                 VALUES (:cuenta_id, 'SAAS', :numero, :fecha_emision, :fecha_vencimiento, :concepto, :plan_suscripcion, :base_imponible, :tipo_iva, :cuota_iva, :total, :estado, :metodo_pago, :notas)";
-        
+
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
             ':cuenta_id' => $data['cuenta_id'],

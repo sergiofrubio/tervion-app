@@ -6,7 +6,7 @@ include TEMPLATE_DIR . 'header.php';
 // Filtros
 $filtro_busqueda = isset($_GET['busqueda']) ? trim($_GET['busqueda']) : '';
 $filtro_estado = isset($_GET['estado']) ? trim($_GET['estado']) : '';
-$filtro_fisioterapeuta = isset($_GET['fisioterapeuta_id']) ? trim($_GET['fisioterapeuta_id']) : '';
+$filtro_fisioterapeuta = isset($_GET['terapeuta_id']) ? trim($_GET['terapeuta_id']) : '';
 $filtro_fecha = isset($_GET['fecha']) ? trim($_GET['fecha']) : '';
 
 // Extraer fisioterapeutas únicos si no vinieran definidos
@@ -14,10 +14,10 @@ if (empty($fisioterapeutas) && !empty($appointments)) {
     $fisioterapeutas = [];
     $seen = [];
     foreach ($appointments as $cita) {
-        if (!empty($cita['fisioterapeuta_id']) && !isset($seen[$cita['fisioterapeuta_id']])) {
-            $seen[$cita['fisioterapeuta_id']] = true;
+        if (!empty($cita['terapeuta_id']) && !isset($seen[$cita['terapeuta_id']])) {
+            $seen[$cita['terapeuta_id']] = true;
             $fisioterapeutas[] = [
-                'usuario_id' => $cita['fisioterapeuta_id'],
+                'usuario_id' => $cita['terapeuta_id'],
                 'nombre' => $cita['fisioterapeuta_nombre'] ?? '',
                 'apellidos' => $cita['fisioterapeuta_apellidos'] ?? ''
             ];
@@ -55,7 +55,7 @@ if (!empty($appointments)) {
         }
 
         // Filtro por Fisioterapeuta
-        if ($filtro_fisioterapeuta !== '' && isset($cita['fisioterapeuta_id']) && (string)$cita['fisioterapeuta_id'] !== (string)$filtro_fisioterapeuta) {
+        if ($filtro_fisioterapeuta !== '' && isset($cita['terapeuta_id']) && (string)$cita['terapeuta_id'] !== (string)$filtro_fisioterapeuta) {
             $match = false;
         }
 
@@ -89,11 +89,12 @@ $iniciar = ($pagina - 1) * $articulos_x_pagina;
 $citasPaginadas = array_slice($citas_filtradas, $iniciar, $articulos_x_pagina);
 
 // Helper para mantener parámetros de consulta en paginación
-function getPaginationQuery($page, $busqueda, $estado, $fisioterapeuta, $fecha) {
+function getPaginationQuery($page, $busqueda, $estado, $fisioterapeuta, $fecha)
+{
     $params = ['pagina' => $page];
     if ($busqueda !== '') $params['busqueda'] = $busqueda;
     if ($estado !== '') $params['estado'] = $estado;
-    if ($fisioterapeuta !== '') $params['fisioterapeuta_id'] = $fisioterapeuta;
+    if ($fisioterapeuta !== '') $params['terapeuta_id'] = $fisioterapeuta;
     if ($fecha !== '') $params['fecha'] = $fecha;
     return '?' . http_build_query($params);
 }
@@ -164,7 +165,7 @@ $estadoBadgeClasses = [
                     </div>
 
                     <!-- Fisioterapeuta Filter -->
-                    <select name="fisioterapeuta_id" onchange="this.form.submit()" class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer shadow-sm">
+                    <select name="terapeuta_id" onchange="this.form.submit()" class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer shadow-sm">
                         <option value="" <?= $filtro_fisioterapeuta === '' ? 'selected' : '' ?>>Todos los terapeutas</option>
                         <?php if (!empty($fisioterapeutas)): ?>
                             <?php foreach ($fisioterapeutas as $fisio): ?>
@@ -210,7 +211,7 @@ $estadoBadgeClasses = [
             <table class="w-full text-left text-xs">
                 <thead>
                     <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
-                        <th class="py-3 px-4 font-semibold">ID</th>
+                        <!-- <th class="py-3 px-4 font-semibold">ID</th> -->
                         <th class="py-3 px-4 font-semibold">Fecha y Hora</th>
                         <th class="py-3 px-4 font-semibold">Paciente</th>
                         <th class="py-3 px-4 font-semibold">Fisioterapeuta</th>
@@ -221,7 +222,7 @@ $estadoBadgeClasses = [
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     <?php if (!empty($citasPaginadas)) : ?>
-                        <?php foreach ($citasPaginadas as $cita) : 
+                        <?php foreach ($citasPaginadas as $cita) :
                             $timestamp = strtotime($cita['fecha_hora']);
                             $fechaFormateada = date('d/m/Y', $timestamp);
                             $horaFormateada = date('H:i', $timestamp);
@@ -234,7 +235,7 @@ $estadoBadgeClasses = [
                             if ($nombreFisio === '') $nombreFisio = 'No asignado';
                         ?>
                             <tr class="hover:bg-gray-50/80 transition-colors">
-                                <td class="py-4 px-4 font-bold text-gray-400">#<?= htmlspecialchars($cita['cita_id']) ?></td>
+                                <!-- <td class="py-4 px-4 font-bold text-gray-400">#<?= htmlspecialchars($cita['cita_id']) ?></td> -->
                                 <td class="py-4 px-4 font-medium text-gray-900 whitespace-nowrap">
                                     <div class="flex items-center gap-2">
                                         <div class="h-8 w-8 rounded-xl bg-blue-50 text-primary-600 flex items-center justify-center font-bold text-xs shrink-0">

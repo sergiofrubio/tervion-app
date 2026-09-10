@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Core\Controller;
@@ -15,7 +16,7 @@ class SettingController extends Controller
         $settingModel = $this->model('Setting');
         $usuario_id = $_SESSION['usuario_id'];
         $email_admin = $_SESSION['email'] ?? '';
-        
+
         $data = [
             'horarios' => $settingModel->getHorariosFisios(),
             'ausencias' => $settingModel->getAusenciasFisios(),
@@ -27,7 +28,7 @@ class SettingController extends Controller
             'despachos' => $settingModel->getDespachos(),
             'descuentos' => $settingModel->getCodigosDescuento()
         ];
-        
+
         $this->view('setting/index', $data);
     }
 
@@ -44,7 +45,7 @@ class SettingController extends Controller
         $settingModel = $this->model('Setting');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
-                'fisioterapeuta_id' => $_POST['fisioterapeuta_id'],
+                'terapeuta_id' => $_POST['terapeuta_id'],
                 'dia_semana' => $_POST['dia_semana'],
                 'hora_inicio' => $_POST['hora_inicio'],
                 'hora_fin' => $_POST['hora_fin']
@@ -72,7 +73,7 @@ class SettingController extends Controller
         $settingModel = $this->model('Setting');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
-                'fisioterapeuta_id' => $_POST['fisioterapeuta_id'],
+                'terapeuta_id' => $_POST['terapeuta_id'],
                 'fecha_inicio' => $_POST['fecha_inicio'],
                 'fecha_fin' => $_POST['fecha_fin'],
                 'motivo' => htmlspecialchars($_POST['motivo'] ?? '', ENT_QUOTES, 'UTF-8')
@@ -127,10 +128,10 @@ class SettingController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $settingModel = $this->model('Setting');
             $data = [
-                'id_clinica' => $_POST['id_clinica'] ?? null,
+                'clinica_id' => $_POST['clinica_id'] ?? null,
                 'nombre_comercial' => htmlspecialchars($_POST['nombre_comercial'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'razon_social' => htmlspecialchars($_POST['razon_social'] ?? '', ENT_QUOTES, 'UTF-8'),
-                'direccion_calle' => htmlspecialchars($_POST['direccion_calle'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'direccion' => htmlspecialchars($_POST['direccion'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'ciudad' => htmlspecialchars($_POST['ciudad'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'provincia_estado' => htmlspecialchars($_POST['provincia_estado'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'codigo_postal' => htmlspecialchars($_POST['codigo_postal'] ?? '', ENT_QUOTES, 'UTF-8'),
@@ -139,7 +140,7 @@ class SettingController extends Controller
                 'email_contacto' => htmlspecialchars($_POST['email_contacto'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'sitio_web' => htmlspecialchars($_POST['sitio_web'] ?? '', ENT_QUOTES, 'UTF-8')
             ];
-            
+
             if ($settingModel->saveClinica($data)) {
                 $_SESSION['success_message'] = "Datos de la clínica guardados correctamente.";
             } else {
@@ -160,7 +161,7 @@ class SettingController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $settingModel = $this->model('Setting');
             $usuario_id = $_SESSION['usuario_id'];
-            
+
             $data = [
                 'nombre_titular' => htmlspecialchars($_POST['card_holder'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'numero_completo' => htmlspecialchars($_POST['card_number'] ?? '', ENT_QUOTES, 'UTF-8'),
@@ -177,7 +178,7 @@ class SettingController extends Controller
                     $_SESSION['error_message'] = "Error al actualizar los datos de la tarjeta.";
                 }
             }
-            
+
             header('Location: ' . PROJECT_ROOT . '/configuracion');
             $this->exitApp();
         }
@@ -236,7 +237,7 @@ class SettingController extends Controller
                     $_SESSION['success_message'] = "Ya tienes contratado el plan " . htmlspecialchars($planActual) . ".";
                 }
             }
-            
+
             header('Location: ' . PROJECT_ROOT . '/configuracion');
             $this->exitApp();
         }
@@ -278,7 +279,7 @@ class SettingController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['horario_id'];
             $data = [
-                'fisioterapeuta_id' => $_POST['fisioterapeuta_id'],
+                'terapeuta_id' => $_POST['terapeuta_id'],
                 'dia_semana' => $_POST['dia_semana'],
                 'hora_inicio' => $_POST['hora_inicio'],
                 'hora_fin' => $_POST['hora_fin']
@@ -311,7 +312,7 @@ class SettingController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['ausencia_id'];
             $data = [
-                'fisioterapeuta_id' => $_POST['fisioterapeuta_id'],
+                'terapeuta_id' => $_POST['terapeuta_id'],
                 'fecha_inicio' => $_POST['fecha_inicio'],
                 'fecha_fin' => $_POST['fecha_fin'],
                 'motivo' => htmlspecialchars($_POST['motivo'] ?? '', ENT_QUOTES, 'UTF-8')
@@ -396,11 +397,11 @@ class SettingController extends Controller
             }
 
             $data = [
-                'id_clinica' => $_POST['id_clinica'] ?? null,
+                'clinica_id' => $_POST['clinica_id'] ?? null,
                 'nombre_comercial' => htmlspecialchars($_POST['nombre_comercial'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'razon_social' => htmlspecialchars($_POST['razon_social'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'nif_cif' => htmlspecialchars($_POST['nif_cif'] ?? 'B12345678', ENT_QUOTES, 'UTF-8'),
-                'direccion_calle' => htmlspecialchars($_POST['direccion_calle'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'direccion' => htmlspecialchars($_POST['direccion'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'ciudad' => htmlspecialchars($_POST['ciudad'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'provincia_estado' => htmlspecialchars($_POST['provincia_estado'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'codigo_postal' => htmlspecialchars($_POST['codigo_postal'] ?? '', ENT_QUOTES, 'UTF-8'),
@@ -428,7 +429,7 @@ class SettingController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $settingModel = $this->model('Setting');
             $id = !empty($_POST['tipo_cita_id']) ? (int)$_POST['tipo_cita_id'] : null;
-            
+
             $data = [
                 'nombre' => trim(htmlspecialchars($_POST['nombre'] ?? '', ENT_QUOTES, 'UTF-8')),
                 'descripcion' => trim(htmlspecialchars($_POST['descripcion'] ?? '', ENT_QUOTES, 'UTF-8')),
@@ -604,4 +605,3 @@ class SettingController extends Controller
         $this->exitApp();
     }
 }
-

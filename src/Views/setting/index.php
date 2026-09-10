@@ -89,7 +89,7 @@ include TEMPLATE_DIR . 'header.php';
 
                 <form action="<?= PROJECT_ROOT ?>/configuracion/clinica/actualizar" method="POST" enctype="multipart/form-data" class="max-w-4xl">
                     <?php if ($clinica) : ?>
-                        <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
+                        <input type="hidden" name="clinica_id" value="<?= $clinica['clinica_id'] ?>">
                     <?php endif; ?>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -109,7 +109,7 @@ include TEMPLATE_DIR . 'header.php';
 
                         <div class="space-y-1 md:col-span-2">
                             <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Dirección</label>
-                            <input type="text" name="direccion_calle" value="<?= $clinica['direccion_calle'] ?? '' ?>" required
+                            <input type="text" name="direccion" value="<?= $clinica['direccion'] ?? '' ?>" required
                                 class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all"
                                 placeholder="Calle, número, piso...">
                         </div>

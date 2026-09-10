@@ -27,7 +27,7 @@ class AppointmentTest extends TestCase
             'cita_id' => 1,
             'paciente_id' => 'P123',
             'paciente_nombre' => 'Jane',
-            'fisioterapeuta_id' => 'F456',
+            'terapeuta_id' => 'F456',
             'fecha_hora' => '2026-05-22 10:00:00',
             'estado' => 'Programada'
         ];
@@ -97,7 +97,7 @@ class AppointmentTest extends TestCase
         $result = $appointmentModel->delete(1);
 
         $this->assertTrue($result);
-     }
+    }
 
     public function testGetAll()
     {
@@ -106,7 +106,7 @@ class AppointmentTest extends TestCase
                 'cita_id' => 1,
                 'paciente_id' => 'P123',
                 'paciente_nombre' => 'Jane',
-                'fisioterapeuta_id' => 'F456',
+                'terapeuta_id' => 'F456',
                 'fecha_hora' => '2026-06-12 10:00:00',
                 'estado' => 'Programada'
             ]
@@ -169,7 +169,7 @@ class AppointmentTest extends TestCase
 
         $this->dbMock->expects($this->exactly(2))
             ->method('prepare')
-            ->willReturnCallback(function($query) use ($stmtHorarios, $stmtAusencias) {
+            ->willReturnCallback(function ($query) use ($stmtHorarios, $stmtAusencias) {
                 if (strpos($query, 'horarios_terapeutas') !== false) {
                     return $stmtHorarios;
                 }
@@ -208,7 +208,7 @@ class AppointmentTest extends TestCase
 
         $this->dbMock->expects($this->exactly(3))
             ->method('prepare')
-            ->willReturnCallback(function($query) use ($stmtHorarios, $stmtAusencias, $stmtCitas) {
+            ->willReturnCallback(function ($query) use ($stmtHorarios, $stmtAusencias, $stmtCitas) {
                 if (strpos($query, 'horarios_terapeutas') !== false) {
                     return $stmtHorarios;
                 }

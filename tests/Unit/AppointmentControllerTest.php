@@ -132,7 +132,7 @@ class AppointmentControllerTest extends ControllerTestCase
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SESSION['rol'] = 'Paciente';
         $_SESSION['usuario_id'] = 'U123';
-        $_POST['fisioterapeuta_id'] = 'F1';
+        $_POST['terapeuta_id'] = 'F1';
         $_POST['fecha_hora'] = '2026-06-15 10:00:00';
         $_POST['especialidad_id'] = 'E1';
 
@@ -180,7 +180,7 @@ class AppointmentControllerTest extends ControllerTestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getById', 'delete'])
             ->getMock();
-        
+
         $appointmentMock->method('getById')->with('C1')->willReturn(['paciente_id' => 'OTHER_USER']);
 
         $controller = $this->getControllerMock(AppointmentController::class);
@@ -224,7 +224,7 @@ class AppointmentControllerTest extends ControllerTestCase
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('patient-view/appointment/edit', $this->callback(function($data) {
+            ->with('patient-view/appointment/edit', $this->callback(function ($data) {
                 return $data['appointment']['paciente_id'] === 'U123';
             }));
 
@@ -273,7 +273,7 @@ class AppointmentControllerTest extends ControllerTestCase
         $_SESSION['rol'] = 'Paciente';
         $_SESSION['usuario_id'] = 'U123';
         $_POST['cita_id'] = 'C1';
-        $_POST['fisioterapeuta_id'] = 'F1';
+        $_POST['terapeuta_id'] = 'F1';
         $_POST['fecha_hora'] = '2026-06-15 11:00:00';
         $_POST['estado'] = 'Programada';
         $_POST['especialidad_id'] = 'E1';
@@ -320,7 +320,7 @@ class AppointmentControllerTest extends ControllerTestCase
         $_GET['fecha'] = '';
 
         $controller = $this->getControllerMock(AppointmentController::class);
-        
+
         $this->expectException(TestExitException::class);
         ob_start();
         try {

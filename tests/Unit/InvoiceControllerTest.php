@@ -214,7 +214,7 @@ class InvoiceControllerTest extends ControllerTestCase
         $invoiceMock->method('getClinica')->willReturn([
             'nombre_comercial' => 'tervion CLINIC',
             'razon_social' => 'tervion S.L.',
-            'direccion_calle' => 'Calle 1',
+            'direccion' => 'Calle 1',
             'codigo_postal' => '28001',
             'ciudad' => 'Madrid',
             'telefono_contacto' => '912345678'

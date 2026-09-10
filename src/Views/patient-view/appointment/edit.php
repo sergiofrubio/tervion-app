@@ -35,12 +35,12 @@ include TEMPLATE_DIR . 'header.php';
 
                     <div class="space-y-4">
                         <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Fisioterapeuta</label>
-                        <input type="hidden" name="fisioterapeuta_id" id="fisioterapeuta_id" value="<?= $appointment['fisioterapeuta_id'] ?>" required>
+                        <input type="hidden" name="terapeuta_id" id="terapeuta_id" value="<?= $appointment['terapeuta_id'] ?>" required>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4" id="fisios-cards-container">
                             <?php foreach ($fisioterapeutas as $f): ?>
                                 <?php
                                 $firstLetter = mb_substr($f['nombre'], 0, 1, 'UTF-8');
-                                $isSelected = ($f['usuario_id'] == $appointment['fisioterapeuta_id']);
+                                $isSelected = ($f['usuario_id'] == $appointment['terapeuta_id']);
                                 $avatarId = (intval(preg_replace('/[^0-9]/', '', $f['usuario_id'])) % 70) + 1;
                                 $avatarUrl = (isset($f['genero']) && $f['genero'] === 'Mujer')
                                     ? "https://randomuser.me/api/portraits/women/{$avatarId}.jpg"

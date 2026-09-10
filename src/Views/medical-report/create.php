@@ -208,43 +208,6 @@ include TEMPLATE_DIR . 'header.php';
         </div>
     </header>
 
-    <!-- 2. BARRA DE HERRAMIENTAS Y ATAJOS CLÍNICOS RÁPIDOS (STYLE LIBREOFFICE WRITER / RIBBON) -->
-    <div class="h-11 bg-slate-50 border-b border-slate-200 px-4 flex items-center justify-between shrink-0 overflow-x-auto text-xs gap-3 studio-ribbon">
-
-        <!-- Atajos clínicos para inserción rápida con 1-clic -->
-        <div class="flex items-center gap-2 shrink-0">
-            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                <i class="bi bi-lightning-charge text-amber-500"></i>
-                Plantillas Rápidas:
-            </span>
-
-            <button type="button" class="snippet-action-btn px-2.5 py-1 bg-white hover:bg-primary-50 hover:border-primary-300 text-slate-700 hover:text-primary-700 border border-slate-200 rounded-lg text-xs font-medium transition-all shadow-2xs flex items-center gap-1.5"
-                data-target="diag_editor" data-text="Paciente acude refiriendo dolor de características mecánicas sin irradiación distal. Balance articular conservado con dolor en grados máximos. Palpación con contractura refleja y puntos gatillo miofasciales activos en la musculatura paravertebral. Juicio clínico: Sobrecarga muscular aguda de origen biomecánico.">
-                <i class="bi bi-plus-circle text-primary-600 text-[11px]"></i>
-                <span>Exploración Mecánica</span>
-            </button>
-
-            <button type="button" class="snippet-action-btn px-2.5 py-1 bg-white hover:bg-primary-50 hover:border-primary-300 text-slate-700 hover:text-primary-700 border border-slate-200 rounded-lg text-xs font-medium transition-all shadow-2xs flex items-center gap-1.5"
-                data-target="trat_editor" data-text="Terapia manual descontracturante y miofascial profunda. Movilización articular pasiva analítica y estiramientos dirigidos. Aplicación de termoterapia y pauta de ejercicios activos de movilidad, estiramientos analíticos y reeducación postural para realizar en domicilio (2 veces al día).">
-                <i class="bi bi-plus-circle text-primary-600 text-[11px]"></i>
-                <span>Terapia Manual + Ejercicios</span>
-            </button>
-
-            <button type="button" class="snippet-action-btn px-2.5 py-1 bg-white hover:bg-primary-50 hover:border-primary-300 text-slate-700 hover:text-primary-700 border border-slate-200 rounded-lg text-xs font-medium transition-all shadow-2xs flex items-center gap-1.5"
-                data-target="obs_editor" data-text="Evolución clínica favorable tras la sesión con disminución subjetiva del dolor (EVA 3/10). Buena tolerancia a las técnicas manuales. Se programa cita de revisión y control evolutivo en 7 días.">
-                <i class="bi bi-plus-circle text-primary-600 text-[11px]"></i>
-                <span>Evolución Favorable / Revisión</span>
-            </button>
-        </div>
-
-        <!-- <div class="flex items-center gap-3 shrink-0 text-slate-500 text-[11px]">
-            <span class="flex items-center gap-1 font-medium">
-                <i class="bi bi-keyboard text-slate-400"></i>
-                Edición interactiva en folio
-            </span>
-        </div> -->
-    </div>
-
     <!-- 3. WORKSPACE PRINCIPAL: VISOR Y EDITOR EN FORMATO FOLIO A4 -->
     <main class="flex-1 bg-slate-100/90 overflow-auto p-4 sm:p-8 flex justify-center items-start custom-scrollbar studio-viewport relative select-text" id="reportStudioViewport">
 

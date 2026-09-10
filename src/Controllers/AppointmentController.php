@@ -46,12 +46,12 @@ class AppointmentController extends Controller
             $appointment = $this->model('Appointment');
 
             $paciente_id = ($_SESSION['rol'] === 'Paciente') ? $_SESSION['usuario_id'] : ($_POST['paciente_id'] ?? '');
-            $fisioterapeuta_id = $_POST['fisioterapeuta_id'] ?? '';
+            $terapeuta_id = $_POST['terapeuta_id'] ?? '';
             $tipo_cita_id = !empty($_POST['tipo_cita_id']) ? $_POST['tipo_cita_id'] : null;
             $fecha_hora = $_POST['fecha_hora'] ?? '';
             $estado = 'Programada';
 
-            if (!empty($paciente_id) && !empty($fisioterapeuta_id) && !empty($fecha_hora) && $appointment->save($paciente_id, $fisioterapeuta_id, $fecha_hora, $estado, $tipo_cita_id)) {
+            if (!empty($paciente_id) && !empty($terapeuta_id) && !empty($fecha_hora) && $appointment->save($paciente_id, $terapeuta_id, $fecha_hora, $estado, $tipo_cita_id)) {
                 $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
                 header('Location: ' . PROJECT_ROOT . $redirect . '?alert=success&message=Cita programada correctamente');
                 $this->exitApp();
@@ -156,12 +156,12 @@ class AppointmentController extends Controller
                 $paciente_id = $_POST['paciente_id'];
             }
 
-            $fisioterapeuta_id = $_POST['fisioterapeuta_id'];
+            $terapeuta_id = $_POST['terapeuta_id'];
             $tipo_cita_id = !empty($_POST['tipo_cita_id']) ? $_POST['tipo_cita_id'] : null;
             $fecha_hora = $_POST['fecha_hora'];
             $estado = 'Programada';
 
-            if ($appointment->update($id, $paciente_id, $fisioterapeuta_id, $fecha_hora, $estado, $tipo_cita_id)) {
+            if ($appointment->update($id, $paciente_id, $terapeuta_id, $fecha_hora, $estado, $tipo_cita_id)) {
                 $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
                 header('Location: ' . PROJECT_ROOT . $redirect . '?alert=success&message=Cita actualizada correctamente');
                 $this->exitApp();

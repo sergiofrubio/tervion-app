@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Core\DataBase;
@@ -18,22 +19,22 @@ class Setting
     {
         $query = "SELECT h.*, u.nombre, u.apellidos 
                   FROM horarios_terapeutas h 
-                  JOIN usuarios u ON h.fisioterapeuta_id = u.usuario_id 
+                  JOIN usuarios u ON h.terapeuta_id = u.usuario_id 
                   ORDER BY h.dia_semana, h.hora_inicio";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getHorariosByFisio($fisioterapeuta_id)
+    public function getHorariosByFisio($terapeuta_id)
     {
         $query = "SELECT h.*, u.nombre, u.apellidos 
                   FROM horarios_terapeutas h 
-                  JOIN usuarios u ON h.fisioterapeuta_id = u.usuario_id 
-                  WHERE h.fisioterapeuta_id = :fisioterapeuta_id
+                  JOIN usuarios u ON h.terapeuta_id = u.usuario_id 
+                  WHERE h.terapeuta_id = :terapeuta_id
                   ORDER BY FIELD(h.dia_semana, 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'), h.hora_inicio";
         $stmt = $this->db->prepare($query);
-        $stmt->execute([':fisioterapeuta_id' => $fisioterapeuta_id]);
+        $stmt->execute([':terapeuta_id' => $terapeuta_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -42,22 +43,22 @@ class Setting
     {
         $query = "SELECT a.*, u.nombre, u.apellidos 
                   FROM ausencias_terapeutas a 
-                  JOIN usuarios u ON a.fisioterapeuta_id = u.usuario_id 
+                  JOIN usuarios u ON a.terapeuta_id = u.usuario_id 
                   ORDER BY a.fecha_inicio DESC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAusenciasByFisio($fisioterapeuta_id)
+    public function getAusenciasByFisio($terapeuta_id)
     {
         $query = "SELECT a.*, u.nombre, u.apellidos 
                   FROM ausencias_terapeutas a 
-                  JOIN usuarios u ON a.fisioterapeuta_id = u.usuario_id 
-                  WHERE a.fisioterapeuta_id = :fisioterapeuta_id
+                  JOIN usuarios u ON a.terapeuta_id = u.usuario_id 
+                  WHERE a.terapeuta_id = :terapeuta_id
                   ORDER BY a.fecha_inicio DESC";
         $stmt = $this->db->prepare($query);
-        $stmt->execute([':fisioterapeuta_id' => $fisioterapeuta_id]);
+        $stmt->execute([':terapeuta_id' => $terapeuta_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -110,16 +111,16 @@ class Setting
     // Save methods
     public function saveHorario($data)
     {
-        $query = "INSERT INTO horarios_terapeutas (fisioterapeuta_id, dia_semana, hora_inicio, hora_fin) 
-                  VALUES (:fisioterapeuta_id, :dia_semana, :hora_inicio, :hora_fin)";
+        $query = "INSERT INTO horarios_terapeutas (terapeuta_id, dia_semana, hora_inicio, hora_fin) 
+                  VALUES (:terapeuta_id, :dia_semana, :hora_inicio, :hora_fin)";
         $stmt = $this->db->prepare($query);
         return $stmt->execute($data);
     }
 
     public function saveAusencia($data)
     {
-        $query = "INSERT INTO ausencias_terapeutas (fisioterapeuta_id, fecha_inicio, fecha_fin, motivo) 
-                  VALUES (:fisioterapeuta_id, :fecha_inicio, :fecha_fin, :motivo)";
+        $query = "INSERT INTO ausencias_terapeutas (terapeuta_id, fecha_inicio, fecha_fin, motivo) 
+                  VALUES (:terapeuta_id, :fecha_inicio, :fecha_fin, :motivo)";
         $stmt = $this->db->prepare($query);
         return $stmt->execute($data);
     }
@@ -135,7 +136,7 @@ class Setting
 
     public function updateHorario($id, $data)
     {
-        $query = "UPDATE horarios_terapeutas SET fisioterapeuta_id = :fisioterapeuta_id, dia_semana = :dia_semana, 
+        $query = "UPDATE horarios_terapeutas SET terapeuta_id = :terapeuta_id, dia_semana = :dia_semana, 
                   hora_inicio = :hora_inicio, hora_fin = :hora_fin WHERE horario_id = :id";
         $data['id'] = $id;
         $stmt = $this->db->prepare($query);
@@ -144,7 +145,7 @@ class Setting
 
     public function updateAusencia($id, $data)
     {
-        $query = "UPDATE ausencias_terapeutas SET fisioterapeuta_id = :fisioterapeuta_id, fecha_inicio = :fecha_inicio, 
+        $query = "UPDATE ausencias_terapeutas SET terapeuta_id = :terapeuta_id, fecha_inicio = :fecha_inicio, 
                   fecha_fin = :fecha_fin, motivo = :motivo WHERE ausencia_id = :id";
         $data['id'] = $id;
         $stmt = $this->db->prepare($query);
@@ -172,12 +173,12 @@ class Setting
 
     public function saveClinica($data)
     {
-        if (isset($data['id_clinica']) && !empty($data['id_clinica'])) {
+        if (isset($data['clinica_id']) && !empty($data['clinica_id'])) {
             $query = "UPDATE clinicas SET 
                         nombre_comercial = :nombre_comercial,
                         razon_social = :razon_social,
                         nif_cif = :nif_cif,
-                        direccion_calle = :direccion_calle,
+                        direccion = :direccion,
                         ciudad = :ciudad,
                         provincia_estado = :provincia_estado,
                         codigo_postal = :codigo_postal,
@@ -189,16 +190,16 @@ class Setting
                         verifactu_cert_path = :verifactu_cert_path,
                         verifactu_cert_password = :verifactu_cert_password,
                         verifactu_activo = :verifactu_activo
-                      WHERE id_clinica = :id_clinica";
+                      WHERE clinica_id = :clinica_id";
         } else {
-            unset($data['id_clinica']);
+            unset($data['clinica_id']);
             $query = "INSERT INTO clinicas (
-                        nombre_comercial, razon_social, nif_cif, direccion_calle, ciudad, 
+                        nombre_comercial, razon_social, nif_cif, direccion, ciudad, 
                         provincia_estado, codigo_postal, pais, telefono_contacto, 
                         email_contacto, sitio_web, verifactu_env, verifactu_cert_path, 
                         verifactu_cert_password, verifactu_activo
                       ) VALUES (
-                        :nombre_comercial, :razon_social, :nif_cif, :direccion_calle, :ciudad, 
+                        :nombre_comercial, :razon_social, :nif_cif, :direccion, :ciudad, 
                         :provincia_estado, :codigo_postal, :pais, :telefono_contacto, 
                         :email_contacto, :sitio_web, :verifactu_env, :verifactu_cert_path, 
                         :verifactu_cert_password, :verifactu_activo
@@ -209,7 +210,7 @@ class Setting
             ':nombre_comercial' => $data['nombre_comercial'],
             ':razon_social' => $data['razon_social'] ?? null,
             ':nif_cif' => $data['nif_cif'] ?? 'B12345678',
-            ':direccion_calle' => $data['direccion_calle'],
+            ':direccion' => $data['direccion'],
             ':ciudad' => $data['ciudad'],
             ':provincia_estado' => $data['provincia_estado'] ?? null,
             ':codigo_postal' => $data['codigo_postal'] ?? null,
@@ -221,7 +222,7 @@ class Setting
             ':verifactu_cert_path' => $data['verifactu_cert_path'] ?? null,
             ':verifactu_cert_password' => $data['verifactu_cert_password'] ?? null,
             ':verifactu_activo' => isset($data['verifactu_activo']) ? (int)$data['verifactu_activo'] : 1,
-            ':id_clinica' => $data['id_clinica'] ?? null
+            ':clinica_id' => $data['clinica_id'] ?? null
         ]);
     }
 
@@ -237,7 +238,7 @@ class Setting
     {
         $card = $this->getMetodoPagoByUsuario($usuario_id);
         $last4 = substr(str_replace(' ', '', $data['numero_completo']), -4);
-        
+
         if ($card) {
             $query = "UPDATE metodos_pago SET 
                         nombre_titular = :nombre_titular, 
@@ -486,4 +487,3 @@ class Setting
         return $stmt->execute([':id' => $id]);
     }
 }
-

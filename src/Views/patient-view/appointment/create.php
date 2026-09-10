@@ -31,7 +31,7 @@ include TEMPLATE_DIR . 'header.php';
                     </div>
                     <div class="space-y-4">
                         <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Fisioterapeuta</label>
-                        <input type="hidden" name="fisioterapeuta_id" id="fisioterapeuta_id" required>
+                        <input type="hidden" name="terapeuta_id" id="terapeuta_id" required>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4" id="fisios-cards-container">
                             <?php foreach ($fisioterapeutas as $f): ?>
                                 <?php

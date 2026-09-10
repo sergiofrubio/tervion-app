@@ -22,7 +22,7 @@ class MedicalReportController extends Controller
 
             $data = [
                 'paciente_id' => $_POST['paciente_id'],
-                'fisioterapeuta_id' => $_SESSION['usuario_id'], // El fisio logueado
+                'terapeuta_id' => $_SESSION['usuario_id'], // El fisio logueado
                 'fecha_consulta' => date('Y-m-d H:i:s'),
                 'motivo_consulta' => htmlspecialchars($_POST['motivo_consulta'], ENT_QUOTES, 'UTF-8'),
                 'diagnostico' => htmlspecialchars($_POST['diagnostico'], ENT_QUOTES, 'UTF-8'),

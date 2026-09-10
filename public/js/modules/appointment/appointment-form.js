@@ -4,7 +4,7 @@
 
 export function initAppointmentForm(options = {}) {
     const root = options.rootUrl || '';
-    const hiddenFisioInput = document.getElementById('fisioterapeuta_id');
+    const hiddenFisioInput = document.getElementById('terapeuta_id');
     const fisioCards = document.querySelectorAll('.fisio-card');
     const diasContainer = document.getElementById('dias-container');
     const slotsContainer = document.getElementById('slots-container');
@@ -126,7 +126,7 @@ export function initAppointmentForm(options = {}) {
                 diasContainer.innerHTML = currentCalHtml + nextCalHtml;
 
                 diasContainer.querySelectorAll('button[data-date]').forEach(btn => {
-                    btn.addEventListener('click', function() {
+                    btn.addEventListener('click', function () {
                         const dateStr = this.dataset.date;
                         selectDate(dateStr);
                     });
@@ -228,7 +228,7 @@ export function initAppointmentForm(options = {}) {
     }
 
     if (tipoCitaSelect) {
-        tipoCitaSelect.addEventListener('change', function() {
+        tipoCitaSelect.addEventListener('change', function () {
             const selectedOption = this.options[this.selectedIndex];
             if (selectedOption) {
                 const precioInput = document.getElementById('precio_sesion');
@@ -261,7 +261,7 @@ export function initAppointmentForm(options = {}) {
         if (!input || !results || !hidden) return;
         let debounceTimer;
 
-        input.addEventListener('input', function() {
+        input.addEventListener('input', function () {
             clearTimeout(debounceTimer);
             const query = this.value.trim();
 
@@ -307,7 +307,7 @@ export function initAppointmentForm(options = {}) {
             }, 300);
         });
 
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             if (!input.contains(e.target) && !results.contains(e.target)) {
                 results.classList.add('hidden');
             }
@@ -317,7 +317,7 @@ export function initAppointmentForm(options = {}) {
     setupSearch('paciente_search', 'paciente_results', 'paciente_id', 'Paciente');
 
     fisioCards.forEach(card => {
-        card.addEventListener('click', function() {
+        card.addEventListener('click', function () {
             const fisioId = this.dataset.id;
 
             fisioCards.forEach(c => {

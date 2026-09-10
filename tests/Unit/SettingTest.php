@@ -26,7 +26,7 @@ class SettingTest extends TestCase
 
         $this->stmtMock->expects($this->once())
             ->method('fetchAll')
-            ->willReturn([['horario_id' => 1, 'fisioterapeuta_id' => 'F1']]);
+            ->willReturn([['horario_id' => 1, 'terapeuta_id' => 'F1']]);
 
         $this->dbMock->expects($this->once())
             ->method('prepare')
@@ -42,7 +42,7 @@ class SettingTest extends TestCase
     public function testSaveHorario()
     {
         $data = [
-            'fisioterapeuta_id' => 'F1',
+            'terapeuta_id' => 'F1',
             'dia_semana' => 'Lunes',
             'hora_inicio' => '09:00',
             'hora_fin' => '14:00'
@@ -68,16 +68,16 @@ class SettingTest extends TestCase
     {
         $this->stmtMock->expects($this->once())
             ->method('execute')
-            ->with([':fisioterapeuta_id' => 'F1'])
+            ->with([':terapeuta_id' => 'F1'])
             ->willReturn(true);
 
         $this->stmtMock->expects($this->once())
             ->method('fetchAll')
-            ->willReturn([['horario_id' => 1, 'fisioterapeuta_id' => 'F1', 'dia_semana' => 'Lunes']]);
+            ->willReturn([['horario_id' => 1, 'terapeuta_id' => 'F1', 'dia_semana' => 'Lunes']]);
 
         $this->dbMock->expects($this->once())
             ->method('prepare')
-            ->with($this->stringContains('WHERE h.fisioterapeuta_id = :fisioterapeuta_id'))
+            ->with($this->stringContains('WHERE h.terapeuta_id = :terapeuta_id'))
             ->willReturn($this->stmtMock);
 
         $settingModel = new Setting($this->dbMock);
@@ -90,16 +90,16 @@ class SettingTest extends TestCase
     {
         $this->stmtMock->expects($this->once())
             ->method('execute')
-            ->with([':fisioterapeuta_id' => 'F1'])
+            ->with([':terapeuta_id' => 'F1'])
             ->willReturn(true);
 
         $this->stmtMock->expects($this->once())
             ->method('fetchAll')
-            ->willReturn([['ausencia_id' => 1, 'fisioterapeuta_id' => 'F1', 'motivo' => 'Vacaciones']]);
+            ->willReturn([['ausencia_id' => 1, 'terapeuta_id' => 'F1', 'motivo' => 'Vacaciones']]);
 
         $this->dbMock->expects($this->once())
             ->method('prepare')
-            ->with($this->stringContains('WHERE a.fisioterapeuta_id = :fisioterapeuta_id'))
+            ->with($this->stringContains('WHERE a.terapeuta_id = :terapeuta_id'))
             ->willReturn($this->stmtMock);
 
         $settingModel = new Setting($this->dbMock);
@@ -110,7 +110,7 @@ class SettingTest extends TestCase
 
     public function testGetClinica()
     {
-        $clinicaData = ['id_clinica' => 1, 'nombre_comercial' => 'Tervion Clinica'];
+        $clinicaData = ['clinica_id' => 1, 'nombre_comercial' => 'Tervion Clinica'];
 
         $this->stmtMock->expects($this->once())
             ->method('execute')

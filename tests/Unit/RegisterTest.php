@@ -20,7 +20,7 @@ class RegisterTest extends ControllerTestCase
     public function testIndexShowsRegisterView()
     {
         $controller = $this->getControllerMock(RegisterController::class);
-        
+
         $controller->expects($this->once())
             ->method('view')
             ->with('landing/registro', ['data' => [], 'error' => null]);
@@ -41,11 +41,11 @@ class RegisterTest extends ControllerTestCase
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST['usuario_id'] = '123'; // invalid NIF length
-        
+
         $controller = $this->getControllerMock(RegisterController::class);
         $controller->expects($this->once())
             ->method('view')
-            ->with('landing/registro', $this->callback(function($args) {
+            ->with('landing/registro', $this->callback(function ($args) {
                 return isset($args['error']) && strpos($args['error'], 'NIF/DNI') !== false;
             }));
 
@@ -61,7 +61,7 @@ class RegisterTest extends ControllerTestCase
         $controller = $this->getControllerMock(RegisterController::class);
         $controller->expects($this->once())
             ->method('view')
-            ->with('landing/registro', $this->callback(function($args) {
+            ->with('landing/registro', $this->callback(function ($args) {
                 return isset($args['error']) && strpos($args['error'], 'correo electrónico') !== false;
             }));
 
@@ -78,7 +78,7 @@ class RegisterTest extends ControllerTestCase
         $controller = $this->getControllerMock(RegisterController::class);
         $controller->expects($this->once())
             ->method('view')
-            ->with('landing/registro', $this->callback(function($args) {
+            ->with('landing/registro', $this->callback(function ($args) {
                 return isset($args['error']) && strpos($args['error'], 'contraseña debe tener al menos') !== false;
             }));
 
@@ -96,7 +96,7 @@ class RegisterTest extends ControllerTestCase
         $controller = $this->getControllerMock(RegisterController::class);
         $controller->expects($this->once())
             ->method('view')
-            ->with('landing/registro', $this->callback(function($args) {
+            ->with('landing/registro', $this->callback(function ($args) {
                 return isset($args['error']) && strpos($args['error'], 'no coinciden') !== false;
             }));
 
@@ -115,7 +115,7 @@ class RegisterTest extends ControllerTestCase
         $controller = $this->getControllerMock(RegisterController::class);
         $controller->expects($this->once())
             ->method('view')
-            ->with('landing/registro', $this->callback(function($args) {
+            ->with('landing/registro', $this->callback(function ($args) {
                 return isset($args['error']) && strpos($args['error'], 'obligatorios del administrador') !== false;
             }));
 
@@ -137,7 +137,7 @@ class RegisterTest extends ControllerTestCase
         $controller = $this->getControllerMock(RegisterController::class);
         $controller->expects($this->once())
             ->method('view')
-            ->with('landing/registro', $this->callback(function($args) {
+            ->with('landing/registro', $this->callback(function ($args) {
                 return isset($args['error']) && strpos($args['error'], 'obligatorios de la clínica') !== false;
             }));
 
@@ -157,7 +157,7 @@ class RegisterTest extends ControllerTestCase
         $_POST['confirm_pass'] = 'securepass123';
         $_POST['nombre_comercial'] = 'Clinic Test';
         $_POST['telefono_contacto'] = '912345678';
-        $_POST['direccion_calle'] = 'Street 45';
+        $_POST['direccion'] = 'Street 45';
         $_POST['ciudad'] = 'Madrid';
 
         $stmtMock = $this->getMockBuilder(PDOStatement::class)

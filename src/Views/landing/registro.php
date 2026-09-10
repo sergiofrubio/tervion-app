@@ -55,7 +55,7 @@
                                                 'telefono_contacto' => $data['telefono_contacto'] ?? '',
                                                 'email_contacto' => $data['email_contacto'] ?? '',
                                                 'sitio_web' => $data['sitio_web'] ?? '',
-                                                'direccion_calle' => $data['direccion_calle'] ?? '',
+                                                'direccion' => $data['direccion'] ?? '',
                                                 'ciudad' => $data['ciudad'] ?? '',
                                                 'provincia_estado' => $data['provincia_estado'] ?? '',
                                                 'codigo_postal' => $data['codigo_postal'] ?? '',
@@ -362,16 +362,16 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     </div>
                     <div class="grid grid-cols-1 gap-6">
                         <div>
-                            <label for="direccion_calle" class="block text-sm font-medium text-slate-700 mb-1">Dirección de la clínica *</label>
+                            <label for="direccion" class="block text-sm font-medium text-slate-700 mb-1">Dirección de la clínica *</label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                                     <i class="bi bi-geo-fill"></i>
                                 </span>
-                                <input type="text" name="direccion_calle" id="direccion_calle" x-model="formData.direccion_calle"
+                                <input type="text" name="direccion" id="direccion" x-model="formData.direccion"
                                     class="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white text-sm transition-all"
                                     placeholder="Calle Mayor 45, Planta Baja">
                             </div>
-                            <span class="text-xs text-red-500 mt-1 block font-medium" x-show="errors.direccion_calle" x-text="errors.direccion_calle"></span>
+                            <span class="text-xs text-red-500 mt-1 block font-medium" x-show="errors.direccion" x-text="errors.direccion"></span>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
@@ -513,7 +513,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                                 </div>
                                 <div class="flex justify-between">
                                     <dt class="text-slate-500">Dirección:</dt>
-                                    <dd class="font-medium text-slate-900" x-text="formData.direccion_calle"></dd>
+                                    <dd class="font-medium text-slate-900" x-text="formData.direccion"></dd>
                                 </div>
                                 <div class="flex justify-between">
                                     <dt class="text-slate-500">Ubicación:</dt>

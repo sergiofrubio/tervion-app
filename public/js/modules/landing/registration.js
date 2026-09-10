@@ -38,7 +38,7 @@ function registrationForm(initialData = null) {
             telefono_contacto: data.telefono_contacto || '',
             email_contacto: data.email_contacto || '',
             sitio_web: data.sitio_web || '',
-            direccion_calle: data.direccion_calle || '',
+            direccion: data.direccion || '',
             ciudad: data.ciudad || '',
             provincia_estado: data.provincia_estado || '',
             codigo_postal: data.codigo_postal || '',
@@ -95,8 +95,8 @@ function registrationForm(initialData = null) {
             }
 
             if (step === 5) {
-                if (!this.formData.direccion_calle || this.formData.direccion_calle.trim() === '') {
-                    this.errors.direccion_calle = 'La dirección de la clínica es obligatoria.';
+                if (!this.formData.direccion || this.formData.direccion.trim() === '') {
+                    this.errors.direccion = 'La dirección de la clínica es obligatoria.';
                 }
                 if (!this.formData.ciudad || this.formData.ciudad.trim() === '') {
                     this.errors.ciudad = 'La ciudad es obligatoria.';

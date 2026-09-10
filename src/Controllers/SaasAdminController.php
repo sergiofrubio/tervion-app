@@ -97,7 +97,7 @@ class SaasAdminController extends Controller
 
                     $clinicData = [
                         'nombre_comercial' => $nombreComercial,
-                        'direccion_calle' => trim($_POST['direccion_calle'] ?? 'Calle Principal 1'),
+                        'direccion' => trim($_POST['direccion'] ?? 'Calle Principal 1'),
                         'ciudad' => $ciudad,
                         'provincia' => $provincia,
                         'cp' => trim($_POST['cp'] ?? '28001'),

@@ -213,7 +213,7 @@ class InvoiceController extends Controller
         $pdf->SetFont('Arial', '', 9);
         $pdf->SetTextColor(110, 110, 110);
         $pdf->Cell(120, 4.5, iconv('UTF-8', 'windows-1252', $clinica['razon_social'] ?? ''), 0, 1, 'L');
-        $pdf->Cell(120, 4.5, iconv('UTF-8', 'windows-1252', $clinica['direccion_calle'] ?? ''), 0, 1, 'L');
+        $pdf->Cell(120, 4.5, iconv('UTF-8', 'windows-1252', $clinica['direccion'] ?? ''), 0, 1, 'L');
         $pdf->Cell(120, 4.5, iconv('UTF-8', 'windows-1252', ($clinica['codigo_postal'] ?? '') . ' ' . ($clinica['ciudad'] ?? '')), 0, 1, 'L');
         $pdf->Cell(120, 4.5, iconv('UTF-8', 'windows-1252', 'Tel: ' . ($clinica['telefono_contacto'] ?? '')), 0, 1, 'L');
 

@@ -23,10 +23,10 @@ include TEMPLATE_DIR . 'header.php';
 
         <div class="grid grid-cols-1 gap-6">
             <div>
-                <label for="fisioterapeuta_id" class="block text-sm font-semibold text-gray-700 mb-2">Fisioterapeuta</label>
-                <select name="fisioterapeuta_id" id="fisioterapeuta_id" required class="block w-full rounded-xl border-gray-200 bg-gray-50/50 focus:border-primary-500 focus:ring-primary-500 transition-all sm:text-sm">
+                <label for="terapeuta_id" class="block text-sm font-semibold text-gray-700 mb-2">Fisioterapeuta</label>
+                <select name="terapeuta_id" id="terapeuta_id" required class="block w-full rounded-xl border-gray-200 bg-gray-50/50 focus:border-primary-500 focus:ring-primary-500 transition-all sm:text-sm">
                     <?php foreach ($fisios as $fisio): ?>
-                        <option value="<?= $fisio['usuario_id'] ?>" <?= ($a['fisioterapeuta_id'] ?? '') == $fisio['usuario_id'] ? 'selected' : '' ?>>
+                        <option value="<?= $fisio['usuario_id'] ?>" <?= ($a['terapeuta_id'] ?? '') == $fisio['usuario_id'] ? 'selected' : '' ?>>
                             <?= $fisio['nombre'] . ' ' . $fisio['apellidos'] ?>
                         </option>
                     <?php endforeach; ?>
@@ -36,13 +36,13 @@ include TEMPLATE_DIR . 'header.php';
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label for="fecha_inicio" class="block text-sm font-semibold text-gray-700 mb-2">Fecha Inicio</label>
-                    <input type="date" name="fecha_inicio" id="fecha_inicio" required 
+                    <input type="date" name="fecha_inicio" id="fecha_inicio" required
                         value="<?= $a['fecha_inicio'] ?? '' ?>"
                         class="block w-full rounded-xl border-gray-200 bg-gray-50/50 focus:border-primary-500 focus:ring-primary-500 transition-all sm:text-sm">
                 </div>
                 <div>
                     <label for="fecha_fin" class="block text-sm font-semibold text-gray-700 mb-2">Fecha Fin</label>
-                    <input type="date" name="fecha_fin" id="fecha_fin" required 
+                    <input type="date" name="fecha_fin" id="fecha_fin" required
                         value="<?= $a['fecha_fin'] ?? '' ?>"
                         class="block w-full rounded-xl border-gray-200 bg-gray-50/50 focus:border-primary-500 focus:ring-primary-500 transition-all sm:text-sm">
                 </div>

@@ -91,10 +91,10 @@ class TherapistController extends Controller
         $citas = $appointmentModel->getAll();
         $horarios = $settingModel->getHorariosByFisio($id);
         $ausencias = $settingModel->getAusenciasByFisio($id);
-        
+
         // Filtrar citas del fisioterapeuta
-        $citasFisio = array_filter($citas, function($c) use ($id) {
-            return ($c['fisioterapeuta_id'] ?? '') === $id;
+        $citasFisio = array_filter($citas, function ($c) use ($id) {
+            return ($c['terapeuta_id'] ?? '') === $id;
         });
 
         $data = [

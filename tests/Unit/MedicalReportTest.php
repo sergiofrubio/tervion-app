@@ -54,7 +54,7 @@ class MedicalReportTest extends TestCase
     {
         $data = [
             'paciente_id' => 'P123',
-            'fisioterapeuta_id' => 'F456',
+            'terapeuta_id' => 'F456',
             'fecha_consulta' => '2026-05-20',
             'motivo_consulta' => 'Dolor muscular',
             'diagnostico' => 'Sobrecarga',

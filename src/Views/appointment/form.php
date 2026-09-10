@@ -82,12 +82,12 @@ include TEMPLATE_DIR . 'header.php';
                     <!-- Terapeuta Selector -->
                     <div class="space-y-3 md:col-span-2">
                         <label class="block text-sm font-semibold text-gray-700">Terapeuta Responsable <span class="text-red-500">*</span></label>
-                        <input type="hidden" name="fisioterapeuta_id" id="fisioterapeuta_id" value="<?= $isEdit ? ($a['fisioterapeuta_id'] ?? '') : '' ?>" required>
+                        <input type="hidden" name="terapeuta_id" id="terapeuta_id" value="<?= $isEdit ? ($a['terapeuta_id'] ?? '') : '' ?>" required>
                         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" id="fisios-cards-container">
                             <?php if (!empty($fisioterapeutas)): ?>
                                 <?php foreach ($fisioterapeutas as $f): ?>
                                     <?php
-                                    $isSelected = ($isEdit && isset($a['fisioterapeuta_id']) && $f['usuario_id'] == $a['fisioterapeuta_id']);
+                                    $isSelected = ($isEdit && isset($a['terapeuta_id']) && $f['usuario_id'] == $a['terapeuta_id']);
                                     $avatarId = (intval(preg_replace('/[^0-9]/', '', $f['usuario_id'])) % 70) + 1;
                                     $avatarUrl = (isset($f['genero']) && $f['genero'] === 'Mujer')
                                         ? "https://randomuser.me/api/portraits/women/{$avatarId}.jpg"
@@ -123,7 +123,7 @@ include TEMPLATE_DIR . 'header.php';
                     <div class="space-y-2">
                         <label for="fecha_sesion" class="block text-sm font-semibold text-gray-700">Fecha de la Cita <span class="text-red-500">*</span></label>
                         <div class="relative">
-                            <input type="date" name="fecha_sesion" id="fecha_sesion" 
+                            <input type="date" name="fecha_sesion" id="fecha_sesion"
                                 value="<?= $isEdit && !empty($a['fecha_hora']) ? date('Y-m-d', strtotime($a['fecha_hora'])) : date('Y-m-d') ?>"
                                 class="block w-full rounded-2xl border-gray-200 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm border p-3 bg-gray-50/50 hover:bg-white focus:bg-white transition-all" required>
                         </div>
@@ -133,7 +133,7 @@ include TEMPLATE_DIR . 'header.php';
                     <div class="space-y-2">
                         <label for="hora_inicio" class="block text-sm font-semibold text-gray-700">Hora de Inicio <span class="text-red-500">*</span></label>
                         <div class="relative">
-                            <input type="time" name="hora_inicio" id="hora_inicio" 
+                            <input type="time" name="hora_inicio" id="hora_inicio"
                                 value="<?= $isEdit && !empty($a['fecha_hora']) ? date('H:i', strtotime($a['fecha_hora'])) : '10:00' ?>"
                                 class="block w-full rounded-2xl border-gray-200 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm border p-3 bg-gray-50/50 hover:bg-white focus:bg-white transition-all" required>
                         </div>
@@ -143,7 +143,7 @@ include TEMPLATE_DIR . 'header.php';
                     <div class="space-y-2">
                         <label for="hora_fin" class="block text-sm font-semibold text-gray-700">Hora de Finalización <span class="text-red-500">*</span></label>
                         <div class="relative">
-                            <input type="time" name="hora_fin" id="hora_fin" 
+                            <input type="time" name="hora_fin" id="hora_fin"
                                 value="<?= $isEdit && !empty($a['fecha_hora_fin']) ? date('H:i', strtotime($a['fecha_hora_fin'])) : '11:00' ?>"
                                 class="block w-full rounded-2xl border-gray-200 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm border p-3 bg-gray-50/50 hover:bg-white focus:bg-white transition-all" required>
                         </div>
@@ -235,7 +235,7 @@ include TEMPLATE_DIR . 'header.php';
                             <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400 pointer-events-none">
                                 <i class="bi bi-currency-euro"></i>
                             </span>
-                            <input type="number" step="0.01" min="0" name="precio" id="precio_sesion" 
+                            <input type="number" step="0.01" min="0" name="precio" id="precio_sesion"
                                 value="<?= $isEdit ? ($a['precio'] ?? '50.00') : '50.00' ?>"
                                 placeholder="0.00"
                                 class="block w-full rounded-2xl border-gray-200 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm border p-3 pl-10 bg-gray-50/50 hover:bg-white focus:bg-white transition-all font-semibold text-gray-800">

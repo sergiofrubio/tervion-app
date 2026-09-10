@@ -13,6 +13,12 @@ services:
       - default
       - proxy
 
+  db:
+    restart: always
+    networks:
+      - default
+      - proxy
+
 networks:
   proxy:
     external: true

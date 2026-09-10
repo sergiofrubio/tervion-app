@@ -16,7 +16,7 @@ class SettingControllerTest extends ControllerTestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getHorariosFisios', 'getAusenciasFisios', 'getBonos', 'getClinica', 'getMetodoPagoByUsuario', 'getCuentaClienteByEmail'])
             ->getMock();
-        
+
         $settingMock->method('getHorariosFisios')->willReturn([]);
         $settingMock->method('getAusenciasFisios')->willReturn([]);
         $settingMock->method('getBonos')->willReturn([]);
@@ -64,7 +64,7 @@ class SettingControllerTest extends ControllerTestCase
     public function testCreateHorarioPostSuccess()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['fisioterapeuta_id'] = 'F123';
+        $_POST['terapeuta_id'] = 'F123';
         $_POST['dia_semana'] = 1;
         $_POST['hora_inicio'] = '09:00';
         $_POST['hora_fin'] = '14:00';
@@ -105,7 +105,7 @@ class SettingControllerTest extends ControllerTestCase
     public function testCreateAusenciaPostSuccess()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['fisioterapeuta_id'] = 'F123';
+        $_POST['terapeuta_id'] = 'F123';
         $_POST['fecha_inicio'] = '2026-06-15';
         $_POST['fecha_fin'] = '2026-06-20';
         $_POST['motivo'] = 'Vacation';
@@ -200,7 +200,7 @@ class SettingControllerTest extends ControllerTestCase
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST['horario_id'] = 5;
-        $_POST['fisioterapeuta_id'] = 'F1';
+        $_POST['terapeuta_id'] = 'F1';
         $_POST['dia_semana'] = 2;
         $_POST['hora_inicio'] = '09:00';
         $_POST['hora_fin'] = '15:00';
@@ -244,7 +244,7 @@ class SettingControllerTest extends ControllerTestCase
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST['ausencia_id'] = 5;
-        $_POST['fisioterapeuta_id'] = 'F1';
+        $_POST['terapeuta_id'] = 'F1';
         $_POST['fecha_inicio'] = '2026-06-15';
         $_POST['fecha_fin'] = '2026-06-20';
         $_POST['motivo'] = 'Vacances';

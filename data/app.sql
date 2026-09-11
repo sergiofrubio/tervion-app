@@ -1239,6 +1239,202 @@ ALTER TABLE `usuarios`
   ADD CONSTRAINT `fk_usuarios_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
+-- --------------------------------------------------------
+-- Procedimiento almacenado para generar datos sintéticos masivos
+-- Objetivo: Forzar I/O de disco, saturar el buffer pool de InnoDB
+-- y evidenciar las ventajas del uso de caché (Redis/Memcached/APCu/Query Cache)
+-- --------------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `poblar_datos_benchmark`$$
+
+CREATE PROCEDURE `poblar_datos_benchmark`()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    DECLARE total_pacientes INT DEFAULT 1000;
+    DECLARE total_citas_por_paciente INT DEFAULT 20;
+    DECLARE cur_paciente_id VARCHAR(9);
+    DECLARE lorem_texto LONGTEXT;
+
+    -- Texto extenso para saturar páginas InnoDB en disco (campos TEXT / MEDIUMTEXT)
+    SET lorem_texto = CONCAT(
+        'Paciente acude a consulta refiriendo dolor osteomuscular severo con irradiacion radicular. ',
+        'Tras anamnesis y exploracion clinica se detecta hipertonia acusada, puntos gatillo miofasciales activos en cuadrado lumbar y trapecio superior. ',
+        'Se realiza ecografia musculoesqueletica descartando rotura fibrilar aguda y observando engrosamiento fascial compatible con sobrecarga mecanica cronica. ',
+        'Pauta de intervencion: Terapia manual articular ortopedica, neuromodulacion percutanea guiada por ecografia, puncion seca profunda y diatermia capacitiva/resistiva a 448 kHz. ',
+        'Recomendaciones domiciliarias de readaptacion y descanso activo durante 72 horas. Evolucion sujeta a respuesta biologica. ',
+        REPEAT('Parametros biomecanicos de control y seguimiento continuo de rango articular (ROM) y dinamometria muscular isometrica basal. ', 8)
+    );
+
+    -- Ajustes de sesion para acelerar insercion masiva inicial
+    SET autocommit = 0;
+    SET unique_checks = 0;
+    SET foreign_key_checks = 0;
+
+    -- 1. Inserción de Pacientes sintéticos (~1,000 pacientes con DNIs únicos)
+    WHILE i <= total_pacientes DO
+        SET cur_paciente_id = LPAD(i + 1000000, 9, '0');
+        
+        INSERT INTO `usuarios` (
+            `usuario_id`, `cuenta_id`, `nombre`, `apellidos`, `telefono`,
+            `fecha_nacimiento`, `direccion`, `provincia`, `municipio`, `cp`,
+            `email`, `pass`, `genero`, `rol`, `creado_por`, `fecha_creacion`, `activo`
+        ) VALUES (
+            cur_paciente_id,
+            1,
+            ELT(1 + (i MOD 10), 'Carlos', 'Elena', 'David', 'Laura', 'Alejandro', 'Sofia', 'Manuel', 'Patricia', 'Javier', 'Lucia'),
+            ELT(1 + (i MOD 10), 'Garcia Romero', 'Rodriguez Gil', 'Fernandez Sanz', 'Lopez Diaz', 'Sanchez Cano', 'Perez Ruiz', 'Gomez Molina', 'Martin Ortiz', 'Navarro Torres', 'Serrano Marin'),
+            CONCAT('6', LPAD(FLOOR(RAND() * 99999999), 8, '0')),
+            DATE_SUB('2000-01-01', INTERVAL (i MOD 15000) DAY),
+            CONCAT('Avenida de la Salud nº ', i),
+            'Madrid',
+            'Madrid',
+            '28001',
+            CONCAT('paciente_', cur_paciente_id, '@benchmark.local'),
+            '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6',
+            IF(i MOD 2 = 0, 'Hombre', 'Mujer'),
+            'Paciente',
+            '345678901',
+            NOW() - INTERVAL (i MOD 365) DAY,
+            1
+        );
+
+        -- Guardar en bloques de 250 pacientes
+        IF i MOD 250 = 0 THEN
+            COMMIT;
+        END IF;
+
+        SET i = i + 1;
+    END WHILE;
+    COMMIT;
+
+    -- 2. Inserción masiva de Citas e Historiales Médicos pesados
+    -- Total estimado: ~20.000 citas y ~20.000 historiales médicos con textos voluminosos
+    SET i = 1;
+    WHILE i <= (total_pacientes * total_citas_por_paciente) DO
+        SET cur_paciente_id = LPAD((i MOD total_pacientes) + 1000001, 9, '0');
+
+        -- Citas clínicas distribuidas a lo largo del tiempo
+        INSERT INTO `citas` (
+            `cuenta_id`, `paciente_id`, `terapeuta_id`, `tipo_cita_id`, `fecha_hora`,
+            `estado`, `creado_por`, `fecha_creacion`, `despacho_id`
+        ) VALUES (
+            1,
+            cur_paciente_id,
+            '234567890',
+            1 + (i MOD 4),
+            NOW() - INTERVAL (i MOD 730) DAY - INTERVAL (i MOD 12) HOUR,
+            ELT(1 + (i MOD 3), 'Realizada', 'Programada', 'Confirmada'),
+            '345678901',
+            NOW() - INTERVAL (i MOD 730) DAY,
+            1 + (i MOD 3)
+        );
+
+        -- Historiales médicos con payload de texto para forzar lectura pesada de disco
+        INSERT INTO `historiales_medicos` (
+            `cuenta_id`, `paciente_id`, `terapeuta_id`, `fecha_consulta`,
+            `motivo_consulta`, `diagnostico`, `tratamiento`, `observaciones`,
+            `creado_por`, `fecha_creacion`
+        ) VALUES (
+            1,
+            cur_paciente_id,
+            '234567890',
+            NOW() - INTERVAL (i MOD 730) DAY,
+            CONCAT('Episodio patologico #', i, ' - Lumbalgia mecanica / Cervicobraquialgia recurrente'),
+            CONCAT('Diagnostico funcional detallado caso #', i, ': ', SUBSTRING(lorem_texto, 1, 300)),
+            CONCAT('Plan terapeutico aplicado #', i, ': ', lorem_texto),
+            CONCAT('Observaciones clinicas y seguimiento #', i, ': Paciente responde favorablemente. ', lorem_texto),
+            '234567890',
+            NOW() - INTERVAL (i MOD 730) DAY
+        );
+
+        -- Auditorías de accesos a historias clínicas (aumenta el tamaño global de índices y tablas)
+        INSERT INTO `auditoria_accesos_historial` (
+            `cuenta_id`, `historial_id`, `usuario_id`, `accion`, `detalles`, `ip_origen`, `fecha_hora`
+        ) VALUES (
+            1,
+            LAST_INSERT_ID(),
+            '234567890',
+            'CONSULTA',
+            CONCAT('Acceso clinico recurrente a historia del paciente ', cur_paciente_id),
+            '192.168.1.100',
+            NOW() - INTERVAL (i MOD 730) DAY
+        );
+
+        -- Facturas y líneas de facturación asociadas
+        IF i MOD 2 = 0 THEN
+            INSERT INTO `facturas` (
+                `cuenta_id`, `serie`, `numero`, `tipo_factura`, `paciente_id`,
+                `fecha_emision`, `fecha_hora_emision`, `estado`, `descripcion`,
+                `precio`, `impuesto`, `cuota_iva`, `total`, `creado_por`
+            ) VALUES (
+                1,
+                'A',
+                1000 + i,
+                'F1',
+                cur_paciente_id,
+                DATE(NOW() - INTERVAL (i MOD 730) DAY),
+                NOW() - INTERVAL (i MOD 730) DAY,
+                'Pagada',
+                CONCAT('Servicio de Fisioterapia y Rehabilitacion #', i),
+                50.00,
+                21.00,
+                10.50,
+                60.50,
+                '345678901'
+            );
+
+            INSERT INTO `facturas_lineas` (
+                `factura_id`, `cuenta_id`, `concepto`, `cantidad`, `precio_unitario`,
+                `descuento_porcentaje`, `tipo_iva`, `cuota_iva`, `total`
+            ) VALUES (
+                LAST_INSERT_ID(),
+                1,
+                'Sesion de Fisioterapia y Terapia Manual Especializada',
+                1.00,
+                50.00,
+                0.00,
+                21.00,
+                10.50,
+                60.50
+            );
+        END IF;
+
+        -- Commit cada 1000 iteraciones para no colapsar el buffer de logs de transacciones
+        IF i MOD 1000 = 0 THEN
+            COMMIT;
+        END IF;
+
+        SET i = i + 1;
+    END WHILE;
+    COMMIT;
+
+    -- Restaurar configuración
+    SET unique_checks = 1;
+    SET foreign_key_checks = 1;
+    SET autocommit = 1;
+END$$
+
+-- Ejecutar la generación masiva de datos para benchmark
+-- CALL `poblar_datos_benchmark`()$$
+
+-- Limpiar el procedimiento tras la carga inicial
+-- DROP PROCEDURE IF EXISTS `poblar_datos_benchmark`$$
+
+DELIMITER ;
+
+-- ========================================================
+-- INSTRUCCIONES DE EJECUCIÓN MANUAL:
+-- El procedimiento queda registrado en la base de datos sin ejecutarse automáticamente.
+-- Cuando quieras generar la carga de datos para tus pruebas de I/O y caché, ejecuta:
+--
+--     CALL poblar_datos_benchmark();
+--
+-- Y si más adelante deseas eliminar el procedimiento:
+--     DROP PROCEDURE IF EXISTS poblar_datos_benchmark;
+-- ========================================================
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

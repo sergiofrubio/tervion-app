@@ -16,11 +16,15 @@ class Appointment
 
     public function getById($cita_id)
     {
-        $query = "SELECT c.*, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.telefono as paciente_telefono, f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos, tc.nombre as tipo_cita_nombre, tc.color as tipo_cita_color, tc.duracion_minutos as tipo_cita_duracion, tc.precio as tipo_cita_precio 
+        $query = "SELECT c.*, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.telefono as paciente_telefono, 
+                         f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos, 
+                         tc.nombre as tipo_cita_nombre, tc.color as tipo_cita_color, tc.duracion_minutos as tipo_cita_duracion, tc.precio as tipo_cita_precio,
+                         d.nombre as despacho_nombre, d.color as despacho_color, d.ubicacion as despacho_ubicacion
                   FROM citas c 
                   LEFT JOIN usuarios p ON c.paciente_id = p.usuario_id 
                   LEFT JOIN usuarios f ON c.terapeuta_id = f.usuario_id 
                   LEFT JOIN tipos_citas tc ON c.tipo_cita_id = tc.tipo_cita_id 
+                  LEFT JOIN despachos d ON c.despacho_id = d.despacho_id
                   WHERE c.cita_id = :cita_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':cita_id', $cita_id, PDO::PARAM_INT);
@@ -28,26 +32,32 @@ class Appointment
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function save($paciente_id, $terapeuta_id, $fecha_hora, $estado = "Programada", $tipo_cita_id = null)
+    public function save($paciente_id, $terapeuta_id, $fecha_hora, $estado = "Programada", $tipo_cita_id = null, $despacho_id = null, $fecha_hora_fin = null)
     {
-        $query = "INSERT INTO citas (paciente_id, terapeuta_id, tipo_cita_id, fecha_hora, estado) 
-                  VALUES (:paciente_id, :terapeuta_id, :tipo_cita_id, :fecha_hora, :estado)";
+        $query = "INSERT INTO citas (paciente_id, terapeuta_id, tipo_cita_id, despacho_id, fecha_hora, fecha_hora_fin, estado) 
+                  VALUES (:paciente_id, :terapeuta_id, :tipo_cita_id, :despacho_id, :fecha_hora, :fecha_hora_fin, :estado)";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':paciente_id', $paciente_id);
         $stmt->bindParam(':terapeuta_id', $terapeuta_id);
         $stmt->bindValue(':tipo_cita_id', $tipo_cita_id ? $tipo_cita_id : null, PDO::PARAM_INT);
+        $stmt->bindValue(':despacho_id', $despacho_id ? $despacho_id : null, PDO::PARAM_INT);
         $stmt->bindParam(':fecha_hora', $fecha_hora);
+        $stmt->bindValue(':fecha_hora_fin', $fecha_hora_fin ? $fecha_hora_fin : null);
         $stmt->bindParam(':estado', $estado);
         return $stmt->execute();
     }
 
     public function getAll()
     {
-        $query = "SELECT c.*, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.telefono as paciente_telefono, f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos, tc.nombre as tipo_cita_nombre, tc.color as tipo_cita_color 
+        $query = "SELECT c.*, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.telefono as paciente_telefono, 
+                         f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos, 
+                         tc.nombre as tipo_cita_nombre, tc.color as tipo_cita_color,
+                         d.nombre as despacho_nombre, d.color as despacho_color, d.ubicacion as despacho_ubicacion
                   FROM citas c 
                   LEFT JOIN usuarios p ON c.paciente_id = p.usuario_id 
                   LEFT JOIN usuarios f ON c.terapeuta_id = f.usuario_id 
                   LEFT JOIN tipos_citas tc ON c.tipo_cita_id = tc.tipo_cita_id 
+                  LEFT JOIN despachos d ON c.despacho_id = d.despacho_id
                   ORDER BY c.fecha_hora DESC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -62,16 +72,20 @@ class Appointment
         return $stmt->execute();
     }
 
-    public function update($cita_id, $paciente_id, $terapeuta_id, $fecha_hora, $estado = "Programada", $tipo_cita_id = null)
+    public function update($cita_id, $paciente_id, $terapeuta_id, $fecha_hora, $estado = "Programada", $tipo_cita_id = null, $despacho_id = null, $fecha_hora_fin = null)
     {
-        $query = "UPDATE citas SET paciente_id = :paciente_id, terapeuta_id = :terapeuta_id, tipo_cita_id = :tipo_cita_id, fecha_hora = :fecha_hora
+        $query = "UPDATE citas SET paciente_id = :paciente_id, terapeuta_id = :terapeuta_id, tipo_cita_id = :tipo_cita_id, 
+                                   despacho_id = :despacho_id, fecha_hora = :fecha_hora, fecha_hora_fin = :fecha_hora_fin, estado = :estado
                   WHERE cita_id = :cita_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':cita_id', $cita_id, PDO::PARAM_INT);
         $stmt->bindParam(':paciente_id', $paciente_id);
         $stmt->bindParam(':terapeuta_id', $terapeuta_id);
         $stmt->bindValue(':tipo_cita_id', $tipo_cita_id ? $tipo_cita_id : null, PDO::PARAM_INT);
+        $stmt->bindValue(':despacho_id', $despacho_id ? $despacho_id : null, PDO::PARAM_INT);
         $stmt->bindParam(':fecha_hora', $fecha_hora);
+        $stmt->bindValue(':fecha_hora_fin', $fecha_hora_fin ? $fecha_hora_fin : null);
+        $stmt->bindParam(':estado', $estado);
         return $stmt->execute();
     }
 
@@ -83,11 +97,16 @@ class Appointment
         $stmt->bindParam(':cita_id', $cita_id, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
     public function getByPatient($paciente_id)
     {
-        $query = "SELECT c.*, f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos 
+        $query = "SELECT c.*, f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos,
+                         tc.nombre as tipo_cita_nombre, tc.color as tipo_cita_color,
+                         d.nombre as despacho_nombre, d.color as despacho_color, d.ubicacion as despacho_ubicacion
                   FROM citas c 
                   LEFT JOIN usuarios f ON c.terapeuta_id = f.usuario_id 
+                  LEFT JOIN tipos_citas tc ON c.tipo_cita_id = tc.tipo_cita_id 
+                  LEFT JOIN despachos d ON c.despacho_id = d.despacho_id
                   WHERE c.paciente_id = :paciente_id
                   ORDER BY c.fecha_hora DESC";
         $stmt = $this->db->prepare($query);
@@ -96,7 +115,82 @@ class Appointment
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAvailableSlots($terapeuta_id, $fecha, $duracion_minutos = 60)
+    /**
+     * Busca y asigna automáticamente el primer despacho físico activo y libre para el intervalo de tiempo dado.
+     *
+     * @param string $fecha_hora_inicio Formato Y-m-d H:i:s
+     * @param string $fecha_hora_fin Formato Y-m-d H:i:s
+     * @param int|null $exclude_cita_id ID de cita a excluir (para ediciones)
+     * @return int|null ID del despacho libre asignado o null si no hay ninguno disponible
+     */
+    public function findAvailableDespacho($fecha_hora_inicio, $fecha_hora_fin, $exclude_cita_id = null)
+    {
+        $queryDespachos = "SELECT despacho_id, nombre, capacidad FROM despachos WHERE estado = 'Activo' ORDER BY despacho_id ASC";
+        $stmtD = $this->db->prepare($queryDespachos);
+        $stmtD->execute();
+        $despachos = $stmtD->fetchAll(PDO::FETCH_ASSOC);
+
+        if (empty($despachos)) {
+            return null;
+        }
+
+        // Consultar citas presenciales con despacho asignado que coincidan o se solapen en el rango
+        $sqlCitas = "SELECT c.despacho_id, c.fecha_hora, COALESCE(c.fecha_hora_fin, DATE_ADD(c.fecha_hora, INTERVAL COALESCE(tc.duracion_minutos, 60) MINUTE)) as fecha_fin_calculada
+                     FROM citas c
+                     LEFT JOIN tipos_citas tc ON c.tipo_cita_id = tc.tipo_cita_id
+                     WHERE c.despacho_id IS NOT NULL
+                       AND c.estado != 'Cancelada'
+                       AND c.fecha_hora < :fecha_fin
+                       AND COALESCE(c.fecha_hora_fin, DATE_ADD(c.fecha_hora, INTERVAL COALESCE(tc.duracion_minutos, 60) MINUTE)) > :fecha_inicio";
+
+        if ($exclude_cita_id) {
+            $sqlCitas .= " AND c.cita_id != :exclude_cita_id";
+        }
+
+        $stmtC = $this->db->prepare($sqlCitas);
+        $params = [
+            ':fecha_inicio' => $fecha_hora_inicio,
+            ':fecha_fin' => $fecha_hora_fin
+        ];
+        if ($exclude_cita_id) {
+            $params[':exclude_cita_id'] = (int)$exclude_cita_id;
+        }
+        $stmtC->execute($params);
+        $citasOcupadas = $stmtC->fetchAll(PDO::FETCH_ASSOC);
+
+        // Contabilizar ocupación por despacho_id
+        $ocupacionPorDespacho = [];
+        foreach ($citasOcupadas as $co) {
+            $dId = (int)$co['despacho_id'];
+            $ocupacionPorDespacho[$dId] = ($ocupacionPorDespacho[$dId] ?? 0) + 1;
+        }
+
+        // Asignar el primer despacho que no supere su capacidad
+        foreach ($despachos as $d) {
+            $dId = (int)$d['despacho_id'];
+            $capacidad = max(1, (int)($d['capacidad'] ?? 1));
+            $ocupados = $ocupacionPorDespacho[$dId] ?? 0;
+
+            if ($ocupados < $capacidad) {
+                return $dId;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Obtiene los slots de inicio disponibles para un terapeuta, considerando su horario laboral, ausencias,
+     * citas agendadas y la disponibilidad de despachos libres si la cita es presencial.
+     *
+     * @param string $terapeuta_id
+     * @param string $fecha Y-m-d
+     * @param int $duracion_minutos
+     * @param string $ubicacion_tipo 'presencial' o 'telematica'
+     * @param int|null $exclude_cita_id
+     * @return array Lista de strings con horas libres ('09:00', '09:30', etc.)
+     */
+    public function getAvailableSlots($terapeuta_id, $fecha, $duracion_minutos = 60, $ubicacion_tipo = 'presencial', $exclude_cita_id = null)
     {
         $dias_semana = [
             'Sunday' => 'Domingo',
@@ -121,15 +215,47 @@ class Appointment
         $stmtA->execute([':fisio_id' => $terapeuta_id, ':fecha' => $fecha]);
         if ($stmtA->fetch()) return [];
 
-        $queryCitas = "SELECT c.fecha_hora, COALESCE(tc.duracion_minutos, 60) as duracion_minutos 
+        // Citas del terapeuta para este día
+        $queryCitas = "SELECT c.cita_id, c.fecha_hora, COALESCE(tc.duracion_minutos, 60) as duracion_minutos 
                       FROM citas c 
                       LEFT JOIN tipos_citas tc ON c.tipo_cita_id = tc.tipo_cita_id 
                       WHERE c.terapeuta_id = :fisio_id 
                       AND DATE(c.fecha_hora) = :fecha 
                       AND c.estado != 'Cancelada'";
+        if ($exclude_cita_id) {
+            $queryCitas .= " AND c.cita_id != " . (int)$exclude_cita_id;
+        }
         $stmtC = $this->db->prepare($queryCitas);
         $stmtC->execute([':fisio_id' => $terapeuta_id, ':fecha' => $fecha]);
         $citas = $stmtC->fetchAll(PDO::FETCH_ASSOC);
+
+        // Si es presencial, obtener despachos activos para verificar disponibilidad de salas físicas
+        $despachosActivos = [];
+        $citasDespachosDelDia = [];
+        $esPresencial = ($ubicacion_tipo === 'presencial');
+
+        if ($esPresencial) {
+            $stmtD = $this->db->prepare("SELECT despacho_id, capacidad FROM despachos WHERE estado = 'Activo'");
+            $stmtD->execute();
+            $despachosActivos = $stmtD->fetchAll(PDO::FETCH_ASSOC);
+
+            // Si hay despachos configurados, comprobaremos la ocupación
+            if (!empty($despachosActivos)) {
+                $sqlCitasDespachos = "SELECT c.cita_id, c.despacho_id, c.fecha_hora, 
+                                             COALESCE(c.fecha_hora_fin, DATE_ADD(c.fecha_hora, INTERVAL COALESCE(tc.duracion_minutos, 60) MINUTE)) as fecha_fin_calculada
+                                      FROM citas c
+                                      LEFT JOIN tipos_citas tc ON c.tipo_cita_id = tc.tipo_cita_id
+                                      WHERE c.despacho_id IS NOT NULL
+                                        AND DATE(c.fecha_hora) = :fecha
+                                        AND c.estado != 'Cancelada'";
+                if ($exclude_cita_id) {
+                    $sqlCitasDespachos .= " AND c.cita_id != " . (int)$exclude_cita_id;
+                }
+                $stmtCD = $this->db->prepare($sqlCitasDespachos);
+                $stmtCD->execute([':fecha' => $fecha]);
+                $citasDespachosDelDia = $stmtCD->fetchAll(PDO::FETCH_ASSOC);
+            }
+        }
 
         $availableSlots = [];
         $duracion_segundos = $duracion_minutos * 60;
@@ -142,19 +268,50 @@ class Appointment
                 $slotStart = $current;
                 $slotEnd = $current + $duracion_segundos;
 
-                $isOccupied = false;
+                // 1. Verificar si el terapeuta está ocupado
+                $isOccupiedTerapeuta = false;
                 foreach ($citas as $cita) {
                     $citaStart = strtotime($cita['fecha_hora']);
-                    $citaDur = ($cita['duracion_minutos'] ?? 60) * 60; // Default 60 si no hay servicio
+                    $citaDur = ($cita['duracion_minutos'] ?? 60) * 60;
                     $citaEnd = $citaStart + $citaDur;
 
                     if ($slotStart < $citaEnd && $citaStart < $slotEnd) {
-                        $isOccupied = true;
+                        $isOccupiedTerapeuta = true;
                         break;
                     }
                 }
 
-                if (!$isOccupied) {
+                // 2. Si el terapeuta está libre y la cita es presencial, verificar si hay al menos un despacho libre
+                $hasDespachoLibre = true;
+                if (!$isOccupiedTerapeuta && $esPresencial && !empty($despachosActivos)) {
+                    $ocupacionPorDespacho = [];
+                    foreach ($citasDespachosDelDia as $cd) {
+                        $cdStart = strtotime($cd['fecha_hora']);
+                        $cdEnd = strtotime($cd['fecha_fin_calculada']);
+
+                        if ($slotStart < $cdEnd && $cdStart < $slotEnd) {
+                            $dId = (int)$cd['despacho_id'];
+                            $ocupacionPorDespacho[$dId] = ($ocupacionPorDespacho[$dId] ?? 0) + 1;
+                        }
+                    }
+
+                    $despachoDisponibleEncontrado = false;
+                    foreach ($despachosActivos as $desp) {
+                        $dId = (int)$desp['despacho_id'];
+                        $cap = max(1, (int)($desp['capacidad'] ?? 1));
+                        $actuales = $ocupacionPorDespacho[$dId] ?? 0;
+                        if ($actuales < $cap) {
+                            $despachoDisponibleEncontrado = true;
+                            break;
+                        }
+                    }
+
+                    if (!$despachoDisponibleEncontrado) {
+                        $hasDespachoLibre = false;
+                    }
+                }
+
+                if (!$isOccupiedTerapeuta && $hasDespachoLibre) {
                     $availableSlots[] = date('H:i', $slotStart);
                 }
 
@@ -163,10 +320,10 @@ class Appointment
             }
         }
 
-        return array_unique($availableSlots);
+        return array_values(array_unique($availableSlots));
     }
 
-    public function getAvailableDays($terapeuta_id, $duracion_minutos = 60)
+    public function getAvailableDays($terapeuta_id, $duracion_minutos = 60, $ubicacion_tipo = 'presencial', $exclude_cita_id = null)
     {
         $availableDays = [];
         $today = new \DateTime('today');
@@ -176,7 +333,7 @@ class Appointment
             $currentDate->modify("+$i days");
             $fechaStr = $currentDate->format('Y-m-d');
 
-            $slots = $this->getAvailableSlots($terapeuta_id, $fechaStr, $duracion_minutos);
+            $slots = $this->getAvailableSlots($terapeuta_id, $fechaStr, $duracion_minutos, $ubicacion_tipo, $exclude_cita_id);
             if (!empty($slots)) {
                 $availableDays[] = [
                     'fecha' => $fechaStr,

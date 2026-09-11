@@ -73,6 +73,60 @@ export function initAppointmentForm(options = {}) {
         return html;
     }
 
+    const citaIdInput = document.getElementById('cita_id');
+    const citaId = citaIdInput ? citaIdInput.value : '';
+
+    function getUbicacionTipo() {
+        const checked = document.querySelector('input[name="ubicacion_tipo"]:checked');
+        return checked ? checked.value : 'presencial';
+    }
+
+    function syncFechaHora() {
+        const fechaSesionInput = document.getElementById('fecha_sesion');
+        const horaInicioInput = document.getElementById('hora_inicio');
+        const horaFinInput = document.getElementById('hora_fin');
+
+        if (fechaSesionInput && horaInicioInput && fechaHoraHidden) {
+            const fechaVal = fechaSesionInput.value.trim();
+            const horaVal = horaInicioInput.value.trim();
+            if (fechaVal && horaVal) {
+                fechaHoraHidden.value = `${fechaVal} ${horaVal}:00`;
+            }
+        }
+
+        if (horaInicioInput && horaFinInput && tipoCitaSelect) {
+            const horaVal = horaInicioInput.value.trim();
+            if (horaVal && (!horaFinInput.value || horaFinInput.dataset.autoCalculated !== 'false')) {
+                const selectedOption = tipoCitaSelect.options[tipoCitaSelect.selectedIndex];
+                const duracion = selectedOption ? parseInt(selectedOption.dataset.duracion || 60, 10) : 60;
+                const [h, m] = horaVal.split(':').map(Number);
+                if (!isNaN(h) && !isNaN(m)) {
+                    const endDate = new Date();
+                    endDate.setHours(h, m + duracion, 0, 0);
+                    const endH = String(endDate.getHours()).padStart(2, '0');
+                    const endM = String(endDate.getMinutes()).padStart(2, '0');
+                    horaFinInput.value = `${endH}:${endM}`;
+                }
+            }
+        }
+    }
+
+    const fechaSesionEl = document.getElementById('fecha_sesion');
+    const horaInicioEl = document.getElementById('hora_inicio');
+    const horaFinEl = document.getElementById('hora_fin');
+
+    if (fechaSesionEl) {
+        fechaSesionEl.addEventListener('change', syncFechaHora);
+    }
+    if (horaInicioEl) {
+        horaInicioEl.addEventListener('change', syncFechaHora);
+    }
+    if (horaFinEl) {
+        horaFinEl.addEventListener('change', () => {
+            horaFinEl.dataset.autoCalculated = 'false';
+        });
+    }
+
     function loadAvailableDays(fisioId, initialDateTime = '') {
         diasContainer.innerHTML = '<div class="text-sm text-gray-500 py-4 w-full text-center">Cargando días disponibles...</div>';
         slotsContainer.innerHTML = '<div class="col-span-full text-sm text-gray-400 italic p-6 bg-gray-50/50 rounded-2xl text-center border border-gray-100">Selecciona un día primero para ver las horas.</div>';
@@ -88,7 +142,14 @@ export function initAppointmentForm(options = {}) {
         }
 
         const tipoCitaId = tipoCitaSelect ? tipoCitaSelect.value : '';
-        fetch(`${root}/citas/dias-disponibles?fisio_id=${encodeURIComponent(fisioId)}&tipo_cita_id=${encodeURIComponent(tipoCitaId)}`)
+        const ubicacionTipo = getUbicacionTipo();
+
+        let url = `${root}/citas/dias-disponibles?fisio_id=${encodeURIComponent(fisioId)}&tipo_cita_id=${encodeURIComponent(tipoCitaId)}&ubicacion_tipo=${encodeURIComponent(ubicacionTipo)}`;
+        if (citaId) {
+            url += `&cita_id=${encodeURIComponent(citaId)}`;
+        }
+
+        fetch(url)
             .then(response => response.json())
             .then(days => {
                 diasContainer.innerHTML = '';
@@ -107,7 +168,7 @@ export function initAppointmentForm(options = {}) {
 
                 if (days.length === 0 && !initialDate) {
                     diasContainer.className = "flex w-full";
-                    diasContainer.innerHTML = '<div class="text-sm text-red-500 py-4 w-full text-center font-bold">No hay días disponibles programados para este profesional en los próximos 60 días.</div>';
+                    diasContainer.innerHTML = '<div class="text-sm text-red-500 py-4 w-full text-center font-bold">No hay días disponibles programados para este profesional con la modalidad seleccionada.</div>';
                     return;
                 }
 
@@ -164,7 +225,14 @@ export function initAppointmentForm(options = {}) {
         slotsContainer.innerHTML = '<div class="col-span-full text-sm text-gray-500 py-4 text-center">Cargando horas disponibles...</div>';
 
         const tipoCitaId = tipoCitaSelect ? tipoCitaSelect.value : '';
-        fetch(`${root}/citas/slots?fisio_id=${encodeURIComponent(fisioId)}&fecha=${encodeURIComponent(dateStr)}&tipo_cita_id=${encodeURIComponent(tipoCitaId)}`)
+        const ubicacionTipo = getUbicacionTipo();
+
+        let url = `${root}/citas/slots?fisio_id=${encodeURIComponent(fisioId)}&fecha=${encodeURIComponent(dateStr)}&tipo_cita_id=${encodeURIComponent(tipoCitaId)}&ubicacion_tipo=${encodeURIComponent(ubicacionTipo)}`;
+        if (citaId) {
+            url += `&cita_id=${encodeURIComponent(citaId)}`;
+        }
+
+        fetch(url)
             .then(response => response.json())
             .then(slots => {
                 slotsContainer.innerHTML = '';
@@ -175,7 +243,7 @@ export function initAppointmentForm(options = {}) {
                 }
 
                 if (slots.length === 0) {
-                    slotsContainer.innerHTML = '<div class="col-span-full text-sm text-red-500 py-4 text-center">No hay horas libres para este día.</div>';
+                    slotsContainer.innerHTML = '<div class="col-span-full text-sm text-amber-600 py-4 text-center font-semibold">No hay huecos disponibles (terapeuta o despachos ocupados) para este día.</div>';
                     return;
                 }
 
@@ -192,6 +260,7 @@ export function initAppointmentForm(options = {}) {
                         });
                         btn.classList.remove('border-gray-100', 'text-gray-700');
                         btn.classList.add('border-primary-500', 'bg-primary-50', 'text-primary-600');
+
                         if (fechaHoraHidden) fechaHoraHidden.value = `${dateStr} ${slot}:00`;
 
                         const fechaSesionInput = document.getElementById('fecha_sesion');
@@ -210,6 +279,7 @@ export function initAppointmentForm(options = {}) {
                             const endH = String(endDate.getHours()).padStart(2, '0');
                             const endM = String(endDate.getMinutes()).padStart(2, '0');
                             horaFinInput.value = `${endH}:${endM}`;
+                            horaFinInput.dataset.autoCalculated = 'true';
                         }
                     };
 
@@ -250,6 +320,47 @@ export function initAppointmentForm(options = {}) {
 
             if (hiddenFisioInput && hiddenFisioInput.value) {
                 loadAvailableDays(hiddenFisioInput.value);
+            }
+        });
+    }
+
+    // Modalidad / Ubicación: actualizar agenda al cambiar presencial/telemática
+    document.querySelectorAll('input[name="ubicacion_tipo"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            const despachoInfo = document.getElementById('despacho-auto-info');
+            if (despachoInfo) {
+                if (this.value === 'presencial') {
+                    despachoInfo.classList.remove('hidden');
+                } else {
+                    despachoInfo.classList.add('hidden');
+                }
+            }
+            if (hiddenFisioInput && hiddenFisioInput.value) {
+                loadAvailableDays(hiddenFisioInput.value);
+            }
+        });
+    });
+
+    // Validar y sincronizar antes de enviar formulario
+    const appointmentForm = document.getElementById('appointment-form');
+    if (appointmentForm) {
+        appointmentForm.addEventListener('submit', function (e) {
+            syncFechaHora();
+            const pacienteIdInput = document.getElementById('paciente_id');
+            if (!pacienteIdInput || !pacienteIdInput.value.trim()) {
+                e.preventDefault();
+                alert('Por favor, selecciona un paciente de la lista.');
+                return false;
+            }
+            if (!hiddenFisioInput || !hiddenFisioInput.value.trim()) {
+                e.preventDefault();
+                alert('Por favor, selecciona un terapeuta responsable.');
+                return false;
+            }
+            if (!fechaHoraHidden || !fechaHoraHidden.value.trim()) {
+                e.preventDefault();
+                alert('Por favor, selecciona una fecha y hora de inicio para la cita.');
+                return false;
             }
         });
     }

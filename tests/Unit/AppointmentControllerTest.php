@@ -70,7 +70,7 @@ class AppointmentControllerTest extends ControllerTestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getByRol'])
             ->getMock();
-        $userMock->method('getByRol')->with('Fisioterapeuta')->willReturn([]);
+        $userMock->method('getByRol')->willReturn([]);
 
         $typeMock = $this->getMockBuilder(\App\Models\AppointmentType::class)
             ->disableOriginalConstructor()
@@ -78,17 +78,25 @@ class AppointmentControllerTest extends ControllerTestCase
             ->getMock();
         $typeMock->method('getAllActive')->willReturn([]);
 
+        $settingMock = $this->getMockBuilder(\App\Models\Setting::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getDespachos'])
+            ->getMock();
+        $settingMock->method('getDespachos')->willReturn([]);
+
         $controller = $this->getControllerMock(AppointmentController::class);
         $controller->method('model')->willReturnMap([
             ['User', $userMock],
-            ['AppointmentType', $typeMock]
+            ['AppointmentType', $typeMock],
+            ['Setting', $settingMock]
         ]);
 
         $controller->expects($this->once())
             ->method('view')
             ->with('patient-view/appointment/create', [
                 'fisioterapeutas' => [],
-                'tiposCitas' => []
+                'tiposCitas' => [],
+                'despachos' => []
             ]);
 
         $controller->create();
@@ -103,7 +111,7 @@ class AppointmentControllerTest extends ControllerTestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getByRol'])
             ->getMock();
-        $userMock->method('getByRol')->with('Fisioterapeuta')->willReturn([]);
+        $userMock->method('getByRol')->willReturn([]);
 
         $typeMock = $this->getMockBuilder(\App\Models\AppointmentType::class)
             ->disableOriginalConstructor()
@@ -111,17 +119,25 @@ class AppointmentControllerTest extends ControllerTestCase
             ->getMock();
         $typeMock->method('getAllActive')->willReturn([]);
 
+        $settingMock = $this->getMockBuilder(\App\Models\Setting::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getDespachos'])
+            ->getMock();
+        $settingMock->method('getDespachos')->willReturn([]);
+
         $controller = $this->getControllerMock(AppointmentController::class);
         $controller->method('model')->willReturnMap([
             ['User', $userMock],
-            ['AppointmentType', $typeMock]
+            ['AppointmentType', $typeMock],
+            ['Setting', $settingMock]
         ]);
 
         $controller->expects($this->once())
             ->method('view')
             ->with('appointment/form', [
                 'fisioterapeutas' => [],
-                'tiposCitas' => []
+                'tiposCitas' => [],
+                'despachos' => []
             ]);
 
         $controller->create();
@@ -135,6 +151,7 @@ class AppointmentControllerTest extends ControllerTestCase
         $_POST['terapeuta_id'] = 'F1';
         $_POST['fecha_hora'] = '2026-06-15 10:00:00';
         $_POST['especialidad_id'] = 'E1';
+        $_POST['ubicacion_tipo'] = 'telematica';
 
         $appointmentMock = $this->getMockBuilder(Appointment::class)
             ->disableOriginalConstructor()
@@ -207,7 +224,7 @@ class AppointmentControllerTest extends ControllerTestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getByRol'])
             ->getMock();
-        $userMock->method('getByRol')->with('Fisioterapeuta')->willReturn([]);
+        $userMock->method('getByRol')->willReturn([]);
 
         $typeMock = $this->getMockBuilder(\App\Models\AppointmentType::class)
             ->disableOriginalConstructor()
@@ -215,11 +232,18 @@ class AppointmentControllerTest extends ControllerTestCase
             ->getMock();
         $typeMock->method('getAllActive')->willReturn([]);
 
+        $settingMock = $this->getMockBuilder(\App\Models\Setting::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getDespachos'])
+            ->getMock();
+        $settingMock->method('getDespachos')->willReturn([]);
+
         $controller = $this->getControllerMock(AppointmentController::class);
         $controller->method('model')->willReturnMap([
             ['Appointment', $appointmentMock],
             ['User', $userMock],
-            ['AppointmentType', $typeMock]
+            ['AppointmentType', $typeMock],
+            ['Setting', $settingMock]
         ]);
 
         $controller->expects($this->once())
@@ -248,7 +272,7 @@ class AppointmentControllerTest extends ControllerTestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['getByRol'])
             ->getMock();
-        $userMock->method('getByRol')->with('Fisioterapeuta')->willReturn([]);
+        $userMock->method('getByRol')->willReturn([]);
 
         $typeMock = $this->getMockBuilder(\App\Models\AppointmentType::class)
             ->disableOriginalConstructor()
@@ -256,11 +280,18 @@ class AppointmentControllerTest extends ControllerTestCase
             ->getMock();
         $typeMock->method('getAllActive')->willReturn([]);
 
+        $settingMock = $this->getMockBuilder(\App\Models\Setting::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getDespachos'])
+            ->getMock();
+        $settingMock->method('getDespachos')->willReturn([]);
+
         $controller = $this->getControllerMock(AppointmentController::class);
         $controller->method('model')->willReturnMap([
             ['Appointment', $appointmentMock],
             ['User', $userMock],
-            ['AppointmentType', $typeMock]
+            ['AppointmentType', $typeMock],
+            ['Setting', $settingMock]
         ]);
 
         $this->expectException(TestExitException::class);
@@ -277,6 +308,7 @@ class AppointmentControllerTest extends ControllerTestCase
         $_POST['fecha_hora'] = '2026-06-15 11:00:00';
         $_POST['estado'] = 'Programada';
         $_POST['especialidad_id'] = 'E1';
+        $_POST['ubicacion_tipo'] = 'telematica';
 
         $appointmentMock = $this->getMockBuilder(Appointment::class)
             ->disableOriginalConstructor()

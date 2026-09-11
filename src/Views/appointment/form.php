@@ -20,9 +20,9 @@ include TEMPLATE_DIR . 'header.php';
 
     <!-- Form Card -->
     <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-        <form action="<?= PROJECT_ROOT ?>/citas/<?= $isEdit ? 'edit' : 'create' ?>" method="POST" class="p-8 space-y-10" id="appointment-form">
+        <form action="<?= PROJECT_ROOT ?>/citas/<?= $isEdit ? 'editar' : 'crear' ?>" method="POST" class="p-8 space-y-10" id="appointment-form">
             <?php if ($isEdit) : ?>
-                <input type="hidden" name="cita_id" value="<?= $a['cita_id'] ?>">
+                <input type="hidden" name="cita_id" id="cita_id" value="<?= $a['cita_id'] ?>">
             <?php endif; ?>
 
             <!-- 1. Asignación de Paciente y Profesional -->
@@ -158,7 +158,7 @@ include TEMPLATE_DIR . 'header.php';
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <!-- Presencial -->
                         <label class="relative flex items-center p-4 rounded-2xl border-2 border-gray-200 hover:border-primary-400 bg-white cursor-pointer transition-all has-[:checked]:border-primary-500 has-[:checked]:bg-primary-50/20 has-[:checked]:ring-2 has-[:checked]:ring-primary-500/20">
-                            <input type="radio" name="ubicacion_tipo" value="presencial" class="w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500" <?= (!$isEdit || ($a['ubicacion_tipo'] ?? 'presencial') === 'presencial') ? 'checked' : '' ?>>
+                            <input type="radio" name="ubicacion_tipo" id="ubicacion_presencial" value="presencial" class="w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500" <?= (!$isEdit || ($a['ubicacion_tipo'] ?? 'presencial') === 'presencial') ? 'checked' : '' ?>>
                             <div class="ml-3 flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg">
                                     <i class="bi bi-geo-alt-fill"></i>
@@ -172,7 +172,7 @@ include TEMPLATE_DIR . 'header.php';
 
                         <!-- Telemática / Online -->
                         <label class="relative flex items-center p-4 rounded-2xl border-2 border-gray-200 hover:border-primary-400 bg-white cursor-pointer transition-all has-[:checked]:border-primary-500 has-[:checked]:bg-primary-50/20 has-[:checked]:ring-2 has-[:checked]:ring-primary-500/20">
-                            <input type="radio" name="ubicacion_tipo" value="telematica" class="w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500" <?= ($isEdit && ($a['ubicacion_tipo'] ?? '') === 'telematica') ? 'checked' : '' ?>>
+                            <input type="radio" name="ubicacion_tipo" id="ubicacion_telematica" value="telematica" class="w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500" <?= ($isEdit && ($a['ubicacion_tipo'] ?? '') === 'telematica') ? 'checked' : '' ?>>
                             <div class="ml-3 flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
                                     <i class="bi bi-camera-video-fill"></i>
@@ -183,6 +183,42 @@ include TEMPLATE_DIR . 'header.php';
                                 </div>
                             </div>
                         </label>
+                    </div>
+
+                    <!-- Panel informativo de Asignación Automática de Despachos -->
+                    <div id="despacho-auto-info" class="p-4 rounded-2xl border border-indigo-100 bg-indigo-50/40 text-indigo-900 flex items-start gap-3 transition-all">
+                        <div class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 text-base">
+                            <i class="bi bi-door-open-fill"></i>
+                        </div>
+                        <div class="text-xs space-y-1">
+                            <div class="flex items-center gap-2 font-bold text-indigo-950">
+                                <span>Asignación Automática de Despacho</span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] bg-indigo-100 text-indigo-700 uppercase font-black tracking-wider">Automático</span>
+                            </div>
+                            <p class="text-indigo-800/80">
+                                El sistema cuadra en tiempo real la disponibilidad del profesional con los despachos libres de la clínica, asignando automáticamente una sala disponible.
+                            </p>
+                            <?php if ($isEdit && !empty($a['despacho_nombre'])): ?>
+                                <div class="pt-1 flex items-center gap-2 font-medium text-gray-700">
+                                    <span class="text-xs text-gray-500">Despacho actual asignado:</span>
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-xs font-bold border" style="background-color: <?= htmlspecialchars($a['despacho_color'] ?? '#6366f1') ?>15; border-color: <?= htmlspecialchars($a['despacho_color'] ?? '#6366f1') ?>40; color: <?= htmlspecialchars($a['despacho_color'] ?? '#6366f1') ?>;">
+                                        <i class="bi bi-geo-alt"></i> <?= htmlspecialchars($a['despacho_nombre']) ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
+                            <?php if (!empty($despachos)): ?>
+                                <div class="pt-1.5 flex flex-wrap items-center gap-1.5 text-[11px] text-gray-500">
+                                    <span class="font-semibold text-gray-600">Salas activas en clínica:</span>
+                                    <?php foreach ($despachos as $d): ?>
+                                        <?php if (($d['estado'] ?? 'Activo') === 'Activo'): ?>
+                                            <span class="px-2 py-0.5 rounded-md bg-white border border-gray-200 text-gray-700 font-medium">
+                                                <?= htmlspecialchars($d['nombre']) ?>
+                                            </span>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
 

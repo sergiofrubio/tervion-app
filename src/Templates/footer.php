@@ -9,7 +9,7 @@
                     <span>&middot;</span>
                     <a href="<?= PROJECT_ROOT ?>/terminos" class="hover:text-gray-600 transition-colors">Términos</a>
                     <span>&middot;</span>
-                    <span class="text-gray-300">v2.0</span>
+                    <span class="text-gray-300">v1.0</span>
                 </div>
             </div>
         </footer>

@@ -48,22 +48,75 @@ class AppointmentController extends Controller
             $paciente_id = ($_SESSION['rol'] === 'Paciente') ? $_SESSION['usuario_id'] : ($_POST['paciente_id'] ?? '');
             $terapeuta_id = $_POST['terapeuta_id'] ?? '';
             $tipo_cita_id = !empty($_POST['tipo_cita_id']) ? $_POST['tipo_cita_id'] : null;
+
+            // Determinar fecha_hora
             $fecha_hora = $_POST['fecha_hora'] ?? '';
+            if (empty($fecha_hora) && !empty($_POST['fecha_sesion']) && !empty($_POST['hora_inicio'])) {
+                $fecha_hora = trim($_POST['fecha_sesion']) . ' ' . trim($_POST['hora_inicio']) . ':00';
+            }
+
+            // Determinar duración y fecha_hora_fin
+            $duracion_minutos = 60;
+            if ($tipo_cita_id) {
+                $typeModel = $this->model('AppointmentType');
+                $tipoCita = $typeModel->getById($tipo_cita_id);
+                if ($tipoCita && !empty($tipoCita['duracion_minutos'])) {
+                    $duracion_minutos = (int)$tipoCita['duracion_minutos'];
+                }
+            }
+
+            $fecha_hora_fin = null;
+            if (!empty($fecha_hora)) {
+                if (!empty($_POST['hora_fin']) && !empty($_POST['fecha_sesion'])) {
+                    $fecha_hora_fin = trim($_POST['fecha_sesion']) . ' ' . trim($_POST['hora_fin']) . ':00';
+                } else {
+                    $fecha_hora_fin = date('Y-m-d H:i:s', strtotime($fecha_hora . " +{$duracion_minutos} minutes"));
+                }
+            }
+
+            $ubicacion_tipo = $_POST['ubicacion_tipo'] ?? 'presencial';
+            $despacho_id = null;
+
+            // Asignación automática de despacho si la cita es presencial
+            if ($ubicacion_tipo === 'presencial' && !empty($fecha_hora) && !empty($fecha_hora_fin)) {
+                $despacho_id = $appointment->findAvailableDespacho($fecha_hora, $fecha_hora_fin);
+                if (!$despacho_id) {
+                    $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
+                    header('Location: ' . PROJECT_ROOT . $redirect . '?alert=danger&message=' . urlencode('No hay despachos libres disponibles para esa fecha y hora.'));
+                    $this->exitApp();
+                }
+            }
+
             $estado = 'Programada';
 
-            if (!empty($paciente_id) && !empty($terapeuta_id) && !empty($fecha_hora) && $appointment->save($paciente_id, $terapeuta_id, $fecha_hora, $estado, $tipo_cita_id)) {
+            if (!empty($paciente_id) && !empty($terapeuta_id) && !empty($fecha_hora) && $appointment->save($paciente_id, $terapeuta_id, $fecha_hora, $estado, $tipo_cita_id, $despacho_id, $fecha_hora_fin)) {
                 $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
                 header('Location: ' . PROJECT_ROOT . $redirect . '?alert=success&message=Cita programada correctamente');
                 $this->exitApp();
             } else {
-                echo "Error al guardar la cita o datos inválidos.";
+                $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
+                header('Location: ' . PROJECT_ROOT . $redirect . '?alert=danger&message=' . urlencode('Error al guardar la cita o datos incompletos.'));
+                $this->exitApp();
             }
         } else {
             $userModel = $this->model('User');
             $typeModel = $this->model('AppointmentType');
+            $settingModel = $this->model('Setting');
+
+            $fisioterapeutas = array_merge(
+                $userModel->getByRol('Fisioterapeuta'),
+                $userModel->getByRol('Terapeuta')
+            );
+            // Evitar duplicados por usuario_id
+            $uniqueFisios = [];
+            foreach ($fisioterapeutas as $f) {
+                $uniqueFisios[$f['usuario_id']] = $f;
+            }
+
             $data = [
-                'fisioterapeutas' => $userModel->getByRol('Fisioterapeuta'),
-                'tiposCitas' => $typeModel->getAllActive()
+                'fisioterapeutas' => array_values($uniqueFisios),
+                'tiposCitas' => $typeModel->getAllActive(),
+                'despachos' => $settingModel->getDespachos()
             ];
 
             if ($_SESSION['rol'] === 'Paciente') {
@@ -158,25 +211,77 @@ class AppointmentController extends Controller
 
             $terapeuta_id = $_POST['terapeuta_id'];
             $tipo_cita_id = !empty($_POST['tipo_cita_id']) ? $_POST['tipo_cita_id'] : null;
-            $fecha_hora = $_POST['fecha_hora'];
-            $estado = 'Programada';
 
-            if ($appointment->update($id, $paciente_id, $terapeuta_id, $fecha_hora, $estado, $tipo_cita_id)) {
+            // Determinar fecha_hora
+            $fecha_hora = $_POST['fecha_hora'] ?? '';
+            if (empty($fecha_hora) && !empty($_POST['fecha_sesion']) && !empty($_POST['hora_inicio'])) {
+                $fecha_hora = trim($_POST['fecha_sesion']) . ' ' . trim($_POST['hora_inicio']) . ':00';
+            }
+
+            // Determinar duración y fecha_hora_fin
+            $duracion_minutos = 60;
+            if ($tipo_cita_id) {
+                $typeModel = $this->model('AppointmentType');
+                $tipoCita = $typeModel->getById($tipo_cita_id);
+                if ($tipoCita && !empty($tipoCita['duracion_minutos'])) {
+                    $duracion_minutos = (int)$tipoCita['duracion_minutos'];
+                }
+            }
+
+            $fecha_hora_fin = null;
+            if (!empty($fecha_hora)) {
+                if (!empty($_POST['hora_fin']) && !empty($_POST['fecha_sesion'])) {
+                    $fecha_hora_fin = trim($_POST['fecha_sesion']) . ' ' . trim($_POST['hora_fin']) . ':00';
+                } else {
+                    $fecha_hora_fin = date('Y-m-d H:i:s', strtotime($fecha_hora . " +{$duracion_minutos} minutes"));
+                }
+            }
+
+            $ubicacion_tipo = $_POST['ubicacion_tipo'] ?? 'presencial';
+            $despacho_id = null;
+
+            // Asignación automática de despacho si la cita es presencial
+            if ($ubicacion_tipo === 'presencial' && !empty($fecha_hora) && !empty($fecha_hora_fin)) {
+                $despacho_id = $appointment->findAvailableDespacho($fecha_hora, $fecha_hora_fin, $id);
+                if (!$despacho_id) {
+                    $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
+                    header('Location: ' . PROJECT_ROOT . $redirect . '?alert=danger&message=' . urlencode('No hay despachos libres disponibles para esa fecha y hora.'));
+                    $this->exitApp();
+                }
+            }
+
+            $estado = $_POST['estado'] ?? 'Programada';
+
+            if ($appointment->update($id, $paciente_id, $terapeuta_id, $fecha_hora, $estado, $tipo_cita_id, $despacho_id, $fecha_hora_fin)) {
                 $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
                 header('Location: ' . PROJECT_ROOT . $redirect . '?alert=success&message=Cita actualizada correctamente');
                 $this->exitApp();
             } else {
-                echo "Error while updating appointment.";
+                $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
+                header('Location: ' . PROJECT_ROOT . $redirect . '?alert=danger&message=' . urlencode('Error al actualizar la cita.'));
+                $this->exitApp();
             }
         } else {
             $id = $_GET['id'];
             $appointment = $this->model('Appointment');
             $userModel = $this->model('User');
             $typeModel = $this->model('AppointmentType');
+            $settingModel = $this->model('Setting');
+
+            $fisioterapeutas = array_merge(
+                $userModel->getByRol('Fisioterapeuta'),
+                $userModel->getByRol('Terapeuta')
+            );
+            $uniqueFisios = [];
+            foreach ($fisioterapeutas as $f) {
+                $uniqueFisios[$f['usuario_id']] = $f;
+            }
+
             $data = [
                 'appointment' => $appointment->getById($id),
-                'fisioterapeutas' => $userModel->getByRol('Fisioterapeuta'),
-                'tiposCitas' => $typeModel->getAllActive()
+                'fisioterapeutas' => array_values($uniqueFisios),
+                'tiposCitas' => $typeModel->getAllActive(),
+                'despachos' => $settingModel->getDespachos()
             ];
 
             if ($_SESSION['rol'] === 'Paciente') {
@@ -203,6 +308,8 @@ class AppointmentController extends Controller
         $fisio_id = $_GET['fisio_id'] ?? '';
         $fecha = $_GET['fecha'] ?? '';
         $tipo_cita_id = $_GET['tipo_cita_id'] ?? $_GET['servicio_id'] ?? '';
+        $ubicacion_tipo = $_GET['ubicacion_tipo'] ?? 'presencial';
+        $exclude_cita_id = !empty($_GET['cita_id']) ? (int)$_GET['cita_id'] : null;
 
         if (empty($fisio_id) || empty($fecha)) {
             echo json_encode([]);
@@ -219,7 +326,7 @@ class AppointmentController extends Controller
         }
 
         $appointment = $this->model('Appointment');
-        $slots = $appointment->getAvailableSlots($fisio_id, $fecha, $duracion);
+        $slots = $appointment->getAvailableSlots($fisio_id, $fecha, $duracion, $ubicacion_tipo, $exclude_cita_id);
         header('Content-Type: application/json');
         echo json_encode(array_values($slots));
         $this->exitApp();
@@ -236,6 +343,8 @@ class AppointmentController extends Controller
     {
         $fisio_id = $_GET['fisio_id'] ?? '';
         $tipo_cita_id = $_GET['tipo_cita_id'] ?? $_GET['servicio_id'] ?? '';
+        $ubicacion_tipo = $_GET['ubicacion_tipo'] ?? 'presencial';
+        $exclude_cita_id = !empty($_GET['cita_id']) ? (int)$_GET['cita_id'] : null;
 
         if (empty($fisio_id)) {
             header('Content-Type: application/json');
@@ -253,7 +362,7 @@ class AppointmentController extends Controller
         }
 
         $appointment = $this->model('Appointment');
-        $days = $appointment->getAvailableDays($fisio_id, $duracion);
+        $days = $appointment->getAvailableDays($fisio_id, $duracion, $ubicacion_tipo, $exclude_cita_id);
         header('Content-Type: application/json');
         echo json_encode($days);
         $this->exitApp();

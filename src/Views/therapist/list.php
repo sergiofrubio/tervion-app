@@ -50,7 +50,7 @@ $trabajadoresPaginados = array_slice($trabajadores_filtrados, $iniciar, $articul
         </div>
         <div class="flex flex-wrap items-center gap-3">
             <?php if ($isAdmin): ?>
-                <a href="<?= PROJECT_ROOT ?>/terapeutas/crear" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-2xl font-semibold text-sm shadow-md transition-all cursor-pointer">
+                <a href="<?= PROJECT_ROOT ?>/empleados/crear" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-2xl font-semibold text-sm shadow-md transition-all cursor-pointer">
                     <i class="bi bi-person-plus-fill"></i>
                     <span>Nuevo Empleado</span>
                 </a>
@@ -90,7 +90,7 @@ $trabajadoresPaginados = array_slice($trabajadores_filtrados, $iniciar, $articul
     <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
         <!-- Filters -->
         <div class="p-4 sm:p-6 border-b border-gray-100">
-            <form method="get" action="<?= PROJECT_ROOT ?>/terapeutas" class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <form method="get" action="<?= PROJECT_ROOT ?>/empleados" class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div class="flex flex-col sm:flex-row items-center gap-3 flex-1 max-w-xl">
                     <div class="relative w-full">
                         <i class="bi bi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
@@ -103,7 +103,7 @@ $trabajadoresPaginados = array_slice($trabajadores_filtrados, $iniciar, $articul
                         <option value="Administrador" <?= $filtro_rol === 'Administrador' ? 'selected' : '' ?>>Administrador</option>
                     </select>
                     <?php if ($filtro_busqueda !== '' || $filtro_rol !== ''): ?>
-                        <a href="<?= PROJECT_ROOT ?>/terapeutas" class="p-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-xs transition-colors shrink-0" title="Limpiar filtro">
+                        <a href="<?= PROJECT_ROOT ?>/empleados" class="p-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-xs transition-colors shrink-0" title="Limpiar filtro">
                             <i class="bi bi-x-lg"></i>
                         </a>
                     <?php endif; ?>
@@ -136,12 +136,12 @@ $trabajadoresPaginados = array_slice($trabajadores_filtrados, $iniciar, $articul
                                 : "https://randomuser.me/api/portraits/men/{$avatarId}.jpg";
                             ?>
                             <tr class="hover:bg-gray-50/80 transition-colors">
-                                <td class="py-4 px-4 font-bold text-gray-400">#<?= htmlspecialchars($w['usuario_id']) ?></td>
+                                <td class="py-4 px-4 font-bold text-gray-400"><?= htmlspecialchars($w['usuario_id']) ?></td>
                                 <td class="py-4 px-4">
                                     <div class="flex items-center gap-3">
                                         <img src="<?= $avatarUrl ?>" alt="Avatar" class="w-8 h-8 rounded-full object-cover border border-gray-200 shadow-sm">
                                         <div>
-                                            <a href="<?= PROJECT_ROOT ?>/terapeutas/detalle?id=<?= $w['usuario_id'] ?>" class="font-bold text-gray-900 text-sm hover:text-primary-600 transition-colors">
+                                            <a href="<?= PROJECT_ROOT ?>/empleados/detalle?id=<?= $w['usuario_id'] ?>" class="font-bold text-gray-900 text-sm hover:text-primary-600 transition-colors">
                                                 <?= htmlspecialchars($w['nombre'] . ' ' . $w['apellidos']) ?>
                                             </a>
                                         </div>
@@ -170,17 +170,17 @@ $trabajadoresPaginados = array_slice($trabajadores_filtrados, $iniciar, $articul
                                 </td>
                                 <td class="py-4 px-4 text-right">
                                     <div class="flex items-center justify-end gap-1">
-                                        <a href="<?= PROJECT_ROOT ?>/terapeutas/detalle?id=<?= $w['usuario_id'] ?>" class="p-1.5 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all" title="Ver Expediente">
+                                        <a href="<?= PROJECT_ROOT ?>/empleados/detalle?id=<?= $w['usuario_id'] ?>" class="p-1.5 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all" title="Ver Expediente">
                                             <i class="bi bi-eye text-sm"></i>
                                         </a>
                                         <a href="<?= PROJECT_ROOT ?>/nominas?usuario_id=<?= $w['usuario_id'] ?>" class="p-1.5 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all" title="Ver Nóminas">
                                             <i class="bi bi-file-earmark-spreadsheet text-sm"></i>
                                         </a>
                                         <?php if ($isAdmin): ?>
-                                            <a href="<?= PROJECT_ROOT ?>/terapeutas/editar?id=<?= $w['usuario_id'] ?>" class="p-1.5 text-gray-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-all" title="Editar">
+                                            <a href="<?= PROJECT_ROOT ?>/empleados/editar?id=<?= $w['usuario_id'] ?>" class="p-1.5 text-gray-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-all" title="Editar">
                                                 <i class="bi bi-pencil-square text-sm"></i>
                                             </a>
-                                            <form action="<?= PROJECT_ROOT ?>/terapeutas/eliminar" method="POST" class="inline-block m-0" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este facultativo?');">
+                                            <form action="<?= PROJECT_ROOT ?>/empleados/eliminar" method="POST" class="inline-block m-0" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este facultativo?');">
                                                 <input type="hidden" name="id" value="<?= $w['usuario_id'] ?>">
                                                 <button type="submit" class="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all cursor-pointer" title="Eliminar">
                                                     <i class="bi bi-trash3 text-sm"></i>
@@ -211,19 +211,19 @@ $trabajadoresPaginados = array_slice($trabajadores_filtrados, $iniciar, $articul
                 </div>
                 <div class="flex items-center gap-1.5">
                     <?php if ($pagina > 1): ?>
-                        <a href="<?= PROJECT_ROOT ?>/terapeutas?pagina=<?= $pagina - 1 ?>&q=<?= urlencode($filtro_busqueda) ?>&rol=<?= urlencode($filtro_rol) ?>" class="px-3 py-1.5 bg-white border border-gray-200 text-gray-700 font-semibold rounded-xl text-xs hover:bg-gray-50 transition-colors">
+                        <a href="<?= PROJECT_ROOT ?>/empleados?pagina=<?= $pagina - 1 ?>&q=<?= urlencode($filtro_busqueda) ?>&rol=<?= urlencode($filtro_rol) ?>" class="px-3 py-1.5 bg-white border border-gray-200 text-gray-700 font-semibold rounded-xl text-xs hover:bg-gray-50 transition-colors">
                             Anterior
                         </a>
                     <?php endif; ?>
 
                     <?php for ($i = 1; $i <= $n_botones_paginacion; $i++): ?>
-                        <a href="<?= PROJECT_ROOT ?>/terapeutas?pagina=<?= $i ?>&q=<?= urlencode($filtro_busqueda) ?>&rol=<?= urlencode($filtro_rol) ?>" class="w-8 h-8 flex items-center justify-center font-bold text-xs rounded-xl transition-colors <?= $i === $pagina ? 'bg-primary-600 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50' ?>">
+                        <a href="<?= PROJECT_ROOT ?>/empleados?pagina=<?= $i ?>&q=<?= urlencode($filtro_busqueda) ?>&rol=<?= urlencode($filtro_rol) ?>" class="w-8 h-8 flex items-center justify-center font-bold text-xs rounded-xl transition-colors <?= $i === $pagina ? 'bg-primary-600 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50' ?>">
                             <?= $i ?>
                         </a>
                     <?php endfor; ?>
 
                     <?php if ($pagina < $n_botones_paginacion): ?>
-                        <a href="<?= PROJECT_ROOT ?>/terapeutas?pagina=<?= $pagina + 1 ?>&q=<?= urlencode($filtro_busqueda) ?>&rol=<?= urlencode($filtro_rol) ?>" class="px-3 py-1.5 bg-white border border-gray-200 text-gray-700 font-semibold rounded-xl text-xs hover:bg-gray-50 transition-colors">
+                        <a href="<?= PROJECT_ROOT ?>/empleados?pagina=<?= $pagina + 1 ?>&q=<?= urlencode($filtro_busqueda) ?>&rol=<?= urlencode($filtro_rol) ?>" class="px-3 py-1.5 bg-white border border-gray-200 text-gray-700 font-semibold rounded-xl text-xs hover:bg-gray-50 transition-colors">
                             Siguiente
                         </a>
                     <?php endif; ?>

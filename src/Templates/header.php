@@ -110,30 +110,6 @@ $isSaasFacturasActive  = (strpos($cleanUri, '/superadmin/facturas') === 0);
                     <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-azul-sin-fondo.svg" alt="Tervion Logo" class="h-7 sm:h-8 w-auto object-contain transition-transform group-hover:scale-105">
                 </a>
 
-                <!-- Breadcrumb Contextual Clínico (MedServ Style) -->
-                <div id="header-breadcrumb" class="hidden sm:flex items-center gap-2 text-xs font-medium text-slate-400 pl-3 border-l border-slate-200">
-                    <span class="text-slate-500 font-semibold">Tervion</span>
-                    <i class="bi bi-chevron-right text-[10px] text-slate-300"></i>
-                    <span id="header-breadcrumb-title" class="text-primary-600 font-semibold">
-                        <?php
-                        if ($isSuperAdmin) {
-                            if ($isSaasClientesActive) echo 'Clientes (Clínicas)';
-                            elseif ($isSaasFacturasActive) echo 'Facturación SaaS';
-                            else echo 'Dashboard Global';
-                        } else {
-                            if ($isPatientsActive) echo 'Pacientes';
-                            elseif ($isAgendasActive) echo 'Agendas de Citas';
-                            elseif ($isRecepcionActive) echo 'Control de Fichajes';
-                            elseif ($isHistoriasActive) echo 'Historias Clínicas';
-                            elseif ($isEmpleadosActive) echo 'Empleados';
-                            elseif ($isContabilidadActive) echo 'Contabilidad y Facturas';
-                            elseif ($isDocumentosActive) echo 'Documentos';
-                            elseif ($isConfiguracionActive) echo 'Configuración';
-                            else echo 'Panel Clínico';
-                        }
-                        ?>
-                    </span>
-                </div>
             </div>
 
             <!-- Derecha: Acciones Rápidas & Perfil de Usuario -->
@@ -143,13 +119,13 @@ $isSaasFacturasActive  = (strpos($cleanUri, '/superadmin/facturas') === 0);
                     <i class="bi bi-question-circle text-base"></i>
                 </button>
 
-                <!-- Botón Notificaciones -->
+                <!-- Botón Notificaciones
                 <div class="relative">
                     <button type="button" class="w-9 h-9 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors" title="Notificaciones">
                         <i class="bi bi-bell text-base"></i>
                         <span class="absolute top-2 right-2 w-2 h-2 bg-primary-500 rounded-full ring-2 ring-white"></span>
                     </button>
-                </div>
+                </div> -->
 
                 <!-- Divisor sutil -->
                 <div class="h-6 w-px bg-slate-200 hidden sm:block mx-0.5"></div>

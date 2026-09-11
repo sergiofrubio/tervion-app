@@ -12,7 +12,7 @@ include TEMPLATE_DIR . 'header.php';
             <h1 class="text-xl font-bold text-gray-900 tracking-tight"><?= $isEdit ? "Editar Empleado / Empleado" : "Nuevo Empleado" ?></h1>
             <p class="mt-0.5 text-xs sm:text-sm text-gray-500"><?= $isEdit ? "Modifica los datos personales y laborales del especialista." : "Registra un nuevo especialista o miembro del personal en el sistema." ?></p>
         </div>
-        <a href="<?= PROJECT_ROOT ?>/terapeutas" class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-primary-600 transition-colors">
+        <a href="<?= PROJECT_ROOT ?>/empleados" class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-primary-600 transition-colors">
             <i class="bi bi-arrow-left"></i>
             Volver al listado
         </a>
@@ -27,7 +27,7 @@ include TEMPLATE_DIR . 'header.php';
 
     <!-- Form Card -->
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <form action="<?= PROJECT_ROOT ?>/terapeutas/<?= $isEdit ? 'editar' : 'crear' ?>" method="POST" class="p-6 md:p-8 space-y-6">
+        <form action="<?= PROJECT_ROOT ?>/empleados/<?= $isEdit ? 'editar' : 'crear' ?>" method="POST" class="p-6 md:p-8 space-y-6">
 
             <!-- 1. Información Profesional y Cuenta -->
             <div>
@@ -160,7 +160,7 @@ include TEMPLATE_DIR . 'header.php';
 
             <!-- Acciones -->
             <div class="pt-4 border-t border-gray-100 flex items-center justify-end gap-3">
-                <a href="<?= PROJECT_ROOT ?>/terapeutas" class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                <a href="<?= PROJECT_ROOT ?>/empleados" class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
                     Cancelar
                 </a>
                 <button type="submit" class="inline-flex justify-center items-center gap-2 rounded-xl bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all">

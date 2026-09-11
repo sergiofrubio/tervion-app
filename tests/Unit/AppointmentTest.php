@@ -60,7 +60,7 @@ class AppointmentTest extends TestCase
     {
         $this->stmtMock->expects($this->exactly(4))
             ->method('bindParam');
-        $this->stmtMock->expects($this->once())
+        $this->stmtMock->expects($this->exactly(3))
             ->method('bindValue');
 
         $this->stmtMock->expects($this->once())
@@ -73,7 +73,7 @@ class AppointmentTest extends TestCase
             ->willReturn($this->stmtMock);
 
         $appointmentModel = new Appointment($this->dbMock);
-        $result = $appointmentModel->save('P123', 'F456', '2026-05-22 10:00:00', 'Programada', 1);
+        $result = $appointmentModel->save('P123', 'F456', '2026-05-22 10:00:00', 'Programada', 1, 2, '2026-05-22 11:00:00');
 
         $this->assertTrue($result);
     }
@@ -203,19 +203,27 @@ class AppointmentTest extends TestCase
         $stmtCitas = $this->createMock(PDOStatement::class);
         $stmtCitas->method('execute')->willReturn(true);
         $stmtCitas->method('fetchAll')->willReturn([
-            ['fecha_hora' => '2026-05-25 10:00:00', 'duracion_minutos' => 60]
+            ['cita_id' => 1, 'fecha_hora' => '2026-05-25 10:00:00', 'duracion_minutos' => 60]
         ]);
 
-        $this->dbMock->expects($this->exactly(3))
+        // Despachos: sin despachos activos en el mock para probar modalidad o sin salas limitantes
+        $stmtDespachos = $this->createMock(PDOStatement::class);
+        $stmtDespachos->method('execute')->willReturn(true);
+        $stmtDespachos->method('fetchAll')->willReturn([]);
+
+        $this->dbMock->expects($this->exactly(4))
             ->method('prepare')
-            ->willReturnCallback(function ($query) use ($stmtHorarios, $stmtAusencias, $stmtCitas) {
+            ->willReturnCallback(function ($query) use ($stmtHorarios, $stmtAusencias, $stmtCitas, $stmtDespachos) {
                 if (strpos($query, 'horarios_terapeutas') !== false) {
                     return $stmtHorarios;
                 }
                 if (strpos($query, 'ausencias_terapeutas') !== false) {
                     return $stmtAusencias;
                 }
-                if (strpos($query, 'citas') !== false) {
+                if (strpos($query, 'despachos WHERE') !== false) {
+                    return $stmtDespachos;
+                }
+                if (strpos($query, 'FROM citas c') !== false) {
                     return $stmtCitas;
                 }
                 return null;
@@ -243,5 +251,37 @@ class AppointmentTest extends TestCase
         $result = $appointmentModel->getAvailableDays('F456');
 
         $this->assertEquals([], $result);
+    }
+
+    public function testFindAvailableDespachoAssignsFirstFree()
+    {
+        $stmtDespachos = $this->createMock(PDOStatement::class);
+        $stmtDespachos->method('execute')->willReturn(true);
+        $stmtDespachos->method('fetchAll')->willReturn([
+            ['despacho_id' => 1, 'nombre' => 'Sala 1', 'capacidad' => 1],
+            ['despacho_id' => 2, 'nombre' => 'Sala 2', 'capacidad' => 1],
+        ]);
+
+        // Cita ocupa el despacho 1 en ese rango
+        $stmtCitas = $this->createMock(PDOStatement::class);
+        $stmtCitas->method('execute')->willReturn(true);
+        $stmtCitas->method('fetchAll')->willReturn([
+            ['despacho_id' => 1, 'fecha_hora' => '2026-09-15 10:00:00', 'fecha_fin_calculada' => '2026-09-15 11:00:00']
+        ]);
+
+        $this->dbMock->expects($this->exactly(2))
+            ->method('prepare')
+            ->willReturnCallback(function ($query) use ($stmtDespachos, $stmtCitas) {
+                if (strpos($query, 'FROM despachos') !== false) {
+                    return $stmtDespachos;
+                }
+                return $stmtCitas;
+            });
+
+        $appointmentModel = new Appointment($this->dbMock);
+        $assigned = $appointmentModel->findAvailableDespacho('2026-09-15 10:00:00', '2026-09-15 11:00:00');
+
+        // Como Sala 1 está ocupada, debe asignar Sala 2
+        $this->assertEquals(2, $assigned);
     }
 }

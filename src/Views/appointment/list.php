@@ -8,20 +8,51 @@ $filtro_busqueda = isset($_GET['busqueda']) ? trim($_GET['busqueda']) : '';
 $filtro_estado = isset($_GET['estado']) ? trim($_GET['estado']) : '';
 $filtro_fisioterapeuta = isset($_GET['terapeuta_id']) ? trim($_GET['terapeuta_id']) : '';
 $filtro_fecha = isset($_GET['fecha']) ? trim($_GET['fecha']) : '';
+$filtro_paciente = isset($_GET['paciente']) ? trim($_GET['paciente']) : '';
+$filtro_servicio = isset($_GET['servicio']) ? trim($_GET['servicio']) : '';
+$filtro_despacho = isset($_GET['despacho']) ? trim($_GET['despacho']) : '';
 
-// Extraer fisioterapeutas únicos si no vinieran definidos
-if (empty($fisioterapeutas) && !empty($appointments)) {
-    $fisioterapeutas = [];
-    $seen = [];
+// Extraer fisioterapeutas, servicios y despachos únicos
+$lista_terapeutas = [];
+$lista_servicios = [];
+$lista_despachos = [];
+$seen_fisios = [];
+$seen_servicios = [];
+$seen_despachos = [];
+
+if (!empty($appointments)) {
     foreach ($appointments as $cita) {
-        if (!empty($cita['terapeuta_id']) && !isset($seen[$cita['terapeuta_id']])) {
-            $seen[$cita['terapeuta_id']] = true;
-            $fisioterapeutas[] = [
+        if (!empty($cita['terapeuta_id']) && !isset($seen_fisios[$cita['terapeuta_id']])) {
+            $seen_fisios[$cita['terapeuta_id']] = true;
+            $lista_terapeutas[] = [
                 'usuario_id' => $cita['terapeuta_id'],
-                'nombre' => $cita['fisioterapeuta_nombre'] ?? '',
-                'apellidos' => $cita['fisioterapeuta_apellidos'] ?? ''
+                'nombre' => trim(($cita['fisioterapeuta_nombre'] ?? '') . ' ' . ($cita['fisioterapeuta_apellidos'] ?? ''))
             ];
         }
+        if (!empty($cita['tipo_cita_nombre']) && !isset($seen_servicios[$cita['tipo_cita_nombre']])) {
+            $seen_servicios[$cita['tipo_cita_nombre']] = true;
+            $lista_servicios[] = [
+                'nombre' => $cita['tipo_cita_nombre'],
+                'color'  => $cita['tipo_cita_color'] ?? '#6366f1'
+            ];
+        }
+        if (!empty($cita['despacho_nombre']) && !isset($seen_despachos[$cita['despacho_nombre']])) {
+            $seen_despachos[$cita['despacho_nombre']] = true;
+            $lista_despachos[] = [
+                'nombre' => $cita['despacho_nombre'],
+                'color'  => $cita['despacho_color'] ?? '#6366f1'
+            ];
+        }
+    }
+}
+
+// Si $fisioterapeutas venía del controller pero no estaba poblada en appointments
+if (empty($lista_terapeutas) && !empty($fisioterapeutas)) {
+    foreach ($fisioterapeutas as $f) {
+        $lista_terapeutas[] = [
+            'usuario_id' => $f['usuario_id'],
+            'nombre' => trim(($f['nombre'] ?? '') . ' ' . ($f['apellidos'] ?? ''))
+        ];
     }
 }
 
@@ -31,20 +62,32 @@ if (!empty($appointments)) {
     foreach ($appointments as $cita) {
         $match = true;
 
-        // Búsqueda por texto (paciente, fisioterapeuta, o ID)
+        // Búsqueda global por texto
         if ($filtro_busqueda !== '') {
             $busquedaLower = strtolower($filtro_busqueda);
             $pacienteNombre = strtolower(($cita['paciente_nombre'] ?? '') . ' ' . ($cita['paciente_apellidos'] ?? ''));
             $fisioNombre = strtolower(($cita['fisioterapeuta_nombre'] ?? '') . ' ' . ($cita['fisioterapeuta_apellidos'] ?? ''));
             $tipoNombre = strtolower($cita['tipo_cita_nombre'] ?? '');
+            $despachoNombre = strtolower($cita['despacho_nombre'] ?? '');
             $citaId = (string)($cita['cita_id'] ?? '');
 
             if (
                 strpos($pacienteNombre, $busquedaLower) === false &&
                 strpos($fisioNombre, $busquedaLower) === false &&
                 strpos($tipoNombre, $busquedaLower) === false &&
+                strpos($despachoNombre, $busquedaLower) === false &&
                 strpos($citaId, $busquedaLower) === false
             ) {
+                $match = false;
+            }
+        }
+
+        // Filtro por Paciente
+        if ($filtro_paciente !== '') {
+            $pacienteLower = strtolower($filtro_paciente);
+            $nombreComp = strtolower(($cita['paciente_nombre'] ?? '') . ' ' . ($cita['paciente_apellidos'] ?? ''));
+            $tel = strtolower($cita['paciente_telefono'] ?? '');
+            if (strpos($nombreComp, $pacienteLower) === false && strpos($tel, $pacienteLower) === false) {
                 $match = false;
             }
         }
@@ -67,13 +110,35 @@ if (!empty($appointments)) {
             }
         }
 
+        // Filtro por Servicio / Tipo de cita
+        if ($filtro_servicio !== '') {
+            $servicioCita = $cita['tipo_cita_nombre'] ?? '';
+            if ($servicioCita !== $filtro_servicio) {
+                $match = false;
+            }
+        }
+
+        // Filtro por Despacho
+        if ($filtro_despacho !== '') {
+            if ($filtro_despacho === 'online') {
+                if (!empty($cita['despacho_id'])) {
+                    $match = false;
+                }
+            } else {
+                $despachoCita = $cita['despacho_nombre'] ?? '';
+                if ($despachoCita !== $filtro_despacho) {
+                    $match = false;
+                }
+            }
+        }
+
         if ($match) {
             $citas_filtradas[] = $cita;
         }
     }
 }
 
-// Paginación (10 citas por página, igual que pacientes)
+// Paginación (10 citas por página)
 $articulos_x_pagina = 10;
 $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 if ($pagina < 1) $pagina = 1;
@@ -89,13 +154,31 @@ $iniciar = ($pagina - 1) * $articulos_x_pagina;
 $citasPaginadas = array_slice($citas_filtradas, $iniciar, $articulos_x_pagina);
 
 // Helper para mantener parámetros de consulta en paginación
-function getPaginationQuery($page, $busqueda, $estado, $fisioterapeuta, $fecha)
+function getPaginationQuery($page, $busqueda, $estado, $fisioterapeuta, $fecha, $paciente = '', $servicio = '', $despacho = '')
 {
     $params = ['pagina' => $page];
     if ($busqueda !== '') $params['busqueda'] = $busqueda;
     if ($estado !== '') $params['estado'] = $estado;
     if ($fisioterapeuta !== '') $params['terapeuta_id'] = $fisioterapeuta;
     if ($fecha !== '') $params['fecha'] = $fecha;
+    if ($paciente !== '') $params['paciente'] = $paciente;
+    if ($servicio !== '') $params['servicio'] = $servicio;
+    if ($despacho !== '') $params['despacho'] = $despacho;
+    return '?' . http_build_query($params);
+}
+
+// Helper para generar URL con un parámetro modificado o eliminado
+function getFilterUrl($changes = [])
+{
+    $params = $_GET;
+    unset($params['pagina']); // Resetear a página 1 al cambiar filtros
+    foreach ($changes as $key => $val) {
+        if ($val === null || $val === '') {
+            unset($params[$key]);
+        } else {
+            $params[$key] = $val;
+        }
+    }
     return '?' . http_build_query($params);
 }
 
@@ -107,9 +190,11 @@ $estadoBadgeClasses = [
     'Realizada'  => 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20',
     'Cancelada'  => 'bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20',
 ];
+
+$hayFiltrosActivos = ($filtro_busqueda !== '' || $filtro_estado !== '' || $filtro_fisioterapeuta !== '' || $filtro_fecha !== '' || $filtro_paciente !== '' || $filtro_servicio !== '' || $filtro_despacho !== '');
 ?>
 
-<div class="space-y-6 animate-fade-in-up">
+<div class="space-y-6 animate-fade-in-up" x-data="{ openFilter: null }">
     <!-- Title & Action Bar -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -154,69 +239,356 @@ $estadoBadgeClasses = [
 
     <!-- Appointments Table Card -->
     <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-        <!-- Table Card Header & Filters -->
-        <div class="p-4 sm:p-6 border-b border-gray-100">
+        <!-- Table Card Header & Filters Bar -->
+        <div class="p-4 sm:p-6 border-b border-gray-100 bg-white">
             <form method="get" action="<?= PROJECT_ROOT ?>/citas" class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <!-- Conservar filtros de columnas en caso de búsqueda rápida -->
+                <?php if ($filtro_fisioterapeuta !== ''): ?><input type="hidden" name="terapeuta_id" value="<?= htmlspecialchars($filtro_fisioterapeuta) ?>"><?php endif; ?>
+                <?php if ($filtro_estado !== ''): ?><input type="hidden" name="estado" value="<?= htmlspecialchars($filtro_estado) ?>"><?php endif; ?>
+                <?php if ($filtro_fecha !== ''): ?><input type="hidden" name="fecha" value="<?= htmlspecialchars($filtro_fecha) ?>"><?php endif; ?>
+                <?php if ($filtro_paciente !== ''): ?><input type="hidden" name="paciente" value="<?= htmlspecialchars($filtro_paciente) ?>"><?php endif; ?>
+                <?php if ($filtro_servicio !== ''): ?><input type="hidden" name="servicio" value="<?= htmlspecialchars($filtro_servicio) ?>"><?php endif; ?>
+                <?php if ($filtro_despacho !== ''): ?><input type="hidden" name="despacho" value="<?= htmlspecialchars($filtro_despacho) ?>"><?php endif; ?>
+
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
                     <!-- Search Input -->
                     <div class="relative flex-1 max-w-md">
                         <i class="bi bi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                        <input type="text" name="busqueda" id="busqueda" value="<?= htmlspecialchars($filtro_busqueda) ?>" class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all" placeholder="Buscar por paciente, terapeuta o tipo">
+                        <input type="text" name="busqueda" id="busqueda" value="<?= htmlspecialchars($filtro_busqueda) ?>" class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all" placeholder="Buscar citas por cualquier término...">
                     </div>
 
-                    <!-- Fisioterapeuta Filter -->
-                    <select name="terapeuta_id" onchange="this.form.submit()" class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer shadow-sm">
-                        <option value="" <?= $filtro_fisioterapeuta === '' ? 'selected' : '' ?>>Todos los terapeutas</option>
-                        <?php if (!empty($fisioterapeutas)): ?>
-                            <?php foreach ($fisioterapeutas as $fisio): ?>
-                                <option value="<?= htmlspecialchars($fisio['usuario_id']) ?>" <?= (string)$filtro_fisioterapeuta === (string)$fisio['usuario_id'] ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars(($fisio['nombre'] ?? '') . ' ' . ($fisio['apellidos'] ?? '')) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </select>
-
-                    <!-- Estado Filter -->
-                    <select name="estado" onchange="this.form.submit()" class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer shadow-sm">
-                        <option value="" <?= $filtro_estado === '' ? 'selected' : '' ?>>Todos los estados</option>
-                        <option value="Programada" <?= $filtro_estado === 'Programada' ? 'selected' : '' ?>>Programada</option>
-                        <option value="Confirmada" <?= $filtro_estado === 'Confirmada' ? 'selected' : '' ?>>Confirmada</option>
-                        <option value="Pendiente" <?= $filtro_estado === 'Pendiente' ? 'selected' : '' ?>>Pendiente</option>
-                        <option value="Realizada" <?= $filtro_estado === 'Realizada' ? 'selected' : '' ?>>Realizada</option>
-                        <option value="Cancelada" <?= $filtro_estado === 'Cancelada' ? 'selected' : '' ?>>Cancelada</option>
-                    </select>
-
-                    <!-- Date Filter -->
-                    <input type="date" name="fecha" value="<?= htmlspecialchars($filtro_fecha) ?>" onchange="this.form.submit()" class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer shadow-sm">
-
-                    <button type="submit" class="hidden sm:inline-flex items-center justify-center px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-semibold transition-colors">
-                        Filtrar
+                    <button type="submit" class="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer shadow-sm">
+                        <i class="bi bi-search text-xs"></i>
+                        <span>Buscar</span>
                     </button>
+
+                    <?php if ($hayFiltrosActivos): ?>
+                        <a href="<?= PROJECT_ROOT ?>/citas" class="inline-flex items-center gap-1.5 px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-semibold transition-colors" title="Restablecer todos los filtros">
+                            <i class="bi bi-x-circle-fill"></i>
+                            <span>Limpiar filtros</span>
+                        </a>
+                    <?php endif; ?>
                 </div>
 
                 <div class="flex items-center gap-3 self-end lg:self-center">
-                    <?php if ($filtro_busqueda !== '' || $filtro_estado !== '' || $filtro_fisioterapeuta !== '' || $filtro_fecha !== ''): ?>
-                        <a href="<?= PROJECT_ROOT ?>/citas" class="p-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-xs transition-colors shrink-0" title="Limpiar filtros">
-                            <i class="bi bi-x-lg"></i>
-                        </a>
-                    <?php endif; ?>
                     <div class="text-xs text-gray-500 font-medium whitespace-nowrap">
                         Total registrado: <span class="font-bold text-gray-900"><?= $total_citas ?></span> citas
+                        <?php if ($hayFiltrosActivos && count($appointments) !== $total_citas): ?>
+                            <span class="text-gray-400 text-[11px]">(de <?= count($appointments) ?>)</span>
+                        <?php endif; ?>
                     </div>
                 </div>
             </form>
         </div>
 
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto min-h-[360px] pb-48">
             <table class="w-full text-left text-xs">
                 <thead>
-                    <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
-                        <!-- <th class="py-3 px-4 font-semibold">ID</th> -->
-                        <th class="py-3 px-4 font-semibold">Fecha y Hora</th>
-                        <th class="py-3 px-4 font-semibold">Paciente</th>
-                        <th class="py-3 px-4 font-semibold">Terapeuta</th>
-                        <th class="py-3 px-4 font-semibold">Servicio</th>
-                        <th class="py-3 px-4 font-semibold">Estado</th>
+                    <tr class="bg-gray-50/70 text-gray-500 uppercase text-[10px] tracking-wider border-b border-gray-100 select-none">
+
+                        <!-- Columna: Fecha y Hora -->
+                        <th class="py-3 px-4 font-semibold relative">
+                            <div class="flex items-center justify-between gap-1.5">
+                                <span>Fecha y Hora</span>
+                                <button type="button"
+                                    @click="openFilter = (openFilter === 'fecha' ? null : 'fecha')"
+                                    class="p-1 rounded-lg transition-colors cursor-pointer <?= $filtro_fecha !== '' ? 'bg-primary-100 text-primary-700 ring-1 ring-primary-400' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-200/70' ?>"
+                                    title="Filtrar por fecha">
+                                    <i class="bi bi-funnel-fill text-xs"></i>
+                                </button>
+                            </div>
+                            <!-- Dropdown Fecha -->
+                            <div x-show="openFilter === 'fecha'"
+                                @click.outside="openFilter = null"
+                                x-transition:enter="transition ease-out duration-100"
+                                x-transition:enter-start="transform opacity-0 scale-95"
+                                x-transition:enter-end="transform opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-75"
+                                x-transition:leave-start="transform opacity-100 scale-100"
+                                x-transition:leave-end="transform opacity-0 scale-95"
+                                class="absolute left-2 top-full mt-1.5 z-40 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 p-3 text-gray-800 normal-case tracking-normal">
+                                <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-100">
+                                    <span class="font-bold text-xs text-gray-900 flex items-center gap-1.5">
+                                        <i class="bi bi-calendar3 text-primary-600"></i> Filtrar por Fecha
+                                    </span>
+                                    <?php if ($filtro_fecha !== ''): ?>
+                                        <a href="<?= getFilterUrl(['fecha' => null]) ?>" class="text-[11px] text-rose-600 hover:underline font-semibold">Limpiar</a>
+                                    <?php endif; ?>
+                                </div>
+                                <form method="get" action="<?= PROJECT_ROOT ?>/citas" class="space-y-2.5">
+                                    <?php if ($filtro_busqueda !== ''): ?><input type="hidden" name="busqueda" value="<?= htmlspecialchars($filtro_busqueda) ?>"><?php endif; ?>
+                                    <?php if ($filtro_paciente !== ''): ?><input type="hidden" name="paciente" value="<?= htmlspecialchars($filtro_paciente) ?>"><?php endif; ?>
+                                    <?php if ($filtro_fisioterapeuta !== ''): ?><input type="hidden" name="terapeuta_id" value="<?= htmlspecialchars($filtro_fisioterapeuta) ?>"><?php endif; ?>
+                                    <?php if ($filtro_servicio !== ''): ?><input type="hidden" name="servicio" value="<?= htmlspecialchars($filtro_servicio) ?>"><?php endif; ?>
+                                    <?php if ($filtro_despacho !== ''): ?><input type="hidden" name="despacho" value="<?= htmlspecialchars($filtro_despacho) ?>"><?php endif; ?>
+                                    <?php if ($filtro_estado !== ''): ?><input type="hidden" name="estado" value="<?= htmlspecialchars($filtro_estado) ?>"><?php endif; ?>
+
+                                    <input type="date" name="fecha" value="<?= htmlspecialchars($filtro_fecha) ?>" class="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+
+                                    <div class="flex items-center justify-end gap-2 pt-1">
+                                        <button type="button" @click="openFilter = null" class="px-2.5 py-1 text-xs text-gray-500 hover:text-gray-700">Cerrar</button>
+                                        <button type="submit" class="px-3 py-1 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-xs font-bold shadow-xs cursor-pointer">Aplicar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </th>
+
+                        <!-- Columna: Paciente -->
+                        <th class="py-3 px-4 font-semibold relative">
+                            <div class="flex items-center justify-between gap-1.5">
+                                <span>Paciente</span>
+                                <button type="button"
+                                    @click="openFilter = (openFilter === 'paciente' ? null : 'paciente')"
+                                    class="p-1 rounded-lg transition-colors cursor-pointer <?= $filtro_paciente !== '' ? 'bg-primary-100 text-primary-700 ring-1 ring-primary-400' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-200/70' ?>"
+                                    title="Filtrar por paciente">
+                                    <i class="bi bi-funnel-fill text-xs"></i>
+                                </button>
+                            </div>
+                            <!-- Dropdown Paciente -->
+                            <div x-show="openFilter === 'paciente'"
+                                @click.outside="openFilter = null"
+                                x-transition:enter="transition ease-out duration-100"
+                                x-transition:enter-start="transform opacity-0 scale-95"
+                                x-transition:enter-end="transform opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-75"
+                                x-transition:leave-start="transform opacity-100 scale-100"
+                                x-transition:leave-end="transform opacity-0 scale-95"
+                                class="absolute left-2 top-full mt-1.5 z-40 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 p-3 text-gray-800 normal-case tracking-normal">
+                                <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-100">
+                                    <span class="font-bold text-xs text-gray-900 flex items-center gap-1.5">
+                                        <i class="bi bi-person text-primary-600"></i> Filtrar Paciente
+                                    </span>
+                                    <?php if ($filtro_paciente !== ''): ?>
+                                        <a href="<?= getFilterUrl(['paciente' => null]) ?>" class="text-[11px] text-rose-600 hover:underline font-semibold">Limpiar</a>
+                                    <?php endif; ?>
+                                </div>
+                                <form method="get" action="<?= PROJECT_ROOT ?>/citas" class="space-y-2.5">
+                                    <?php if ($filtro_busqueda !== ''): ?><input type="hidden" name="busqueda" value="<?= htmlspecialchars($filtro_busqueda) ?>"><?php endif; ?>
+                                    <?php if ($filtro_fecha !== ''): ?><input type="hidden" name="fecha" value="<?= htmlspecialchars($filtro_fecha) ?>"><?php endif; ?>
+                                    <?php if ($filtro_fisioterapeuta !== ''): ?><input type="hidden" name="terapeuta_id" value="<?= htmlspecialchars($filtro_fisioterapeuta) ?>"><?php endif; ?>
+                                    <?php if ($filtro_servicio !== ''): ?><input type="hidden" name="servicio" value="<?= htmlspecialchars($filtro_servicio) ?>"><?php endif; ?>
+                                    <?php if ($filtro_despacho !== ''): ?><input type="hidden" name="despacho" value="<?= htmlspecialchars($filtro_despacho) ?>"><?php endif; ?>
+                                    <?php if ($filtro_estado !== ''): ?><input type="hidden" name="estado" value="<?= htmlspecialchars($filtro_estado) ?>"><?php endif; ?>
+
+                                    <input type="text" name="paciente" value="<?= htmlspecialchars($filtro_paciente) ?>" placeholder="Nombre o teléfono..." class="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500">
+
+                                    <div class="flex items-center justify-end gap-2 pt-1">
+                                        <button type="button" @click="openFilter = null" class="px-2.5 py-1 text-xs text-gray-500 hover:text-gray-700">Cerrar</button>
+                                        <button type="submit" class="px-3 py-1 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-xs font-bold shadow-xs cursor-pointer">Filtrar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </th>
+
+                        <!-- Columna: Terapeuta -->
+                        <th class="py-3 px-4 font-semibold relative">
+                            <div class="flex items-center justify-between gap-1.5">
+                                <span>Terapeuta</span>
+                                <button type="button"
+                                    @click="openFilter = (openFilter === 'terapeuta' ? null : 'terapeuta')"
+                                    class="p-1 rounded-lg transition-colors cursor-pointer <?= $filtro_fisioterapeuta !== '' ? 'bg-primary-100 text-primary-700 ring-1 ring-primary-400' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-200/70' ?>"
+                                    title="Filtrar por terapeuta">
+                                    <i class="bi bi-funnel-fill text-xs"></i>
+                                </button>
+                            </div>
+                            <!-- Dropdown Terapeuta -->
+                            <div x-show="openFilter === 'terapeuta'"
+                                @click.outside="openFilter = null"
+                                x-transition:enter="transition ease-out duration-100"
+                                x-transition:enter-start="transform opacity-0 scale-95"
+                                x-transition:enter-end="transform opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-75"
+                                x-transition:leave-start="transform opacity-100 scale-100"
+                                x-transition:leave-end="transform opacity-0 scale-95"
+                                class="absolute left-2 top-full mt-1.5 z-40 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 p-2 text-gray-800 normal-case tracking-normal">
+                                <div class="flex items-center justify-between p-2 mb-1 border-b border-gray-100">
+                                    <span class="font-bold text-xs text-gray-900 flex items-center gap-1.5">
+                                        <i class="bi bi-person-badge text-primary-600"></i> Terapeuta
+                                    </span>
+                                    <?php if ($filtro_fisioterapeuta !== ''): ?>
+                                        <a href="<?= getFilterUrl(['terapeuta_id' => null]) ?>" class="text-[11px] text-rose-600 hover:underline font-semibold">Todos</a>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="max-h-52 overflow-y-auto space-y-0.5">
+                                    <a href="<?= getFilterUrl(['terapeuta_id' => null]) ?>"
+                                        class="flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs transition-colors <?= $filtro_fisioterapeuta === '' ? 'bg-primary-50 text-primary-700 font-bold' : 'text-gray-700 hover:bg-gray-50' ?>">
+                                        <span>Todos los terapeutas</span>
+                                        <?php if ($filtro_fisioterapeuta === ''): ?><i class="bi bi-check text-primary-600 text-sm"></i><?php endif; ?>
+                                    </a>
+                                    <?php foreach ($lista_terapeutas as $fisio): ?>
+                                        <a href="<?= getFilterUrl(['terapeuta_id' => $fisio['usuario_id']]) ?>"
+                                            class="flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs transition-colors <?= (string)$filtro_fisioterapeuta === (string)$fisio['usuario_id'] ? 'bg-primary-50 text-primary-700 font-bold' : 'text-gray-700 hover:bg-gray-50' ?>">
+                                            <span class="truncate"><?= htmlspecialchars($fisio['nombre']) ?></span>
+                                            <?php if ((string)$filtro_fisioterapeuta === (string)$fisio['usuario_id']): ?>
+                                                <i class="bi bi-check text-primary-600 text-sm"></i>
+                                            <?php endif; ?>
+                                        </a>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </th>
+
+                        <!-- Columna: Servicio -->
+                        <th class="py-3 px-4 font-semibold relative">
+                            <div class="flex items-center justify-between gap-1.5">
+                                <span>Servicio</span>
+                                <button type="button"
+                                    @click="openFilter = (openFilter === 'servicio' ? null : 'servicio')"
+                                    class="p-1 rounded-lg transition-colors cursor-pointer <?= $filtro_servicio !== '' ? 'bg-primary-100 text-primary-700 ring-1 ring-primary-400' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-200/70' ?>"
+                                    title="Filtrar por servicio">
+                                    <i class="bi bi-funnel-fill text-xs"></i>
+                                </button>
+                            </div>
+                            <!-- Dropdown Servicio -->
+                            <div x-show="openFilter === 'servicio'"
+                                @click.outside="openFilter = null"
+                                x-transition:enter="transition ease-out duration-100"
+                                x-transition:enter-start="transform opacity-0 scale-95"
+                                x-transition:enter-end="transform opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-75"
+                                x-transition:leave-start="transform opacity-100 scale-100"
+                                x-transition:leave-end="transform opacity-0 scale-95"
+                                class="absolute left-2 top-full mt-1.5 z-40 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 p-2 text-gray-800 normal-case tracking-normal">
+                                <div class="flex items-center justify-between p-2 mb-1 border-b border-gray-100">
+                                    <span class="font-bold text-xs text-gray-900 flex items-center gap-1.5">
+                                        <i class="bi bi-tag text-primary-600"></i> Servicio
+                                    </span>
+                                    <?php if ($filtro_servicio !== ''): ?>
+                                        <a href="<?= getFilterUrl(['servicio' => null]) ?>" class="text-[11px] text-rose-600 hover:underline font-semibold">Todos</a>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="max-h-52 overflow-y-auto space-y-0.5">
+                                    <a href="<?= getFilterUrl(['servicio' => null]) ?>"
+                                        class="flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs transition-colors <?= $filtro_servicio === '' ? 'bg-primary-50 text-primary-700 font-bold' : 'text-gray-700 hover:bg-gray-50' ?>">
+                                        <span>Todos los servicios</span>
+                                        <?php if ($filtro_servicio === ''): ?><i class="bi bi-check text-primary-600 text-sm"></i><?php endif; ?>
+                                    </a>
+                                    <?php foreach ($lista_servicios as $serv): ?>
+                                        <a href="<?= getFilterUrl(['servicio' => $serv['nombre']]) ?>"
+                                            class="flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs transition-colors <?= $filtro_servicio === $serv['nombre'] ? 'bg-primary-50 text-primary-700 font-bold' : 'text-gray-700 hover:bg-gray-50' ?>">
+                                            <span class="flex items-center gap-2 truncate">
+                                                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: <?= htmlspecialchars($serv['color']) ?>;"></span>
+                                                <span class="truncate"><?= htmlspecialchars($serv['nombre']) ?></span>
+                                            </span>
+                                            <?php if ($filtro_servicio === $serv['nombre']): ?>
+                                                <i class="bi bi-check text-primary-600 text-sm"></i>
+                                            <?php endif; ?>
+                                        </a>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </th>
+
+                        <!-- Columna: Despacho -->
+                        <th class="py-3 px-4 font-semibold relative">
+                            <div class="flex items-center justify-between gap-1.5">
+                                <span>Despacho</span>
+                                <button type="button"
+                                    @click="openFilter = (openFilter === 'despacho' ? null : 'despacho')"
+                                    class="p-1 rounded-lg transition-colors cursor-pointer <?= $filtro_despacho !== '' ? 'bg-primary-100 text-primary-700 ring-1 ring-primary-400' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-200/70' ?>"
+                                    title="Filtrar por despacho">
+                                    <i class="bi bi-funnel-fill text-xs"></i>
+                                </button>
+                            </div>
+                            <!-- Dropdown Despacho -->
+                            <div x-show="openFilter === 'despacho'"
+                                @click.outside="openFilter = null"
+                                x-transition:enter="transition ease-out duration-100"
+                                x-transition:enter-start="transform opacity-0 scale-95"
+                                x-transition:enter-end="transform opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-75"
+                                x-transition:leave-start="transform opacity-100 scale-100"
+                                x-transition:leave-end="transform opacity-0 scale-95"
+                                class="absolute right-0 top-full mt-1.5 z-40 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 p-2 text-gray-800 normal-case tracking-normal">
+                                <div class="flex items-center justify-between p-2 mb-1 border-b border-gray-100">
+                                    <span class="font-bold text-xs text-gray-900 flex items-center gap-1.5">
+                                        <i class="bi bi-door-open text-primary-600"></i> Despacho / Sala
+                                    </span>
+                                    <?php if ($filtro_despacho !== ''): ?>
+                                        <a href="<?= getFilterUrl(['despacho' => null]) ?>" class="text-[11px] text-rose-600 hover:underline font-semibold">Todos</a>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="max-h-52 overflow-y-auto space-y-0.5">
+                                    <a href="<?= getFilterUrl(['despacho' => null]) ?>"
+                                        class="flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs transition-colors <?= $filtro_despacho === '' ? 'bg-primary-50 text-primary-700 font-bold' : 'text-gray-700 hover:bg-gray-50' ?>">
+                                        <span>Todos los despachos</span>
+                                        <?php if ($filtro_despacho === ''): ?><i class="bi bi-check text-primary-600 text-sm"></i><?php endif; ?>
+                                    </a>
+                                    <a href="<?= getFilterUrl(['despacho' => 'online']) ?>"
+                                        class="flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs transition-colors <?= $filtro_despacho === 'online' ? 'bg-primary-50 text-primary-700 font-bold' : 'text-gray-700 hover:bg-gray-50' ?>">
+                                        <span class="flex items-center gap-1.5 text-gray-600">
+                                            <i class="bi bi-camera-video text-xs"></i>
+                                            <span>Online / Sin despacho</span>
+                                        </span>
+                                        <?php if ($filtro_despacho === 'online'): ?><i class="bi bi-check text-primary-600 text-sm"></i><?php endif; ?>
+                                    </a>
+                                    <?php foreach ($lista_despachos as $desp): ?>
+                                        <a href="<?= getFilterUrl(['despacho' => $desp['nombre']]) ?>"
+                                            class="flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs transition-colors <?= $filtro_despacho === $desp['nombre'] ? 'bg-primary-50 text-primary-700 font-bold' : 'text-gray-700 hover:bg-gray-50' ?>">
+                                            <span class="flex items-center gap-2 truncate">
+                                                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: <?= htmlspecialchars($desp['color']) ?>;"></span>
+                                                <span class="truncate"><?= htmlspecialchars($desp['nombre']) ?></span>
+                                            </span>
+                                            <?php if ($filtro_despacho === $desp['nombre']): ?>
+                                                <i class="bi bi-check text-primary-600 text-sm"></i>
+                                            <?php endif; ?>
+                                        </a>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </th>
+
+                        <!-- Columna: Estado -->
+                        <th class="py-3 px-4 font-semibold relative">
+                            <div class="flex items-center justify-between gap-1.5">
+                                <span>Estado</span>
+                                <button type="button"
+                                    @click="openFilter = (openFilter === 'estado' ? null : 'estado')"
+                                    class="p-1 rounded-lg transition-colors cursor-pointer <?= $filtro_estado !== '' ? 'bg-primary-100 text-primary-700 ring-1 ring-primary-400' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-200/70' ?>"
+                                    title="Filtrar por estado">
+                                    <i class="bi bi-funnel-fill text-xs"></i>
+                                </button>
+                            </div>
+                            <!-- Dropdown Estado -->
+                            <div x-show="openFilter === 'estado'"
+                                @click.outside="openFilter = null"
+                                x-transition:enter="transition ease-out duration-100"
+                                x-transition:enter-start="transform opacity-0 scale-95"
+                                x-transition:enter-end="transform opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-75"
+                                x-transition:leave-start="transform opacity-100 scale-100"
+                                x-transition:leave-end="transform opacity-0 scale-95"
+                                class="absolute right-0 top-full mt-1.5 z-40 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 p-2 text-gray-800 normal-case tracking-normal">
+                                <div class="flex items-center justify-between p-2 mb-1 border-b border-gray-100">
+                                    <span class="font-bold text-xs text-gray-900 flex items-center gap-1.5">
+                                        <i class="bi bi-flag text-primary-600"></i> Estado
+                                    </span>
+                                    <?php if ($filtro_estado !== ''): ?>
+                                        <a href="<?= getFilterUrl(['estado' => null]) ?>" class="text-[11px] text-rose-600 hover:underline font-semibold">Todos</a>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="space-y-0.5">
+                                    <a href="<?= getFilterUrl(['estado' => null]) ?>"
+                                        class="flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs transition-colors <?= $filtro_estado === '' ? 'bg-primary-50 text-primary-700 font-bold' : 'text-gray-700 hover:bg-gray-50' ?>">
+                                        <span>Todos los estados</span>
+                                        <?php if ($filtro_estado === ''): ?><i class="bi bi-check text-primary-600 text-sm"></i><?php endif; ?>
+                                    </a>
+                                    <?php foreach (['Programada', 'Confirmada', 'Pendiente', 'Realizada', 'Cancelada'] as $est): ?>
+                                        <a href="<?= getFilterUrl(['estado' => $est]) ?>"
+                                            class="flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs transition-colors <?= $filtro_estado === $est ? 'bg-primary-50 text-primary-700 font-bold' : 'text-gray-700 hover:bg-gray-50' ?>">
+                                            <span class="inline-flex items-center gap-1.5">
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold <?= $estadoBadgeClasses[$est] ?? 'bg-gray-100 text-gray-700' ?>"><?= $est ?></span>
+                                            </span>
+                                            <?php if ($filtro_estado === $est): ?>
+                                                <i class="bi bi-check text-primary-600 text-sm"></i>
+                                            <?php endif; ?>
+                                        </a>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </th>
+
+                        <!-- Columna: Acciones -->
                         <th class="py-3 px-4 font-semibold text-right">Acciones</th>
                     </tr>
                 </thead>
@@ -283,6 +655,18 @@ $estadoBadgeClasses = [
                                     <?php endif; ?>
                                 </td>
                                 <td class="py-4 px-4 whitespace-nowrap">
+                                    <?php if (!empty($cita['despacho_nombre'])): ?>
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-[11px] font-bold border" style="background-color: <?= htmlspecialchars($cita['despacho_color'] ?? '#6366f1') ?>15; border-color: <?= htmlspecialchars($cita['despacho_color'] ?? '#6366f1') ?>40; color: <?= htmlspecialchars($cita['despacho_color'] ?? '#6366f1') ?>;">
+                                            <i class="bi bi-door-open-fill text-[10px]"></i>
+                                            <span><?= htmlspecialchars($cita['despacho_nombre']) ?></span>
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-semibold text-gray-400 bg-gray-50 border border-gray-100">
+                                            <i class="bi bi-camera-video text-[9px]"></i> Online / Sin asignar
+                                        </span>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="py-4 px-4 whitespace-nowrap">
                                     <!-- Estado dropdown rápido con selector estético -->
                                     <form action="<?= PROJECT_ROOT ?>/citas/estado" method="POST" class="inline-block m-0">
                                         <input type="hidden" name="cita_id" value="<?= $cita['cita_id'] ?>">
@@ -345,15 +729,15 @@ $estadoBadgeClasses = [
                     </div>
                     <div>
                         <nav class="relative z-0 inline-flex rounded-xl shadow-sm -space-x-px" aria-label="Pagination">
-                            <a href="<?= getPaginationQuery(max(1, $pagina - 1), $filtro_busqueda, $filtro_estado, $filtro_fisioterapeuta, $filtro_fecha) ?>" class="relative inline-flex items-center px-3 py-2 rounded-l-xl border border-gray-200 bg-white text-xs font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina <= 1 ? 'pointer-events-none opacity-50' : '' ?>">
+                            <a href="<?= getPaginationQuery(max(1, $pagina - 1), $filtro_busqueda, $filtro_estado, $filtro_fisioterapeuta, $filtro_fecha, $filtro_paciente, $filtro_servicio, $filtro_despacho) ?>" class="relative inline-flex items-center px-3 py-2 rounded-l-xl border border-gray-200 bg-white text-xs font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina <= 1 ? 'pointer-events-none opacity-50' : '' ?>">
                                 <i class="bi bi-chevron-left text-xs"></i>
                             </a>
                             <?php for ($i = 0; $i < $n_botones_paginacion; $i++) : ?>
-                                <a href="<?= getPaginationQuery($i + 1, $filtro_busqueda, $filtro_estado, $filtro_fisioterapeuta, $filtro_fecha) ?>" aria-current="<?= $pagina == $i + 1 ? 'page' : 'false' ?>" class="relative inline-flex items-center px-3 py-2 border text-xs font-semibold transition-colors <?= $pagina == $i + 1 ? 'z-10 bg-primary-50 border-primary-500 text-primary-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' ?>">
+                                <a href="<?= getPaginationQuery($i + 1, $filtro_busqueda, $filtro_estado, $filtro_fisioterapeuta, $filtro_fecha, $filtro_paciente, $filtro_servicio, $filtro_despacho) ?>" aria-current="<?= $pagina == $i + 1 ? 'page' : 'false' ?>" class="relative inline-flex items-center px-3 py-2 border text-xs font-semibold transition-colors <?= $pagina == $i + 1 ? 'z-10 bg-primary-50 border-primary-500 text-primary-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' ?>">
                                     <?= $i + 1 ?>
                                 </a>
                             <?php endfor; ?>
-                            <a href="<?= getPaginationQuery(min($n_botones_paginacion, $pagina + 1), $filtro_busqueda, $filtro_estado, $filtro_fisioterapeuta, $filtro_fecha) ?>" class="relative inline-flex items-center px-3 py-2 rounded-r-xl border border-gray-200 bg-white text-xs font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina >= $n_botones_paginacion ? 'pointer-events-none opacity-50' : '' ?>">
+                            <a href="<?= getPaginationQuery(min($n_botones_paginacion, $pagina + 1), $filtro_busqueda, $filtro_estado, $filtro_fisioterapeuta, $filtro_fecha, $filtro_paciente, $filtro_servicio, $filtro_despacho) ?>" class="relative inline-flex items-center px-3 py-2 rounded-r-xl border border-gray-200 bg-white text-xs font-medium text-gray-500 hover:bg-gray-50 transition-colors <?= $pagina >= $n_botones_paginacion ? 'pointer-events-none opacity-50' : '' ?>">
                                 <i class="bi bi-chevron-right text-xs"></i>
                             </a>
                         </nav>

@@ -133,6 +133,81 @@ class LoginControllerTest extends ControllerTestCase
         $this->assertEquals('U123', $_SESSION['usuario_id']);
     }
 
+    public function testIniciarSesionAdminRedirectsToConfiguracionWhenClinicIncomplete()
+    {
+        $_POST['email'] = 'admin@example.com';
+        $_POST['pass'] = 'correctpass';
+
+        $user = [
+            'usuario_id' => 'A12345678',
+            'email' => 'admin@example.com',
+            'pass' => password_hash('correctpass', PASSWORD_DEFAULT),
+            'rol' => 'Administrador',
+            'nombre' => 'Admin'
+        ];
+
+        $loginModelMock = $this->getMockBuilder(Login::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getByEmail'])
+            ->getMock();
+        $loginModelMock->method('getByEmail')->willReturn($user);
+
+        $settingModelMock = $this->getMockBuilder(\App\Models\Setting::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getClinica'])
+            ->getMock();
+        $settingModelMock->method('getClinica')->willReturn(null); // Sin clínica registrada
+
+        $controller = $this->getControllerMock(LoginController::class);
+        $this->setPrivateProperty($controller, 'loginModel', $loginModelMock);
+        $controller->method('model')->with('Setting')->willReturn($settingModelMock);
+
+        $this->expectException(TestExitException::class);
+        $controller->iniciarSesion();
+
+        $this->assertNotEmpty($_SESSION['warning_message']);
+    }
+
+    public function testIniciarSesionAdminProceedsWhenClinicComplete()
+    {
+        $_POST['email'] = 'admin@example.com';
+        $_POST['pass'] = 'correctpass';
+
+        $user = [
+            'usuario_id' => 'A12345678',
+            'email' => 'admin@example.com',
+            'pass' => password_hash('correctpass', PASSWORD_DEFAULT),
+            'rol' => 'Administrador',
+            'nombre' => 'Admin'
+        ];
+
+        $loginModelMock = $this->getMockBuilder(Login::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getByEmail'])
+            ->getMock();
+        $loginModelMock->method('getByEmail')->willReturn($user);
+
+        $settingModelMock = $this->getMockBuilder(\App\Models\Setting::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getClinica'])
+            ->getMock();
+        $settingModelMock->method('getClinica')->willReturn([
+            'nombre_comercial' => 'Clínica Demo',
+            'direccion' => 'Calle Gran Vía 1',
+            'ciudad' => 'Madrid',
+            'telefono_contacto' => '912345678'
+        ]);
+
+        $controller = $this->getControllerMock(LoginController::class);
+        $this->setPrivateProperty($controller, 'loginModel', $loginModelMock);
+        $controller->method('model')->with('Setting')->willReturn($settingModelMock);
+
+        $this->expectException(TestExitException::class);
+        $controller->iniciarSesion();
+
+        $this->assertArrayNotHasKey('warning_message', $_SESSION);
+    }
+
     public function testFinishSession()
     {
         $controller = $this->getControllerMock(LoginController::class);

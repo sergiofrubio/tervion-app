@@ -42,7 +42,7 @@ include TEMPLATE_DIR . 'header.php';
                             <span class="text-[10px] text-gray-400 font-normal">Opcional para menores</span>
                         </div>
                         <input type="text" name="dni" id="dni" maxlength="20"
-                            value="<?= htmlspecialchars($u['dni'] ?? ($u['usuario_id'] && !is_numeric($u['usuario_id']) ? $u['usuario_id'] : '')) ?>"
+                            value="<?= htmlspecialchars($u['dni'] ?? (!empty($u['usuario_id']) && !is_numeric($u['usuario_id']) ? $u['usuario_id'] : '')) ?>"
                             class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm border px-3 py-2 transition-all"
                             placeholder="Ej. 12345678X (Vacío si no tiene)">
                     </div>

@@ -22,7 +22,7 @@ class SettingController extends Controller
             'ausencias' => $settingModel->getAusenciasFisios(),
             'bonos' => $settingModel->getBonos(),
             'clinica' => $settingModel->getClinica(),
-            'tarjeta' => $settingModel->getMetodoPagoByUsuario($usuario_id),
+            // 'tarjeta' => $settingModel->getMetodoPagoByUsuario($usuario_id),
             'cuenta' => $settingModel->getCuentaClienteByEmail($email_admin),
             'tipos_citas' => $settingModel->getTiposCitas(),
             'despachos' => $settingModel->getDespachos(),

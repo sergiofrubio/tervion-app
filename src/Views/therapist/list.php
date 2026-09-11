@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Facultativos";
+$pageTitle = "Empleados";
 $isAdmin = isset($_SESSION['rol']) && $_SESSION['rol'] === 'Administrador';
 include TEMPLATE_DIR . 'header.php';
 
@@ -45,14 +45,14 @@ $trabajadoresPaginados = array_slice($trabajadores_filtrados, $iniciar, $articul
     <!-- Title & Action Bar -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">Facultativos</h1>
+            <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">Empleados</h1>
             <p class="text-gray-500 text-sm mt-0.5">Gestión del personal de la clínica.</p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
             <?php if ($isAdmin): ?>
                 <a href="<?= PROJECT_ROOT ?>/terapeutas/crear" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-2xl font-semibold text-sm shadow-md transition-all cursor-pointer">
                     <i class="bi bi-person-plus-fill"></i>
-                    <span>Nuevo Facultativo</span>
+                    <span>Nuevo Empleado</span>
                 </a>
             <?php endif; ?>
         </div>
@@ -98,7 +98,7 @@ $trabajadoresPaginados = array_slice($trabajadores_filtrados, $iniciar, $articul
                     </div>
                     <select name="rol" onchange="this.form.submit()" class="w-full sm:w-48 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all cursor-pointer">
                         <option value="">Todos los roles</option>
-                        <option value="Fisioterapeuta" <?= $filtro_rol === 'Fisioterapeuta' ? 'selected' : '' ?>>Fisioterapeuta</option>
+                        <option value="Terapeuta" <?= $filtro_rol === 'Terapeuta' ? 'selected' : '' ?>>Terapeuta</option>
                         <option value="Secretario" <?= $filtro_rol === 'Secretario' ? 'selected' : '' ?>>Secretario</option>
                         <option value="Administrador" <?= $filtro_rol === 'Administrador' ? 'selected' : '' ?>>Administrador</option>
                     </select>
@@ -109,7 +109,7 @@ $trabajadoresPaginados = array_slice($trabajadores_filtrados, $iniciar, $articul
                     <?php endif; ?>
                 </div>
                 <div class="text-xs text-gray-500 font-medium whitespace-nowrap">
-                    Total registrado: <span class="font-bold text-gray-900"><?= $total_trabajadores ?></span> facultativos
+                    Total registrado: <span class="font-bold text-gray-900"><?= $total_trabajadores ?></span> empleados
                 </div>
             </form>
         </div>
@@ -120,7 +120,7 @@ $trabajadoresPaginados = array_slice($trabajadores_filtrados, $iniciar, $articul
                     <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
                         <th class="py-3 px-4 font-semibold">DNI</th>
                         <th class="py-3 px-4 font-semibold">Nombre Completo</th>
-                        <th class="py-3 px-4 font-semibold">Rol / Cargo</th>
+                        <th class="py-3 px-4 font-semibold">Cargo</th>
                         <th class="py-3 px-4 font-semibold">Email</th>
                         <th class="py-3 px-4 font-semibold">Teléfono</th>
                         <th class="py-3 px-4 font-semibold text-right">Acciones</th>
@@ -195,7 +195,7 @@ $trabajadoresPaginados = array_slice($trabajadores_filtrados, $iniciar, $articul
                         <tr>
                             <td colspan="6" class="py-12 text-center text-gray-400 italic">
                                 <i class="bi bi-people text-4xl block mb-2 text-gray-300"></i>
-                                No se encontraron facultativos o empleados registrados.
+                                No se encontraron empleados o empleados registrados.
                             </td>
                         </tr>
                     <?php endif; ?>

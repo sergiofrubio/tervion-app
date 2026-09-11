@@ -1,7 +1,7 @@
 <?php
 $t = $therapist ?? [];
 $isEdit = !empty($t);
-$pageTitle = $isEdit ? "Editar Facultativo" : "Nuevo Facultativo";
+$pageTitle = $isEdit ? "Editar Empleado" : "Nuevo Empleado";
 include TEMPLATE_DIR . 'header.php';
 ?>
 
@@ -9,7 +9,7 @@ include TEMPLATE_DIR . 'header.php';
     <!-- Header -->
     <div class="mb-5 flex items-center justify-between">
         <div>
-            <h1 class="text-xl font-bold text-gray-900 tracking-tight"><?= $isEdit ? "Editar Facultativo / Empleado" : "Nuevo Facultativo" ?></h1>
+            <h1 class="text-xl font-bold text-gray-900 tracking-tight"><?= $isEdit ? "Editar Empleado / Empleado" : "Nuevo Empleado" ?></h1>
             <p class="mt-0.5 text-xs sm:text-sm text-gray-500"><?= $isEdit ? "Modifica los datos personales y laborales del especialista." : "Registra un nuevo especialista o miembro del personal en el sistema." ?></p>
         </div>
         <a href="<?= PROJECT_ROOT ?>/terapeutas" class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-primary-600 transition-colors">
@@ -45,10 +45,10 @@ include TEMPLATE_DIR . 'header.php';
                     </div>
 
                     <div class="lg:col-span-4 space-y-1">
-                        <label for="rol" class="block text-xs font-semibold text-gray-700">Rol / Cargo <span class="text-rose-500">*</span></label>
+                        <label for="rol" class="block text-xs font-semibold text-gray-700">Cargo <span class="text-rose-500">*</span></label>
                         <select name="rol" id="rol" required class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm border px-3 py-2 bg-white transition-all">
-                            <option value="Fisioterapeuta" <?= ($isEdit && ($t['rol'] ?? '') === 'Fisioterapeuta') ? 'selected' : '' ?>>Fisioterapeuta / Facultativo</option>
-                            <option value="Secretario" <?= ($isEdit && ($t['rol'] ?? '') === 'Secretario') ? 'selected' : '' ?>>Secretario / Recepción</option>
+                            <option value="Terapeuta" <?= ($isEdit && ($t['rol'] ?? '') === 'Terapeuta') ? 'selected' : '' ?>>Terapeuta</option>
+                            <option value="Secretario" <?= ($isEdit && ($t['rol'] ?? '') === 'Secretario') ? 'selected' : '' ?>>Secretario</option>
                             <option value="Administrador" <?= ($isEdit && ($t['rol'] ?? '') === 'Administrador') ? 'selected' : '' ?>>Administrador</option>
                         </select>
                     </div>
@@ -164,7 +164,7 @@ include TEMPLATE_DIR . 'header.php';
                     Cancelar
                 </a>
                 <button type="submit" class="inline-flex justify-center items-center gap-2 rounded-xl bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all">
-                    <?= $isEdit ? "Guardar Cambios" : "Registrar Facultativo" ?>
+                    <?= $isEdit ? "Guardar Cambios" : "Registrar Empleado" ?>
                 </button>
             </div>
         </form>

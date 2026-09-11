@@ -214,8 +214,8 @@ $estadoBadgeClasses = [
                         <!-- <th class="py-3 px-4 font-semibold">ID</th> -->
                         <th class="py-3 px-4 font-semibold">Fecha y Hora</th>
                         <th class="py-3 px-4 font-semibold">Paciente</th>
-                        <th class="py-3 px-4 font-semibold">Fisioterapeuta</th>
-                        <th class="py-3 px-4 font-semibold">Tipo / Servicio</th>
+                        <th class="py-3 px-4 font-semibold">Terapeuta</th>
+                        <th class="py-3 px-4 font-semibold">Servicio</th>
                         <th class="py-3 px-4 font-semibold">Estado</th>
                         <th class="py-3 px-4 font-semibold text-right">Acciones</th>
                     </tr>

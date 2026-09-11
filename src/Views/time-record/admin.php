@@ -120,7 +120,7 @@ include TEMPLATE_DIR . 'header.php';
                 <thead>
                     <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
                         <th class="py-3 px-4 font-semibold">Empleado</th>
-                        <th class="py-3 px-4 font-semibold">Rol</th>
+                        <!-- <th class="py-3 px-4 font-semibold">Rol</th> -->
                         <th class="py-3 px-4 font-semibold">Fecha</th>
                         <th class="py-3 px-4 font-semibold">Entrada</th>
                         <th class="py-3 px-4 font-semibold">Salida</th>
@@ -168,15 +168,15 @@ include TEMPLATE_DIR . 'header.php';
                                         </div>
                                         <div>
                                             <div class="font-bold text-gray-900 text-sm"><?= htmlspecialchars($row['nombre'] . ' ' . $row['apellidos'], ENT_QUOTES, 'UTF-8') ?></div>
-                                            <div class="text-[11px] text-gray-400 font-medium">#<?= htmlspecialchars($row['usuario_id'], ENT_QUOTES, 'UTF-8') ?></div>
+                                            <div class="text-[11px] text-gray-400 font-medium"><?= htmlspecialchars($row['usuario_id'], ENT_QUOTES, 'UTF-8') ?></div>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="py-4 px-4 font-medium text-gray-600">
+                                <!-- <td class="py-4 px-4 font-medium text-gray-600">
                                     <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-medium bg-gray-100 text-gray-700">
                                         <?= htmlspecialchars($row['rol'], ENT_QUOTES, 'UTF-8') ?>
                                     </span>
-                                </td>
+                                </td> -->
                                 <td class="py-4 px-4 font-bold text-gray-900">
                                     <?= date('d/m/Y', strtotime($row['fecha'])) ?>
                                 </td>

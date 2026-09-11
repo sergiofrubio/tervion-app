@@ -38,8 +38,8 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                 <i class="bi bi-arrow-left"></i>
                 <span>Volver a Pacientes</span>
             </a>
-            <div class="h-4 w-px bg-gray-300 hidden sm:block"></div>
-            <span class="text-xs font-medium text-gray-400 hidden sm:inline-block">Expediente Clínico Digital</span>
+            <!-- <div class="h-4 w-px bg-gray-300 hidden sm:block"></div>
+            <span class="text-xs font-medium text-gray-400 hidden sm:inline-block">Expediente Clínico Digital</span> -->
         </div>
 
         <div class="flex items-center gap-3">
@@ -118,8 +118,8 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                     <div class="space-y-4 pt-2 text-xs">
                         <div class="flex items-center justify-between pb-2 border-b border-white/15">
                             <span class="text-[11px] font-bold uppercase tracking-wider text-white/80">Información de Contacto</span>
-                            <a href="<?= PROJECT_ROOT ?>/pacientes/editar?id=<?= $usuario['usuario_id'] ?>" 
-                               class="inline-flex items-center gap-1 text-[11px] font-semibold text-white/90 hover:text-white bg-white/15 hover:bg-white/25 px-2.5 py-1 rounded-lg transition-colors">
+                            <a href="<?= PROJECT_ROOT ?>/pacientes/editar?id=<?= $usuario['usuario_id'] ?>"
+                                class="inline-flex items-center gap-1 text-[11px] font-semibold text-white/90 hover:text-white bg-white/15 hover:bg-white/25 px-2.5 py-1 rounded-lg transition-colors">
                                 <i class="bi bi-pencil"></i>
                                 Editar
                             </a>

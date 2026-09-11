@@ -90,7 +90,7 @@ $pacientesPaginados = array_slice($pacientes_filtrados, $iniciar, $articulos_x_p
                     <?php if (!empty($pacientesPaginados)) : ?>
                         <?php foreach ($pacientesPaginados as $paciente) : ?>
                             <tr class="hover:bg-gray-50/80 transition-colors">
-                                <td class="py-4 px-4 font-bold text-gray-400">#<?= htmlspecialchars($paciente['usuario_id']) ?></td>
+                                <td class="py-4 px-4 font-bold text-gray-400"><?= htmlspecialchars($paciente['usuario_id']) ?></td>
                                 <td class="py-4 px-4">
                                     <div class="flex items-center gap-2.5">
                                         <div class="h-7 w-7 rounded-full bg-primary-50 flex items-center justify-center text-primary-600 font-bold text-xs">
@@ -116,11 +116,11 @@ $pacientesPaginados = array_slice($pacientes_filtrados, $iniciar, $articulos_x_p
                                         <a href="<?= PROJECT_ROOT ?>/pacientes/detalle?usuario_id=<?= $paciente['usuario_id'] ?>" class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Ver Historial / Detalle">
                                             <i class="bi bi-eye text-sm"></i>
                                         </a>
-                                        <?php if ($isAdminOrSecretary): ?>
+                                        <!-- <?php if ($isAdminOrSecretary): ?>
                                             <a href="<?= PROJECT_ROOT ?>/pacientes/editar?id=<?= $paciente['usuario_id'] ?>" class="p-1.5 text-gray-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-all" title="Editar">
                                                 <i class="bi bi-pencil-square text-sm"></i>
                                             </a>
-                                        <?php endif; ?>
+                                        <?php endif; ?> -->
                                         <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Administrador'): ?>
                                             <form action="<?= PROJECT_ROOT ?>/pacientes/eliminar" method="POST" class="inline-block m-0" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este paciente?');">
                                                 <input type="hidden" name="id" value="<?= $paciente['usuario_id'] ?>">

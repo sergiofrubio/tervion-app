@@ -35,14 +35,14 @@ $router->add('POST', '/superadmin/facturas/estado', 'SaasAdminController@updateI
 $router->add('GET', '/superadmin/facturas/pdf', 'SaasAdminController@invoicePdf', true, ['SuperAdmin']);
 
 // Rutas Generales (Requieren autenticación, accesibles por todos los roles)
-$allRoles = ['SuperAdmin', 'Administrador', 'Fisioterapeuta', 'Secretario', 'Paciente'];
+$allRoles = ['SuperAdmin', 'Administrador', 'Terapeuta', 'Secretario', 'Paciente'];
 $router->add('GET', '/inicio', 'HomeController@index', true, $allRoles);
 $router->add('GET', '/perfil', 'ProfileController@index', true, $allRoles);
 $router->add('GET', '/perfil/editar', 'ProfileController@edit', true, $allRoles);
 $router->add('POST', '/perfil/editar', 'ProfileController@edit', true, $allRoles);
 
-// Rutas para Administradores y Fisioterapeutas/Secretarios
-$staffRoles = ['Administrador', 'Fisioterapeuta', 'Secretario'];
+// Rutas para Administradores y Terapeutas y Secretarios
+$staffRoles = ['Administrador', 'Terapeuta', 'Secretario'];
 
 // Rutas para Pacientes
 $router->add('GET', '/pacientes', 'PatientController@list', true, $staffRoles);
@@ -71,8 +71,8 @@ $router->add('POST', '/citas/eliminar', 'AppointmentController@delete', true, $s
 $router->add('POST', '/citas/estado', 'AppointmentController@updateStatus', true, $staffRoles);
 $router->add('POST', '/citas/editar', 'AppointmentController@edit', true, $staffRoles);
 $router->add('GET', '/citas/editar', 'AppointmentController@edit', true, $staffRoles);
-$router->add('GET', '/citas/slots', 'AppointmentController@getSlots', true, ['Administrador', 'Fisioterapeuta', 'Secretario', 'Paciente']);
-$router->add('GET', '/citas/dias-disponibles', 'AppointmentController@getAvailableDays', true, ['Administrador', 'Fisioterapeuta', 'Secretario', 'Paciente']);
+$router->add('GET', '/citas/slots', 'AppointmentController@getSlots', true, ['Administrador', 'Terapeuta', 'Secretario', 'Paciente']);
+$router->add('GET', '/citas/dias-disponibles', 'AppointmentController@getAvailableDays', true, ['Administrador', 'Terapeuta', 'Secretario', 'Paciente']);
 
 $router->add('GET', '/configuracion', 'SettingController@index', true, ['Administrador']);
 $router->add('GET', '/configuracion/horarios/crear', 'SettingController@createHorario', true, ['Administrador']);
@@ -124,14 +124,14 @@ $router->add('GET', '/facturas/pdf', 'InvoiceController@pdf', true, array_merge(
 $router->add('GET', '/facturas/reenviar', 'InvoiceController@reenviarVerifactu', true, $staffRoles);
 $router->add('POST', '/facturas/reenviar', 'InvoiceController@reenviarVerifactu', true, $staffRoles);
 
-// Rutas de Facultativos y Personal
-$router->add('GET', '/terapeutas', 'TherapistController@list', true, $staffRoles);
-$router->add('GET', '/terapeutas/crear', 'TherapistController@create', true, ['Administrador']);
-$router->add('POST', '/terapeutas/crear', 'TherapistController@create', true, ['Administrador']);
-$router->add('GET', '/terapeutas/detalle', 'TherapistController@detail', true, $staffRoles);
-$router->add('GET', '/terapeutas/editar', 'TherapistController@edit', true, ['Administrador']);
-$router->add('POST', '/terapeutas/editar', 'TherapistController@edit', true, ['Administrador']);
-$router->add('POST', '/terapeutas/eliminar', 'TherapistController@delete', true, ['Administrador']);
+// Rutas de Empleados
+$router->add('GET', '/empleados', 'TherapistController@list', true, $staffRoles);
+$router->add('GET', '/empleados/crear', 'TherapistController@create', true, ['Administrador']);
+$router->add('POST', '/empleados/crear', 'TherapistController@create', true, ['Administrador']);
+$router->add('GET', '/empleados/detalle', 'TherapistController@detail', true, $staffRoles);
+$router->add('GET', '/empleados/editar', 'TherapistController@edit', true, ['Administrador']);
+$router->add('POST', '/empleados/editar', 'TherapistController@edit', true, ['Administrador']);
+$router->add('POST', '/empleados/eliminar', 'TherapistController@delete', true, ['Administrador']);
 
 // Rutas de Documentos y Plantillas
 $router->add('GET', '/documentos', 'DocumentController@list', true, $staffRoles);

@@ -56,12 +56,12 @@ $isAgendasActive     = ($cleanUri === '/citas' || strpos($cleanUri, '/citas/') =
 $isRecepcionActive   = ($cleanUri === '/fichajes' || strpos($cleanUri, '/fichajes/') === 0);
 $isHistoriasActive   = ($cleanUri === '/historial' || strpos($cleanUri, '/historial/') === 0 || strpos($cleanUri, '/medical-report') === 0);
 
-$isFacultativosActive = ($cleanUri === '/nominas' || strpos($cleanUri, '/nominas/') === 0 || strpos($cleanUri, '/trabajadores') === 0 || strpos($cleanUri, '/terapeutas') === 0);
+$isEmpleadosActive = ($cleanUri === '/nominas' || strpos($cleanUri, '/nominas/') === 0 || strpos($cleanUri, '/trabajadores') === 0 || strpos($cleanUri, '/empleados') === 0);
 $isContabilidadActive = ($cleanUri === '/contabilidad' || strpos($cleanUri, '/contabilidad/') === 0 || strpos($cleanUri, '/facturas') === 0);
 $isDocumentosActive   = ($cleanUri === '/documentos' || strpos($cleanUri, '/documentos/') === 0);
 $isConfiguracionActive = ($cleanUri === '/configuracion' || strpos($cleanUri, '/configuracion/') === 0);
 
-$isAnyConfigActive = ($isFacultativosActive || $isContabilidadActive || $isDocumentosActive || $isConfiguracionActive);
+$isAnyConfigActive = ($isEmpleadosActive || $isContabilidadActive || $isDocumentosActive || $isConfiguracionActive);
 
 // Comprobaciones de rutas para SuperAdmin
 $isSuperAdmin = ($userRole === 'SuperAdmin');
@@ -125,7 +125,7 @@ $isSaasFacturasActive  = (strpos($cleanUri, '/superadmin/facturas') === 0);
                             elseif ($isAgendasActive) echo 'Agendas de Citas';
                             elseif ($isRecepcionActive) echo 'Control de Fichajes';
                             elseif ($isHistoriasActive) echo 'Historias Clínicas';
-                            elseif ($isFacultativosActive) echo 'Facultativos';
+                            elseif ($isEmpleadosActive) echo 'Empleados';
                             elseif ($isContabilidadActive) echo 'Contabilidad y Facturas';
                             elseif ($isDocumentosActive) echo 'Documentos';
                             elseif ($isConfiguracionActive) echo 'Configuración';
@@ -280,14 +280,14 @@ $isSaasFacturasActive  = (strpos($cleanUri, '/superadmin/facturas') === 0);
                         Configuración
                     </div>
 
-                    <!-- Facultativos -->
-                    <a href="<?= PROJECT_ROOT ?>/terapeutas"
-                        class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isFacultativosActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
+                    <!-- Empleados -->
+                    <a href="<?= PROJECT_ROOT ?>/empleados"
+                        class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isEmpleadosActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
                         :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
-                        :title="sidebarCollapsed ? 'Facultativos' : ''">
-                        <i class="bi bi-person-badge text-lg shrink-0 <?= $isFacultativosActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
+                        :title="sidebarCollapsed ? 'Empleados' : ''">
+                        <i class="bi bi-person-badge text-lg shrink-0 <?= $isEmpleadosActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
                         <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-                            Facultativos
+                            Empleados
                         </span>
                     </a>
 
@@ -435,10 +435,10 @@ $isSaasFacturasActive  = (strpos($cleanUri, '/superadmin/facturas') === 0);
 
                         <div class="pt-2.5 border-t border-slate-100 space-y-1">
                             <div class="px-3.5 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Configuración</div>
-                            <a href="<?= PROJECT_ROOT ?>/terapeutas" @click="mobileMenuOpen = false"
-                                class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors <?= $isFacultativosActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
+                            <a href="<?= PROJECT_ROOT ?>/empleados" @click="mobileMenuOpen = false"
+                                class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors <?= $isEmpleadosActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
                                 <i class="bi bi-person-badge text-base text-slate-400"></i>
-                                <span>Facultativos</span>
+                                <span>Empleados</span>
                             </a>
                             <a href="<?= PROJECT_ROOT ?>/contabilidad" @click="mobileMenuOpen = false"
                                 class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors <?= $isContabilidadActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">

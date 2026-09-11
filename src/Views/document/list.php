@@ -80,7 +80,7 @@ $documentosPaginados = array_slice($documentos_filtrados, $iniciar, $articulos_x
                     <tr class="bg-gray-50/70 text-gray-400 uppercase text-[10px] tracking-wider border-b border-gray-100">
                         <th class="py-3 px-4 font-semibold">Título de la Plantilla</th>
                         <th class="py-3 px-4 font-semibold">Descripción</th>
-                        <th class="py-3 px-4 font-semibold">Fecha de Creación</th>
+                        <!-- <th class="py-3 px-4 font-semibold">Fecha de Creación</th> -->
                         <th class="py-3 px-4 font-semibold text-right">Acciones</th>
                     </tr>
                 </thead>
@@ -101,12 +101,12 @@ $documentosPaginados = array_slice($documentos_filtrados, $iniciar, $articulos_x
                                 <td class="py-4 px-4 font-medium text-gray-600 max-w-xs truncate">
                                     <?= !empty($doc['descripcion']) ? htmlspecialchars($doc['descripcion']) : '<span class="text-gray-300 italic">Sin descripción</span>' ?>
                                 </td>
-                                <td class="py-4 px-4 font-medium text-gray-600">
+                                <!-- <td class="py-4 px-4 font-medium text-gray-600">
                                     <div class="flex items-center gap-1.5 text-gray-500">
                                         <i class="bi bi-calendar-event text-gray-400 text-xs"></i>
                                         <?= date('d/m/Y H:i', strtotime($doc['fecha_creacion'])) ?>
                                     </div>
-                                </td>
+                                </td> -->
                                 <td class="py-4 px-4 text-right">
                                     <div class="flex items-center justify-end gap-1">
                                         <a href="<?= PROJECT_ROOT ?>/documentos/editar?id=<?= $doc['documento_id'] ?>" class="p-1.5 text-gray-400 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-all" title="Editar">

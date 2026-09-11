@@ -25,7 +25,7 @@ class ShopControllerTest extends ControllerTestCase
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('patient-view/shop/list', $this->callback(function($data) {
+            ->with('patient-portal/shop/list', $this->callback(function ($data) {
                 return count($data['bonosActivos']) === 1 && reset($data['bonosActivos'])['id'] === 1;
             }));
 

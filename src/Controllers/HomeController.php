@@ -20,17 +20,11 @@ class HomeController extends Controller
             $this->exitApp();
         }
 
-        if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'SuperAdmin') {
-            $saasAdminController = new SaasAdminController();
-            $saasAdminController->dashboard();
-            return;
-        }
-
         if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Paciente') {
             $data = [
                 'nombrePaciente' => $_SESSION['nombre'] ?? 'Paciente'
             ];
-            $this->view('patient-view/index', $data);
+            $this->view('patient-portal/index', $data);
         }
         if (isset($_SESSION['rol']) && ($_SESSION['rol'] === 'Administrador' || $_SESSION['rol'] === 'Fisioterapeuta' || $_SESSION['rol'] === 'Secretario')) {
             $dashboardModel = $this->model('Dashboard');

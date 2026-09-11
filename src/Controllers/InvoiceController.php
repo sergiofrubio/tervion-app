@@ -27,7 +27,7 @@ class InvoiceController extends Controller
                 'facturas' => $facturaModel->getByPaciente($usuario_id),
                 'pageTitle' => 'Mis Facturas - Tervion'
             ];
-            $this->view('patient-view/invoice/list', $data);
+            $this->view('patient-portal/invoice/list', $data);
         } else {
             $filters = [
                 'paciente_id' => $_GET['paciente_id'] ?? null,

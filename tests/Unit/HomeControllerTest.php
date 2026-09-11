@@ -23,7 +23,7 @@ class HomeControllerTest extends ControllerTestCase
         $controller = $this->getControllerMock(HomeController::class);
         $controller->expects($this->once())
             ->method('view')
-            ->with('patient-view/index', ['nombrePaciente' => 'Juan']);
+            ->with('patient-portal/index', ['nombrePaciente' => 'Juan']);
 
         $controller->index();
     }

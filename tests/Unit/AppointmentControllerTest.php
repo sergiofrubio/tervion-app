@@ -24,7 +24,7 @@ class AppointmentControllerTest extends ControllerTestCase
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('patient-view/appointment/list', ['appointments' => []]);
+            ->with('patient-portal/appointment/list', ['appointments' => []]);
 
         $controller->list();
     }
@@ -93,7 +93,7 @@ class AppointmentControllerTest extends ControllerTestCase
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('patient-view/appointment/create', [
+            ->with('patient-portal/appointment/create', [
                 'fisioterapeutas' => [],
                 'tiposCitas' => [],
                 'despachos' => []
@@ -248,7 +248,7 @@ class AppointmentControllerTest extends ControllerTestCase
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('patient-view/appointment/edit', $this->callback(function ($data) {
+            ->with('patient-portal/appointment/edit', $this->callback(function ($data) {
                 return $data['appointment']['paciente_id'] === 'U123';
             }));
 

@@ -23,7 +23,7 @@ class InvoiceControllerTest extends ControllerTestCase
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('patient-view/invoice/list', ['facturas' => [], 'pageTitle' => 'Mis Facturas - Tervion']);
+            ->with('patient-portal/invoice/list', ['facturas' => [], 'pageTitle' => 'Mis Facturas - Tervion']);
 
         $controller->list();
     }

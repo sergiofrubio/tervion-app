@@ -21,7 +21,7 @@ class AppointmentController extends Controller
 
         if ($_SESSION['rol'] === 'Paciente') {
             $data = ['appointments' => $appointment->getByPatient($_SESSION['usuario_id'])];
-            $this->view('patient-view/appointment/list', $data);
+            $this->view('patient-portal/appointment/list', $data);
         } else {
             $userModel = $this->model('User');
             $data = [
@@ -81,7 +81,7 @@ class AppointmentController extends Controller
             if ($ubicacion_tipo === 'presencial' && !empty($fecha_hora) && !empty($fecha_hora_fin)) {
                 $despacho_id = $appointment->findAvailableDespacho($fecha_hora, $fecha_hora_fin);
                 if (!$despacho_id) {
-                    $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
+                    $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-portal/appointment' : '/citas';
                     header('Location: ' . PROJECT_ROOT . $redirect . '?alert=danger&message=' . urlencode('No hay despachos libres disponibles para esa fecha y hora.'));
                     $this->exitApp();
                 }
@@ -90,11 +90,11 @@ class AppointmentController extends Controller
             $estado = 'Programada';
 
             if (!empty($paciente_id) && !empty($terapeuta_id) && !empty($fecha_hora) && $appointment->save($paciente_id, $terapeuta_id, $fecha_hora, $estado, $tipo_cita_id, $despacho_id, $fecha_hora_fin)) {
-                $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
+                $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-portal/appointment' : '/citas';
                 header('Location: ' . PROJECT_ROOT . $redirect . '?alert=success&message=Cita programada correctamente');
                 $this->exitApp();
             } else {
-                $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
+                $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-portal/appointment' : '/citas';
                 header('Location: ' . PROJECT_ROOT . $redirect . '?alert=danger&message=' . urlencode('Error al guardar la cita o datos incompletos.'));
                 $this->exitApp();
             }
@@ -120,7 +120,7 @@ class AppointmentController extends Controller
             ];
 
             if ($_SESSION['rol'] === 'Paciente') {
-                $this->view('patient-view/appointment/create', $data);
+                $this->view('patient-portal/appointment/create', $data);
             } else {
                 $this->view('appointment/form', $data);
             }
@@ -144,13 +144,13 @@ class AppointmentController extends Controller
         if ($_SESSION['rol'] === 'Paciente') {
             $cita = $appointment->getById($id);
             if (!$cita || $cita['paciente_id'] !== $_SESSION['usuario_id']) {
-                header('Location: ' . PROJECT_ROOT . '/patient-view/appointment?alert=danger&message=No tienes permiso para eliminar esta cita');
+                header('Location: ' . PROJECT_ROOT . '/patient-portal/appointment?alert=danger&message=No tienes permiso para eliminar esta cita');
                 $this->exitApp();
             }
         }
 
         if ($appointment->delete($id)) {
-            $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
+            $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-portal/appointment' : '/citas';
             header('Location: ' . PROJECT_ROOT . $redirect . '?alert=success&message=Cita eliminada correctamente');
             $this->exitApp();
         } else {
@@ -201,7 +201,7 @@ class AppointmentController extends Controller
             if ($_SESSION['rol'] === 'Paciente') {
                 $citaExistente = $appointment->getById($id);
                 if (!$citaExistente || $citaExistente['paciente_id'] !== $_SESSION['usuario_id']) {
-                    header('Location: ' . PROJECT_ROOT . '/patient-view/appointment?alert=danger&message=No tienes permiso para editar esta cita');
+                    header('Location: ' . PROJECT_ROOT . '/patient-portal/appointment?alert=danger&message=No tienes permiso para editar esta cita');
                     $this->exitApp();
                 }
                 $paciente_id = $_SESSION['usuario_id'];
@@ -244,7 +244,7 @@ class AppointmentController extends Controller
             if ($ubicacion_tipo === 'presencial' && !empty($fecha_hora) && !empty($fecha_hora_fin)) {
                 $despacho_id = $appointment->findAvailableDespacho($fecha_hora, $fecha_hora_fin, $id);
                 if (!$despacho_id) {
-                    $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
+                    $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-portal/appointment' : '/citas';
                     header('Location: ' . PROJECT_ROOT . $redirect . '?alert=danger&message=' . urlencode('No hay despachos libres disponibles para esa fecha y hora.'));
                     $this->exitApp();
                 }
@@ -253,11 +253,11 @@ class AppointmentController extends Controller
             $estado = $_POST['estado'] ?? 'Programada';
 
             if ($appointment->update($id, $paciente_id, $terapeuta_id, $fecha_hora, $estado, $tipo_cita_id, $despacho_id, $fecha_hora_fin)) {
-                $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
+                $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-portal/appointment' : '/citas';
                 header('Location: ' . PROJECT_ROOT . $redirect . '?alert=success&message=Cita actualizada correctamente');
                 $this->exitApp();
             } else {
-                $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-view/appointment' : '/citas';
+                $redirect = ($_SESSION['rol'] === 'Paciente') ? '/patient-portal/appointment' : '/citas';
                 header('Location: ' . PROJECT_ROOT . $redirect . '?alert=danger&message=' . urlencode('Error al actualizar la cita.'));
                 $this->exitApp();
             }
@@ -287,10 +287,10 @@ class AppointmentController extends Controller
             if ($_SESSION['rol'] === 'Paciente') {
                 // Verificar propiedad
                 if (!$data['appointment'] || $data['appointment']['paciente_id'] !== $_SESSION['usuario_id']) {
-                    header('Location: ' . PROJECT_ROOT . '/patient-view/appointment?alert=danger&message=No tienes permiso para ver esta cita');
+                    header('Location: ' . PROJECT_ROOT . '/patient-portal/appointment?alert=danger&message=No tienes permiso para ver esta cita');
                     $this->exitApp();
                 }
-                $this->view('patient-view/appointment/edit', $data);
+                $this->view('patient-portal/appointment/edit', $data);
             } else {
                 $this->view('appointment/form', $data);
             }

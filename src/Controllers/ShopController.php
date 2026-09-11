@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Core\Controller;
@@ -14,14 +15,14 @@ class ShopController extends Controller
      * @return void
      */
     public function list()
-    {   
+    {
         $configModel = $this->model('Setting');
-        
+
         // Obtener bonos activos para mostrar en la tienda
         $bonos = $configModel->getBonos();
-        
+
         // Filtrar solo los bonos activos
-        $bonosActivos = array_filter($bonos, function($bono) {
+        $bonosActivos = array_filter($bonos, function ($bono) {
             return $bono['estado'] === 'Activo';
         });
 
@@ -29,7 +30,7 @@ class ShopController extends Controller
             'bonosActivos' => $bonosActivos
         ];
 
-        $this->view('patient-view/shop/list', $data);
+        $this->view('patient-portal/shop/list', $data);
     }
 
     /**
@@ -53,7 +54,7 @@ class ShopController extends Controller
             $this->exitApp();
         }
 
-        $this->view('patient-view/shop/pago', [
+        $this->view('patient-portal/shop/pago', [
             'bono' => $bono
         ]);
     }
@@ -64,7 +65,7 @@ class ShopController extends Controller
      * @return void
      */
     public function procesarPago()
-    {       
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $bono_id = $_POST['bono_id'] ?? null;
             if (!$bono_id) {
@@ -86,14 +87,14 @@ class ShopController extends Controller
             // Inicializar Merchant desde la variable de entorno
             $redsysApiKey = getenv('REDSYS_API_KEY') ?: '';
             $merchant = Merchant::initWithApiKey($redsysApiKey);
-            
+
             // Construir los parámetros del pago
             $params = new Parameters();
-            
+
             // Redsys requiere el importe en céntimos enteros sin decimales
             $params->amount = intval(round($bono['precio'] * 100));
             $params->order = $order;
-            
+
             // Definir base URL
             $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
             $host = $_SERVER['HTTP_HOST'];
@@ -123,7 +124,7 @@ class ShopController extends Controller
             $redsysApiKey = getenv('REDSYS_API_KEY') ?: '';
             $merchant = Merchant::initWithApiKey($redsysApiKey);
             $params = Parameters::digest($merchant, $receivedParams);
-            
+
             $responseCode = (int)$params->response;
             if ($responseCode >= 0 && $responseCode <= 99) {
                 // Pago aceptado por el banco
@@ -165,7 +166,7 @@ class ShopController extends Controller
             if ($bono) {
                 $db = (new \App\Core\DataBase())->connect();
                 $desc = 'Compra de ' . $bono['nombre'];
-                
+
                 // Buscar factura en la base de datos
                 $stmt = $db->prepare("SELECT * FROM facturas WHERE paciente_id = :paciente_id AND descripcion = :desc AND fecha_emision = :fecha ORDER BY factura_id DESC LIMIT 1");
                 $stmt->execute([
@@ -186,7 +187,7 @@ class ShopController extends Controller
                     }
                 }
 
-                $this->view('patient-view/shop/confirmacion', [
+                $this->view('patient-portal/shop/confirmacion', [
                     'bono' => $bono,
                     'factura' => $factura,
                     'order' => $order
@@ -206,6 +207,6 @@ class ShopController extends Controller
      */
     public function errorPago()
     {
-        $this->view('patient-view/shop/error');
+        $this->view('patient-portal/shop/error');
     }
 }

@@ -1,127 +1,42 @@
 /**
- * Módulo: Landing Registration Wizard (Multi-step Alpine Component)
+ * Módulo: Landing Registration (Alpine Component simplificado)
  */
 
 function registrationForm(initialData = null) {
     const data = initialData || (typeof window !== 'undefined' ? window.registrationInitialData : {}) || {};
 
     return {
-        currentStep: 1,
-        maxStepReached: 1,
-        steps: [
-            { name: 'Credenciales' },
-            { name: 'Autónomo - Personales' },
-            { name: 'Autónomo - Dirección' },
-            { name: 'Clínica - Generales' },
-            { name: 'Clínica - Ubicación' },
-            { name: 'Suscripción' },
-            { name: 'Resumen' }
-        ],
         formData: {
+            nombre: data.nombre || '',
             email: data.email || '',
             pass: '',
-            confirm_pass: '',
-            usuario_id: data.usuario_id || '',
-            nombre: data.nombre || '',
-            apellidos: data.apellidos || '',
-            telefono: data.telefono || '',
-            fecha_nacimiento: data.fecha_nacimiento || '',
-            genero: data.genero || 'Hombre',
-            direccion: data.direccion || '',
-            municipio: data.municipio || '',
-            provincia: data.provincia || '',
-            cp: data.cp || '',
-            nss: data.nss || '',
-            iban: data.iban || '',
-            nombre_comercial: data.nombre_comercial || '',
-            razon_social: data.razon_social || '',
-            telefono_contacto: data.telefono_contacto || '',
-            email_contacto: data.email_contacto || '',
-            sitio_web: data.sitio_web || '',
-            direccion: data.direccion || '',
-            ciudad: data.ciudad || '',
-            provincia_estado: data.provincia_estado || '',
-            codigo_postal: data.codigo_postal || '',
-            pais: data.pais || 'España',
-            plan_suscripcion: data.plan_suscripcion || 'Profesional',
-            card_holder: '',
-            card_number: '',
-            card_expiry: '',
-            card_cvv: ''
+            confirm_pass: ''
         },
         errors: {},
-        goToStep(step) {
-            if (step <= this.maxStepReached) {
-                this.currentStep = step;
-            }
-        },
-        validateStep(step) {
+        validate() {
             this.errors = {};
 
-            if (step === 1) {
-                if (!this.formData.email || !this.formData.email.includes('@')) {
-                    this.errors.email = 'Introduce un email de administrador válido.';
-                }
-                if (!this.formData.pass || this.formData.pass.length < 8) {
-                    this.errors.pass = 'La contraseña debe tener al menos 8 caracteres.';
-                }
-                if (this.formData.pass !== this.formData.confirm_pass) {
-                    this.errors.confirm_pass = 'Las contraseñas no coinciden.';
-                }
+            if (!this.formData.nombre || this.formData.nombre.trim() === '') {
+                this.errors.nombre = 'Por favor, introduce tu nombre.';
             }
 
-            if (step === 2) {
-                if (!this.formData.usuario_id || this.formData.usuario_id.trim().length !== 9) {
-                    this.errors.usuario_id = 'El DNI / NIF debe tener exactamente 9 caracteres.';
-                }
-                if (!this.formData.nombre || this.formData.nombre.trim() === '') {
-                    this.errors.nombre = 'El nombre es obligatorio.';
-                }
-                if (!this.formData.apellidos || this.formData.apellidos.trim() === '') {
-                    this.errors.apellidos = 'Los apellidos son obligatorios.';
-                }
-                if (!this.formData.fecha_nacimiento) {
-                    this.errors.fecha_nacimiento = 'La fecha de nacimiento es obligatoria.';
-                }
+            if (!this.formData.email || !this.formData.email.includes('@')) {
+                this.errors.email = 'Introduce un correo electrónico válido.';
             }
 
-            if (step === 4) {
-                if (!this.formData.nombre_comercial || this.formData.nombre_comercial.trim() === '') {
-                    this.errors.nombre_comercial = 'El nombre comercial de la clínica es obligatorio.';
-                }
-                if (!this.formData.telefono_contacto || this.formData.telefono_contacto.trim() === '') {
-                    this.errors.telefono_contacto = 'El teléfono de contacto de la clínica es obligatorio.';
-                }
+            if (!this.formData.pass || this.formData.pass.length < 8) {
+                this.errors.pass = 'La contraseña debe tener al menos 8 caracteres.';
             }
 
-            if (step === 5) {
-                if (!this.formData.direccion || this.formData.direccion.trim() === '') {
-                    this.errors.direccion = 'La dirección de la clínica es obligatoria.';
-                }
-                if (!this.formData.ciudad || this.formData.ciudad.trim() === '') {
-                    this.errors.ciudad = 'La ciudad es obligatoria.';
-                }
+            if (this.formData.pass !== this.formData.confirm_pass) {
+                this.errors.confirm_pass = 'Las contraseñas no coinciden.';
             }
 
             return Object.keys(this.errors).length === 0;
         },
-        nextStep() {
-            if (this.validateStep(this.currentStep)) {
-                this.currentStep++;
-                if (this.currentStep > this.maxStepReached) {
-                    this.maxStepReached = this.currentStep;
-                }
-            }
-        },
-        prevStep() {
-            if (this.currentStep > 1) {
-                this.currentStep--;
-            }
-        },
         submitForm(e) {
-            if (!this.validateStep(1) || !this.validateStep(2) || !this.validateStep(4) || !this.validateStep(5)) {
+            if (!this.validate()) {
                 e.preventDefault();
-                alert('Por favor, compruebe que todos los campos obligatorios están rellenos correctamente.');
             }
         }
     };
@@ -130,3 +45,4 @@ function registrationForm(initialData = null) {
 if (typeof window !== 'undefined') {
     window.registrationForm = registrationForm;
 }
+

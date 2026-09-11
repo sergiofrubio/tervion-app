@@ -29,6 +29,14 @@ include TEMPLATE_DIR . 'header.php';
         </div>
     <?php endif; ?>
 
+    <?php if (isset($_SESSION['warning_message'])) : ?>
+        <div class="rounded-2xl bg-amber-50 p-4 border border-amber-200 flex items-center gap-3 animate-fade-in">
+            <i class="bi bi-exclamation-triangle-fill text-amber-500 text-lg"></i>
+            <p class="text-sm font-medium text-amber-800"><?= $_SESSION['warning_message'];
+                                                            unset($_SESSION['warning_message']); ?></p>
+        </div>
+    <?php endif; ?>
+
     <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full">
         <!-- Tabs Header -->
         <div class="border-b border-gray-100 bg-gray-50/30 px-6 pt-4">

@@ -37,16 +37,19 @@ class RegisterTest extends ControllerTestCase
         $controller->register();
     }
 
-    public function testRegisterValidationNifInvalid()
+    public function testRegisterValidationEmptyNombre()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['usuario_id'] = '123'; // invalid NIF length
+        $_POST['nombre'] = '';
+        $_POST['email'] = 'admin@example.com';
+        $_POST['pass'] = '12345678';
+        $_POST['confirm_pass'] = '12345678';
 
         $controller = $this->getControllerMock(RegisterController::class);
         $controller->expects($this->once())
             ->method('view')
             ->with('landing/registro', $this->callback(function ($args) {
-                return isset($args['error']) && strpos($args['error'], 'NIF/DNI') !== false;
+                return isset($args['error']) && strpos($args['error'], 'introduce tu nombre') !== false;
             }));
 
         $controller->register();
@@ -55,7 +58,7 @@ class RegisterTest extends ControllerTestCase
     public function testRegisterValidationEmailInvalid()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['usuario_id'] = '12345678A';
+        $_POST['nombre'] = 'Admin Test';
         $_POST['email'] = 'invalid-email';
 
         $controller = $this->getControllerMock(RegisterController::class);
@@ -71,7 +74,7 @@ class RegisterTest extends ControllerTestCase
     public function testRegisterValidationPasswordTooShort()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['usuario_id'] = '12345678A';
+        $_POST['nombre'] = 'Admin Test';
         $_POST['email'] = 'admin@example.com';
         $_POST['pass'] = '123';
 
@@ -88,7 +91,7 @@ class RegisterTest extends ControllerTestCase
     public function testRegisterValidationPasswordsDoNotMatch()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['usuario_id'] = '12345678A';
+        $_POST['nombre'] = 'Admin Test';
         $_POST['email'] = 'admin@example.com';
         $_POST['pass'] = '12345678';
         $_POST['confirm_pass'] = '87654321';
@@ -103,62 +106,13 @@ class RegisterTest extends ControllerTestCase
         $controller->register();
     }
 
-    public function testRegisterValidationEmptyRequiredFields()
-    {
-        $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['usuario_id'] = '12345678A';
-        $_POST['email'] = 'admin@example.com';
-        $_POST['pass'] = '12345678';
-        $_POST['confirm_pass'] = '12345678';
-        $_POST['nombre'] = ''; // empty
-
-        $controller = $this->getControllerMock(RegisterController::class);
-        $controller->expects($this->once())
-            ->method('view')
-            ->with('landing/registro', $this->callback(function ($args) {
-                return isset($args['error']) && strpos($args['error'], 'obligatorios del administrador') !== false;
-            }));
-
-        $controller->register();
-    }
-
-    public function testRegisterValidationEmptyClinicFields()
-    {
-        $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['usuario_id'] = '12345678A';
-        $_POST['email'] = 'admin@example.com';
-        $_POST['pass'] = '12345678';
-        $_POST['confirm_pass'] = '12345678';
-        $_POST['nombre'] = 'John';
-        $_POST['apellidos'] = 'Doe';
-        $_POST['fecha_nacimiento'] = '1990-01-01';
-        $_POST['nombre_comercial'] = ''; // empty clinic field
-
-        $controller = $this->getControllerMock(RegisterController::class);
-        $controller->expects($this->once())
-            ->method('view')
-            ->with('landing/registro', $this->callback(function ($args) {
-                return isset($args['error']) && strpos($args['error'], 'obligatorios de la clínica') !== false;
-            }));
-
-        $controller->register();
-    }
-
     public function testRegisterSuccess()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['usuario_id'] = '12345678A';
         $_POST['nombre'] = 'TestAdmin';
-        $_POST['apellidos'] = 'LastName';
-        $_POST['telefono'] = '123456789';
-        $_POST['fecha_nacimiento'] = '1985-05-15';
         $_POST['email'] = 'admin@example.com';
         $_POST['pass'] = 'securepass123';
         $_POST['confirm_pass'] = 'securepass123';
-        $_POST['nombre_comercial'] = 'Clinic Test';
-        $_POST['telefono_contacto'] = '912345678';
-        $_POST['direccion'] = 'Street 45';
-        $_POST['ciudad'] = 'Madrid';
 
         $stmtMock = $this->getMockBuilder(PDOStatement::class)
             ->onlyMethods(['execute', 'fetch'])

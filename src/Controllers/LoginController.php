@@ -77,6 +77,8 @@ class LoginController extends Controller
 
     /**
      * Inicia una sesión de PHP y guarda la información del usuario en la sesión.
+     * Si es Administrador, comprueba si los datos de la clínica están configurados.
+     * En caso contrario, redirige a la configuración de la clínica.
      *
      * @param array $usuario Datos del usuario a almacenar en la sesión.
      * @return void
@@ -84,6 +86,29 @@ class LoginController extends Controller
     private function startSession($usuario)
     {
         $_SESSION = array_merge($_SESSION, $usuario);
+
+        // Si el rol es Administrador, comprobar configuración de la clínica
+        if (($usuario['rol'] ?? '') === 'Administrador') {
+            try {
+                $settingModel = $this->model('Setting');
+                $clinica = $settingModel->getClinica();
+
+                // Comprobar si los datos esenciales de la clínica están rellenos
+                $clinicaIncompleta = empty($clinica)
+                    || empty(trim($clinica['nombre_comercial'] ?? ''))
+                    || empty(trim($clinica['direccion'] ?? ''))
+                    || empty(trim($clinica['ciudad'] ?? ''))
+                    || empty(trim($clinica['telefono_contacto'] ?? ''));
+
+                if ($clinicaIncompleta) {
+                    $_SESSION['warning_message'] = 'Por favor, completa los datos de configuración de tu clínica para comenzar.';
+                    header('Location: ' . PROJECT_ROOT . '/configuracion');
+                    $this->exitApp();
+                }
+            } catch (\Exception $e) {
+                // En caso de incidencia con la consulta, continuar el flujo normal
+            }
+        }
 
         header('Location: ' . PROJECT_ROOT . '/inicio');
         $this->exitApp();

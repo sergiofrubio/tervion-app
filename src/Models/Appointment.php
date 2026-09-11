@@ -16,13 +16,13 @@ class Appointment
 
     public function getById($cita_id)
     {
-        $query = "SELECT c.*, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.telefono as paciente_telefono, 
-                         f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos, 
+        $query = "SELECT c.*, p.usuario_id as paciente_usuario_id, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.telefono as paciente_telefono, 
+                         f.usuario_id as fisioterapeuta_usuario_id, f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos, 
                          tc.nombre as tipo_cita_nombre, tc.color as tipo_cita_color, tc.duracion_minutos as tipo_cita_duracion, tc.precio as tipo_cita_precio,
                          d.nombre as despacho_nombre, d.color as despacho_color, d.ubicacion as despacho_ubicacion
                   FROM citas c 
-                  LEFT JOIN usuarios p ON c.paciente_id = p.usuario_id 
-                  LEFT JOIN usuarios f ON c.terapeuta_id = f.usuario_id 
+                  LEFT JOIN usuarios p ON (c.paciente_id = p.usuario_id OR c.paciente_id = p.dni) 
+                  LEFT JOIN usuarios f ON (c.terapeuta_id = f.usuario_id OR c.terapeuta_id = f.dni) 
                   LEFT JOIN tipos_citas tc ON c.tipo_cita_id = tc.tipo_cita_id 
                   LEFT JOIN despachos d ON c.despacho_id = d.despacho_id
                   WHERE c.cita_id = :cita_id";
@@ -49,13 +49,13 @@ class Appointment
 
     public function getAll()
     {
-        $query = "SELECT c.*, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.telefono as paciente_telefono, 
-                         f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos, 
+        $query = "SELECT c.*, p.usuario_id as paciente_usuario_id, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.telefono as paciente_telefono, 
+                         f.usuario_id as fisioterapeuta_usuario_id, f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos, 
                          tc.nombre as tipo_cita_nombre, tc.color as tipo_cita_color,
                          d.nombre as despacho_nombre, d.color as despacho_color, d.ubicacion as despacho_ubicacion
                   FROM citas c 
-                  LEFT JOIN usuarios p ON c.paciente_id = p.usuario_id 
-                  LEFT JOIN usuarios f ON c.terapeuta_id = f.usuario_id 
+                  LEFT JOIN usuarios p ON (c.paciente_id = p.usuario_id OR c.paciente_id = p.dni) 
+                  LEFT JOIN usuarios f ON (c.terapeuta_id = f.usuario_id OR c.terapeuta_id = f.dni) 
                   LEFT JOIN tipos_citas tc ON c.tipo_cita_id = tc.tipo_cita_id 
                   LEFT JOIN despachos d ON c.despacho_id = d.despacho_id
                   ORDER BY c.fecha_hora DESC";
@@ -383,11 +383,11 @@ class Appointment
 
     public function getUpcomingAppointmentsWithoutReminder($days = 1)
     {
-        $query = "SELECT c.*, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.email as paciente_email, p.telefono as paciente_telefono,
-                         f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos 
+        $query = "SELECT c.*, p.usuario_id as paciente_usuario_id, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.email as paciente_email, p.telefono as paciente_telefono,
+                         f.usuario_id as fisioterapeuta_usuario_id, f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos 
                   FROM citas c 
-                  LEFT JOIN usuarios p ON c.paciente_id = p.usuario_id 
-                  LEFT JOIN usuarios f ON c.terapeuta_id = f.usuario_id 
+                  LEFT JOIN usuarios p ON (c.paciente_id = p.usuario_id OR c.paciente_id = p.dni) 
+                  LEFT JOIN usuarios f ON (c.terapeuta_id = f.usuario_id OR c.terapeuta_id = f.dni) 
                   WHERE c.estado = 'Programada' 
                     AND DATE(c.fecha_hora) = DATE_ADD(CURDATE(), INTERVAL :days DAY)
                     AND c.token_confirmacion IS NULL";
@@ -408,11 +408,11 @@ class Appointment
 
     public function getByConfirmationToken($token)
     {
-        $query = "SELECT c.*, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.email as paciente_email, p.telefono as paciente_telefono,
-                         f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos 
+        $query = "SELECT c.*, p.usuario_id as paciente_usuario_id, p.nombre as paciente_nombre, p.apellidos as paciente_apellidos, p.email as paciente_email, p.telefono as paciente_telefono,
+                         f.usuario_id as fisioterapeuta_usuario_id, f.nombre as fisioterapeuta_nombre, f.apellidos as fisioterapeuta_apellidos 
                   FROM citas c 
-                  LEFT JOIN usuarios p ON c.paciente_id = p.usuario_id 
-                  LEFT JOIN usuarios f ON c.terapeuta_id = f.usuario_id 
+                  LEFT JOIN usuarios p ON (c.paciente_id = p.usuario_id OR c.paciente_id = p.dni) 
+                  LEFT JOIN usuarios f ON (c.terapeuta_id = f.usuario_id OR c.terapeuta_id = f.dni) 
                   WHERE c.token_confirmacion = :token";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':token', $token, PDO::PARAM_STR);

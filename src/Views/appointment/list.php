@@ -601,10 +601,13 @@ $hayFiltrosActivos = ($filtro_busqueda !== '' || $filtro_estado !== '' || $filtr
                             $estadoActual = $cita['estado'] ?? 'Programada';
                             $badgeClass = $estadoBadgeClasses[$estadoActual] ?? 'bg-gray-100 text-gray-700';
                             $nombrePaciente = trim(($cita['paciente_nombre'] ?? '') . ' ' . ($cita['paciente_apellidos'] ?? ''));
-                            if ($nombrePaciente === '') $nombrePaciente = 'Paciente #' . ($cita['paciente_id'] ?? '');
-                            $inicialPaciente = strtoupper(substr($cita['paciente_nombre'] ?? 'P', 0, 1));
+                            if ($nombrePaciente === '') {
+                                $nombrePaciente = !empty($cita['paciente_id']) ? 'Paciente ' . $cita['paciente_id'] : 'Sin asignar';
+                            }
+                            $inicialPaciente = strtoupper(substr(!empty($cita['paciente_nombre']) ? $cita['paciente_nombre'] : $nombrePaciente, 0, 1));
                             $nombreFisio = trim(($cita['fisioterapeuta_nombre'] ?? '') . ' ' . ($cita['fisioterapeuta_apellidos'] ?? ''));
                             if ($nombreFisio === '') $nombreFisio = 'No asignado';
+                            $pacienteEnlaceId = !empty($cita['paciente_usuario_id']) ? $cita['paciente_usuario_id'] : ($cita['paciente_id'] ?? '');
                         ?>
                             <tr class="hover:bg-gray-50/80 transition-colors">
                                 <!-- <td class="py-4 px-4 font-bold text-gray-400">#<?= htmlspecialchars($cita['cita_id']) ?></td> -->
@@ -681,8 +684,8 @@ $hayFiltrosActivos = ($filtro_busqueda !== '' || $filtro_estado !== '' || $filtr
                                 </td>
                                 <td class="py-4 px-4 text-right whitespace-nowrap">
                                     <div class="flex items-center justify-end gap-1">
-                                        <?php if (!empty($cita['paciente_id'])): ?>
-                                            <a href="<?= PROJECT_ROOT ?>/pacientes/detalle?usuario_id=<?= $cita['paciente_id'] ?>" class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Ver Expediente / Historial del Paciente">
+                                        <?php if (!empty($pacienteEnlaceId)): ?>
+                                            <a href="<?= PROJECT_ROOT ?>/pacientes/detalle?usuario_id=<?= htmlspecialchars($pacienteEnlaceId) ?>" class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Ver Expediente / Historial del Paciente">
                                                 <i class="bi bi-person-lines-fill text-sm"></i>
                                             </a>
                                         <?php endif; ?>

@@ -17,9 +17,11 @@ class User
         $query = "SELECT u.*, e.nss, e.iban, e.grupo_cotizacion
                   FROM usuarios u 
                   LEFT JOIN empleados e ON u.usuario_id = e.usuario_id
-                  WHERE u.usuario_id = :usuario_id";
+                  WHERE u.usuario_id = :usuario_id OR u.dni = :usuario_id_dni
+                  LIMIT 1";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':usuario_id', $usuario_id);
+        $stmt->bindParam(':usuario_id_dni', $usuario_id);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

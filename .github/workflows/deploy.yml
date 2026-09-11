@@ -16,8 +16,10 @@ jobs:
         run: |
           echo "${{ secrets.ENV_PRODUCTION }}" > .env
 
-      - name: Levantar contenedor con Docker
+      - name: Construir y desplegar contenedores
         run: |
-          docker compose -f compose.yml -f compose.prod.yml down
-          docker compose -f compose.yml -f compose.prod.yml build --no-cache
-          docker compose -f compose.yml -f compose.prod.yml up -d
+          # 1. Construir aprovechando la caché local del runner/host (sin --no-cache)
+          docker compose -f compose.yml -f compose.prod.yml build
+          
+          # 2. Desplegar en caliente (solo recrea contenedores que han cambiado, sin downtime previo)
+          docker compose -f compose.yml -f compose.prod.yml up -d --remove-orphans

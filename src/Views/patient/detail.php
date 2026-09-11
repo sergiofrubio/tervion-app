@@ -79,7 +79,12 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                                 <?= htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellidos']) ?>
                             </h1>
                             <div class="inline-flex items-center gap-1.5 mt-2 px-3 py-1 rounded-full bg-white/15 text-xs font-semibold text-white/95 border border-white/20">
-                                <span>NHC: #<?= htmlspecialchars($usuario['usuario_id']) ?></span>
+                                <span>ID: #<?= htmlspecialchars($usuario['usuario_id']) ?></span>
+                                <?php if (!empty($usuario['dni'])): ?>
+                                    <span>• DNI: <?= htmlspecialchars($usuario['dni']) ?></span>
+                                <?php else: ?>
+                                    <span class="text-white/75 font-normal">• Sin DNI (Menor/No facilitado)</span>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -184,6 +189,20 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
                 <div class="border-b border-gray-200 bg-gray-50/60 px-6 pt-3">
                     <nav class="-mb-px flex space-x-6" aria-label="Tabs">
                         <button
+                            @click="activeTab = 'ficha'"
+                            :class="activeTab === 'ficha' ? 'border-primary-600 text-primary-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300 font-medium'"
+                            class="whitespace-nowrap py-3.5 px-1 border-b-2 text-sm transition-all flex items-center gap-2">
+                            <i class="bi bi-person-lines-fill text-base"></i>
+                            <span>Ficha de Paciente</span>
+                            <?php if (!empty($ficha['numero_expediente'])): ?>
+                                <span class="px-2 py-0.5 rounded-full text-xs font-mono font-bold"
+                                    :class="activeTab === 'ficha' ? 'bg-primary-50 text-primary-700' : 'bg-gray-200/70 text-gray-600'">
+                                    <?= htmlspecialchars($ficha['numero_expediente']) ?>
+                                </span>
+                            <?php endif; ?>
+                        </button>
+
+                        <button
                             @click="activeTab = 'history'"
                             :class="activeTab === 'history' ? 'border-primary-600 text-primary-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300 font-medium'"
                             class="whitespace-nowrap py-3.5 px-1 border-b-2 text-sm transition-all flex items-center gap-2">
@@ -235,6 +254,115 @@ $ultimaConsulta = !empty($informes[0]['fecha_consulta'])
 
                 <!-- Tab Content Body -->
                 <div class="p-6 flex-1">
+
+                    <!-- TAB 0: Ficha de Paciente (Datos Administrativos, Cobertura y Tutor) -->
+                    <div x-show="activeTab === 'ficha'" x-cloak>
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 class="text-base font-bold text-gray-900">Ficha Administrativa del Paciente</h3>
+                                <p class="text-xs text-gray-500 mt-0.5">Datos de filiación, cobertura de seguros, tutor legal y contactos de emergencia.</p>
+                            </div>
+                            <?php if ($rol !== "Paciente") : ?>
+                                <a href="<?= PROJECT_ROOT ?>/pacientes/editar?id=<?= $usuario['usuario_id'] ?>"
+                                    class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 hover:bg-slate-200 px-4 py-2 text-xs font-semibold text-slate-700 transition-all">
+                                    <i class="bi bi-pencil"></i>
+                                    <span>Editar Ficha</span>
+                                </a>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+                            <!-- Expediente y Mutua -->
+                            <div class="p-4 bg-slate-50/80 rounded-2xl border border-slate-200/70 space-y-3">
+                                <h4 class="font-bold text-slate-800 text-[11px] uppercase tracking-wider flex items-center gap-2">
+                                    <i class="bi bi-folder2 text-primary-600"></i>
+                                    Expediente y Seguro
+                                </h4>
+                                <div class="divide-y divide-slate-200/60 text-slate-700 text-xs">
+                                    <div class="py-1.5 flex justify-between">
+                                        <span class="text-slate-500">Nº Expediente:</span>
+                                        <span class="font-mono font-bold text-slate-900"><?= htmlspecialchars($ficha['numero_expediente'] ?? 'Sin asignar') ?></span>
+                                    </div>
+                                    <div class="py-1.5 flex justify-between">
+                                        <span class="text-slate-500">Compañía / Mutua:</span>
+                                        <span class="font-semibold text-slate-900"><?= htmlspecialchars($ficha['compania_seguro'] ?? 'Privado / Ninguna') ?></span>
+                                    </div>
+                                    <div class="py-1.5 flex justify-between">
+                                        <span class="text-slate-500">Nº de Póliza:</span>
+                                        <span class="font-mono text-slate-900"><?= htmlspecialchars($ficha['numero_poliza'] ?? '-') ?></span>
+                                    </div>
+                                    <div class="py-1.5 flex justify-between">
+                                        <span class="text-slate-500">DNI / NIE:</span>
+                                        <span class="font-mono font-bold text-slate-900"><?= htmlspecialchars($usuario['dni'] ?? 'Sin DNI (Menor de edad)') ?></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tutor Legal (Menores de edad) -->
+                            <div class="p-4 bg-slate-50/80 rounded-2xl border border-slate-200/70 space-y-3">
+                                <h4 class="font-bold text-slate-800 text-[11px] uppercase tracking-wider flex items-center gap-2">
+                                    <i class="bi bi-person-check text-primary-600"></i>
+                                    Tutor Legal / Responsable (Menores)
+                                </h4>
+                                <div class="divide-y divide-slate-200/60 text-slate-700 text-xs">
+                                    <div class="py-1.5 flex justify-between">
+                                        <span class="text-slate-500">Nombre del Tutor:</span>
+                                        <span class="font-semibold text-slate-900"><?= htmlspecialchars($ficha['nombre_tutor'] ?? 'No requerido / No registrado') ?></span>
+                                    </div>
+                                    <div class="py-1.5 flex justify-between">
+                                        <span class="text-slate-500">DNI Tutor:</span>
+                                        <span class="font-mono text-slate-900"><?= htmlspecialchars($ficha['dni_tutor'] ?? '-') ?></span>
+                                    </div>
+                                    <div class="py-1.5 flex justify-between">
+                                        <span class="text-slate-500">Teléfono Tutor:</span>
+                                        <span class="text-slate-900"><?= htmlspecialchars($ficha['telefono_tutor'] ?? '-') ?></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contacto de Emergencia -->
+                            <div class="p-4 bg-slate-50/80 rounded-2xl border border-slate-200/70 space-y-3">
+                                <h4 class="font-bold text-slate-800 text-[11px] uppercase tracking-wider flex items-center gap-2">
+                                    <i class="bi bi-telephone-plus text-rose-500"></i>
+                                    Contacto de Emergencia
+                                </h4>
+                                <div class="divide-y divide-slate-200/60 text-slate-700 text-xs">
+                                    <div class="py-1.5 flex justify-between">
+                                        <span class="text-slate-500">Persona de Contacto:</span>
+                                        <span class="font-semibold text-slate-900"><?= htmlspecialchars($ficha['contacto_emergencia_nombre'] ?? 'No especificado') ?></span>
+                                    </div>
+                                    <div class="py-1.5 flex justify-between">
+                                        <span class="text-slate-500">Teléfono Urgencias:</span>
+                                        <span class="font-semibold text-rose-600 font-mono"><?= htmlspecialchars($ficha['contacto_emergencia_telefono'] ?? '-') ?></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Alertas y Alergias de Ficha -->
+                            <div class="p-4 bg-amber-50/70 rounded-2xl border border-amber-200/70 space-y-3">
+                                <h4 class="font-bold text-amber-900 text-[11px] uppercase tracking-wider flex items-center gap-2">
+                                    <i class="bi bi-exclamation-triangle text-amber-600"></i>
+                                    Alertas Rápidas de Ficha
+                                </h4>
+                                <p class="text-amber-800 text-xs leading-relaxed">
+                                    <?= !empty($ficha['alergias_alertas']) ? nl2br(htmlspecialchars($ficha['alergias_alertas'])) : 'Sin alertas clínicas especiales registradas en la ficha.' ?>
+                                </p>
+                            </div>
+
+                            <!-- Observaciones Administrativas -->
+                            <?php if (!empty($ficha['observaciones_administrativas'])): ?>
+                                <div class="md:col-span-2 p-4 bg-blue-50/60 rounded-2xl border border-blue-200/60 space-y-2">
+                                    <h4 class="font-bold text-blue-900 text-[11px] uppercase tracking-wider flex items-center gap-2">
+                                        <i class="bi bi-info-circle text-blue-600"></i>
+                                        Observaciones de Gestión y Recepción
+                                    </h4>
+                                    <p class="text-blue-800 text-xs leading-relaxed">
+                                        <?= nl2br(htmlspecialchars($ficha['observaciones_administrativas'])) ?>
+                                    </p>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
 
                     <!-- TAB 1: Historial Médico -->
                     <div x-show="activeTab === 'history'" x-cloak>

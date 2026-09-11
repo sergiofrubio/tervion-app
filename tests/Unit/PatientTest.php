@@ -59,7 +59,7 @@ class PatientTest extends TestCase
     public function testSavePatientSuccess()
     {
         $data = [
-            'usuario_id' => '12345678A',
+            'dni' => '12345678A',
             'nombre' => 'John',
             'apellidos' => 'Doe',
             'telefono' => '123456789',
@@ -76,6 +76,7 @@ class PatientTest extends TestCase
 
         $this->dbMock->expects($this->once())->method('beginTransaction');
         $this->dbMock->expects($this->once())->method('commit');
+        $this->dbMock->expects($this->once())->method('lastInsertId')->willReturn('1');
 
         // Solo se inserta en usuarios para rol Paciente
         $this->dbMock->expects($this->once())
@@ -89,7 +90,75 @@ class PatientTest extends TestCase
         $userModel = new User($this->dbMock);
         $result = $userModel->save($data);
 
-        $this->assertTrue($result);
+        $this->assertEquals(1, $result);
+    }
+
+    public function testSavePatientWithoutDniSuccess()
+    {
+        // Caso menor de edad sin DNI
+        $data = [
+            'dni' => null,
+            'nombre' => 'Pedrito',
+            'apellidos' => 'Perez',
+            'fecha_nacimiento' => '2018-05-10',
+            'rol' => 'Paciente'
+        ];
+
+        $this->dbMock->expects($this->once())->method('beginTransaction');
+        $this->dbMock->expects($this->once())->method('commit');
+        $this->dbMock->expects($this->once())->method('lastInsertId')->willReturn('5');
+
+        $this->dbMock->expects($this->once())
+            ->method('prepare')
+            ->willReturn($this->stmtMock);
+
+        $this->stmtMock->expects($this->once())
+            ->method('execute')
+            ->willReturn(true);
+
+        $userModel = new User($this->dbMock);
+        $result = $userModel->save($data);
+
+        $this->assertEquals(5, $result);
+    }
+
+    public function testPatientModelFicha()
+    {
+        $patientModel = new \App\Models\Patient($this->dbMock);
+
+        $fichaData = [
+            'paciente_id' => 1,
+            'cuenta_id' => 1,
+            'usuario_id' => 2,
+            'numero_expediente' => 'EXP-2026-0001',
+            'nombre_tutor' => 'Padre Test',
+            'dni_tutor' => '12345678Z',
+            'telefono_tutor' => '600000000',
+            'contacto_emergencia_nombre' => 'Madre Test',
+            'contacto_emergencia_telefono' => '600000001',
+            'compania_seguro' => 'Sanitas',
+            'numero_poliza' => 'POL-999',
+            'observaciones_administrativas' => 'Ficha administrativa de prueba',
+            'alergias_alertas' => 'Polen'
+        ];
+
+        $this->stmtMock->expects($this->once())
+            ->method('execute')
+            ->with(['usuario_id' => 2])
+            ->willReturn(true);
+
+        $this->stmtMock->expects($this->once())
+            ->method('fetch')
+            ->with(PDO::FETCH_ASSOC)
+            ->willReturn($fichaData);
+
+        $this->dbMock->expects($this->once())
+            ->method('prepare')
+            ->with($this->stringContains('SELECT * FROM pacientes WHERE usuario_id = :usuario_id'))
+            ->willReturn($this->stmtMock);
+
+        $result = $patientModel->getByUsuarioId(2);
+        $this->assertEquals($fichaData, $result);
     }
 
     public function testSaveWorkerSuccess()

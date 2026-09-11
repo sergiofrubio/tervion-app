@@ -100,8 +100,8 @@ class RegisterController extends Controller
 
         try {
             // Verificar si el correo o NIF/DNI ya están registrados
-            $stmt = $db->prepare("SELECT usuario_id FROM usuarios WHERE usuario_id = :id OR email = :email LIMIT 1");
-            $stmt->execute([':id' => $usuario_id, ':email' => $email]);
+            $stmt = $db->prepare("SELECT usuario_id FROM usuarios WHERE dni = :dni OR email = :email LIMIT 1");
+            $stmt->execute([':dni' => $usuario_id, ':email' => $email]);
             if ($stmt->fetch()) {
                 $this->view('landing/registro', ['error' => 'El NIF/DNI o el correo electrónico del administrador ya se encuentra registrado.', 'data' => $_POST]);
                 return;
@@ -122,10 +122,10 @@ class RegisterController extends Controller
 
             // 1. Insertar el usuario Administrador
             $hashedPass = password_hash($pass, PASSWORD_DEFAULT);
-            $stmtUser = $db->prepare("INSERT INTO usuarios (usuario_id, nombre, apellidos, telefono, fecha_nacimiento, direccion, provincia, municipio, cp, email, pass, genero, rol) 
-                                      VALUES (:usuario_id, :nombre, :apellidos, :telefono, :fecha_nacimiento, :direccion, :provincia, :municipio, :cp, :email, :pass, :genero, 'Administrador')");
+            $stmtUser = $db->prepare("INSERT INTO usuarios (dni, nombre, apellidos, telefono, fecha_nacimiento, direccion, provincia, municipio, cp, email, pass, genero, rol) 
+                                      VALUES (:dni, :nombre, :apellidos, :telefono, :fecha_nacimiento, :direccion, :provincia, :municipio, :cp, :email, :pass, :genero, 'Administrador')");
             $stmtUser->execute([
-                ':usuario_id' => $usuario_id,
+                ':dni' => $usuario_id,
                 ':nombre' => $nombre,
                 ':apellidos' => $apellidos,
                 ':telefono' => $telefono ?: null,
@@ -138,11 +138,12 @@ class RegisterController extends Controller
                 ':pass' => $hashedPass,
                 ':genero' => $genero
             ]);
+            $newAdminId = (int)$db->lastInsertId();
 
             // 2. Insertar en empleados para el administrador autónomo
             $stmtEmp = $db->prepare("INSERT INTO empleados (usuario_id, nss, iban, grupo_cotizacion) VALUES (:usuario_id, :nss, :iban, 1)");
             $stmtEmp->execute([
-                ':usuario_id' => $usuario_id,
+                ':usuario_id' => $newAdminId,
                 ':nss' => $nss ?: null,
                 ':iban' => $iban ?: null
             ]);

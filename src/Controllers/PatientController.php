@@ -24,9 +24,14 @@ class PatientController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $userModel = $this->model('User');
+            $patientModel = $this->model('Patient');
+
+            $dni = trim($_POST['dni'] ?? ($_POST['usuario_id'] ?? ''));
+            $dni = !empty($dni) ? htmlspecialchars($dni, ENT_QUOTES, 'UTF-8') : null;
+            $defaultPassword = $dni ?: 'paciente' . date('Y');
 
             $data = [
-                'usuario_id' => htmlspecialchars($_POST['usuario_id'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'dni' => $dni,
                 'nombre' => htmlspecialchars($_POST['nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'apellidos' => htmlspecialchars($_POST['apellidos'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'telefono' => htmlspecialchars($_POST['telefono'] ?? '', ENT_QUOTES, 'UTF-8'),
@@ -36,7 +41,7 @@ class PatientController extends Controller
                 'municipio' => htmlspecialchars($_POST['municipio'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'cp' => htmlspecialchars($_POST['cp'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'email' => htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'),
-                'pass' => password_hash($_POST['usuario_id'], PASSWORD_DEFAULT),
+                'pass' => password_hash($defaultPassword, PASSWORD_DEFAULT),
                 'rol' => 'Paciente',
                 'genero' => $_POST['genero'] ?? 'Otro',
                 'rgpd_aceptado' => isset($_POST['rgpd_aceptado']) ? 1 : 0,
@@ -44,7 +49,34 @@ class PatientController extends Controller
                 'fecha_consentimiento' => isset($_POST['rgpd_aceptado']) ? date('Y-m-d H:i:s') : null,
             ];
 
-            if (!empty($data['usuario_id']) && !empty($data['nombre']) && $userModel->save($data)) {
+            // Si se envió un usuario_id numérico explícito (por ejemplo en tests)
+            if (!empty($_POST['usuario_id']) && is_numeric($_POST['usuario_id'])) {
+                $data['usuario_id'] = (int)$_POST['usuario_id'];
+            }
+
+            if (!empty($data['nombre']) && ($newUsuarioId = $userModel->save($data))) {
+                $usuarioId = is_numeric($newUsuarioId) ? (int)$newUsuarioId : (int)($data['usuario_id'] ?? 0);
+
+                // Crear ficha de paciente
+                if ($usuarioId > 0) {
+                    $fichaData = [
+                        'cuenta_id' => $_SESSION['cuenta_id'] ?? 1,
+                        'usuario_id' => $usuarioId,
+                        'numero_expediente' => htmlspecialchars($_POST['numero_expediente'] ?? ('EXP-' . date('Y') . '-' . str_pad($usuarioId, 4, '0', STR_PAD_LEFT)), ENT_QUOTES, 'UTF-8'),
+                        'nombre_tutor' => htmlspecialchars($_POST['nombre_tutor'] ?? '', ENT_QUOTES, 'UTF-8'),
+                        'dni_tutor' => htmlspecialchars($_POST['dni_tutor'] ?? '', ENT_QUOTES, 'UTF-8'),
+                        'telefono_tutor' => htmlspecialchars($_POST['telefono_tutor'] ?? '', ENT_QUOTES, 'UTF-8'),
+                        'contacto_emergencia_nombre' => htmlspecialchars($_POST['contacto_emergencia_nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
+                        'contacto_emergencia_telefono' => htmlspecialchars($_POST['contacto_emergencia_telefono'] ?? '', ENT_QUOTES, 'UTF-8'),
+                        'compania_seguro' => htmlspecialchars($_POST['compania_seguro'] ?? '', ENT_QUOTES, 'UTF-8'),
+                        'numero_poliza' => htmlspecialchars($_POST['numero_poliza'] ?? '', ENT_QUOTES, 'UTF-8'),
+                        'observaciones_administrativas' => htmlspecialchars($_POST['observaciones_administrativas'] ?? '', ENT_QUOTES, 'UTF-8'),
+                        'alergias_alertas' => htmlspecialchars($_POST['alergias_alertas'] ?? '', ENT_QUOTES, 'UTF-8'),
+                        'creado_por' => $_SESSION['usuario_id'] ?? null
+                    ];
+                    $patientModel->save($fichaData);
+                }
+
                 header('Location: ' . PROJECT_ROOT . '/pacientes');
                 $this->exitApp();
             } else {
@@ -72,15 +104,21 @@ class PatientController extends Controller
     }
 
     /**
-     * Edita los detalles de un paciente existente.
+     * Edita los detalles de un paciente existente y su ficha.
      */
     public function edit()
     {
+        $patientModel = $this->model('Patient');
+        $userModel = $this->model('User');
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $userModel = $this->model('User');
             $id = $_POST['usuario_id'];
 
+            $dni = trim($_POST['dni'] ?? '');
+            $dni = !empty($dni) ? htmlspecialchars($dni, ENT_QUOTES, 'UTF-8') : null;
+
             $data = [
+                'dni' => $dni,
                 'nombre' => htmlspecialchars($_POST['nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'apellidos' => htmlspecialchars($_POST['apellidos'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'telefono' => htmlspecialchars($_POST['telefono'] ?? '', ENT_QUOTES, 'UTF-8'),
@@ -101,6 +139,23 @@ class PatientController extends Controller
             }
 
             if ($userModel->update($id, $data)) {
+                // Actualizar o crear ficha de paciente
+                $fichaData = [
+                    'cuenta_id' => $_SESSION['cuenta_id'] ?? 1,
+                    'numero_expediente' => htmlspecialchars($_POST['numero_expediente'] ?? '', ENT_QUOTES, 'UTF-8'),
+                    'nombre_tutor' => htmlspecialchars($_POST['nombre_tutor'] ?? '', ENT_QUOTES, 'UTF-8'),
+                    'dni_tutor' => htmlspecialchars($_POST['dni_tutor'] ?? '', ENT_QUOTES, 'UTF-8'),
+                    'telefono_tutor' => htmlspecialchars($_POST['telefono_tutor'] ?? '', ENT_QUOTES, 'UTF-8'),
+                    'contacto_emergencia_nombre' => htmlspecialchars($_POST['contacto_emergencia_nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
+                    'contacto_emergencia_telefono' => htmlspecialchars($_POST['contacto_emergencia_telefono'] ?? '', ENT_QUOTES, 'UTF-8'),
+                    'compania_seguro' => htmlspecialchars($_POST['compania_seguro'] ?? '', ENT_QUOTES, 'UTF-8'),
+                    'numero_poliza' => htmlspecialchars($_POST['numero_poliza'] ?? '', ENT_QUOTES, 'UTF-8'),
+                    'observaciones_administrativas' => htmlspecialchars($_POST['observaciones_administrativas'] ?? '', ENT_QUOTES, 'UTF-8'),
+                    'alergias_alertas' => htmlspecialchars($_POST['alergias_alertas'] ?? '', ENT_QUOTES, 'UTF-8'),
+                    'modificado_por' => $_SESSION['usuario_id'] ?? null
+                ];
+                $patientModel->upsertByUsuarioId($id, $fichaData);
+
                 header('Location: ' . PROJECT_ROOT . '/pacientes');
                 $this->exitApp();
             } else {
@@ -112,16 +167,19 @@ class PatientController extends Controller
                 header('Location: ' . PROJECT_ROOT . '/pacientes');
                 $this->exitApp();
             }
-            $userModel = $this->model('User');
+            $usuario = $userModel->getByusuario_id($id);
+            $ficha = $patientModel->getByUsuarioId($id);
+
             $data = [
-                'usuario' => $userModel->getByusuario_id($id)
+                'usuario' => $usuario,
+                'ficha' => $ficha ?: []
             ];
             $this->view('patient/form', $data);
         }
     }
 
     /**
-     * Muestra la vista detallada de un paciente (información personal, informes médicos y citas).
+     * Muestra la vista detallada de un paciente (información personal, ficha paciente, informes médicos y citas).
      */
     public function detail()
     {
@@ -139,14 +197,18 @@ class PatientController extends Controller
             $this->exitApp();
         }
 
+        $patientModel = $this->model('Patient');
         $historyModel = $this->model('MedicalReport');
         $appointmentModel = $this->model('Appointment');
         $documentModel = $this->model('Document');
         $invoiceModel = $this->model('Invoice');
         $cuenta_id = $_SESSION['cuenta_id'] ?? 1;
 
+        $ficha = $patientModel->getByUsuarioId($id);
+
         $data = [
             'usuario' => $usuario,
+            'ficha' => $ficha ?: [],
             'rol' => $_SESSION['rol'] ?? 'Administrador',
             'informes' => $historyModel->getByPaciente($id),
             'citas' => $appointmentModel->getByPatient($id),
@@ -185,10 +247,10 @@ class PatientController extends Controller
 
         $pdf->SetFont('Arial', '', 10);
         foreach ($pacientes as $p) {
-            $pdf->Cell(25, 8, $p['usuario_id'], 1, 0, 'C');
+            $pdf->Cell(25, 8, $p['dni'] ?: ('#' . $p['usuario_id']), 1, 0, 'C');
             $pdf->Cell(60, 8, iconv('UTF-8', 'windows-1252', $p['nombre'] . ' ' . $p['apellidos']), 1);
             $pdf->Cell(80, 8, $p['email'], 1);
-            $pdf->Cell(35, 8, $p['telefono'], 1, 0, 'C');
+            $pdf->Cell(35, 8, $p['telefono'] ?: '-', 1, 0, 'C');
             $pdf->Cell(35, 8, $p['genero'], 1, 0, 'C');
             $pdf->Cell(40, 8, date('d/m/Y', strtotime($p['fecha_nacimiento'])), 1, 1, 'C');
         }

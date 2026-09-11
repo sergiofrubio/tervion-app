@@ -11,6 +11,7 @@ if ($filtro_usuario_id !== '') {
     foreach ($patients as $p) {
         if (
             strpos((string)$p['usuario_id'], $filtro_usuario_id) !== false ||
+            (!empty($p['dni']) && stripos((string)$p['dni'], $filtro_usuario_id) !== false) ||
             strpos(strtolower($p['nombre']), strtolower($filtro_usuario_id)) !== false ||
             strpos(strtolower($p['apellidos']), strtolower($filtro_usuario_id)) !== false
         ) {
@@ -90,7 +91,13 @@ $pacientesPaginados = array_slice($pacientes_filtrados, $iniciar, $articulos_x_p
                     <?php if (!empty($pacientesPaginados)) : ?>
                         <?php foreach ($pacientesPaginados as $paciente) : ?>
                             <tr class="hover:bg-gray-50/80 transition-colors">
-                                <td class="py-4 px-4 font-bold text-gray-400"><?= htmlspecialchars($paciente['usuario_id']) ?></td>
+                                <td class="py-4 px-4 font-bold text-gray-700">
+                                    <?php if (!empty($paciente['dni'])): ?>
+                                        <span class="font-mono"><?= htmlspecialchars($paciente['dni']) ?></span>
+                                    <?php else: ?>
+                                        <span class="text-gray-400 font-normal italic text-[11px]">Sin DNI</span>
+                                    <?php endif; ?>
+                                </td>
                                 <td class="py-4 px-4">
                                     <div class="flex items-center gap-2.5">
                                         <div class="h-7 w-7 rounded-full bg-primary-50 flex items-center justify-center text-primary-600 font-bold text-xs">

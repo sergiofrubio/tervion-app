@@ -27,10 +27,10 @@ class TherapistController extends Controller
     public function create()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $userModel = $this->model('User');
+            $dni = htmlspecialchars($_POST['dni'] ?? ($_POST['usuario_id'] ?? ''), ENT_QUOTES, 'UTF-8');
 
             $data = [
-                'usuario_id' => htmlspecialchars($_POST['usuario_id'] ?? '', ENT_QUOTES, 'UTF-8'),
+                'dni' => $dni,
                 'nombre' => htmlspecialchars($_POST['nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'apellidos' => htmlspecialchars($_POST['apellidos'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'telefono' => htmlspecialchars($_POST['telefono'] ?? '', ENT_QUOTES, 'UTF-8'),
@@ -40,7 +40,7 @@ class TherapistController extends Controller
                 'municipio' => htmlspecialchars($_POST['municipio'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'cp' => htmlspecialchars($_POST['cp'] ?? '', ENT_QUOTES, 'UTF-8'),
                 'email' => htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'),
-                'pass' => password_hash(!empty($_POST['pass']) ? $_POST['pass'] : $_POST['usuario_id'], PASSWORD_DEFAULT),
+                'pass' => password_hash(!empty($_POST['pass']) ? $_POST['pass'] : ($dni ?: 'terapeuta'), PASSWORD_DEFAULT),
                 'rol' => $_POST['rol'] ?? 'Fisioterapeuta',
                 'genero' => $_POST['genero'] ?? 'Otro',
                 'nss' => htmlspecialchars($_POST['nss'] ?? '', ENT_QUOTES, 'UTF-8'),

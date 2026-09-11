@@ -659,7 +659,8 @@ INSERT INTO `tipos_citas` (`tipo_cita_id`, `cuenta_id`, `nombre`, `descripcion`,
 --
 
 CREATE TABLE `usuarios` (
-  `usuario_id` varchar(9) NOT NULL,
+  `usuario_id` int NOT NULL,
+  `dni` varchar(20) DEFAULT NULL,
   `cuenta_id` int NOT NULL DEFAULT '1',
   `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `apellidos` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -685,11 +686,45 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`usuario_id`, `cuenta_id`, `nombre`, `apellidos`, `telefono`, `fecha_nacimiento`, `direccion`, `provincia`, `municipio`, `cp`, `email`, `pass`, `genero`, `rol`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
-('000000000', 1, 'Super', 'Admin', '600000000', '1980-01-01', 'SaaS HQ', 'Madrid', 'Madrid', '28001', 'superadmin@tervion.es', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Hombre', 'Secretario', NULL, '2026-05-01 08:00:00', NULL, NULL),
-('123456789', 1, 'Juan', 'Perez', '123456789', '1990-01-01', 'Calle 123', 'Provincia 1', 'Ciudad 1', '12345', 'patient@example.com', '$2y$12$bIEopyzNCTfMkRN7b/W.EOf22V1.Ss/n9bDOYE6pew9w5oX4ciseC', 'Hombre', 'Paciente', NULL, '2026-05-04 17:30:03', NULL, '2026-06-09 17:16:00'),
-('234567890', 1, 'Maria', 'Lopez', '234567890', '1995-05-05', 'Avenida 456', 'Provincia 2', 'Ciudad 2', '23456', 'fisio@example.com', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Mujer', 'Terapeuta', NULL, '2026-05-04 17:30:03', NULL, '2026-06-12 20:07:40'),
-('345678901', 1, 'Pedro', 'Gomez', '345678901', '1985-10-10', 'Plaza 789', 'Provincia 3', 'Ciudad 3', '34567', 'admin@example.com', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Hombre', 'Administrador', NULL, '2026-05-04 17:30:03', NULL, '2026-06-12 20:07:40');
+INSERT INTO `usuarios` (`usuario_id`, `dni`, `cuenta_id`, `nombre`, `apellidos`, `telefono`, `fecha_nacimiento`, `direccion`, `provincia`, `municipio`, `cp`, `email`, `pass`, `genero`, `rol`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
+(1, '000000000', 1, 'Super', 'Admin', '600000000', '1980-01-01', 'SaaS HQ', 'Madrid', 'Madrid', '28001', 'superadmin@tervion.es', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Hombre', 'Secretario', NULL, '2026-05-01 08:00:00', NULL, NULL),
+(2, '123456789', 1, 'Juan', 'Perez', '123456789', '1990-01-01', 'Calle 123', 'Provincia 1', 'Ciudad 1', '12345', 'patient@example.com', '$2y$12$bIEopyzNCTfMkRN7b/W.EOf22V1.Ss/n9bDOYE6pew9w5oX4ciseC', 'Hombre', 'Paciente', NULL, '2026-05-04 17:30:03', NULL, '2026-06-09 17:16:00'),
+(3, '234567890', 1, 'Maria', 'Lopez', '234567890', '1995-05-05', 'Avenida 456', 'Provincia 2', 'Ciudad 2', '23456', 'fisio@example.com', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Mujer', 'Terapeuta', NULL, '2026-05-04 17:30:03', NULL, '2026-06-12 20:07:40'),
+(4, '345678901', 1, 'Pedro', 'Gomez', '345678901', '1985-10-10', 'Plaza 789', 'Provincia 3', 'Ciudad 3', '34567', 'admin@example.com', '$2y$10$N7JA82u/XFyaeHM.4t44S.9KKcgpj5yikEYBZ8k/0cp4qmvA/MEb6', 'Hombre', 'Administrador', NULL, '2026-05-04 17:30:03', NULL, '2026-06-12 20:07:40');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pacientes`
+-- (Fichas de pacientes: datos administrativos, filiación, contacto de emergencia y tutores)
+--
+
+CREATE TABLE `pacientes` (
+  `paciente_id` int NOT NULL,
+  `cuenta_id` int NOT NULL DEFAULT '1',
+  `usuario_id` int NOT NULL,
+  `numero_expediente` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nombre_tutor` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dni_tutor` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `telefono_tutor` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `contacto_emergencia_nombre` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `contacto_emergencia_telefono` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `compania_seguro` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `numero_poliza` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `observaciones_administrativas` text COLLATE utf8mb4_unicode_ci,
+  `alergias_alertas` text COLLATE utf8mb4_unicode_ci,
+  `creado_por` varchar(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `modificado_por` varchar(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `pacientes`
+--
+
+INSERT INTO `pacientes` (`paciente_id`, `cuenta_id`, `usuario_id`, `numero_expediente`, `nombre_tutor`, `dni_tutor`, `telefono_tutor`, `contacto_emergencia_nombre`, `contacto_emergencia_telefono`, `compania_seguro`, `numero_poliza`, `observaciones_administrativas`, `alergias_alertas`, `creado_por`, `fecha_creacion`, `modificado_por`, `fecha_modificacion`) VALUES
+(1, 1, 2, 'EXP-2026-0001', NULL, NULL, NULL, 'Familiar Contacto', '699887766', 'Sanitas', 'POL-99281', 'Ficha administrativa inicial del paciente', 'Sin alergias farmacológicas conocidas', NULL, '2026-05-04 17:30:03', NULL, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -923,6 +958,16 @@ ALTER TABLE `usuarios`
   ADD KEY `idx_usuarios_rol` (`rol`);
 
 --
+-- Indices de la tabla `pacientes`
+--
+ALTER TABLE `pacientes`
+  ADD PRIMARY KEY (`paciente_id`),
+  ADD KEY `idx_pacientes_cuenta` (`cuenta_id`),
+  ADD KEY `idx_pacientes_usuario` (`usuario_id`),
+  ADD KEY `fk_pacientes_creador` (`creado_por`),
+  ADD KEY `fk_pacientes_modificador` (`modificado_por`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -1064,6 +1109,18 @@ ALTER TABLE `registro_horario`
 --
 ALTER TABLE `tipos_citas`
   MODIFY `tipo_cita_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `usuario_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `pacientes`
+--
+ALTER TABLE `pacientes`
+  MODIFY `paciente_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
@@ -1237,6 +1294,15 @@ ALTER TABLE `usuarios`
   ADD CONSTRAINT `fk_usuarios_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_usuarios_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_usuarios_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `pacientes`
+--
+ALTER TABLE `pacientes`
+  ADD CONSTRAINT `fk_pacientes_cuenta` FOREIGN KEY (`cuenta_id`) REFERENCES `cuentas_clientes` (`cuenta_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_pacientes_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_pacientes_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_pacientes_modificador` FOREIGN KEY (`modificado_por`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 -- --------------------------------------------------------
@@ -1277,7 +1343,7 @@ BEGIN
         SET cur_paciente_id = LPAD(i + 1000000, 9, '0');
         
         INSERT INTO `usuarios` (
-            `usuario_id`, `cuenta_id`, `nombre`, `apellidos`, `telefono`,
+            `dni`, `cuenta_id`, `nombre`, `apellidos`, `telefono`,
             `fecha_nacimiento`, `direccion`, `provincia`, `municipio`, `cp`,
             `email`, `pass`, `genero`, `rol`, `creado_por`, `fecha_creacion`, `activo`
         ) VALUES (

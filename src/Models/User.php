@@ -32,11 +32,23 @@ class User
             $rgpdAceptado = !empty($data['rgpd_aceptado']) ? 1 : 0;
             $fechaConsentimiento = !empty($data['fecha_consentimiento']) ? $data['fecha_consentimiento'] : ($rgpdAceptado ? date('Y-m-d H:i:s') : null);
             $firmaPaciente = !empty($data['firma_paciente']) ? $data['firma_paciente'] : null;
+            $dni = !empty($data['dni']) ? trim($data['dni']) : (!empty($data['usuario_id']) && !is_numeric($data['usuario_id']) ? trim($data['usuario_id']) : null);
 
-            $query = "INSERT INTO usuarios (usuario_id, nombre, apellidos, telefono, fecha_nacimiento, direccion, provincia, municipio, cp, email, pass, genero, rol, rgpd_aceptado, fecha_consentimiento, firma_paciente) 
-                      VALUES (:usuario_id, :nombre, :apellidos, :telefono, :fecha_nacimiento, :direccion, :provincia, :municipio, :cp, :email, :pass, :genero, :rol, :rgpd_aceptado, :fecha_consentimiento, :firma_paciente)";
+            $hasCustomId = !empty($data['usuario_id']) && is_numeric($data['usuario_id']);
+            
+            if ($hasCustomId) {
+                $query = "INSERT INTO usuarios (usuario_id, dni, nombre, apellidos, telefono, fecha_nacimiento, direccion, provincia, municipio, cp, email, pass, genero, rol, rgpd_aceptado, fecha_consentimiento, firma_paciente) 
+                          VALUES (:usuario_id, :dni, :nombre, :apellidos, :telefono, :fecha_nacimiento, :direccion, :provincia, :municipio, :cp, :email, :pass, :genero, :rol, :rgpd_aceptado, :fecha_consentimiento, :firma_paciente)";
+            } else {
+                $query = "INSERT INTO usuarios (dni, nombre, apellidos, telefono, fecha_nacimiento, direccion, provincia, municipio, cp, email, pass, genero, rol, rgpd_aceptado, fecha_consentimiento, firma_paciente) 
+                          VALUES (:dni, :nombre, :apellidos, :telefono, :fecha_nacimiento, :direccion, :provincia, :municipio, :cp, :email, :pass, :genero, :rol, :rgpd_aceptado, :fecha_consentimiento, :firma_paciente)";
+            }
+
             $stmt = $this->db->prepare($query);
-            $stmt->bindParam(':usuario_id', $data['usuario_id']);
+            if ($hasCustomId) {
+                $stmt->bindValue(':usuario_id', (int)$data['usuario_id'], PDO::PARAM_INT);
+            }
+            $stmt->bindValue(':dni', $dni);
             $stmt->bindParam(':nombre', $data['nombre']);
             $stmt->bindParam(':apellidos', $data['apellidos']);
             $stmt->bindParam(':telefono', $data['telefono']);
@@ -54,11 +66,13 @@ class User
             $stmt->bindParam(':firma_paciente', $firmaPaciente);
             $stmt->execute();
 
+            $newUsuarioId = $hasCustomId ? (int)$data['usuario_id'] : (int)$this->db->lastInsertId();
+
             if ($data['rol'] !== 'Paciente') {
                 // Es un trabajador (Fisioterapeuta, Secretario, Administrador)
                 $qEmp = "INSERT INTO empleados (usuario_id, nss, iban, grupo_cotizacion) VALUES (:usuario_id, :nss, :iban, :grupo_cotizacion)";
                 $sEmp = $this->db->prepare($qEmp);
-                $sEmp->bindParam(':usuario_id', $data['usuario_id']);
+                $sEmp->bindValue(':usuario_id', $newUsuarioId);
                 $sEmp->bindParam(':nss', $data['nss']);
                 $sEmp->bindParam(':iban', $data['iban']);
                 $sEmp->bindValue(':grupo_cotizacion', $data['grupo_cotizacion'] ?? 1, PDO::PARAM_INT);
@@ -66,7 +80,7 @@ class User
             }
 
             $this->db->commit();
-            return true;
+            return $newUsuarioId ?: true;
         } catch (\Exception $e) {
             $this->db->rollBack();
             return false;
@@ -105,11 +119,11 @@ class User
     public function searchByRol($rol, $query)
     {
         if ($rol === 'Administrador') {
-            $sql = "SELECT u.usuario_id, u.nombre, u.apellidos 
+            $sql = "SELECT u.usuario_id, u.dni, u.nombre, u.apellidos 
                     FROM usuarios u 
                     WHERE u.rol = 'Administrador'";
             if (!empty($query)) {
-                $sql .= " AND (u.nombre LIKE :q OR u.apellidos LIKE :q OR u.usuario_id LIKE :q)";
+                $sql .= " AND (u.nombre LIKE :q OR u.apellidos LIKE :q OR u.dni LIKE :q OR CAST(u.usuario_id AS CHAR) LIKE :q)";
             }
             $sql .= " ORDER BY u.nombre ASC LIMIT 10";
             $stmt = $this->db->prepare($sql);
@@ -121,12 +135,12 @@ class User
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        $sql = "SELECT u.usuario_id, u.nombre, u.apellidos 
+        $sql = "SELECT u.usuario_id, u.dni, u.nombre, u.apellidos 
                 FROM usuarios u 
                 WHERE u.rol = :rol";
         
         if (!empty($query)) {
-            $sql .= " AND (u.nombre LIKE :q OR u.apellidos LIKE :q OR u.usuario_id LIKE :q)";
+            $sql .= " AND (u.nombre LIKE :q OR u.apellidos LIKE :q OR u.dni LIKE :q OR CAST(u.usuario_id AS CHAR) LIKE :q)";
         }
         $sql .= " ORDER BY u.nombre ASC LIMIT 10";
         
@@ -156,6 +170,7 @@ class User
             $rgpdAceptado = isset($data['rgpd_aceptado']) ? (!empty($data['rgpd_aceptado']) ? 1 : 0) : null;
             $fechaConsentimiento = !empty($data['fecha_consentimiento']) ? $data['fecha_consentimiento'] : null;
             $firmaPaciente = isset($data['firma_paciente']) ? $data['firma_paciente'] : null;
+            $dni = array_key_exists('dni', $data) ? (!empty($data['dni']) ? trim($data['dni']) : null) : false;
 
             $query = "UPDATE usuarios SET 
                         nombre = :nombre, 
@@ -170,6 +185,9 @@ class User
                         genero = :genero,
                         rol = :rol";
             
+            if ($dni !== false) {
+                $query .= ", dni = :dni";
+            }
             if ($rgpdAceptado !== null) {
                 $query .= ", rgpd_aceptado = :rgpd_aceptado";
                 if ($rgpdAceptado === 1 && empty($fechaConsentimiento)) {
@@ -193,6 +211,9 @@ class User
             $stmt->bindParam(':apellidos', $data['apellidos']);
             $stmt->bindParam(':telefono', $data['telefono']);
             $stmt->bindParam(':fecha_nacimiento', $data['fecha_nacimiento']);
+            if ($dni !== false) {
+                $stmt->bindValue(':dni', $dni);
+            }
             $stmt->bindParam(':direccion', $data['direccion']);
             $stmt->bindParam(':provincia', $data['provincia']);
             $stmt->bindParam(':municipio', $data['municipio']);

@@ -41,7 +41,7 @@ class PatientControllerTest extends ControllerTestCase
     public function testCreatePostSuccess()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['usuario_id'] = '12345678A';
+        $_POST['dni'] = '12345678A';
         $_POST['nombre'] = 'John';
         $_POST['apellidos'] = 'Doe';
 
@@ -49,10 +49,50 @@ class PatientControllerTest extends ControllerTestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['save'])
             ->getMock();
-        $userModelMock->method('save')->willReturn(true);
+        $userModelMock->method('save')->willReturn(1);
+
+        $patientModelMock = $this->getMockBuilder(\App\Models\Patient::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save'])
+            ->getMock();
+        $patientModelMock->method('save')->willReturn(true);
 
         $controller = $this->getControllerMock(PatientController::class);
-        $controller->method('model')->with('User')->willReturn($userModelMock);
+        $controller->method('model')->willReturnMap([
+            ['User', $userModelMock],
+            ['Patient', $patientModelMock]
+        ]);
+
+        $this->expectException(TestExitException::class);
+        $controller->create();
+    }
+
+    public function testCreatePostMinorWithoutDniSuccess()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        unset($_POST['dni']);
+        unset($_POST['usuario_id']);
+        $_POST['nombre'] = 'Pedrito';
+        $_POST['apellidos'] = 'Perez';
+        $_POST['nombre_tutor'] = 'Padre Tutor';
+
+        $userModelMock = $this->getMockBuilder(User::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save'])
+            ->getMock();
+        $userModelMock->method('save')->willReturn(2);
+
+        $patientModelMock = $this->getMockBuilder(\App\Models\Patient::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save'])
+            ->getMock();
+        $patientModelMock->method('save')->willReturn(true);
+
+        $controller = $this->getControllerMock(PatientController::class);
+        $controller->method('model')->willReturnMap([
+            ['User', $userModelMock],
+            ['Patient', $patientModelMock]
+        ]);
 
         $this->expectException(TestExitException::class);
         $controller->create();
@@ -61,15 +101,22 @@ class PatientControllerTest extends ControllerTestCase
     public function testCreatePostFailure()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['usuario_id'] = '';
+        $_POST['nombre'] = '';
 
         $userModelMock = $this->getMockBuilder(User::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['save'])
             ->getMock();
 
+        $patientModelMock = $this->getMockBuilder(\App\Models\Patient::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $controller = $this->getControllerMock(PatientController::class);
-        $controller->method('model')->with('User')->willReturn($userModelMock);
+        $controller->method('model')->willReturnMap([
+            ['User', $userModelMock],
+            ['Patient', $patientModelMock]
+        ]);
 
         ob_start();
         $controller->create();
@@ -124,12 +171,21 @@ class PatientControllerTest extends ControllerTestCase
             ->getMock();
         $userModelMock->method('getByusuario_id')->with('U123')->willReturn(['usuario_id' => 'U123']);
 
+        $patientModelMock = $this->getMockBuilder(\App\Models\Patient::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getByUsuarioId'])
+            ->getMock();
+        $patientModelMock->method('getByUsuarioId')->with('U123')->willReturn([]);
+
         $controller = $this->getControllerMock(PatientController::class);
-        $controller->method('model')->with('User')->willReturn($userModelMock);
+        $controller->method('model')->willReturnMap([
+            ['User', $userModelMock],
+            ['Patient', $patientModelMock]
+        ]);
 
         $controller->expects($this->once())
             ->method('view')
-            ->with('patient/form', ['usuario' => ['usuario_id' => 'U123']]);
+            ->with('patient/form', ['usuario' => ['usuario_id' => 'U123'], 'ficha' => []]);
 
         $controller->edit();
     }
@@ -158,8 +214,17 @@ class PatientControllerTest extends ControllerTestCase
             ->getMock();
         $userModelMock->method('update')->with('U123', $this->callback(function($arg) { return is_array($arg) && isset($arg['pass']); }))->willReturn(true);
 
+        $patientModelMock = $this->getMockBuilder(\App\Models\Patient::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['upsertByUsuarioId'])
+            ->getMock();
+        $patientModelMock->method('upsertByUsuarioId')->willReturn(true);
+
         $controller = $this->getControllerMock(PatientController::class);
-        $controller->method('model')->with('User')->willReturn($userModelMock);
+        $controller->method('model')->willReturnMap([
+            ['User', $userModelMock],
+            ['Patient', $patientModelMock]
+        ]);
 
         $this->expectException(TestExitException::class);
         $controller->edit();
@@ -177,8 +242,15 @@ class PatientControllerTest extends ControllerTestCase
             ->getMock();
         $userModelMock->method('update')->willReturn(false);
 
+        $patientModelMock = $this->getMockBuilder(\App\Models\Patient::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $controller = $this->getControllerMock(PatientController::class);
-        $controller->method('model')->with('User')->willReturn($userModelMock);
+        $controller->method('model')->willReturnMap([
+            ['User', $userModelMock],
+            ['Patient', $patientModelMock]
+        ]);
 
         ob_start();
         $controller->edit();
@@ -208,6 +280,12 @@ class PatientControllerTest extends ControllerTestCase
             ->getMock();
         $userModelMock->method('getByusuario_id')->with('U123')->willReturn(['usuario_id' => 'U123', 'rol' => 'Paciente']);
 
+        $patientModelMock = $this->getMockBuilder(\App\Models\Patient::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getByUsuarioId'])
+            ->getMock();
+        $patientModelMock->method('getByUsuarioId')->with('U123')->willReturn(['numero_expediente' => 'EXP-001']);
+
         $historyMock = $this->getMockBuilder(MedicalReport::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getByPaciente'])
@@ -235,6 +313,7 @@ class PatientControllerTest extends ControllerTestCase
         $controller = $this->getControllerMock(PatientController::class);
         $controller->method('model')->willReturnMap([
             ['User', $userModelMock],
+            ['Patient', $patientModelMock],
             ['MedicalReport', $historyMock],
             ['Appointment', $appointmentMock],
             ['Document', $documentMock],
@@ -244,7 +323,7 @@ class PatientControllerTest extends ControllerTestCase
         $controller->expects($this->once())
             ->method('view')
             ->with('patient/detail', $this->callback(function($data) {
-                return $data['usuario']['usuario_id'] === 'U123' && $data['rol'] === 'Administrador';
+                return $data['usuario']['usuario_id'] === 'U123' && $data['ficha']['numero_expediente'] === 'EXP-001';
             }));
 
         $controller->detail();

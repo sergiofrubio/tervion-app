@@ -1,17 +1,16 @@
-﻿{
-  id: sample_addon,
-  name: Módulo de Ejemplo,
-  version: 1.0.0,
-  author: Tervion Team,
-  description: Módulo de demostración para ilustrar la arquitectura modular y de extensiones de Tervion ERP.,
-  namespace: Modules\\SampleAddon\\,
-  menu_items: [
+{
+  "id": "sample_addon",
+  "name": "Módulo de Ejemplo",
+  "version": "1.0.0",
+  "author": "Tervion Team",
+  "description": "Módulo de demostración para ilustrar la arquitectura modular y de extensiones de Tervion ERP.",
+  "namespace": "Modules\\SampleAddon\\",
+  "menu_items": [
     {
-      title: Módulo Demo,
-      route: /extensiones/demo,
-      icon: puzzle,
-      roles: [Administrador, Terapeuta, Secretario
-      ]
+      "title": "Módulo Demo",
+      "route": "/extensiones/demo",
+      "icon": "puzzle",
+      "roles": ["Administrador", "Terapeuta", "Secretario"]
     }
   ]
 }

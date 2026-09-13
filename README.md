@@ -14,6 +14,7 @@ Para facilitar la incorporación de nuevos ingenieros al equipo, la documentaci�
 * **[Pasarela de Pagos Redsys](file:///c:/Users/sergi/Documents/tervion-app/docs/features/redsys.md)**: Flujo de redirección segura para compras de bonos de pacientes, notificaciones asíncronas IPN y resiliencia en local.
 * **[Pruebas Unitarias y Debugging](file:///c:/Users/sergi/Documents/tervion-app/docs/testing.md)**: Cómo ejecutar PHPUnit en los contenedores y configurar Xdebug en tu IDE.
 * **[Tareas Programadas (Cron Jobs)](file:///c:/Users/sergi/Documents/tervion-app/docs/cron.md)**: Automatización de recordatorios de citas y cálculo mensual de nóminas.
+* **[Guía de Contribución (Open Source)](file:///c:/Users/sergi/Documents/tervion-app/CONTRIBUTING.md)**: Directrices, estándares de código (PSR-4/12, PDO), flujo de Git y normas para colaboradores externos.
 
 ---
 
@@ -42,3 +43,9 @@ docker compose exec php vendor/bin/phpunit
 * **Tailwind CSS** para la interfaz administrativa e interactiva de pacientes.
 * **Docker & Docker Compose** para asegurar entornos homogéneos e inmutables desde desarrollo local hasta producción.
 * **FPDF** y **PHPMailer** para generación de reportes clínicos y envío de notificaciones por email.
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia **GNU Lesser General Public License v3.0 (LGPLv3)**. Consulta el archivo [LICENSE](file:///c:/Users/sergi/Documents/tervion-app/LICENSE) para más información. Permite su uso e integración con módulos o extensiones comerciales/propietarias (modelo de núcleo abierto / open-core).

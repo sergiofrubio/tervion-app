@@ -1,8 +1,13 @@
 <?php
 
 use App\Router\Router;
+use App\Core\Modules\ModuleManager;
 
 $router = new Router();
+
+// Descubrir e inicializar módulos externos / extensiones
+$moduleManager = ModuleManager::getInstance();
+$moduleManager->discoverAndBoot();
 
 // Rutas Públicas (Sin autenticación)
 $router->add('GET', '/', 'LandingController@index', false);
@@ -22,20 +27,8 @@ $router->add('GET', '/logout', 'LoginController@finishSesion', false);
 $router->add('GET', '/citas/confirmar', 'AppointmentController@confirmarAsistencia', false);
 $router->add('GET', '/citas/cron/recordatorios', 'AppointmentController@enviarRecordatorios', false);
 
-// Rutas de Administración SaaS (SuperAdmin)
-$router->add('GET', '/superadmin/clientes', 'SaasAdminController@tenants', true, ['SuperAdmin']);
-$router->add('GET', '/superadmin/clientes/crear', 'SaasAdminController@createTenant', true, ['SuperAdmin']);
-$router->add('POST', '/superadmin/clientes/crear', 'SaasAdminController@createTenant', true, ['SuperAdmin']);
-$router->add('POST', '/superadmin/clientes/estado', 'SaasAdminController@updateStatus', true, ['SuperAdmin']);
-$router->add('POST', '/superadmin/clientes/plan', 'SaasAdminController@updatePlan', true, ['SuperAdmin']);
-$router->add('GET', '/superadmin/facturas', 'SaasAdminController@invoices', true, ['SuperAdmin']);
-$router->add('GET', '/superadmin/facturas/crear', 'SaasAdminController@createInvoice', true, ['SuperAdmin']);
-$router->add('POST', '/superadmin/facturas/crear', 'SaasAdminController@createInvoice', true, ['SuperAdmin']);
-$router->add('POST', '/superadmin/facturas/estado', 'SaasAdminController@updateInvoiceStatus', true, ['SuperAdmin']);
-$router->add('GET', '/superadmin/facturas/pdf', 'SaasAdminController@invoicePdf', true, ['SuperAdmin']);
-
 // Rutas Generales (Requieren autenticación, accesibles por todos los roles)
-$allRoles = ['SuperAdmin', 'Administrador', 'Terapeuta', 'Secretario', 'Paciente'];
+$allRoles = ['Administrador', 'Terapeuta', 'Secretario', 'Paciente'];
 $router->add('GET', '/inicio', 'HomeController@index', true, $allRoles);
 $router->add('GET', '/perfil', 'ProfileController@index', true, $allRoles);
 $router->add('GET', '/perfil/editar', 'ProfileController@edit', true, $allRoles);
@@ -120,7 +113,7 @@ $router->add('POST', '/facturas/crear', 'InvoiceController@create', true, $staff
 $router->add('GET', '/facturas/editar', 'InvoiceController@edit', true, $staffRoles);
 $router->add('POST', '/facturas/editar', 'InvoiceController@edit', true, $staffRoles);
 $router->add('POST', '/facturas/eliminar', 'InvoiceController@delete', true, $staffRoles);
-$router->add('GET', '/facturas/pdf', 'InvoiceController@pdf', true, array_merge($staffRoles, ['SuperAdmin']));
+$router->add('GET', '/facturas/pdf', 'InvoiceController@pdf', true, $staffRoles);
 $router->add('GET', '/facturas/reenviar', 'InvoiceController@reenviarVerifactu', true, $staffRoles);
 $router->add('POST', '/facturas/reenviar', 'InvoiceController@reenviarVerifactu', true, $staffRoles);
 
@@ -187,5 +180,8 @@ $router->add('GET', '/paciente/tienda/error', 'ShopController@errorPago', true, 
 
 $router->add('GET', '/paciente/facturas', 'InvoiceController@list', true, ['Paciente']);
 $router->add('GET', '/paciente/facturas/pdf', 'InvoiceController@pdf', true, ['Paciente']);
+
+// Registrar rutas provistas por módulos de terceros / extensiones
+$moduleManager->registerRoutes($router);
 
 $router->handleRequest();

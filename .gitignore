@@ -12,3 +12,6 @@ storage/
 node_modules/
 .env
 public/vendor/
+/modules/*
+!/modules/.gitkeep
+!/modules/sample_addon/

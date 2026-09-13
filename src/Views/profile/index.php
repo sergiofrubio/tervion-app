@@ -38,7 +38,7 @@ $rol = $usuario['rol'] ?? ($_SESSION['rol'] ?? 'Usuario');
                 <p class="text-xs text-gray-500 mb-3"><?= htmlspecialchars($usuario['email'] ?? '') ?></p>
 
                 <div class="mb-5 inline-block">
-                    <?php if ($rol === 'SuperAdmin' || $rol === 'Administrador'): ?>
+                    <?php if ($rol === 'Administrador'): ?>
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-purple-50 text-purple-700 border border-purple-200">
                             <span class="w-2 h-2 rounded-full bg-purple-500"></span> <?= htmlspecialchars($rol) ?>
                         </span>
@@ -71,12 +71,12 @@ $rol = $usuario['rol'] ?? ($_SESSION['rol'] ?? 'Usuario');
             <!-- Quick Info -->
             <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
                 <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Datos de Cuenta</h3>
-                
+
                 <div class="flex items-center justify-between text-xs">
                     <span class="text-gray-500 font-medium">ID Usuario / DNI</span>
                     <span class="font-bold text-gray-900 font-mono">#<?= htmlspecialchars($usuario['usuario_id'] ?? '-') ?></span>
                 </div>
-                
+
                 <div class="flex items-center justify-between text-xs">
                     <span class="text-gray-500 font-medium">Teléfono</span>
                     <span class="font-bold text-gray-900"><?= htmlspecialchars($usuario['telefono'] ?? '-') ?></span>

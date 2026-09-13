@@ -14,6 +14,7 @@ Para facilitar la incorporación de nuevos ingenieros al equipo, la documentaci�
 * **[Pasarela de Pagos Redsys](file:///c:/Users/sergi/Documents/tervion-app/docs/features/redsys.md)**: Flujo de redirección segura para compras de bonos de pacientes, notificaciones asíncronas IPN y resiliencia en local.
 * **[Pruebas Unitarias y Debugging](file:///c:/Users/sergi/Documents/tervion-app/docs/testing.md)**: Cómo ejecutar PHPUnit en los contenedores y configurar Xdebug en tu IDE.
 * **[Tareas Programadas (Cron Jobs)](file:///c:/Users/sergi/Documents/tervion-app/docs/cron.md)**: Automatización de recordatorios de citas y cálculo mensual de nóminas.
+* **[Desarrollo de Módulos y Extensiones](file:///c:/Users/sergi/Documents/tervion-app/docs/modules_development.md)**: Arquitectura modular, manifiestos `module.json`, hooks/eventos y creación de add-ons abiertos o propietarios.
 * **[Guía de Contribución (Open Source)](file:///c:/Users/sergi/Documents/tervion-app/CONTRIBUTING.md)**: Directrices, estándares de código (PSR-4/12, PDO), flujo de Git y normas para colaboradores externos.
 
 ---

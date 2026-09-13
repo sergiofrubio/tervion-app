@@ -32,7 +32,9 @@ class Router
         if (isset($this->routes[$requestMethod][$requestUrl])) {
             $route = $this->routes[$requestMethod][$requestUrl];
             list($controllerName, $methodName) = explode('@', $route['action']);
-            $controllerName = "App\\Controllers\\" . $controllerName;
+            if (strpos($controllerName, '\\') === false) {
+                $controllerName = "App\\Controllers\\" . $controllerName;
+            }
             $controller = new $controllerName();
 
             if ($route['auth']) {

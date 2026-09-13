@@ -62,12 +62,6 @@ $isDocumentosActive   = ($cleanUri === '/documentos' || strpos($cleanUri, '/docu
 $isConfiguracionActive = ($cleanUri === '/configuracion' || strpos($cleanUri, '/configuracion/') === 0);
 
 $isAnyConfigActive = ($isEmpleadosActive || $isContabilidadActive || $isDocumentosActive || $isConfiguracionActive);
-
-// Comprobaciones de rutas para SuperAdmin
-$isSuperAdmin = ($userRole === 'SuperAdmin');
-$isSaasDashboardActive = ($cleanUri === '/inicio');
-$isSaasClientesActive  = (strpos($cleanUri, '/superadmin/clientes') === 0);
-$isSaasFacturasActive  = (strpos($cleanUri, '/superadmin/facturas') === 0);
 ?>
 
 <body class="h-full flex flex-col font-sans antialiased text-slate-900 bg-slate-50 <?= $hasSystemAlert ? 'pt-7' : '' ?>"
@@ -166,139 +160,148 @@ $isSaasFacturasActive  = (strpos($cleanUri, '/superadmin/facturas') === 0);
             <!-- Lista de Enlaces de Navegación -->
             <div class="flex-1 overflow-y-auto px-3 py-4 space-y-1.5 scrollbar-thin">
 
-                <?php if ($isSuperAdmin): ?>
-                    <!-- Sección Dashboard -->
-                    <a href="<?= PROJECT_ROOT ?>/inicio"
-                        class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isSaasDashboardActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
-                        :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
-                        :title="sidebarCollapsed ? 'Dashboard Global' : ''">
-                        <i class="bi bi-speedometer2 text-lg shrink-0 <?= $isSaasDashboardActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
-                        <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-                            Dashboard Global
-                        </span>
-                    </a>
 
-                    <!-- Clientes -->
-                    <a href="<?= PROJECT_ROOT ?>/superadmin/clientes"
-                        class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isSaasClientesActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
-                        :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
-                        :title="sidebarCollapsed ? 'Clientes (Clínicas)' : ''">
-                        <i class="bi bi-building text-lg shrink-0 <?= $isSaasClientesActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
-                        <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-                            Clientes (Clínicas)
-                        </span>
-                    </a>
+                <!-- Etiqueta Menú (sólo expandido) -->
+                <div class="px-3.5 pt-2 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider" x-show="!sidebarCollapsed">
+                    Gestión Clínica
+                </div>
 
-                    <!-- Facturación SaaS -->
-                    <a href="<?= PROJECT_ROOT ?>/superadmin/facturas"
-                        class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isSaasFacturasActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
-                        :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
-                        :title="sidebarCollapsed ? 'Facturación SaaS' : ''">
-                        <i class="bi bi-receipt text-lg shrink-0 <?= $isSaasFacturasActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
-                        <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-                            Facturación SaaS
-                        </span>
-                    </a>
+                <!-- Pacientes -->
+                <a href="<?= PROJECT_ROOT ?>/pacientes"
+                    class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isPatientsActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
+                    :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
+                    :title="sidebarCollapsed ? 'Pacientes' : ''">
+                    <i class="bi bi-people text-lg shrink-0 <?= $isPatientsActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
+                    <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+                        Pacientes
+                    </span>
+                </a>
 
-                <?php else: ?>
-                    <!-- Etiqueta Menú (sólo expandido) -->
-                    <div class="px-3.5 pt-2 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider" x-show="!sidebarCollapsed">
-                        Gestión Clínica
-                    </div>
+                <!-- Agendas -->
+                <a href="<?= PROJECT_ROOT ?>/citas"
+                    class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isAgendasActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
+                    :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
+                    :title="sidebarCollapsed ? 'Agendas de Citas' : ''">
+                    <i class="bi bi-calendar3 text-lg shrink-0 <?= $isAgendasActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
+                    <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+                        Agendas
+                    </span>
+                </a>
 
-                    <!-- Pacientes -->
-                    <a href="<?= PROJECT_ROOT ?>/pacientes"
-                        class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isPatientsActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
-                        :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
-                        :title="sidebarCollapsed ? 'Pacientes' : ''">
-                        <i class="bi bi-people text-lg shrink-0 <?= $isPatientsActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
-                        <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-                            Pacientes
-                        </span>
-                    </a>
+                <!-- Fichajes -->
+                <a href="<?= PROJECT_ROOT ?>/fichajes"
+                    class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isRecepcionActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
+                    :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
+                    :title="sidebarCollapsed ? 'Fichajes' : ''">
+                    <i class="bi bi-clock-history text-lg shrink-0 <?= $isRecepcionActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
+                    <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+                        Fichajes
+                    </span>
+                </a>
 
-                    <!-- Agendas -->
-                    <a href="<?= PROJECT_ROOT ?>/citas"
-                        class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isAgendasActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
-                        :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
-                        :title="sidebarCollapsed ? 'Agendas de Citas' : ''">
-                        <i class="bi bi-calendar3 text-lg shrink-0 <?= $isAgendasActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
-                        <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-                            Agendas
-                        </span>
-                    </a>
+                <!-- Historias -->
+                <a href="<?= PROJECT_ROOT ?>/historial"
+                    class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isHistoriasActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
+                    :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
+                    :title="sidebarCollapsed ? 'Historias Clínicas' : ''">
+                    <i class="bi bi-file-earmark-medical text-lg shrink-0 <?= $isHistoriasActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
+                    <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+                        Historias
+                    </span>
+                </a>
 
-                    <!-- Fichajes -->
-                    <a href="<?= PROJECT_ROOT ?>/fichajes"
-                        class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isRecepcionActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
-                        :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
-                        :title="sidebarCollapsed ? 'Fichajes' : ''">
-                        <i class="bi bi-clock-history text-lg shrink-0 <?= $isRecepcionActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
-                        <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-                            Fichajes
-                        </span>
-                    </a>
+                <!-- Separador Ajustes -->
+                <div class="my-2 border-t border-slate-100" x-show="!sidebarCollapsed"></div>
+                <div class="px-3.5 pt-2 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider" x-show="!sidebarCollapsed">
+                    Configuración
+                </div>
 
-                    <!-- Historias -->
-                    <a href="<?= PROJECT_ROOT ?>/historial"
-                        class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isHistoriasActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
-                        :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
-                        :title="sidebarCollapsed ? 'Historias Clínicas' : ''">
-                        <i class="bi bi-file-earmark-medical text-lg shrink-0 <?= $isHistoriasActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
-                        <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-                            Historias
-                        </span>
-                    </a>
+                <!-- Empleados -->
+                <a href="<?= PROJECT_ROOT ?>/empleados"
+                    class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isEmpleadosActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
+                    :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
+                    :title="sidebarCollapsed ? 'Empleados' : ''">
+                    <i class="bi bi-person-badge text-lg shrink-0 <?= $isEmpleadosActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
+                    <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+                        Empleados
+                    </span>
+                </a>
 
-                    <!-- Separador Ajustes -->
-                    <div class="my-2 border-t border-slate-100" x-show="!sidebarCollapsed"></div>
-                    <div class="px-3.5 pt-2 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider" x-show="!sidebarCollapsed">
+                <!-- Contabilidad -->
+                <a href="<?= PROJECT_ROOT ?>/contabilidad"
+                    class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isContabilidadActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
+                    :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
+                    :title="sidebarCollapsed ? 'Contabilidad' : ''">
+                    <i class="bi bi-cash-stack text-lg shrink-0 <?= $isContabilidadActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
+                    <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+                        Contabilidad
+                    </span>
+                </a>
+
+                <!-- Documentos -->
+                <a href="<?= PROJECT_ROOT ?>/documentos"
+                    class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isDocumentosActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
+                    :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
+                    :title="sidebarCollapsed ? 'Documentos' : ''">
+                    <i class="bi bi-file-earmark-text text-lg shrink-0 <?= $isDocumentosActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
+                    <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+                        Documentos
+                    </span>
+                </a>
+
+                <!-- Opciones de Configuración General -->
+                <a href="<?= PROJECT_ROOT ?>/configuracion"
+                    class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isConfiguracionActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
+                    :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
+                    :title="sidebarCollapsed ? 'Configuración del Sistema' : ''">
+                    <i class="bi bi-sliders text-lg shrink-0 <?= $isConfiguracionActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
+                    <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
                         Configuración
+                    </span>
+                </a>
+
+
+                <?php
+                // Menús dinámicos inyectados por Módulos
+                $moduleMenuItems = \App\Core\Modules\ModuleManager::getInstance()->getMenuItems();
+                $userRole = $_SESSION['rol'] ?? '';
+                $hasModuleItems = false;
+                foreach ($moduleMenuItems as $mItem) {
+                    $roles = $mItem['roles'] ?? [];
+                    if (empty($roles) || in_array($userRole, $roles)) {
+                        $hasModuleItems = true;
+                        break;
+                    }
+                }
+                ?>
+                <?php if ($hasModuleItems): ?>
+                    <div class="px-3.5 pt-3 pb-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider" x-show="!sidebarCollapsed">
+                        Extensiones
                     </div>
-
-                    <!-- Empleados -->
-                    <a href="<?= PROJECT_ROOT ?>/empleados"
-                        class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isEmpleadosActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
-                        :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
-                        :title="sidebarCollapsed ? 'Empleados' : ''">
-                        <i class="bi bi-person-badge text-lg shrink-0 <?= $isEmpleadosActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
-                        <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-                            Empleados
-                        </span>
-                    </a>
-
-                    <!-- Contabilidad -->
-                    <a href="<?= PROJECT_ROOT ?>/contabilidad"
-                        class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isContabilidadActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
-                        :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
-                        :title="sidebarCollapsed ? 'Contabilidad' : ''">
-                        <i class="bi bi-cash-stack text-lg shrink-0 <?= $isContabilidadActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
-                        <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-                            Contabilidad
-                        </span>
-                    </a>
-
-                    <!-- Documentos -->
-                    <a href="<?= PROJECT_ROOT ?>/documentos"
-                        class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isDocumentosActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
-                        :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
-                        :title="sidebarCollapsed ? 'Documentos' : ''">
-                        <i class="bi bi-file-earmark-text text-lg shrink-0 <?= $isDocumentosActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
-                        <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-                            Documentos
-                        </span>
-                    </a>
-
-                    <!-- Opciones de Configuración General -->
-                    <a href="<?= PROJECT_ROOT ?>/configuracion"
-                        class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isConfiguracionActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
-                        :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
-                        :title="sidebarCollapsed ? 'Configuración del Sistema' : ''">
-                        <i class="bi bi-sliders text-lg shrink-0 <?= $isConfiguracionActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
-                        <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-                            Configuración
-                        </span>
-                    </a>
+                    <?php foreach ($moduleMenuItems as $mItem): ?>
+                        <?php
+                        $roles = $mItem['roles'] ?? [];
+                        if (!empty($roles) && !in_array($userRole, $roles)) {
+                            continue;
+                        }
+                        $itemRoute = $mItem['route'] ?? '#';
+                        $fullRoute = (strpos($itemRoute, 'http') === 0) ? $itemRoute : (rtrim(PROJECT_ROOT, '/') . '/' . ltrim($itemRoute, '/'));
+                        $isActive = ($cleanUri === $itemRoute || strpos($cleanUri, rtrim($itemRoute, '/') . '/') === 0);
+                        $icon = $mItem['icon'] ?? 'bi-puzzle';
+                        if (!str_starts_with($icon, 'bi-')) {
+                            $icon = 'bi-' . $icon;
+                        }
+                        ?>
+                        <a href="<?= htmlspecialchars($fullRoute) ?>"
+                            class="flex items-center gap-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 group <?= $isActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>"
+                            :class="sidebarCollapsed ? 'justify-center px-0' : 'px-3.5'"
+                            :title="sidebarCollapsed ? '<?= htmlspecialchars($mItem['title'] ?? '') ?>' : ''">
+                            <i class="bi <?= htmlspecialchars($icon) ?> text-lg shrink-0 <?= $isActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600' ?>"></i>
+                            <span class="truncate whitespace-nowrap" x-show="!sidebarCollapsed" x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+                                <?= htmlspecialchars($mItem['title'] ?? 'Módulo') ?>
+                            </span>
+                        </a>
+                    <?php endforeach; ?>
                 <?php endif; ?>
 
             </div>
@@ -365,74 +368,56 @@ $isSaasFacturasActive  = (strpos($cleanUri, '/superadmin/facturas') === 0);
 
                 <!-- Enlaces Navegación Móvil -->
                 <div class="flex-1 overflow-y-auto p-4 space-y-1.5">
-                    <?php if ($isSuperAdmin): ?>
-                        <a href="<?= PROJECT_ROOT ?>/inicio" @click="mobileMenuOpen = false"
-                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors <?= $isSaasDashboardActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
-                            <i class="bi bi-speedometer2 text-base <?= $isSaasDashboardActive ? 'text-primary-600' : 'text-slate-400' ?>"></i>
-                            <span>Dashboard Global</span>
-                        </a>
 
-                        <a href="<?= PROJECT_ROOT ?>/superadmin/clientes" @click="mobileMenuOpen = false"
-                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors <?= $isSaasClientesActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
-                            <i class="bi bi-building text-base <?= $isSaasClientesActive ? 'text-primary-600' : 'text-slate-400' ?>"></i>
-                            <span>Clientes (Clínicas)</span>
-                        </a>
 
-                        <a href="<?= PROJECT_ROOT ?>/superadmin/facturas" @click="mobileMenuOpen = false"
-                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors <?= $isSaasFacturasActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
-                            <i class="bi bi-receipt text-base <?= $isSaasFacturasActive ? 'text-primary-600' : 'text-slate-400' ?>"></i>
-                            <span>Facturación SaaS</span>
-                        </a>
+                    <a href="<?= PROJECT_ROOT ?>/pacientes" @click="mobileMenuOpen = false"
+                        class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors <?= $isPatientsActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
+                        <i class="bi bi-people text-base <?= $isPatientsActive ? 'text-primary-600' : 'text-slate-400' ?>"></i>
+                        <span>Pacientes</span>
+                    </a>
 
-                    <?php else: ?>
-                        <a href="<?= PROJECT_ROOT ?>/pacientes" @click="mobileMenuOpen = false"
-                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors <?= $isPatientsActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
-                            <i class="bi bi-people text-base <?= $isPatientsActive ? 'text-primary-600' : 'text-slate-400' ?>"></i>
-                            <span>Pacientes</span>
-                        </a>
+                    <a href="<?= PROJECT_ROOT ?>/citas" @click="mobileMenuOpen = false"
+                        class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors <?= $isAgendasActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
+                        <i class="bi bi-calendar3 text-base <?= $isAgendasActive ? 'text-primary-600' : 'text-slate-400' ?>"></i>
+                        <span>Agendas</span>
+                    </a>
 
-                        <a href="<?= PROJECT_ROOT ?>/citas" @click="mobileMenuOpen = false"
-                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors <?= $isAgendasActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
-                            <i class="bi bi-calendar3 text-base <?= $isAgendasActive ? 'text-primary-600' : 'text-slate-400' ?>"></i>
-                            <span>Agendas</span>
-                        </a>
+                    <a href="<?= PROJECT_ROOT ?>/fichajes" @click="mobileMenuOpen = false"
+                        class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors <?= $isRecepcionActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
+                        <i class="bi bi-clock-history text-base <?= $isRecepcionActive ? 'text-primary-600' : 'text-slate-400' ?>"></i>
+                        <span>Fichajes</span>
+                    </a>
 
-                        <a href="<?= PROJECT_ROOT ?>/fichajes" @click="mobileMenuOpen = false"
-                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors <?= $isRecepcionActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
-                            <i class="bi bi-clock-history text-base <?= $isRecepcionActive ? 'text-primary-600' : 'text-slate-400' ?>"></i>
-                            <span>Fichajes</span>
-                        </a>
+                    <a href="<?= PROJECT_ROOT ?>/historial" @click="mobileMenuOpen = false"
+                        class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors <?= $isHistoriasActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
+                        <i class="bi bi-file-earmark-medical text-base <?= $isHistoriasActive ? 'text-primary-600' : 'text-slate-400' ?>"></i>
+                        <span>Historias</span>
+                    </a>
 
-                        <a href="<?= PROJECT_ROOT ?>/historial" @click="mobileMenuOpen = false"
-                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors <?= $isHistoriasActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
-                            <i class="bi bi-file-earmark-medical text-base <?= $isHistoriasActive ? 'text-primary-600' : 'text-slate-400' ?>"></i>
-                            <span>Historias</span>
+                    <div class="pt-2.5 border-t border-slate-100 space-y-1">
+                        <div class="px-3.5 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Configuración</div>
+                        <a href="<?= PROJECT_ROOT ?>/empleados" @click="mobileMenuOpen = false"
+                            class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors <?= $isEmpleadosActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
+                            <i class="bi bi-person-badge text-base text-slate-400"></i>
+                            <span>Empleados</span>
                         </a>
+                        <a href="<?= PROJECT_ROOT ?>/contabilidad" @click="mobileMenuOpen = false"
+                            class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors <?= $isContabilidadActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
+                            <i class="bi bi-cash-stack text-base text-slate-400"></i>
+                            <span>Contabilidad</span>
+                        </a>
+                        <a href="<?= PROJECT_ROOT ?>/documentos" @click="mobileMenuOpen = false"
+                            class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors <?= $isDocumentosActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
+                            <i class="bi bi-file-earmark-text text-base text-slate-400"></i>
+                            <span>Documentos</span>
+                        </a>
+                        <a href="<?= PROJECT_ROOT ?>/configuracion" @click="mobileMenuOpen = false"
+                            class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors <?= $isConfiguracionActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
+                            <i class="bi bi-sliders text-base text-slate-400"></i>
+                            <span>Más opciones de configuración</span>
+                        </a>
+                    </div>
 
-                        <div class="pt-2.5 border-t border-slate-100 space-y-1">
-                            <div class="px-3.5 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Configuración</div>
-                            <a href="<?= PROJECT_ROOT ?>/empleados" @click="mobileMenuOpen = false"
-                                class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors <?= $isEmpleadosActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
-                                <i class="bi bi-person-badge text-base text-slate-400"></i>
-                                <span>Empleados</span>
-                            </a>
-                            <a href="<?= PROJECT_ROOT ?>/contabilidad" @click="mobileMenuOpen = false"
-                                class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors <?= $isContabilidadActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
-                                <i class="bi bi-cash-stack text-base text-slate-400"></i>
-                                <span>Contabilidad</span>
-                            </a>
-                            <a href="<?= PROJECT_ROOT ?>/documentos" @click="mobileMenuOpen = false"
-                                class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors <?= $isDocumentosActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
-                                <i class="bi bi-file-earmark-text text-base text-slate-400"></i>
-                                <span>Documentos</span>
-                            </a>
-                            <a href="<?= PROJECT_ROOT ?>/configuracion" @click="mobileMenuOpen = false"
-                                class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors <?= $isConfiguracionActive ? 'bg-primary-50 text-primary-700 ring-1 ring-primary-500/20' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' ?>">
-                                <i class="bi bi-sliders text-base text-slate-400"></i>
-                                <span>Más opciones de configuración</span>
-                            </a>
-                        </div>
-                    <?php endif; ?>
 
                     <div class="pt-4 border-t border-slate-100">
                         <a href="<?= PROJECT_ROOT ?>/logout" @click="mobileMenuOpen = false"

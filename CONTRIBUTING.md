@@ -20,20 +20,18 @@ Al contribuir al repositorio de Tervion, aceptas que:
 
 Tervion utiliza Docker y Docker Compose para garantizar un entorno idéntico e inmutable para todos los colaboradores.
 
-### 1. Clonar el repositorio y configurar ramas
-`ash
+```bash
+# 1. Clonar el repositorio y configurar ramas
 git clone https://github.com/sergiofrubio/tervion-app.git
 cd tervion-app
 git checkout -b feature/nombre-de-tu-mejora
-`
 
-### 2. Levantar los contenedores
-`ash
+# 2. Levantar los contenedores
 docker compose up -d --build
-`
+```
 
 ### 3. Servicios disponibles en local
-- **Aplicación Web:** [http://localhost](http://localhost) (Admin: dmin@example.com / Pass: 12345678)
+- **Aplicación Web:** [http://localhost](http://localhost) (Admin: admin@example.com / Pass: 12345678)
 - **PHPMyAdmin:** [http://localhost:8080](http://localhost:8080)
 - **Mailpit (Web UI de correo simulado):** [http://localhost:8025](http://localhost:8025)
 
@@ -46,12 +44,12 @@ Para una explicación detallada, consulta la [Guía de Inicialización (docs/set
 Para mantener una base de código limpia, mantenible y segura, sigue estos principios:
 
 ### Backend (PHP)
-- **PHP 8.1+ y Modo Estricto:** Todos los archivos PHP deben comenzar con:
-  `php
+- **PHP 8.4+ y Modo Estricto:** Todos los archivos PHP deben comenzar con:
+  ```php
   <?php
 
   declare(strict_types=1);
-  `
+  ```
 - **Autoloading y Estructura:** Cumplimiento estricto de **PSR-4** bajo el namespace App\ mapeado al directorio src/.
 - **Estilo de Código:** Seguir las convenciones **PSR-12** (nombres de clases en PascalCase, métodos en camelCase, constantes en UPPER_SNAKE_CASE).
 - **Seguridad en Base de Datos:** **Prohibido concatenar variables en consultas SQL**. Se debe usar siempre consultas preparadas vía PDO (prepare() y execute()).
@@ -59,17 +57,17 @@ Para mantener una base de código limpia, mantenible y segura, sigue estos princ
 ### Frontend (CSS / JS)
 - Se utiliza **Tailwind CSS** y **Sass**.
 - Si realizas cambios en los estilos o scripts del frontend:
-  `ash
+
+```bash
   # Instalar dependencias
-  npm install
+  docker compose exec apache npm install
 
   # Compilar assets
-  npm run build
+  docker compose exec apache npm run build
 
   # O ejecutar el watcher durante desarrollo
-  npm run dev
-  `
-
+  docker compose exec apache npm run dev
+```
 ---
 
 ## 🧪 Pruebas Automatizadas (Testing)
@@ -78,9 +76,7 @@ Para mantener una base de código limpia, mantenible y segura, sigue estos princ
 
 Ejecuta la suite de pruebas unitarias dentro del contenedor Docker:
 
-`ash
-docker compose exec php vendor/bin/phpunit
-`
+``docker compose exec php vendor/bin/phpunit``
 
 Las pruebas se organizan en la carpeta 	ests/. Si creas un nuevo servicio, modelo o helper, añade su clase correspondiente en 	ests/. Más detalles en la [Guía de Testing (docs/testing.md)](docs/testing.md).
 
@@ -89,12 +85,12 @@ Las pruebas se organizan en la carpeta 	ests/. Si creas un nuevo servicio, model
 ## 🌿 Flujo de Trabajo con Git (Git Workflow)
 
 1. **Crea una rama descriptiva a partir de main:**
-   - Para nuevas características: eature/gestion-citas-avanzada
-   - Para corrección de errores: ix/calculo-iva-factura
+   - Para nuevas características: feature/gestion-citas-avanzada
+   - Para corrección de errores: fix/calculo-iva-factura
    - Para documentación: docs/actualizar-readme
 2. **Mensajes de Commit Claros (Conventional Commits):**
-   - eat: anadir exportador de facturas a formato JSON
-   - ix: corregir validacion de DNI/NIE en pacientes
+   - feat: anadir exportador de facturas a formato JSON
+   - fix: corregir validacion de DNI/NIE en pacientes
    - docs: ampliar guia de integracion con Redsys
    - 	est: anadir pruebas unitarias para VerifactuXML
 3. **Pull Requests (PR):**

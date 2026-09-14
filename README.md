@@ -1,4 +1,18 @@
-# Tervion — Sistema de Gestión y ERP Clínico (100% Open Source)
+<p align="center">
+  <img src="./public/img/logo-tervion-azul-sin-fondo.png" alt="Tervion Logo" width="280">
+</p>
+
+<p align="center">
+  <a href="https://github.com/sergiofrubio/tervion-app/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-LGPL--3.0--or--later-blue.svg?style=flat-square" alt="Licencia LGPL-3.0"></a>
+  <a href="https://www.php.net/"><img src="https://img.shields.io/badge/PHP-%3E%3D%208.4-777BB4?style=flat-square&logo=php&logoColor=white" alt="PHP 8.4+"></a>
+  <a href="https://www.docker.com/"><img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker Ready"></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind CSS"></a>
+  <a href="https://phpunit.de/"><img src="https://img.shields.io/badge/PHPUnit-Tested-3F9CD8?style=flat-square&logo=php" alt="PHPUnit"></a>
+  <a href="https://github.com/sergiofrubio/tervion-app/issues"><img src="https://img.shields.io/github/issues/sergiofrubio/tervion-app?style=flat-square&color=orange" alt="Open Issues"></a>
+  <a href="https://github.com/sergiofrubio/tervion-app/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome"></a>
+</p>
+
+---
 
 Tervion es un sistema ERP clínico modular, autoalojable y 100% de código abierto para clínicas médicas, consultas de fisioterapia y profesionales de la salud. Desarrollado en PHP moderno (PSR-4), está enfocado en la soberanía de datos del paciente, la automatización operativa y el cumplimiento legal y fiscal de la normativa española (Verifactu RD 1007/2023).
 
@@ -40,7 +54,7 @@ docker compose exec php vendor/bin/phpunit
 
 ## 🛠️ Tecnologías y Estándares Core
 
-* **PHP 8.1+** con namespaces PSR-4 y uso estricto de PDO para mitigar ataques SQL injection.
+* **PHP 8.4+** con namespaces PSR-4 y uso estricto de PDO para mitigar ataques SQL injection.
 * **Tailwind CSS** para la interfaz administrativa e interactiva de pacientes.
 * **Docker & Docker Compose** para asegurar entornos homogéneos e inmutables desde desarrollo local hasta producción.
 * **FPDF** y **PHPMailer** para generación de reportes clínicos y envío de notificaciones por email.

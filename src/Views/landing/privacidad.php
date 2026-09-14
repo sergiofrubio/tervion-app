@@ -80,7 +80,7 @@ $title = "Política de Privacidad — Tervion";
     <!-- Footer -->
     <footer class="bg-gray-900 text-gray-400 py-6 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-6 text-center text-xs">
-            <p>® 2026 Tervion. Todos los derechos reservados.</p>
+            <p>Tervion ERP — Software Libre bajo licencia GNU LGPLv3.</p>
         </div>
     </footer>
 

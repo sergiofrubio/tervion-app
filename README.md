@@ -1,6 +1,6 @@
-# Tervion — Sistema de Gestión y ERP Clínico
+# Tervion — Sistema de Gestión y ERP Clínico (100% Open Source)
 
-Tervion es un sistema ERP modular para clínicas médicas y de fisioterapia desarrollado en PHP moderno (PSR-4), enfocado en la automatización operativa, la integración fiscal (Verifactu) y los pagos integrados (Redsys).
+Tervion es un sistema ERP clínico modular, autoalojable y 100% de código abierto para clínicas médicas, consultas de fisioterapia y profesionales de la salud. Desarrollado en PHP moderno (PSR-4), está enfocado en la soberanía de datos del paciente, la automatización operativa y el cumplimiento legal y fiscal de la normativa española (Verifactu RD 1007/2023).
 
 ---
 
@@ -49,4 +49,5 @@ docker compose exec php vendor/bin/phpunit
 
 ## 📄 Licencia
 
-Este proyecto está bajo la licencia **GNU Lesser General Public License v3.0 (LGPLv3)**. Consulta el archivo [LICENSE](file:///c:/Users/sergi/Documents/tervion-app/LICENSE) para más información. Permite su uso e integración con módulos o extensiones comerciales/propietarias (modelo de núcleo abierto / open-core).
+Este proyecto es software libre y de código abierto bajo los términos de la **[GNU Lesser General Public License v3.0 (LGPLv3)](LICENSE)**.
+Permite su uso personal y comercial, autoalojamiento ilimitado, estudio, modificación y desarrollo de extensiones o módulos complementarios.

@@ -184,7 +184,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
     <!-- Footer -->
     <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-4 text-xs">
-            <p class="w-full sm:w-1/3 text-center sm:text-left">© 2026 Tervion. Todos los derechos reservados.</p>
+            <p class="w-full sm:w-1/3 text-center sm:text-left">Tervion ERP — Software Libre bajo licencia <a href="https://www.gnu.org/licenses/lgpl-3.0.html" target="_blank" rel="noopener noreferrer" class="underline hover:text-slate-300">GNU LGPLv3</a>.</p>
 
             <a href="<?= PROJECT_ROOT ?>/" class="w-full sm:w-1/3 flex items-center justify-center">
                 <img src="<?= PROJECT_ROOT ?>/public/img/logo-tervion-claro-sin-fondo.png" alt="Tervion Logo" class="h-7 object-contain" onerror="this.onerror=null; this.src='<?= PROJECT_ROOT ?>/public/img/nuevo-logo/logo-tervion-claro-sin-fondo.png';">

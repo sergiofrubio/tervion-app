@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 declare(strict_types=1);
 
@@ -14,7 +14,7 @@ class ModuleManager
 {
     protected static ?ModuleManager $instance = null;
     protected string $modulesPath;
-    
+
     /**
      * @var array<string, array<string, mixed>>
      */

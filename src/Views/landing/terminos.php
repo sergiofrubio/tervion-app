@@ -45,23 +45,23 @@ $title = "Términos de Servicio — Tervion";
             </section>
 
             <section class="space-y-3">
-                <h2 class="text-xl font-bold text-gray-800">2. Descripción del Servicio</h2>
-                <p>Tervion provee una plataforma de software como servicio (SaaS) destinada a la automatización de la gestión integral de clínicas y profesionales de la salud, abarcando agendamiento de citas, historias clínicas electrónicas, facturación acorde a normativa Verifactu, integración laboral y mensajería.</p>
+                <h2 class="text-xl font-bold text-gray-800">2. Descripción del Software</h2>
+                <p>Tervion es un software libre y abierto de gestión integral para clínicas médicas y profesionales sanitarios, que abarca agenda de citas, historias clínicas electrónicas, facturación acorde a normativa Verifactu, control horario e integraciones con módulos independientes.</p>
             </section>
 
             <section class="space-y-3">
                 <h2 class="text-xl font-bold text-gray-800">3. Cuentas de Usuario y Responsabilidad</h2>
-                <p>El cliente es totalmente responsable de mantener la confidencialidad de sus credenciales de acceso, así como de todas las actividades realizadas bajo su cuenta. Asimismo, garantiza que los datos facilitados a Tervion son veraces, precisos y actualizados.</p>
+                <p>El administrador de la instalación es totalmente responsable de mantener la confidencialidad de sus credenciales de acceso, de la seguridad de su servidor de despliegue y del cumplimiento de la normativa de protección de datos personales de sus pacientes.</p>
             </section>
 
             <section class="space-y-3">
-                <h2 class="text-xl font-bold text-gray-800">4. Planes de Precios y Pagos</h2>
-                <p>El acceso a las funcionalidades completas del software requiere una suscripción activa bajo los términos estipulados en la tarifa seleccionada. Tervion se reserva el derecho de actualizar los precios avisando con al menos 30 días de antelación.</p>
+                <h2 class="text-xl font-bold text-gray-800">4. Modelo de Distribución y Sin Coste de Licencia</h2>
+                <p>El código fuente de Tervion Core se distribuye de manera gratuita y libre bajo la licencia GNU Lesser General Public License v3.0 (LGPLv3). No existen cuotas obligatorias por uso de la versión comunitaria autoalojada.</p>
             </section>
 
             <section class="space-y-3">
-                <h2 class="text-xl font-bold text-gray-800">5. Propiedad Intelectual</h2>
-                <p>Todos los derechos sobre el software, marcas, logotipos, diseño y código fuente pertenecen en exclusividad a Tervion. El uso de la plataforma no otorga ningún derecho de propiedad intelectual sobre la misma.</p>
+                <h2 class="text-xl font-bold text-gray-800">5. Licencia y Código Abierto</h2>
+                <p>El código fuente está disponible públicamente bajo los términos de la licencia <strong>GNU LGPLv3</strong>. Los usuarios y desarrolladores tienen derecho a inspeccionar, modificar, desplegar y crear extensiones o módulos complementarios respetando los términos de dicha licencia.</p>
             </section>
         </div>
     </main>
@@ -69,7 +69,7 @@ $title = "Términos de Servicio — Tervion";
     <!-- Footer -->
     <footer class="bg-gray-900 text-gray-400 py-6 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-6 text-center text-xs">
-            <p>® 2026 Tervion. Todos los derechos reservados.</p>
+            <p>Tervion ERP — Software Libre bajo licencia GNU LGPLv3.</p>
         </div>
     </footer>
 

@@ -2,12 +2,39 @@
 
 use App\Router\Router;
 use App\Core\Modules\ModuleManager;
+use App\Services\InstallerService;
 
 $router = new Router();
+
+// Interceptor de Instalación Inicial: Redirigir a /install si no está instalado
+$requestUri = $_SERVER['REQUEST_URI'] ?? '/';
+$requestPath = strtok($requestUri, '?');
+if (defined('PROJECT_ROOT') && PROJECT_ROOT !== '' && strpos($requestPath, PROJECT_ROOT) === 0) {
+    $requestPath = substr($requestPath, strlen(PROJECT_ROOT));
+}
+if ($requestPath === '') {
+    $requestPath = '/';
+}
+
+$isInstallPath = (strpos($requestPath, '/install') === 0);
+
+if (!InstallerService::isInstalled()) {
+    if (!$isInstallPath && !in_array($requestPath, ['/cookies', '/privacidad', '/terminos'])) {
+        header('Location: ' . PROJECT_ROOT . '/install');
+        exit();
+    }
+} elseif ($isInstallPath) {
+    header('Location: ' . PROJECT_ROOT . '/login');
+    exit();
+}
 
 // Descubrir e inicializar módulos externos / extensiones
 $moduleManager = ModuleManager::getInstance();
 $moduleManager->discoverAndBoot();
+
+// Rutas de Instalación / Asistente Inicial
+$router->add('GET', '/install', 'InstallController@index', false);
+$router->add('POST', '/install/process', 'InstallController@process', false);
 
 // Rutas Públicas (Sin autenticación)
 $router->add('GET', '/', 'LandingController@index', false);
@@ -98,8 +125,6 @@ $router->add('POST', '/configuracion/descuentos/eliminar', 'SettingController@de
 $router->add('POST', '/configuracion/clinica/actualizar', 'SettingController@saveClinica', true, ['Administrador']);
 $router->add('POST', '/configuracion/clinica/guardar', 'SettingController@saveClinica', true, ['Administrador']);
 $router->add('POST', '/configuracion/tarjeta/actualizar', 'SettingController@updateTarjeta', true, ['Administrador']);
-$router->add('POST', '/configuracion/suscripcion/actualizar', 'SettingController@updatePlan', true, ['Administrador']);
-$router->add('POST', '/configuracion/suscripcion/cancel-downgrade', 'SettingController@cancelPlanDowngrade', true, ['Administrador']);
 
 $router->add('GET', '/historial', 'MedicalReportController@list', true, $staffRoles);
 $router->add('GET', '/historial/detalle', 'MedicalReportController@detail', true, $staffRoles);

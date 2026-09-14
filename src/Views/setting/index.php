@@ -77,11 +77,11 @@ include TEMPLATE_DIR . 'header.php';
                     Bonos
                 </button>
                 <button
-                    @click="activeTab = 'suscripcion'"
-                    :class="activeTab === 'suscripcion' ? 'border-primary-600 text-primary-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                    @click="activeTab = 'sistema'"
+                    :class="activeTab === 'sistema' ? 'border-primary-600 text-primary-600 font-semibold' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
                     class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all flex items-center gap-2">
-                    <i class="bi bi-credit-card"></i>
-                    Suscripción y Pago
+                    <i class="bi bi-info-circle"></i>
+                    Sistema y Licencia
                 </button>
             </nav>
         </div>
@@ -850,157 +850,70 @@ include TEMPLATE_DIR . 'header.php';
                 </div>
             </div>
 
-            <!-- Suscripción y Pago Tab -->
-            <div x-show="activeTab === 'suscripcion'" x-cloak x-transition>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Left: Current Subscription Details -->
-                    <div class="lg:col-span-1 bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-6">
-                        <div>
-                            <h4 class="text-base font-bold text-gray-900 mb-1">Tu Suscripción</h4>
-                            <p class="text-xs text-gray-500">Detalles del plan mensual contratado en Tervion.</p>
-                        </div>
-
-                        <?php if (!empty($cuenta['plan_proximo'])) : ?>
-                            <!-- Alerta de Downgrade / Cambio Programado -->
-                            <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 space-y-2">
-                                <div class="flex items-start gap-2.5">
-                                    <i class="bi bi-clock-history text-amber-600 text-base mt-0.5"></i>
-                                    <div>
-                                        <h5 class="text-xs font-bold uppercase tracking-wider text-amber-800">Cambio de plan programado</h5>
-                                        <p class="text-xs text-amber-700 mt-1">
-                                            Tu suscripción cambiará al plan <span class="font-bold text-amber-900"><?= htmlspecialchars($cuenta['plan_proximo']) ?></span> al finalizar tu ciclo actual
-                                            <?php if (!empty($cuenta['fecha_renovacion'])) : ?>
-                                                el <strong><?= date('d/m/Y', strtotime($cuenta['fecha_renovacion'])) ?></strong>.
-                                            <?php else : ?>
-                                                en tu próxima fecha de cobro.
-                                            <?php endif; ?>
-                                        </p>
-                                    </div>
-                                </div>
-                                <form action="<?= PROJECT_ROOT ?>/configuracion/suscripcion/cancel-downgrade" method="POST" class="pt-1">
-                                    <button type="submit" class="w-full inline-flex items-center justify-center gap-1.5 rounded-lg bg-white border border-amber-300 text-amber-800 px-3 py-1.5 text-xs font-semibold hover:bg-amber-100/60 transition-all shadow-2xs">
-                                        <i class="bi bi-x-circle"></i>
-                                        Cancelar cambio diferido
-                                    </button>
-                                </form>
+            <!-- Sistema y Licencia Tab (Open Source) -->
+            <div x-show="activeTab === 'sistema'" x-cloak x-transition>
+                <div class="max-w-4xl space-y-6">
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200/80">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-primary-100 border border-primary-200 flex items-center justify-center text-primary-700 text-2xl shrink-0">
+                                <i class="bi bi-patch-check"></i>
                             </div>
-                        <?php endif; ?>
-
-                        <div class="p-4 bg-white rounded-xl border border-gray-200/50 space-y-4"
-                            x-data="{ 
-                                currentPlan: '<?= $cuenta['plan_suscripcion'] ?? 'Basico' ?>', 
-                                selectedPlan: '<?= $cuenta['plan_proximo'] ?? ($cuenta['plan_suscripcion'] ?? 'Basico') ?>',
-                                planOrder: { 'Basico': 1, 'Profesional': 2, 'Premium': 3 }
-                             }">
-                            <form action="<?= PROJECT_ROOT ?>/configuracion/suscripcion/actualizar" method="POST" class="space-y-3">
-                                <div>
-                                    <label class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1.5">Plan Contratado</label>
-                                    <select name="plan_suscripcion" x-model="selectedPlan" class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all">
-                                        <option value="Basico" <?= ($cuenta['plan_suscripcion'] ?? '') === 'Basico' ? 'selected' : '' ?>>Básico (29,99€/mes)</option>
-                                        <option value="Profesional" <?= ($cuenta['plan_suscripcion'] ?? '') === 'Profesional' ? 'selected' : '' ?>>Profesional (59,99€/mes)</option>
-                                        <option value="Premium" <?= ($cuenta['plan_suscripcion'] ?? '') === 'Premium' ? 'selected' : '' ?>>Premium (99,99€/mes)</option>
-                                    </select>
-                                </div>
-
-                                <!-- Dynamic notification about change type -->
-                                <template x-if="planOrder[selectedPlan] > planOrder[currentPlan]">
-                                    <div class="text-[11px] bg-emerald-50 text-emerald-800 border border-emerald-100 rounded-lg p-2.5 flex items-center gap-1.5">
-                                        <i class="bi bi-lightning-charge-fill text-emerald-600"></i>
-                                        <span><strong>Upgrade Inmediato:</strong> Se aplicará al instante.</span>
-                                    </div>
-                                </template>
-
-                                <template x-if="planOrder[selectedPlan] < planOrder[currentPlan]">
-                                    <div class="text-[11px] bg-blue-50 text-blue-800 border border-blue-100 rounded-lg p-2.5 flex items-center gap-1.5">
-                                        <i class="bi bi-calendar-check text-blue-600"></i>
-                                        <span><strong>Downgrade Seguro:</strong> Entrará en vigor al renovar tu ciclo. Mantienes tus ventajas hasta entonces.</span>
-                                    </div>
-                                </template>
-
-                                <button type="submit"
-                                    :disabled="selectedPlan === currentPlan && '<?= !empty($cuenta['plan_proximo']) ? 'true' : 'false' ?>' !== 'true'"
-                                    class="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-indigo-600 text-white px-4 py-2.5 text-xs font-semibold hover:bg-indigo-700 transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                                    <span x-text="planOrder[selectedPlan] > planOrder[currentPlan] ? 'Subir de Plan (Inmediato)' : (planOrder[selectedPlan] < planOrder[currentPlan] ? 'Programar Cambio a Fin de Ciclo' : 'Guardar Plan')"></span>
-                                </button>
-                            </form>
-
-                            <div class="pt-2 border-t border-gray-100 flex justify-between text-sm text-gray-600">
-                                <span>Mensualidad actual:</span>
-                                <span class="font-bold text-gray-900">
-                                    <?php
-                                    $plan = $cuenta['plan_suscripcion'] ?? 'Basico';
-                                    if ($plan === 'Basico') echo '29,99€';
-                                    elseif ($plan === 'Profesional') echo '59,99€';
-                                    elseif ($plan === 'Premium') echo '99,99€';
-                                    ?>
-                                </span>
+                            <div class="space-y-1">
+                                <h4 class="text-base font-bold text-slate-900">Tervion ERP — Edición Comunitaria (Open Source)</h4>
+                                <p class="text-xs text-slate-500 leading-relaxed">
+                                    Esta instancia está desplegada de forma autoalojada y libre. Tienes acceso al 100% de las funcionalidades del software médico y contable sin restricciones artificiales ni cuotas de licencia.
+                                </p>
                             </div>
-                            <div class="flex justify-between text-sm text-gray-600">
-                                <span>Estado:</span>
-                                <span class="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                                    <?= htmlspecialchars($cuenta['estado_cuenta'] ?? 'Activo') ?>
-                                </span>
-                            </div>
-                            <div class="flex justify-between text-sm text-gray-600">
-                                <span>F. de Renovación:</span>
-                                <span class="font-medium text-gray-800">
-                                    <?= !empty($cuenta['fecha_renovacion']) ? date('d/m/Y', strtotime($cuenta['fecha_renovacion'])) : date('d/m/Y', strtotime('+1 month', strtotime($cuenta['fecha_alta'] ?? 'now'))) ?>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-2 bg-indigo-50 p-4 rounded-xl text-xs text-indigo-800 leading-relaxed border border-indigo-100">
-                            <i class="bi bi-info-circle-fill text-sm"></i>
-                            <p>Los cargos se realizan de forma automática cada mes a la tarjeta guardada. Las reducciones de plan se aplican al terminar el ciclo ya pagado.</p>
                         </div>
                     </div>
 
-                    <!-- Right: Edit Card details -->
-                    <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 p-6 space-y-6">
-                        <div>
-                            <h4 class="text-base font-bold text-gray-900 mb-1">Método de Pago Guardado</h4>
-                            <p class="text-xs text-gray-500">Actualiza los datos de la tarjeta de crédito para la facturación mensual.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-2xs space-y-2">
+                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Licencia</span>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-slate-800 text-sm">GNU LGPLv3</span>
+                                <span class="inline-flex items-center rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20">Libre</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Permite libre uso, modificación y desarrollo de módulos adicionales.</p>
                         </div>
 
-                        <form action="<?= PROJECT_ROOT ?>/configuracion/tarjeta/actualizar" method="POST" class="space-y-4">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div class="sm:col-span-2">
-                                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Titular de la Tarjeta *</label>
-                                    <input type="text" name="card_holder" required value="<?= htmlspecialchars($tarjeta['nombre_titular'] ?? '') ?>"
-                                        class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all"
-                                        placeholder="JUAN PEREZ GONZALEZ">
-                                </div>
-
-                                <div>
-                                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Número de Tarjeta *</label>
-                                    <input type="text" name="card_number" required value="<?= htmlspecialchars($tarjeta['numero_completo'] ?? '') ?>" maxlength="19"
-                                        class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all"
-                                        placeholder="4000 1234 5678 9010">
-                                </div>
-
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Vence (MM/YYYY) *</label>
-                                        <input type="text" name="card_expiry" required value="<?= htmlspecialchars($tarjeta['fecha_expiracion'] ?? '') ?>" maxlength="7"
-                                            class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all"
-                                            placeholder="12/2028">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">CVV *</label>
-                                        <input type="text" name="card_cvv" required value="<?= htmlspecialchars($tarjeta['cvv'] ?? '') ?>" maxlength="4"
-                                            class="w-full rounded-xl border-gray-200 text-sm focus:border-primary-500 focus:ring-primary-500 transition-all"
-                                            placeholder="123">
-                                    </div>
-                                </div>
+                        <div class="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-2xs space-y-2">
+                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Entorno Runtime</span>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-slate-800 text-sm">PHP <?= phpversion() ?></span>
+                                <span class="text-xs text-slate-400 font-mono"><?= APP_ENV ?></span>
                             </div>
+                            <p class="text-xs text-slate-500">Ejecutándose en arquitectura de contenedores Docker / Caddy.</p>
+                        </div>
 
-                            <div class="pt-4 border-t border-gray-100 flex justify-end">
-                                <button type="submit" class="inline-flex items-center gap-1.5 rounded-xl bg-gray-900 text-white px-5 py-3 text-sm font-semibold hover:bg-gray-800 transition-all shadow-sm">
-                                    <i class="bi bi-shield-check"></i>
-                                    Guardar Cambios de Tarjeta
-                                </button>
+                        <div class="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-2xs space-y-2">
+                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Soberanía de Datos</span>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-slate-800 text-sm">Base de Datos Local</span>
+                                <i class="bi bi-shield-lock-fill text-emerald-600"></i>
                             </div>
-                        </form>
+                            <p class="text-xs text-slate-500">Tus historias clínicas y facturas se almacenan en tu propia infraestructura.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-white rounded-2xl border border-slate-200/80 shadow-2xs space-y-4">
+                        <h5 class="text-xs font-bold uppercase tracking-wider text-slate-700">Enlaces y Recursos del Proyecto</h5>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                            <a href="<?= PROJECT_ROOT ?>/documentos" class="flex items-center justify-between p-3 rounded-xl border border-slate-100 hover:border-primary-200 hover:bg-primary-50/50 transition-colors group">
+                                <span class="font-medium text-slate-700 group-hover:text-primary-700 flex items-center gap-2">
+                                    <i class="bi bi-journal-text text-primary-500"></i>
+                                    Plantillas y Documentación RGPD
+                                </span>
+                                <i class="bi bi-arrow-right text-slate-400 group-hover:text-primary-600"></i>
+                            </a>
+                            <a href="<?= PROJECT_ROOT ?>/contabilidad" class="flex items-center justify-between p-3 rounded-xl border border-slate-100 hover:border-primary-200 hover:bg-primary-50/50 transition-colors group">
+                                <span class="font-medium text-slate-700 group-hover:text-primary-700 flex items-center gap-2">
+                                    <i class="bi bi-cash-stack text-primary-500"></i>
+                                    Módulo Fiscal y Verifactu
+                                </span>
+                                <i class="bi bi-arrow-right text-slate-400 group-hover:text-primary-600"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -106,7 +106,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                     <a href="#soluciones" class="hover:text-indigo-400 transition-colors">Soluciones</a>
                     <a href="#ventajas" class="hover:text-indigo-400 transition-colors">Ventajas</a>
                     <a href="#caracteristicas" class="hover:text-indigo-400 transition-colors">Funcionalidades</a>
-                    <a href="#precios" class="hover:text-indigo-400 transition-colors">Precios</a>
+                    <a href="#despliegue" class="hover:text-indigo-400 transition-colors">Autoalojamiento</a>
                 </div>
 
                 <!-- Action Button -->
@@ -138,7 +138,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
                 <a href="#soluciones" @click="mobileMenuOpen = false" class="block text-slate-300 hover:text-indigo-400 font-medium">Soluciones</a>
                 <a href="#ventajas" @click="mobileMenuOpen = false" class="block text-slate-300 hover:text-indigo-400 font-medium">Ventajas</a>
                 <a href="#caracteristicas" @click="mobileMenuOpen = false" class="block text-slate-300 hover:text-indigo-400 font-medium">Funcionalidades</a>
-                <a href="#precios" @click="mobileMenuOpen = false" class="block text-slate-300 hover:text-indigo-400 font-medium">Precios</a>
+                <a href="#despliegue" @click="mobileMenuOpen = false" class="block text-slate-300 hover:text-indigo-400 font-medium">Autoalojamiento</a>
             </div>
         </nav>
     </header>
@@ -156,27 +156,27 @@ $hasSystemAlert = $systemAlertMessage !== '';
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
                 <!-- Left Column (Copy & Actions) -->
                 <div class="lg:col-span-6 space-y-6 lg:pr-4">
-                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-primary-500/20 text-indigo-300 border border-indigo-400/30">
-                        <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
-                        Verifactu RD 1007/2023 · Obligatorio 2026
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>100% CÓDIGO ABIERTO · LICENCIA GNU LGPLv3</span>
                     </div>
 
-                    <h1 class="text-4xl sm:text-5xl lg:text-[56px] font-extrabold tracking-tight text-white leading-[1.12]">
-                        Cumple Verifactu antes de 2026 y deja de perder citas por no-shows.
+                    <h1 class="text-4xl sm:text-5xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.15]">
+                        El ERP clínico libre que garantiza el control de tus datos y cumple Verifactu.
                     </h1>
 
-                    <p class="text-slate-300 text-base sm:text-lg leading-relaxed max-w-xl font-normal">
-                        Facturación adaptada a la AEAT desde el primer día. Recordatorios automáticos por WhatsApp que reducen ausencias y te devuelven horas de agenda cada semana.
+                    <p class="text-slate-300 text-base sm:text-lg leading-relaxed max-w-xl">
+                        Software de gestión integral para clínicas y autónomos de la salud. Sin suscripciones forzadas, autoalojable en tu propio servidor y preparado para el RD 1007/2023.
                     </p>
 
                     <div class="flex flex-wrap items-center gap-4 pt-2">
                         <a href="<?= PROJECT_ROOT ?>/login" class="px-7 py-3.5 rounded-full text-sm font-bold tracking-wide uppercase bg-primary-500 hover:bg-primary-600 text-white inline-flex items-center gap-2 shadow-xl shadow-primary-500/30 transition-all transform hover:-translate-y-0.5">
-                            <span>Probar 14 Días Gratis</span>
+                            <span>Acceder a la Plataforma</span>
                             <i class="bi bi-arrow-right font-bold"></i>
                         </a>
-                        <a href="#soluciones" class="px-7 py-3.5 rounded-full text-sm font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all inline-flex items-center gap-2 backdrop-blur-sm">
-                            <i class="bi bi-play-circle text-indigo-400 text-base"></i>
-                            <span>Ver cómo funciona</span>
+                        <a href="https://github.com/sergiofrubio/tervion-app" target="_blank" rel="noopener noreferrer" class="px-7 py-3.5 rounded-full text-sm font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all inline-flex items-center gap-2 backdrop-blur-sm">
+                            <i class="bi bi-github text-white text-base"></i>
+                            <span>Ver Código en GitHub</span>
                         </a>
                     </div>
 
@@ -635,178 +635,92 @@ $hasSystemAlert = $systemAlertMessage !== '';
 
 
     <!-- ========================================================================= -->
-    <!-- 7. SECTION: PRECIOS -->
+    <!-- 7. SECTION: DESPLIEGUE Y AUTOALOJAMIENTO OPEN SOURCE -->
     <!-- ========================================================================= -->
-    <section id="precios" class="py-20 lg:py-28 bg-white relative" x-data="{ billingAnnual: true }">
+    <section id="despliegue" class="py-20 lg:py-28 bg-white relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <!-- Section Header Centered -->
-            <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
-                <div class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold bg-primary-50 text-primary-600 border border-primary-100">
-                    PLANES TRANSPARENTES
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <div class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    LIBERTAD TOTAL · SIN ATADURAS
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                    Planes claros y adaptados al tamaño de tu consulta.
+                    100% Código Abierto. Despliega en tu propia infraestructura.
                 </h2>
                 <p class="text-slate-600 text-base">
-                    Prueba Tervion durante 14 días gratis. Sin compromiso de permanencia ni costes de alta.
+                    Sin costes de licencia por usuario, sin enviar los datos de tus pacientes a la nube de terceros y con la garantía de auditar cada línea de código.
                 </p>
-
-                <!-- Billing Toggle -->
-                <div class="pt-4 flex items-center justify-center gap-4">
-                    <span class="text-sm font-medium" :class="!billingAnnual ? 'text-slate-900 font-bold' : 'text-slate-500'">Facturación Mensual</span>
-                    <button @click="billingAnnual = !billingAnnual"
-                        type="button"
-                        class="relative inline-flex h-7 w-14 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none"
-                        :class="billingAnnual ? 'bg-primary-500' : 'bg-slate-400'"
-                        role="switch"
-                        :aria-checked="billingAnnual">
-                        <span class="pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out"
-                            :class="billingAnnual ? 'translate-x-7' : 'translate-x-0'"></span>
-                    </button>
-                    <span class="text-sm font-medium flex items-center gap-2" :class="billingAnnual ? 'text-slate-900 font-bold' : 'text-slate-500'">
-                        Facturación Anual
-                        <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-indigo-100 text-indigo-800 uppercase tracking-wide">2 meses gratis</span>
-                    </span>
-                </div>
             </div>
 
-            <!-- Pricing Cards Grid (3 Columns) -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch pt-4">
+            <!-- Deployment Cards Grid (3 Columns) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
 
-                <!-- Plan 1: Individual -->
-                <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-6">
+                <!-- Columna 1: Despliegue con Docker -->
+                <div class="bg-slate-50 rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
                     <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-600 text-2xl">
+                            <i class="bi bi-box-seam"></i>
+                        </div>
                         <div>
-                            <h3 class="text-xl font-bold text-slate-900">Individual</h3>
-                            <p class="text-xs text-slate-500 mt-1">Para profesionales sanitarios autónomos con consulta propia.</p>
+                            <h3 class="text-xl font-bold text-slate-900">Docker & Compose</h3>
+                            <p class="text-xs text-slate-500 mt-1">Listo para producción en minutos con un solo comando.</p>
                         </div>
-                        <div class="flex items-baseline gap-1 pt-2">
-                            <span class="text-4xl font-extrabold text-slate-900" x-text="billingAnnual ? '29€' : '35€'">29€</span>
-                            <span class="text-xs text-slate-500 font-medium">/ mes + IVA</span>
+                        <div class="bg-slate-900 text-slate-200 p-4 rounded-xl text-xs font-mono overflow-x-auto space-y-1">
+                            <p class="text-slate-500"># Clonar e iniciar</p>
+                            <p>git clone https://github.com/sergiofrubio/tervion-app.git</p>
+                            <p>cd tervion-app</p>
+                            <p>docker compose up -d</p>
                         </div>
-                        <p class="text-xs text-indigo-600 font-semibold" x-show="billingAnnual">Facturado anualmente (348€/año)</p>
-
-                        <ul class="space-y-3 text-xs text-slate-600 pt-4 border-t border-slate-100">
-                            <li class="flex items-center gap-2.5">
-                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
-                                <span>1 Profesional sanitario autónomo</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
-                                <span>Agenda clínica y citas ilimitadas</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
-                                <span>Historial clínico y consentimientos RGPD</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
-                                <span>Facturación legal adaptada a Verifactu</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
-                                <span>Recordatorios de cita por WhatsApp incluidos</span>
-                            </li>
+                        <ul class="space-y-2 text-xs text-slate-600 pt-2">
+                            <li class="flex items-center gap-2"><i class="bi bi-check-lg text-emerald-600"></i> MariaDB, PHP-FPM y Caddy Web Server</li>
+                            <li class="flex items-center gap-2"><i class="bi bi-check-lg text-emerald-600"></i> Certificados SSL HTTPS automáticos</li>
                         </ul>
-                    </div>
-
-                    <div>
-                        <a href="<?= PROJECT_ROOT ?>/login" class="w-full block text-center py-3.5 px-6 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors">
-                            Probar 14 Días Gratis
-                        </a>
                     </div>
                 </div>
 
-                <!-- Plan 2: Clínica (Destacado) -->
-                <div class="bg-slate-900 rounded-3xl p-8 border-2 border-primary-500 text-white shadow-2xl relative flex flex-col justify-between space-y-6 transform lg:-translate-y-2">
-                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-widest bg-primary-500 text-white shadow-md">
-                        MÁS POPULAR
-                    </div>
-
+                <!-- Columna 2: Soberanía de Datos y RGPD (Destacada) -->
+                <div class="bg-slate-900 rounded-3xl p-8 border-2 border-primary-500 text-white shadow-2xl flex flex-col justify-between space-y-6 transform lg:-translate-y-2">
                     <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-primary-500/20 border border-primary-400/30 flex items-center justify-center text-indigo-300 text-2xl">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
                         <div>
-                            <h3 class="text-xl font-bold text-white">Clínica</h3>
-                            <p class="text-xs text-slate-300 mt-1">Para clínicas con varios profesionales y gabinetes de atención.</p>
+                            <span class="text-xs font-bold uppercase tracking-widest text-indigo-400">Privacidad y Ley</span>
+                            <h3 class="text-xl font-bold text-white mt-1">Soberanía Sanitaria (RGPD)</h3>
+                            <p class="text-xs text-slate-300 mt-1">Tus historias clínicas y diagnósticos nunca salen de tu servidor.</p>
                         </div>
-                        <div class="flex items-baseline gap-1 pt-2">
-                            <span class="text-4xl font-extrabold text-white" x-text="billingAnnual ? '59€' : '69€'">59€</span>
-                            <span class="text-xs text-slate-300 font-medium">/ mes + IVA</span>
-                        </div>
-                        <p class="text-xs text-indigo-400 font-semibold" x-show="billingAnnual">Facturado anualmente (708€/año)</p>
-
                         <ul class="space-y-3 text-xs text-slate-200 pt-4 border-t border-slate-800">
-                            <li class="flex items-center gap-2.5">
-                                <i class="bi bi-check-circle-fill text-indigo-400 text-sm"></i>
-                                <span>Hasta 5 Profesionales sanitarios</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i class="bi bi-check-circle-fill text-indigo-400 text-sm"></i>
-                                <span>Recordatorios automáticos por WhatsApp</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i class="bi bi-check-circle-fill text-indigo-400 text-sm"></i>
-                                <span>Gestión de salas y gabinetes en tiempo real</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i class="bi bi-check-circle-fill text-indigo-400 text-sm"></i>
-                                <span>Control de fichaje y registro de jornada</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i class="bi bi-check-circle-fill text-indigo-400 text-sm"></i>
-                                <span>Facturación Verifactu y soporte prioritario</span>
-                            </li>
+                            <li class="flex items-center gap-2.5"><i class="bi bi-check-circle-fill text-indigo-400"></i> Sin riesgo de filtraciones en nubes centralizadas</li>
+                            <li class="flex items-center gap-2.5"><i class="bi bi-check-circle-fill text-indigo-400"></i> Copias de seguridad locales y bajo tu control</li>
+                            <li class="flex items-center gap-2.5"><i class="bi bi-check-circle-fill text-indigo-400"></i> Cumplimiento estricto del RGPD sanitario español</li>
+                            <li class="flex items-center gap-2.5"><i class="bi bi-check-circle-fill text-indigo-400"></i> Verifactu nativo con encadenamiento criptográfico</li>
                         </ul>
                     </div>
-
                     <div>
-                        <a href="<?= PROJECT_ROOT ?>/login" class="w-full block text-center py-3.5 px-6 rounded-full text-xs font-bold uppercase tracking-wider bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/30 transition-all">
-                            Empezar prueba gratuita
+                        <a href="https://github.com/sergiofrubio/tervion-app" target="_blank" rel="noopener noreferrer" class="w-full block text-center py-3.5 px-6 rounded-full text-xs font-bold uppercase tracking-wider bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/30 transition-all">
+                            Ver Documentación en GitHub
                         </a>
                     </div>
                 </div>
 
-                <!-- Plan 3: Policlínica -->
-                <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-6">
+                <!-- Columna 3: Arquitectura Modular -->
+                <div class="bg-slate-50 rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
                     <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-600 text-2xl">
+                            <i class="bi bi-puzzle"></i>
+                        </div>
                         <div>
-                            <h3 class="text-xl font-bold text-slate-900">Policlínica</h3>
-                            <p class="text-xs text-slate-500 mt-1">Para centros sanitarios con múltiples especialidades o sedes.</p>
+                            <h3 class="text-xl font-bold text-slate-900">Ecosistema Extensible</h3>
+                            <p class="text-xs text-slate-500 mt-1">Crea tus propios módulos sin tocar el núcleo libre.</p>
                         </div>
-                        <div class="flex items-baseline gap-1 pt-2">
-                            <span class="text-4xl font-extrabold text-slate-900" x-text="billingAnnual ? '99€' : '119€'">99€</span>
-                            <span class="text-xs text-slate-500 font-medium">/ mes + IVA</span>
-                        </div>
-                        <p class="text-xs text-indigo-600 font-semibold" x-show="billingAnnual">Facturado anualmente (1.188€/año)</p>
-
-                        <ul class="space-y-3 text-xs text-slate-600 pt-4 border-t border-slate-100">
-                            <li class="flex items-center gap-2.5">
-                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
-                                <span>Equipo y profesionales ilimitados</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
-                                <span>Soporte multisede y varias consultas</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
-                                <span>Avisos por WhatsApp corporativo centralizado</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
-                                <span>Informes avanzados de rendimiento y facturación</span>
-                            </li>
-                            <li class="flex items-center gap-2.5">
-                                <i class="bi bi-check-circle-fill text-primary-500 text-sm"></i>
-                                <span>Asesoramiento y configuración personalizada</span>
-                            </li>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Gracias a la licencia **LGPLv3** y al sistema de hooks del núcleo, tu equipo o terceros pueden desarrollar integraciones propietarias o abiertas en la carpeta <code class="text-[11px] bg-slate-200 px-1 py-0.5 rounded">modules/</code>.
+                        </p>
+                        <ul class="space-y-2 text-xs text-slate-600 pt-2 border-t border-slate-200/60">
+                            <li class="flex items-center gap-2"><i class="bi bi-check-lg text-emerald-600"></i> Rutas y controladores desacoplados</li>
+                            <li class="flex items-center gap-2"><i class="bi bi-check-lg text-emerald-600"></i> Eventos y filtros en tiempo de ejecución</li>
                         </ul>
-                    </div>
-
-                    <div>
-                        <a href="<?= PROJECT_ROOT ?>/login" class="w-full block text-center py-3.5 px-6 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors">
-                            Probar 14 Días Gratis
-                        </a>
                     </div>
                 </div>
 
@@ -964,7 +878,7 @@ $hasSystemAlert = $systemAlertMessage !== '';
 
             <!-- Bottom Copyright -->
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-                <p>&copy; 2026 Tervion. Todos los derechos reservados.</p>
+                <p>Tervion ERP — Software Libre bajo licencia <a href="https://www.gnu.org/licenses/lgpl-3.0.html" target="_blank" rel="noopener noreferrer" class="underline hover:text-slate-300">GNU LGPLv3</a>.</p>
                 <div class="flex items-center gap-4">
                     <a href="<?= PROJECT_ROOT ?>/privacidad" class="hover:text-slate-300">Privacidad</a>
                     <span>•</span>

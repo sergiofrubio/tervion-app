@@ -103,7 +103,7 @@ class RegisterController extends Controller
             $slug = trim($slugBase, '-') . '-' . substr($usuario_id, 1, 4);
 
             $stmtCuenta = $db->prepare("INSERT INTO cuentas_clientes (nombre_empresa, nif_cif, slug, plan_suscripcion, email_admin, estado_cuenta) 
-                                        VALUES (:nombre_empresa, :nif_cif, :slug, 'Basico', :email_admin, 'Activo')");
+                                        VALUES (:nombre_empresa, :nif_cif, :slug, 'Community', :email_admin, 'Activo')");
             $stmtCuenta->execute([
                 ':nombre_empresa' => $nombreEmpresa,
                 ':nif_cif' => $usuario_id,

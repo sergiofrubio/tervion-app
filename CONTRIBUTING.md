@@ -1,6 +1,6 @@
 # Guía de Contribución a Tervion (Open Source)
 
-¡Gracias por tu interés en contribuir a **Tervion**! Tervion es un sistema ERP clínico de código abierto con una arquitectura modular y un modelo de núcleo abierto (*open-core*).
+¡Gracias por tu interés en contribuir a **Tervion**! Tervion es un sistema ERP clínico libre y 100% de código abierto con una arquitectura modular desacoplada.
 
 Este documento establece las directrices, estándares de código y flujos de trabajo necesarios para que cualquier desarrollador pueda colaborar eficazmente en el proyecto.
 
@@ -8,11 +8,11 @@ Este documento establece las directrices, estándares de código y flujos de tra
 
 ## 📜 Licencia y Cesión de Código
 
-Al contribuir al repositorio público de Tervion, aceptas que:
+Al contribuir al repositorio de Tervion, aceptas que:
 
 1. **Licencia LGPLv3:** Todo código enviado mediante Pull Request se publicará bajo los términos de la [GNU Lesser General Public License v3.0 (LGPLv3)](LICENSE).
 2. **Autoría y Compatibilidad:** Declaras que eres el autor original del código o posees los derechos/licencias necesarias para aportarlo bajo LGPLv3.
-3. **Ecosistema Open-Core:** Reconoces que Tervion Core (LGPLv3) se combina y coexiste con extensiones y servicios SaaS propietarios o comerciales desarrollados por la organización o terceros.
+3. **Ecosistema Modular:** Tervion Core es 100% libre. Gracias a la licencia LGPLv3, los usuarios pueden desarrollar módulos propios para conectarse al ERP sin alterar el núcleo.
 
 ---
 

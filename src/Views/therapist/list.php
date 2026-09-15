@@ -150,15 +150,15 @@ $trabajadoresPaginados = array_slice($trabajadores_filtrados, $iniciar, $articul
                                 <td class="py-4 px-4">
                                     <?php if ($w['rol'] === 'Administrador'): ?>
                                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-purple-50 text-purple-700 border border-purple-200">
-                                            <i class="bi bi-shield-lock-fill text-purple-500"></i> Administrador
+                                            Administrador
                                         </span>
                                     <?php elseif ($w['rol'] === 'Fisioterapeuta'): ?>
                                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                            <i class="bi bi-heart-pulse-fill text-emerald-500"></i> Fisioterapeuta
+                                            Fisioterapeuta
                                         </span>
                                     <?php else: ?>
                                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-blue-50 text-blue-700 border border-blue-200">
-                                            <i class="bi bi-person-badge-fill text-blue-500"></i> <?= htmlspecialchars($w['rol']) ?>
+                                            <?= htmlspecialchars($w['rol']) ?>
                                         </span>
                                     <?php endif; ?>
                                 </td>

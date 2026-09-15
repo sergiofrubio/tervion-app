@@ -1,7 +1,6 @@
 services:
   caddy:
     image: caddy:2-alpine
-    # restart: always
     expose:
       - "80"
       - "443"
@@ -35,7 +34,6 @@ services:
       - db
     networks:
       - default
-    # restart: always
 
   db:
     image: mariadb:10.11
@@ -45,7 +43,6 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./data/app.sql:/docker-entrypoint-initdb.d/init.sql
-    # restart: always
 
 volumes:
   db_data:

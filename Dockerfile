@@ -3,7 +3,7 @@ FROM php:8.4-fpm AS base
 RUN apt-get update && apt-get install -y \
     libzip-dev \
     unzip \
-    && docker-php-ext-install mysqli pdo pdo_mysql zip \
+    && docker-php-ext-install mysqli pdo pdo_mysql zip redis\
     && rm -rf /var/lib/apt/lists/*
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
